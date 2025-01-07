@@ -1,4 +1,4 @@
-package com.klippd
+package io.apsy.klippd
 
 import android.app.Application
 import com.facebook.react.PackageList

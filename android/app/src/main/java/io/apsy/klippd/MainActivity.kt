@@ -1,4 +1,4 @@
-package com.klippd
+package io.apsy.klippd
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
