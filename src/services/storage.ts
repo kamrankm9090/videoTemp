@@ -56,3 +56,16 @@ export function removeAppStorageData() {
       appStorage.delete(keyItem);
     });
 }
+
+export const zustandStorage: ZustandStorageType = {
+  setItem: (name, value) => {
+    return appStorage.set(name, value);
+  },
+  getItem: name => {
+    const value = appStorage.getString(name);
+    return value || null;
+  },
+  removeItem: name => {
+    return appStorage.delete(name);
+  },
+};
