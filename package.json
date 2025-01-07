@@ -7,7 +7,25 @@
     "ios": "npx react-native run-ios --simulator='iPhone 15 Pro Max'",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "lint-fix": "eslint --fix .",
+    "lint-check": "eslint .",
+    "build-and": "cd android && ./gradlew clean && ./gradlew assembleRelease && cd ../",
+    "build-ios": "react-native run-ios --configuration Release",
+    "bundle-and": "cd android && ./gradlew clean && ./gradlew bundleRelease && cd ../",
+    "prettier-fix": "prettier --write **/*.js",
+    "prettier-check": "prettier --list-different **/*.js",
+    "rename": "react-native-rename",
+    "clean": "cd android && ./gradlew clean && ./gradlew cleanBuildcache && cd .. && cd ios && rm -rf build/ && xcodebuild clean && watchman watch-del-all && cd ..",
+    "pod": "cd ios && pod install && cd ..",
+    "pod-m1": "cd ios && sudo arch -x86_64 gem install ffi && arch -x86_64 pod install && cd ..",
+    "pod-update": "cd ios && pod --repo-update && cd ../",
+    "pod-update-m1": "cd ios && sudo arch -x86_64 gem install ffi && arch -x86_64 pod install && arch -x86_64 pod update",
+    "clean:ios": "cd ios && xcodebuild clean && cd ../",
+    "clean:android": "cd android && ./gradlew clean && cd ../",
+    "generate:ts": "graphql-codegen --config codegen.yml",
+    "prepare": "husky",
+    "list": ""
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "7.2.0",
@@ -20,6 +38,7 @@
     "react-native-mmkv": "3.2.0",
     "react-native-safe-area-context": "5.0.0",
     "react-native-screens": "4.4.0",
+    "react-native-splash-screen": "3.3.0",
     "zustand": "5.0.3"
   },
   "devDependencies": {

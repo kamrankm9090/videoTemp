@@ -1,6 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
+import SplashScreen from 'react-native-splash-screen';
 import {HomeScreen} from '~/screens';
 import {navigationRef} from './methods';
 
@@ -15,6 +16,16 @@ const navigatorOptions = {
 };
 
 export default function AppNavigator() {
+  const hideSplash = useCallback(() => {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    hideSplash();
+  }, [hideSplash]);
+
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={navigatorOptions}>
