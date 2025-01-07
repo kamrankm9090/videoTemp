@@ -5,7 +5,7 @@ import {AppContainer} from '~/components';
 export default function HomeScreen() {
   return (
     <AppContainer>
-      <Text>OnBoarding</Text>
+      <Text>Home</Text>
     </AppContainer>
   );
 }

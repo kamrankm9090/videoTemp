@@ -1,12 +1,11 @@
 import React from 'react';
-import {Text} from 'react-native';
-import {AppContainer} from '~/components';
+import AppNavigator from '~/navigation/AppNavigator';
 
 function App(): React.JSX.Element {
   return (
-    <AppContainer>
-      <Text>main</Text>
-    </AppContainer>
+    <>
+      <AppNavigator />
+    </>
   );
 }
 

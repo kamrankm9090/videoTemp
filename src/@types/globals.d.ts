@@ -1,7 +1,10 @@
 import {ReactNode} from 'react';
+import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 
 declare global {
   type ReactChildren = ReactNode;
+
+  type NavigationProp = NativeStackHeaderProps;
 
   type EnvType = 'DEV' | 'QA' | 'STG' | 'PRD';
 
