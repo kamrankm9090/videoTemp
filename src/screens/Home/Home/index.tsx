@@ -2,12 +2,10 @@ import React from 'react';
 import {Text} from 'react-native';
 import {AppContainer} from '~/components';
 
-function App(): React.JSX.Element {
+export default function HomeScreen() {
   return (
     <AppContainer>
-      <Text>main</Text>
+      <Text>OnBoarding</Text>
     </AppContainer>
   );
 }
-
-export default App;
