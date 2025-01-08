@@ -10,6 +10,7 @@ export const BORDER = '#393939';
 export const INPUT = '#1E2940';
 export const SEMI_TRANSPARENT = 'rgba(255,255,255,0.5)';
 export const PRIMARY = '#A1C6F9';
+export const PRIMARY_SECOND = '#F3FBFF';
 export const PRIMARY_BACKGROUND = '#3272DD29';
 export const SECONDARY = '#FAFFAF';
 export const INFO = '#007AFF';

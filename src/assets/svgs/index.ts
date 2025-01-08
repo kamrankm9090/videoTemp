@@ -1,1 +1,13 @@
 export {default as PlayCircle} from './playCircle.svg';
+export {default as ChevronTop} from './chevronTop.svg';
+export {default as Info} from './info.svg';
+export {default as CloseCircle} from './closeCircle.svg';
+export {default as Trash} from './trash.svg';
+export {default as Edit} from './edit.svg';
+export {default as SearchIcon} from './searchIcon.svg';
+export {default as ArrowLeft} from './arrowLeft.svg';
+export {default as ArrowRight} from './arrowLeft.svg';
+export {default as HomeFill} from './homeFill.svg';
+export {default as HomeOutline} from './homeOutline.svg';
+export {default as LiveOutline} from './liveOutline.svg';
+export {default as Live} from './live.svg';

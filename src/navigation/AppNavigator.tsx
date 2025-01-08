@@ -2,11 +2,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import {HomeScreen} from '~/screens';
 import {navigationRef} from './methods';
+import {AppLoading} from '~/components';
+import MainStack from './MainStack';
 
 export type AppNavigatorParamList = {
-  Home: undefined;
+  Main: undefined;
 };
 
 const Stack = createNativeStackNavigator<AppNavigatorParamList>();
@@ -27,9 +28,9 @@ export default function AppNavigator() {
   }, [hideSplash]);
 
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer ref={navigationRef} fallback={<AppLoading />}>
       <Stack.Navigator screenOptions={navigatorOptions}>
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Main" component={MainStack} />
       </Stack.Navigator>
     </NavigationContainer>
   );

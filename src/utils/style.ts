@@ -1,5 +1,6 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {Colors} from '~/styles';
+import {isAndroid} from './helper';
 
 export const {width, height} = Dimensions.get('window');
 
@@ -39,7 +40,15 @@ const fontWeight = {
   black: '900',
 };
 
-const fontSize = {
+const fontFamily: FontFamily = {
+  bold: 'HelveticaNeue-Bold',
+  light: 'HelveticaNeue-Light',
+  medium: 'HelveticaNeue-Medium',
+  regular: 'HelveticaNeue-Roman',
+  thin: 'HelveticaNeue-Thin',
+};
+
+const fontSize: FontSize = {
   extraLarge: scale(36),
   xxxxLarge: scale(34),
   tooLarge: scale(27),
@@ -124,18 +133,26 @@ const generateShadowUsingNumber = (
   return shadowProperties;
 };
 
+const globalStyles = StyleSheet.create({
+  inverted: {
+    transform: [{rotateX: '-180deg'}, ...(isAndroid ? [{scaleX: -1}] : [])],
+  },
+});
+
 export {
-  fontSize,
-  fontWeight,
-  generateShadowUsingNumber,
-  headerHeight,
+  fontFamily,
+  scaleSpace,
+  scale,
+  verticalScale,
   moderateScale,
+  screenSize,
+  scaleSpaceW,
+  fontWeight,
+  fontSize,
+  headerHeight,
+  windowAspectRatio,
   myCourseWidth,
   myCourseWidthVertical,
-  scale,
-  scaleSpace,
-  scaleSpaceW,
-  screenSize,
-  verticalScale,
-  windowAspectRatio,
+  generateShadowUsingNumber,
+  globalStyles,
 };
