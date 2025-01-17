@@ -12,6 +12,7 @@ import {isIos} from './helper';
 import {CommonActions} from '@react-navigation/native';
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
+import {createThumbnail} from 'react-native-create-thumbnail';
 
 export const toastConfig = {
   success: (props: ToastProps) => <BaseToast {...props} />,
@@ -222,4 +223,22 @@ export function appFormatDate(date: any, dateFormat: string = 'HH:mm a') {
 
 export function dismissKeyboard() {
   Keyboard.dismiss();
+}
+
+export async function generateThumbnail(path: string, timeStamp: string) {
+  if (!path) {
+    return;
+  }
+
+  try {
+    const response = await createThumbnail({
+      url: path,
+      timeStamp: parseInt(timeStamp, 10),
+    });
+    return response.path;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    // setIsLoading(false);
+  }
 }

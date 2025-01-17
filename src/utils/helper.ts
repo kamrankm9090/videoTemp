@@ -20,6 +20,13 @@ export function getFullImageUrl(url?: string | undefined | null) {
   return;
 }
 
+export function getAspectRatio(width: number, height: number) {
+  if (height > 0) {
+    return width / height;
+  }
+  return 1;
+}
+
 // form helper
 export {useForm} from 'react-hook-form';
 export {Yup, yupResolver};
