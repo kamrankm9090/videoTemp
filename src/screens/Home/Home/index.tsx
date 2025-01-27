@@ -1,3 +1,4 @@
+import {FlashList} from '@shopify/flash-list';
 import React, {useCallback, useRef, useState} from 'react';
 import {StyleSheet, ViewToken} from 'react-native';
 import {AppContainer, AppFlatList, Box, HomePostItem} from '~/components';
@@ -47,6 +48,26 @@ export default function HomeScreen() {
 
   return (
     <AppContainer>
+      {/* <FlashList
+        data={tempVideoData2 || []}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        ItemSeparatorComponent={itemSeparatorComponent}
+        contentContainerStyle={styles.contentContainerStyle}
+        viewabilityConfig={viewConfigRef?.current}
+        onViewableItemsChanged={onViewRef.current}
+        // disableVirtualization={false}
+        horizontal={false}
+        // maxToRenderPerBatch={5}
+        // initialNumToRender={5}
+        removeClippedSubviews={true}
+        decelerationRate="fast"
+        onEndReachedThreshold={0.5}
+        overScrollMode="never"
+        scrollEventThrottle={16}
+        bounces={false}
+        // windowSize={5}
+      /> */}
       <AppFlatList
         data={tempVideoData2 || []}
         renderItem={renderItem}
@@ -55,18 +76,17 @@ export default function HomeScreen() {
         contentContainerStyle={styles.contentContainerStyle}
         viewabilityConfig={viewConfigRef?.current}
         onViewableItemsChanged={onViewRef.current}
-        windowSize={5}
-        maxToRenderPerBatch={5}
-        initialNumToRender={5}
-        bounces={false}
-        removeClippedSubviews={true}
-        scrollEventThrottle={16}
-        onEndReachedThreshold={0.5}
-        // nestedScrollEnabled={true}
-        decelerationRate="fast"
-        overScrollMode="never"
         disableVirtualization={false}
         horizontal={false}
+        maxToRenderPerBatch={5}
+        initialNumToRender={5}
+        removeClippedSubviews={true}
+        decelerationRate="fast"
+        onEndReachedThreshold={0.5}
+        overScrollMode="never"
+        scrollEventThrottle={16}
+        bounces={false}
+        windowSize={5}
       />
     </AppContainer>
   );

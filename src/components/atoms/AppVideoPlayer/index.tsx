@@ -6,6 +6,7 @@ import Video, {
   BufferingStrategyType,
 } from 'react-native-video';
 import {VideoImageViewer} from '~/components';
+import {useIsFocused} from '@react-navigation/native';
 
 const videoPlayerControlsStyles: ReactVideoProps['controlsStyles'] = {
   hideDuration: true,
@@ -29,16 +30,15 @@ export default function AppVideoPlayer({
   const videoRef = useRef<VideoRef>(null);
 
   const [play, setPlay] = useState<boolean>(false);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        setPlay(true);
-      } else {
-        setPlay(false);
-      }
+    if (isPlaying && isFocused) {
+      setPlay(true);
+    } else {
+      setPlay(false);
     }
-  }, [isPlaying]);
+  }, [isPlaying, isFocused]);
 
   // if (!isPlaying) {
   //   return <VideoImageViewer url={source?.uri} />;
@@ -57,7 +57,6 @@ export default function AppVideoPlayer({
       controlsStyles={videoPlayerControlsStyles}
       style={style}
       muted={false}
-      // muted={isMuted}
       disableFocus={true}
       minLoadRetryCount={3}
       bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}

@@ -17,6 +17,11 @@ end
 target 'Klippd' do
   config = use_native_modules!
 
+  pod 'SPTPersistentCache', :modular_headers => true
+  pod 'DVAssetLoaderDelegate', :modular_headers => true
+
+  $RNVideoUseVideoCaching=true
+
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
