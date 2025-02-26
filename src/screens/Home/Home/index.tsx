@@ -68,7 +68,8 @@ export default function HomeScreen() {
         bounces={false}
         // windowSize={5}
       /> */}
-      <AppFlatList
+      {/* ----------------------------------home ---------- */}
+      {/* <AppFlatList
         data={tempVideoData2 || []}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
@@ -87,7 +88,7 @@ export default function HomeScreen() {
         scrollEventThrottle={16}
         bounces={false}
         windowSize={5}
-      />
+      /> */}
     </AppContainer>
   );
 }

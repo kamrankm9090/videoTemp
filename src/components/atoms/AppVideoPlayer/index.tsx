@@ -29,14 +29,16 @@ export default function AppVideoPlayer({
 }: {isPlaying?: boolean} & ReactVideoProps) {
   const videoRef = useRef<VideoRef>(null);
 
-  const [play, setPlay] = useState<boolean>(false);
+  // const [play, setPlay] = useState<boolean>(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isPlaying && isFocused) {
-      setPlay(true);
+      // setPlay(true);
+      videoRef.current?.resume();
     } else {
-      setPlay(false);
+      // setPlay(false);
+      videoRef.current?.pause();
     }
   }, [isPlaying, isFocused]);
 
@@ -47,10 +49,26 @@ export default function AppVideoPlayer({
   return (
     <Video
       {...rest}
+      // source={
+      //   {
+      //     uri: convertToProxyURL(source?.uri),
+      //   } // Converts the video URL to a proxy URL if visible
+      // }
       source={source}
+      // source={{
+      //   uri: source?.uri,
+      //   // bufferConfig: {
+      //   //   minBufferMs: 1000,
+      //   //   maxBufferMs: 2000,
+      //   //   bufferForPlaybackMs: 5000,
+      //   //   bufferForPlaybackAfterRebufferMs: 2000,
+      //   // },
+      //   shouldCache: true,
+      // }}
       repeat={repeat}
       controls={true}
-      paused={!play}
+      filter=""
+      // paused={!play}
       ref={videoRef}
       resizeMode={resizeMode}
       playInBackground={false}
@@ -58,8 +76,13 @@ export default function AppVideoPlayer({
       style={style}
       muted={false}
       disableFocus={true}
+      useTextureView={false}
       minLoadRetryCount={3}
       bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}
+      ignoreSilentSwitch="ignore"
+      onLoadStart={() => console.log('Video loading started')}
+      onLoad={() => console.log('Video loaded successfully')}
+      onError={error => console.log('Video error:', error)}
     />
   );
 }

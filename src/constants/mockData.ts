@@ -149,212 +149,212 @@ export const useMockData = () => {
   const tempVideoData2 = [
     {
       id: 0,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[0].mp4',
+      url: 'BigBuckBunny.[0].mp4',
     },
     {
       id: 1,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[1].mp4',
+      url: 'BigBuckBunny.[1].mp4',
     },
-    // {
-    //   id: 2,
-    //   url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[2].mp4',
-    // },
+    {
+      id: 2,
+      url: 'BigBuckBunny.[2].mp4',
+    },
     {
       id: 3,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[3].mp4',
+      url: 'BigBuckBunny.[3].mp4',
     },
     {
       id: 4,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[4].mp4',
+      url: 'BigBuckBunny.[4].mp4',
     },
     {
       id: 5,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[5].mp4',
+      url: 'BigBuckBunny.[5].mp4',
     },
     {
       id: 6,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[6].mp4',
+      url: 'BigBuckBunny.[6].mp4',
     },
     {
       id: 7,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[7].mp4',
+      url: 'BigBuckBunny.[7].mp4',
     },
     {
       id: 8,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[8].mp4',
+      url: 'BigBuckBunny.[8].mp4',
     },
     {
       id: 9,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[9].mp4',
+      url: 'BigBuckBunny.[9].mp4',
     },
     {
       id: 10,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[10].mp4',
+      url: 'BigBuckBunny.[10].mp4',
     },
     {
       id: 11,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[11].mp4',
+      url: 'BigBuckBunny.[11].mp4',
     },
     {
       id: 12,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[12].mp4',
+      url: 'BigBuckBunny.[12].mp4',
     },
     {
       id: 13,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[13].mp4',
+      url: 'BigBuckBunny.[13].mp4',
     },
     {
       id: 14,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[14].mp4',
+      url: 'BigBuckBunny.[14].mp4',
     },
     {
       id: 15,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[15].mp4',
+      url: 'BigBuckBunny.[15].mp4',
     },
 
     {
       id: 16,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-1.mp4',
+      url: 'file-1.mp4',
     },
     {
       id: 17,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-2.mp4',
+      url: 'file-2.mp4',
     },
     {
       id: 18,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-3.mp4',
+      url: 'file-3.mp4',
     },
     {
       id: 19,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-4.mp4',
+      url: 'file-4.mp4',
     },
     {
       id: 20,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-5.mp4',
+      url: 'file-5.mp4',
     },
     {
       id: 21,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-6.mp4',
+      url: 'file-6.mp4',
     },
     {
       id: 22,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-7.mp4',
+      url: 'file-7.mp4',
     },
     {
       id: 23,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-8.mp4',
+      url: 'file-8.mp4',
     },
     {
       id: 24,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-9.mp4',
+      url: 'file-9.mp4',
     },
     {
       id: 25,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-10.mp4',
+      url: 'file-10.mp4',
     },
     {
       id: 26,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-11.mp4',
+      url: 'file-11.mp4',
     },
     {
       id: 27,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-12.mp4',
+      url: 'file-12.mp4',
     },
     {
       id: 28,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-13.mp4',
+      url: 'file-13.mp4',
     },
     {
       id: 29,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-14.mp4',
+      url: 'file-14.mp4',
     },
     {
       id: 30,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-15.mp4',
+      url: 'file-15.mp4',
     },
     {
       id: 31,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-16.mp4',
+      url: 'file-16.mp4',
     },
     {
       id: 32,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-17.mp4',
+      url: 'file-17.mp4',
     },
     {
       id: 33,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-18.mp4',
+      url: 'file-18.mp4',
     },
     {
       id: 34,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-19.mp4',
+      url: 'file-19.mp4',
     },
     {
       id: 35,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-20.mp4',
+      url: 'file-20.mp4',
     },
     {
       id: 36,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-21.mp4',
+      url: 'file-21.mp4',
     },
     {
       id: 37,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-22.mp4',
+      url: 'file-22.mp4',
     },
     {
       id: 38,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-23.mp4',
+      url: 'file-23.mp4',
     },
     {
       id: 39,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-24.mp4',
+      url: 'file-24.mp4',
     },
     {
       id: 40,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-25.mp4',
+      url: 'file-25.mp4',
     },
     {
       id: 41,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-26.mp4',
+      url: 'file-26.mp4',
     },
     {
       id: 42,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-27.mp4',
+      url: 'file-27.mp4',
     },
     {
       id: 43,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-28.mp4',
+      url: 'file-28.mp4',
     },
     {
       id: 44,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-29.mp4',
+      url: 'file-29.mp4',
     },
     {
       id: 45,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-30.mp4',
+      url: 'file-30.mp4',
     },
     {
       id: 46,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-31.mp4',
+      url: 'file-31.mp4',
     },
     {
       id: 47,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-32.mp4',
+      url: 'file-32.mp4',
     },
     {
       id: 48,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-33.mp4',
+      url: 'file-33.mp4',
     },
     {
       id: 49,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-34.mp4',
+      url: 'file-34.mp4',
     },
     {
       id: 50,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-35.mp4',
+      url: 'file-35.mp4',
     },
     {
       id: 51,
-      url: 'https://klpmedia.blob.core.windows.net/klpmedia/files/file-36.mp4',
+      url: 'file-36.mp4',
     },
   ];
 
