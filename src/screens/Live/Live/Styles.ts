@@ -1,4 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import {height, width} from '~/utils/style';
 
 const dimensions = {
   width: Dimensions.get('window').width,
@@ -7,7 +8,10 @@ const dimensions = {
 
 export default StyleSheet.create({
   max: {
-    flex: 1,
+    // flex: 1,
+
+    height: '100%',
+    width: '100%',
   },
   buttonHolder: {
     height: 100,
@@ -28,12 +32,21 @@ export default StyleSheet.create({
   fullView: {
     width: dimensions.width,
     height: dimensions.height - 100,
+    // height: height * 0.5,
+    // width: width * 0.7,
+    backgroundColor: 'red',
+    padding: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 80,
   },
   remoteContainer: {
     width: '100%',
-    height: 150,
-    position: 'absolute',
-    top: 5,
+    // height: 150,
+    // position: 'absolute',
+    // top: 5,
+    // backgroundColor: 'lightblue',
+    // zIndex: 200,
   },
   remoteContainerContent: {
     paddingHorizontal: 2.5,
@@ -42,6 +55,7 @@ export default StyleSheet.create({
     width: 150,
     height: 150,
     marginHorizontal: 2.5,
+    backgroundColor: 'green',
   },
   noUserText: {
     paddingHorizontal: 10,
