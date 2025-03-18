@@ -1,13 +1,36 @@
-import {FlashList} from '@shopify/flash-list';
-import React, {useCallback, useRef, useState} from 'react';
+import dayjs from 'dayjs';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {StyleSheet, ViewToken} from 'react-native';
+import Config from 'react-native-config';
 import {AppContainer, AppFlatList, Box, HomePostItem} from '~/components';
-import {useMockData} from '~/constants/mockData';
-import {homePostsStore} from '~/stores';
+import {
+  useAgora_CreateTokenMutation,
+  useAgora_GetAppIdQuery,
+  useInfiniteAgora_GetRecordFilesQuery,
+} from '~/graphql/generated';
+import {agoraStore, homePostsStore} from '~/stores';
+import {generateUuid} from '~/utils/helper';
 
 export default function HomeScreen() {
-  const {tempVideoData1, tempVideoData2} = useMockData();
-  const [preloading, setPreloading] = useState(null);
+  const {data: agoraData, isLoading} = useAgora_GetAppIdQuery({});
+  const {mutate} = useAgora_CreateTokenMutation();
+  console.log(Config.API_URL);
+  // const {tempVideoData1, tempVideoData2} = useMockData();
+  // const [preloading, setPreloading] = useState(null);
+  const {
+    setAppId,
+    setToken,
+    token,
+    setTokenCreatedDate,
+    tokenCreatedDate,
+    setChannelName,
+  } = agoraStore(state => state);
+  const {data, hasNextPage, fetchNextPage} =
+    useInfiniteAgora_GetRecordFilesQuery({take: 40});
+
+  const dd = data?.pages
+    ?.map(a => a?.agora_getRecordFiles?.result?.items)
+    .flat();
 
   const viewConfigRef = useRef({viewAreaCoveragePercentThreshold: 50});
   // const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
@@ -19,37 +42,73 @@ export default function HomeScreen() {
   const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
     if (viewableItems?.length > 0) {
       onViewableItemsY({viewableItems});
-
-      // Preload the next video
-      const nextItemIndex = viewableItems[0].index + 1;
-      if (
-        tempVideoData2 &&
-        tempVideoData2[nextItemIndex] &&
-        tempVideoData2[nextItemIndex].url &&
-        preloading !== tempVideoData2[nextItemIndex].url
-      ) {
-        setPreloading(tempVideoData2[nextItemIndex].url);
-      }
     }
   });
 
   const renderItem = useCallback(
     ({item, index}: {item: any; index: number}) => {
-      return <HomePostItem {...{item, yIndex: index, preloading}} />;
+      return <HomePostItem {...{item, yIndex: index}} />;
     },
-    [preloading],
+    [],
   );
 
   const itemSeparatorComponent = useCallback(() => <Box h={30} />, []);
 
-  const keyExtractor = useCallback((item: {id?: number; url?: string}) => {
+  const keyExtractor = useCallback((item: any) => {
     return `itm${item?.id}`;
   }, []);
 
+  useEffect(() => {
+    init();
+  }, [token]);
+
+  useEffect(() => {
+    if (agoraData?.agora_getAppId?.status?.code === 1) {
+      setAppId(agoraData?.agora_getAppId?.result);
+    }
+  }, [agoraData]);
+
+  const init = async () => {
+    if (token) {
+      const currentDate = dayjs();
+      const tokenDate = dayjs(tokenCreatedDate);
+      const isExpired = currentDate.diff(tokenDate, 'hour') >= 24;
+      console.log('isExpired ===', isExpired);
+      if (isExpired) {
+        getNewToken();
+      }
+    } else {
+      getNewToken();
+    }
+  };
+
+  function getNewToken() {
+    const uuid = generateUuid();
+    mutate(
+      {channelName: uuid, publisher: true},
+      {
+        onSuccess: successData => {
+          console.log('successData-->', successData);
+          if (successData?.agora_createToken?.status?.code === 1) {
+            setChannelName(uuid);
+            setToken(successData?.agora_createToken?.result);
+            setTokenCreatedDate(Date.now());
+          }
+        },
+      },
+    );
+  }
+
+  function onLoadMore() {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  }
+
   return (
-    <AppContainer>
+    <AppContainer isLoading={isLoading}>
       {/* <FlashList
-        data={tempVideoData2 || []}
+        data={data?.pages || []}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         ItemSeparatorComponent={itemSeparatorComponent}
@@ -69,8 +128,8 @@ export default function HomeScreen() {
         // windowSize={5}
       /> */}
       {/* ----------------------------------home ---------- */}
-      {/* <AppFlatList
-        data={tempVideoData2 || []}
+      <AppFlatList
+        data={dd || []}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         ItemSeparatorComponent={itemSeparatorComponent}
@@ -88,7 +147,8 @@ export default function HomeScreen() {
         scrollEventThrottle={16}
         bounces={false}
         windowSize={5}
-      /> */}
+        onEndReached={onLoadMore}
+      />
     </AppContainer>
   );
 }

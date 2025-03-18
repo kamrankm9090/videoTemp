@@ -1,6 +1,6 @@
 export const storageKeysToKeep = ['isOnboardingViewed'];
 
-export const appId = 'ceb02f4fc52245759c29ccdb1833834b';
+export const appId = 'b3e2f575c91a4da6bcefd4612aeefde3';
 export const agoraTempToken =
-  '007eJxTYHAJqs0Ner7mMGP214vXxV8Gvplk9Ux/5md93WyxJ8w72u8oMCSnJhkYpZmkJZsaGZmYmptaJhtZJienJBlaGBtbGJskKUw/mt4QyMjwR76HlZGBkYEFiEF8JjDJDCZZwCQrQ0lqcYk5AwMAK8cjcA==';
-export const channelName = 'test7';
+  '006b3e2f575c91a4da6bcefd4612aeefde3IACuPiEvcXaYy2BNBmEL57MsQ7Bt5xgfNBm8bd4Z8uFWQD/KPLkAAAAAIgAdy76jWgvYZwQA6AMBAAAAAgABAAAAAwABAAAABAABAAAA';
+export const channelName = 'testKamran';

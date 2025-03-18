@@ -2,6 +2,11 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {Platform} from 'react-native';
 import * as Yup from 'yup';
 import config from '~/config';
+import {v4 as uuidv4} from 'uuid';
+
+export function generateUuid() {
+  return uuidv4().replace(/-/g, '');
+}
 
 export const isIos = Platform.OS === 'ios';
 export const isAndroid = Platform.OS === 'android';

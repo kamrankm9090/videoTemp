@@ -50,6 +50,8 @@ export default StyleSheet.create({
   },
   remoteContainerContent: {
     paddingHorizontal: 2.5,
+    backgroundColor: 'green',
+    flexGrow: 1,
   },
   remote: {
     width: 150,
