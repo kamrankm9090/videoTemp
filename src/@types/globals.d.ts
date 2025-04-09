@@ -196,6 +196,9 @@ declare global {
     link?: string;
     mb?: ViewStyle['marginBottom'];
     mt?: ViewStyle['marginBottom'];
+    m?: ViewStyle['margin'];
+    p?: ViewStyle['padding'];
+    flex?: ViewStyle['flex'];
     color?: string;
     fontSize?: TextStyle['fontSize'];
     fontFamily?: keyof FontFamily;

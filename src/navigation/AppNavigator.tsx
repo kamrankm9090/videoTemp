@@ -1,18 +1,23 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {DarkTheme, NavigationContainer} from '@react-navigation/native';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import {navigationRef} from './methods';
 import {AppLoading} from '~/components';
+import AuthStack from './AuthStack';
 import MainStack from './MainStack';
+import {navigationRef} from './methods';
 
 export type AppNavigatorParamList = {
   Main: undefined;
+  Auth: undefined;
 };
 
 const Stack = createNativeStackNavigator<AppNavigatorParamList>();
 
-const navigatorOptions = {
+const navigatorOptions: NativeStackNavigationOptions = {
   headerShown: false,
 };
 
@@ -28,8 +33,12 @@ export default function AppNavigator() {
   }, [hideSplash]);
 
   return (
-    <NavigationContainer ref={navigationRef} fallback={<AppLoading />}>
+    <NavigationContainer
+      theme={DarkTheme}
+      ref={navigationRef}
+      fallback={<AppLoading />}>
       <Stack.Navigator screenOptions={navigatorOptions}>
+        <Stack.Screen name="Auth" component={AuthStack} />
         <Stack.Screen name="Main" component={MainStack} />
       </Stack.Navigator>
     </NavigationContainer>

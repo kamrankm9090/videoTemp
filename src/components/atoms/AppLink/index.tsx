@@ -12,6 +12,7 @@ export default function AppLink({
   mt,
   p,
   m,
+  flex,
   color = Colors.INFO,
   fontSize = font_size.xNormal,
   fontFamily = 'regular',
@@ -27,7 +28,7 @@ export default function AppLink({
   }
 
   return (
-    <AppTouchable {...{mb, mt, p, m}} onPress={onPressHandler}>
+    <AppTouchable {...{mb, mt, p, m, flex}} onPress={onPressHandler}>
       <HStack alignItems="center" space={4}>
         {leftIcon}
         <AppText

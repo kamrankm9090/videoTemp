@@ -41,6 +41,10 @@ PODS:
   - AgoraRtcEngine_iOS/VideoCodecEnc (4.5.0)
   - AgoraRtcEngine_iOS/VirtualBackground (4.5.0)
   - AgoraRtcEngine_iOS/VQA (4.5.0)
+  - amazon-ivs-react-native-player (1.5.0):
+    - AmazonIVSPlayer (~> 1.23.0)
+    - React-Core
+  - AmazonIVSPlayer (1.23.0)
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
   - DVAssetLoaderDelegate (0.3.3)
@@ -2008,6 +2012,7 @@ PODS:
   - Yoga (0.0.0)
 
 DEPENDENCIES:
+  - amazon-ivs-react-native-player (from `../node_modules/amazon-ivs-react-native-player`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - DVAssetLoaderDelegate
@@ -2098,6 +2103,7 @@ SPEC REPOS:
     - AgoraInfra_iOS
     - AgoraIrisRTC_iOS
     - AgoraRtcEngine_iOS
+    - AmazonIVSPlayer
     - DVAssetLoaderDelegate
     - libwebp
     - SDWebImage
@@ -2106,6 +2112,8 @@ SPEC REPOS:
     - SPTPersistentCache
 
 EXTERNAL SOURCES:
+  amazon-ivs-react-native-player:
+    :path: "../node_modules/amazon-ivs-react-native-player"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -2272,6 +2280,8 @@ SPEC CHECKSUMS:
   AgoraInfra_iOS: 65e11a2183ab7836258768868d06058c22701b13
   AgoraIrisRTC_iOS: 67278818a420cf54184a197f7b47afb23704d7e2
   AgoraRtcEngine_iOS: 38b5e0a49bbad5616f284e6a4f9e4f5bb3fb3b2e
+  amazon-ivs-react-native-player: b7a00b9d91f8206b1fa6c85caee17528efbe423c
+  AmazonIVSPlayer: 056aa543826328b578f51d5f3a1ac47b227d813d
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   DVAssetLoaderDelegate: 0caec20e4e08b8560b691131539e9180024d4bce
