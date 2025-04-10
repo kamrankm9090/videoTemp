@@ -29,6 +29,16 @@ declare global {
     setUserData: (userData: User) => void;
     setIsOnboardingViewed: (isOnboardingViewed: boolean) => void;
   };
+  type AgoraStoreType = {
+    appId: string;
+    token: string;
+    tokenCreatedDate?: number;
+    channelName?: string;
+    setAppId: (appId: string) => void;
+    setToken: (token: string) => void;
+    setTokenCreatedDate: (tokenCreatedDate: number) => void;
+    setChannelName: (channelName: string) => void;
+  };
   export interface ZustandStorageType {
     getItem: (name: string) => string | null | Promise<string | null>;
     setItem: (name: string, value: string) => unknown | Promise<unknown>;
@@ -186,6 +196,9 @@ declare global {
     link?: string;
     mb?: ViewStyle['marginBottom'];
     mt?: ViewStyle['marginBottom'];
+    m?: ViewStyle['margin'];
+    p?: ViewStyle['padding'];
+    flex?: ViewStyle['flex'];
     color?: string;
     fontSize?: TextStyle['fontSize'];
     fontFamily?: keyof FontFamily;
