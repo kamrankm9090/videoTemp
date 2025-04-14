@@ -29,7 +29,7 @@ const AppMultiSelect = React.forwardRef(
     data,
     loading,
     titleKey = 'title',
-    valueKey = 'value',
+    valueKey = 'id',
     onChange,
     limit,
     prompt,

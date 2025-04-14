@@ -1,7 +1,7 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
+import {useSnapshot} from 'valtio';
 import {
   AppButton,
   AppContainer,
@@ -14,10 +14,13 @@ import {
   HStack,
   VStack,
 } from '~/components';
+import {useUser_SendVerificationCodeToEmailMutation} from '~/graphql/generated';
 import {navigate, replace} from '~/navigation/methods';
 import {forgotPasswordSchema} from '~/schemas';
+import {authenticationStore} from '~/stores';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
+import {showErrorMessage} from '~/utils/utils';
 
 const defaultValues = {email: ''};
 
@@ -29,18 +32,43 @@ export default function ForgotPasswordScreen() {
 
   const {handleSubmit, register, formState} = methods;
 
+  const {
+    mutate: mutateSendVerificationCode,
+    isLoading: isLoadingSendVerificationCode,
+  } = useUser_SendVerificationCodeToEmailMutation();
+  const {setEmail, setIsForResetPassword} = useSnapshot(authenticationStore);
+
   async function onSubmit(formData: typeof defaultValues) {
-    navigate('VerificationCode');
+    const variables = {
+      input: {
+        isForResetPassword: true,
+        email: formData?.email,
+      },
+    };
+    mutateSendVerificationCode(variables, {
+      onSuccess: response => {
+        if (response?.user_sendVerificationCodeToEmail?.code === 1) {
+          setEmail(formData?.email);
+          setIsForResetPassword(true);
+          navigate('VerificationCode');
+        } else {
+          showErrorMessage(
+            response?.user_sendVerificationCodeToEmail?.description,
+          );
+        }
+      },
+    });
   }
 
   function loginOnPress() {
     replace('Signin');
   }
 
+  const loading = isLoadingSendVerificationCode;
+
   return (
     <AppContainer barStyle="light-content" backgroundColor={Colors.BACKGROUND}>
-      <AppKeyboardAwareScrollView
-        contentContainerStyle={styles.contentContainerStyle}>
+      <AppKeyboardAwareScrollView>
         <VStack p={24} space={48} flex={1}>
           <AuthHeader />
           <VStack space={24}>
@@ -58,9 +86,13 @@ export default function ForgotPasswordScreen() {
                   placeholder={'Email'}
                   autoComplete="email"
                   keyboardType="email-address"
-                  // disabled={loading}
+                  editable={!loading}
                 />
-                <AppButton title="Continue" onPress={handleSubmit(onSubmit)} />
+                <AppButton
+                  loading={loading}
+                  title="Continue"
+                  onPress={handleSubmit(onSubmit)}
+                />
               </VStack>
             </AppFormProvider>
           </VStack>
@@ -80,9 +112,3 @@ export default function ForgotPasswordScreen() {
     </AppContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  contentContainerStyle: {
-    flexGrow: 1,
-  },
-});

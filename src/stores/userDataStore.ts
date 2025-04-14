@@ -9,11 +9,24 @@ type UserDataPersist = (
 const userDataStore = create<UserDataStoreType>(
   (persist as UserDataPersist)(
     set => ({
-      userData: {},
+      userData: undefined,
       isOnboardingViewed: false,
+      isUserLoggedIn: false,
+      authData: undefined,
       setUserData: (userData: User) => set({userData}),
       setIsOnboardingViewed: (isOnboardingViewed: boolean) =>
         set({isOnboardingViewed}),
+      setIsUserLoggedIn: (isUserLoggedIn: boolean) => set({isUserLoggedIn}),
+      setToken: (token: string) => set({token}),
+      setAuthData: ({
+        token,
+        expireDate,
+        refreshToken,
+        refreshTokenExpiryTime,
+      }: AuthDataType) =>
+        set({
+          authData: {token, expireDate, refreshToken, refreshTokenExpiryTime},
+        }),
     }),
     {
       name: 'userData-storage',

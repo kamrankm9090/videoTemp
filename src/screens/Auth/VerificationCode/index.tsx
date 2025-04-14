@@ -1,7 +1,7 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
+import {useSnapshot} from 'valtio';
 import {
   AppButton,
   AppCodeInput,
@@ -13,10 +13,13 @@ import {
   SectionResendCode,
   VStack,
 } from '~/components';
+import {useUser_CheckVerificationCodeOfEmailMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {verificationSchema} from '~/schemas';
+import {authenticationStore, userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
+import {showErrorMessage} from '~/utils/utils';
 
 const defaultValues = {verificationCode: ''};
 
@@ -26,16 +29,62 @@ export default function VerificationCodeScreen() {
     defaultValues,
   });
 
-  const {handleSubmit, register, formState} = methods;
+  const {handleSubmit, register} = methods;
+
+  const {email, isForResetPassword, setVerificationCode} =
+    useSnapshot(authenticationStore);
+
+  const {
+    mutate: mutateCheckVerificationCode,
+    isLoading: isLoadingCheckVerificationCode,
+  } = useUser_CheckVerificationCodeOfEmailMutation();
+
+  const {setUserData, setAuthData, setIsUserLoggedIn} = userDataStore(
+    state => state,
+  );
 
   async function onSubmit(formData: typeof defaultValues) {
-    navigate('SignupSuccess');
+    const verifyCode = formData?.verificationCode?.toString();
+    mutateCheckVerificationCode(
+      {
+        email,
+        verificationCode: verifyCode,
+        isForResetPassword,
+      },
+      {
+        onSuccess: response => {
+          if (response?.user_checkVerificationCodeOfEmail?.status?.code === 1) {
+            if (isForResetPassword) {
+              setVerificationCode(verifyCode);
+              navigate('ResetPassword');
+            } else {
+              const res = response?.user_checkVerificationCodeOfEmail?.result;
+              const authData = {
+                token: res?.token,
+                expireDate: res?.expireDate,
+                refreshToken: res?.refreshToken,
+                refreshTokenExpiryTime: res?.refreshTokenExpiryTime,
+              };
+              setUserData(res?.user);
+              setAuthData(authData);
+              setIsUserLoggedIn(true);
+              navigate('SignupSuccess');
+            }
+          } else {
+            showErrorMessage(
+              response?.user_checkVerificationCodeOfEmail?.status?.description,
+            );
+          }
+        },
+      },
+    );
   }
+
+  const loading = isLoadingCheckVerificationCode;
 
   return (
     <AppContainer barStyle="light-content" backgroundColor={Colors.BACKGROUND}>
-      <AppKeyboardAwareScrollView
-        contentContainerStyle={styles.contentContainerStyle}>
+      <AppKeyboardAwareScrollView>
         <VStack space={48} flex={1}>
           <ScreensHeader mt={48} backAction />
           <VStack p={24} space={24}>
@@ -49,9 +98,13 @@ export default function VerificationCodeScreen() {
             <AppFormProvider methods={methods}>
               <VStack mt={16} mb={120} space={24}>
                 <AppCodeInput length={6} {...register('verificationCode')} />
-                <SectionResendCode email={''} />
+                <SectionResendCode />
               </VStack>
-              <AppButton title="Verify" onPress={handleSubmit(onSubmit)} />
+              <AppButton
+                loading={loading}
+                title="Verify"
+                onPress={handleSubmit(onSubmit)}
+              />
             </AppFormProvider>
           </VStack>
         </VStack>
@@ -59,9 +112,3 @@ export default function VerificationCodeScreen() {
     </AppContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  contentContainerStyle: {
-    flexGrow: 1,
-  },
-});

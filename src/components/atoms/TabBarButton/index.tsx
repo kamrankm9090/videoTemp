@@ -1,13 +1,18 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {AppText, AppTouchable, VStack} from '~/components';
+import {fontSize} from '~/utils/style';
 
 export default function TabBarButton(props: any) {
-  const {onPress, children, style = styles.container} = props;
+  const {onPress, children, style = styles.container, text = ''} = props;
 
   return (
-    <TouchableOpacity activeOpacity={0.9} onPress={onPress} style={style}>
-      <View style={styles.button}>{children}</View>
-    </TouchableOpacity>
+    <AppTouchable onPress={onPress} style={style}>
+      <VStack space={4} alignItems="center">
+        {children}
+        {text && <AppText fontSize={fontSize.tiny}>{text}</AppText>}
+      </VStack>
+    </AppTouchable>
   );
 }
 

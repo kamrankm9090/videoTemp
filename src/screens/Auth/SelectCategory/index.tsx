@@ -1,7 +1,6 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
 import {
   AppButton,
   AppContainer,
@@ -14,27 +13,14 @@ import {
   HStack,
   VStack,
 } from '~/components';
+import {
+  useInfiniteCategory_GetCategoriesQuery,
+  useUser_UpdateUserMutation,
+} from '~/graphql/generated';
 import {selectCategorySchema} from '~/schemas';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
-
-const data = [
-  {
-    id: 0,
-    value: 'producer',
-    title: 'Producer',
-  },
-  {
-    id: 1,
-    value: 'photographer',
-    title: 'Photographer',
-  },
-  {
-    id: 2,
-    value: 'cameraOperator',
-    title: 'Camera Operator',
-  },
-];
 
 const defaultValues = {categories: []};
 
@@ -45,15 +31,39 @@ export default function SelectCategoryScreen() {
   });
 
   const {handleSubmit} = methods;
+  const {userData} = userDataStore(state => state);
 
-  async function onSubmit(formData: typeof defaultValues) {}
+  const {mutate: mutateUserUpdate, isLoading: isLoadingUpdateUser} =
+    useUser_UpdateUserMutation();
+
+  const {data: getCategories, isLoading: isLoadingGetCategories} =
+    useInfiniteCategory_GetCategoriesQuery();
+  const categories = getCategories?.pages
+    ?.map(a => a?.category_getCategories?.result?.items)
+    .flat();
+
+  console.log('categories-->', categories);
+
+  async function onSubmit(formData: typeof defaultValues) {
+    const variables = {
+      userId: userData?.id,
+      userInput: {
+        favoriteCategories: formData?.categories,
+      },
+    };
+    mutateUserUpdate(variables, {
+      onSuccess: () => {},
+    });
+  }
 
   function skipOnPress() {}
 
   return (
-    <AppContainer barStyle="light-content" backgroundColor={Colors.BACKGROUND}>
-      <AppKeyboardAwareScrollView
-        contentContainerStyle={styles.contentContainerStyle}>
+    <AppContainer
+      isLoading={isLoadingGetCategories}
+      barStyle="light-content"
+      backgroundColor={Colors.BACKGROUND}>
+      <AppKeyboardAwareScrollView>
         <VStack p={24} space={48} flex={1}>
           <HStack space={64}>
             <AppText
@@ -74,20 +84,18 @@ export default function SelectCategoryScreen() {
             <AppMultiSelect
               prompt="You can select multiple answers."
               name="categories"
-              data={data}
+              data={categories}
             />
           </AppFormProvider>
         </VStack>
         <Center p={24}>
-          <AppButton title="Submit" onPress={handleSubmit(onSubmit)} />
+          <AppButton
+            loading={isLoadingUpdateUser}
+            title="Submit"
+            onPress={handleSubmit(onSubmit)}
+          />
         </Center>
       </AppKeyboardAwareScrollView>
     </AppContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  contentContainerStyle: {
-    flexGrow: 1,
-  },
-});

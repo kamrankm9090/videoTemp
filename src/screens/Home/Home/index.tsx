@@ -1,204 +1,215 @@
-import dayjs from 'dayjs';
-import React, {useCallback, useEffect, useRef} from 'react';
-import {StyleSheet, ViewToken} from 'react-native';
-import Config from 'react-native-config';
-import {
-  AppContainer,
-  AppFlatList,
-  AppVideoPlayer,
-  Box,
-  HomePostItem,
-  VStack,
-} from '~/components';
-import {
-  useAgora_CreateTokenMutation,
-  useAgora_GetAppIdQuery,
-  useInfiniteAgora_GetRecordFilesQuery,
-} from '~/graphql/generated';
-import {agoraStore, homePostsStore} from '~/stores';
-import {generateUuid, getFullImageUrl} from '~/utils/helper';
-import IVSPlayer from 'amazon-ivs-react-native-player';
-import config from '~/config';
-
-const URL =
-  // '0000000026/e5561cebaa421c82a3d1459241bfac90_a956938915094327904b718cf20c8388.m3u8';
-  '0000000028/5b51bbf2d74bcf6c0ce542afc6745a03_adaadd13f09145ae95e866864b63f7d4.m3u8';
+import React from 'react';
+import {AppContainer, ScreensHeader} from '~/components';
 
 export default function HomeScreen() {
-  const {data: agoraData, isLoading} = useAgora_GetAppIdQuery({});
-  const {mutate} = useAgora_CreateTokenMutation();
-  console.log(Config.API_URL);
-  // const {tempVideoData1, tempVideoData2} = useMockData();
-  // const [preloading, setPreloading] = useState(null);
-  const {
-    setAppId,
-    setToken,
-    token,
-    setTokenCreatedDate,
-    tokenCreatedDate,
-    setChannelName,
-  } = agoraStore(state => state);
-  const {data, hasNextPage, fetchNextPage} =
-    useInfiniteAgora_GetRecordFilesQuery({take: 40});
-
-  const dd = data?.pages
-    ?.map(a => a?.agora_getRecordFiles?.result?.items)
-    .flat();
-
-  console.log('dd-->', dd);
-
-  const viewConfigRef = useRef({viewAreaCoveragePercentThreshold: 50});
-  // const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
-  //   if (viewableItems?.length > 0) {
-  //     onViewableItemsY({viewableItems});
-  //   }
-  // });
-
-  const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
-    if (viewableItems?.length > 0) {
-      onViewableItemsY({viewableItems});
-    }
-  });
-
-  const renderItem = useCallback(
-    ({item, index}: {item: any; index: number}) => {
-      return <HomePostItem {...{item, yIndex: index}} />;
-    },
-    [],
-  );
-
-  const itemSeparatorComponent = useCallback(() => <Box h={30} />, []);
-
-  const keyExtractor = useCallback((item: any) => {
-    return `itm${item?.id}`;
-  }, []);
-
-  useEffect(() => {
-    init();
-  }, [token]);
-
-  useEffect(() => {
-    if (agoraData?.agora_getAppId?.status?.code === 1) {
-      setAppId(agoraData?.agora_getAppId?.result);
-    }
-  }, [agoraData]);
-
-  const init = async () => {
-    if (token) {
-      const currentDate = dayjs();
-      const tokenDate = dayjs(tokenCreatedDate);
-      const isExpired = currentDate.diff(tokenDate, 'hour') >= 24;
-      console.log('isExpired ===', isExpired);
-      if (isExpired) {
-        getNewToken();
-      }
-    } else {
-      getNewToken();
-    }
-  };
-
-  function getNewToken() {
-    const uuid = generateUuid();
-    mutate(
-      {channelName: uuid, publisher: true},
-      {
-        onSuccess: successData => {
-          console.log('successData-->', successData);
-          if (successData?.agora_createToken?.status?.code === 1) {
-            setChannelName(uuid);
-            setToken(successData?.agora_createToken?.result);
-            setTokenCreatedDate(Date.now());
-          }
-        },
-      },
-    );
-  }
-
-  function onLoadMore() {
-    if (hasNextPage) {
-      fetchNextPage();
-    }
-  }
-
   return (
-    <AppContainer isLoading={isLoading}>
-      {/* <FlashList
-        data={data?.pages || []}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        ItemSeparatorComponent={itemSeparatorComponent}
-        contentContainerStyle={styles.contentContainerStyle}
-        viewabilityConfig={viewConfigRef?.current}
-        onViewableItemsChanged={onViewRef.current}
-        // disableVirtualization={false}
-        horizontal={false}
-        // maxToRenderPerBatch={5}
-        // initialNumToRender={5}
-        removeClippedSubviews={true}
-        decelerationRate="fast"
-        onEndReachedThreshold={0.5}
-        overScrollMode="never"
-        scrollEventThrottle={16}
-        bounces={false}
-        // windowSize={5}
-      /> */}
-      {/* ----------------------------------home ---------- */}
-      <VStack bg="lightblue" w="100%" h={400}>
-        {/* <IVSPlayer
-          playbackRate={1}
-          style={{
-            // backgroundColor: 'lightblue',
-            height: 100,
-            width: '100%',
-          }}
-          streamUrl={getFullImageUrl(URL)}
-          paused={false}
-          autoplay={true}
-          resizeMode="aspectFit"
-          loop={true}
-        /> */}
-        <AppVideoPlayer
-          source={{uri: getFullImageUrl(URL)}}
-          style={{
-            // backgroundColor: 'lightblue',
-            height: 300,
-            width: '100%',
-          }}
-        />
-      </VStack>
-      {/* <AppFlatList
-        data={dd || []}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        ItemSeparatorComponent={itemSeparatorComponent}
-        contentContainerStyle={styles.contentContainerStyle}
-        viewabilityConfig={viewConfigRef?.current}
-        onViewableItemsChanged={onViewRef.current}
-        disableVirtualization={false}
-        horizontal={false}
-        maxToRenderPerBatch={5}
-        initialNumToRender={5}
-        removeClippedSubviews={true}
-        decelerationRate="fast"
-        onEndReachedThreshold={0.5}
-        overScrollMode="never"
-        scrollEventThrottle={16}
-        bounces={false}
-        windowSize={5}
-        onEndReached={onLoadMore}
-      /> */}
+    <AppContainer>
+      <ScreensHeader title="Home" />
     </AppContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  contentContainerStyle: {
-    flexGrow: 1,
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 300,
-  },
-});
+// import dayjs from 'dayjs';
+// import React, {useCallback, useEffect, useRef} from 'react';
+// import {StyleSheet, ViewToken} from 'react-native';
+// import Config from 'react-native-config';
+// import {
+//   AppContainer,
+//   AppFlatList,
+//   AppVideoPlayer,
+//   Box,
+//   HomePostItem,
+//   VStack,
+// } from '~/components';
+// import {
+//   useAgora_CreateTokenMutation,
+//   useAgora_GetAppIdQuery,
+//   useInfiniteAgora_GetRecordFilesQuery,
+// } from '~/graphql/generated';
+// import {agoraStore, homePostsStore} from '~/stores';
+// import {generateUuid, getFullImageUrl} from '~/utils/helper';
+// import IVSPlayer from 'amazon-ivs-react-native-player';
+// import config from '~/config';
+
+// const URL =
+//   // '0000000026/e5561cebaa421c82a3d1459241bfac90_a956938915094327904b718cf20c8388.m3u8';
+//   '0000000028/5b51bbf2d74bcf6c0ce542afc6745a03_adaadd13f09145ae95e866864b63f7d4.m3u8';
+
+// export default function HomeScreen() {
+//   const {data: agoraData, isLoading} = useAgora_GetAppIdQuery({});
+//   const {mutate} = useAgora_CreateTokenMutation();
+//   console.log(Config.API_URL);
+//   // const {tempVideoData1, tempVideoData2} = useMockData();
+//   // const [preloading, setPreloading] = useState(null);
+//   const {
+//     setAppId,
+//     setToken,
+//     token,
+//     setTokenCreatedDate,
+//     tokenCreatedDate,
+//     setChannelName,
+//   } = agoraStore(state => state);
+//   const {data, hasNextPage, fetchNextPage} =
+//     useInfiniteAgora_GetRecordFilesQuery({take: 40});
+
+//   const dd = data?.pages
+//     ?.map(a => a?.agora_getRecordFiles?.result?.items)
+//     .flat();
+
+//   console.log('dd-->', dd);
+
+//   const viewConfigRef = useRef({viewAreaCoveragePercentThreshold: 50});
+//   // const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
+//   //   if (viewableItems?.length > 0) {
+//   //     onViewableItemsY({viewableItems});
+//   //   }
+//   // });
+
+//   const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
+//     if (viewableItems?.length > 0) {
+//       onViewableItemsY({viewableItems});
+//     }
+//   });
+
+//   const renderItem = useCallback(
+//     ({item, index}: {item: any; index: number}) => {
+//       return <HomePostItem {...{item, yIndex: index}} />;
+//     },
+//     [],
+//   );
+
+//   const itemSeparatorComponent = useCallback(() => <Box h={30} />, []);
+
+//   const keyExtractor = useCallback((item: any) => {
+//     return `itm${item?.id}`;
+//   }, []);
+
+//   useEffect(() => {
+//     init();
+//   }, [token]);
+
+//   useEffect(() => {
+//     if (agoraData?.agora_getAppId?.status?.code === 1) {
+//       setAppId(agoraData?.agora_getAppId?.result);
+//     }
+//   }, [agoraData]);
+
+//   const init = async () => {
+//     if (token) {
+//       const currentDate = dayjs();
+//       const tokenDate = dayjs(tokenCreatedDate);
+//       const isExpired = currentDate.diff(tokenDate, 'hour') >= 24;
+//       console.log('isExpired ===', isExpired);
+//       if (isExpired) {
+//         getNewToken();
+//       }
+//     } else {
+//       getNewToken();
+//     }
+//   };
+
+//   function getNewToken() {
+//     const uuid = generateUuid();
+//     mutate(
+//       {channelName: uuid, publisher: true},
+//       {
+//         onSuccess: successData => {
+//           console.log('successData-->', successData);
+//           if (successData?.agora_createToken?.status?.code === 1) {
+//             setChannelName(uuid);
+//             setToken(successData?.agora_createToken?.result);
+//             setTokenCreatedDate(Date.now());
+//           }
+//         },
+//       },
+//     );
+//   }
+
+//   function onLoadMore() {
+//     if (hasNextPage) {
+//       fetchNextPage();
+//     }
+//   }
+
+//   return (
+//     <AppContainer isLoading={isLoading}>
+//       {/* <FlashList
+//         data={data?.pages || []}
+//         renderItem={renderItem}
+//         keyExtractor={keyExtractor}
+//         ItemSeparatorComponent={itemSeparatorComponent}
+//         contentContainerStyle={styles.contentContainerStyle}
+//         viewabilityConfig={viewConfigRef?.current}
+//         onViewableItemsChanged={onViewRef.current}
+//         // disableVirtualization={false}
+//         horizontal={false}
+//         // maxToRenderPerBatch={5}
+//         // initialNumToRender={5}
+//         removeClippedSubviews={true}
+//         decelerationRate="fast"
+//         onEndReachedThreshold={0.5}
+//         overScrollMode="never"
+//         scrollEventThrottle={16}
+//         bounces={false}
+//         // windowSize={5}
+//       /> */}
+//       {/* ----------------------------------home ---------- */}
+//       <VStack bg="lightblue" w="100%" h={400}>
+//         {/* <IVSPlayer
+//           playbackRate={1}
+//           style={{
+//             // backgroundColor: 'lightblue',
+//             height: 100,
+//             width: '100%',
+//           }}
+//           streamUrl={getFullImageUrl(URL)}
+//           paused={false}
+//           autoplay={true}
+//           resizeMode="aspectFit"
+//           loop={true}
+//         /> */}
+//         <AppVideoPlayer
+//           source={{uri: getFullImageUrl(URL)}}
+//           style={{
+//             // backgroundColor: 'lightblue',
+//             height: 300,
+//             width: '100%',
+//           }}
+//         />
+//       </VStack>
+//       {/* <AppFlatList
+//         data={dd || []}
+//         renderItem={renderItem}
+//         keyExtractor={keyExtractor}
+//         ItemSeparatorComponent={itemSeparatorComponent}
+//         contentContainerStyle={styles.contentContainerStyle}
+//         viewabilityConfig={viewConfigRef?.current}
+//         onViewableItemsChanged={onViewRef.current}
+//         disableVirtualization={false}
+//         horizontal={false}
+//         maxToRenderPerBatch={5}
+//         initialNumToRender={5}
+//         removeClippedSubviews={true}
+//         decelerationRate="fast"
+//         onEndReachedThreshold={0.5}
+//         overScrollMode="never"
+//         scrollEventThrottle={16}
+//         bounces={false}
+//         windowSize={5}
+//         onEndReached={onLoadMore}
+//       /> */}
+//     </AppContainer>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   contentContainerStyle: {
+//     flexGrow: 1,
+//     paddingHorizontal: 24,
+//     paddingTop: 16,
+//     paddingBottom: 300,
+//   },
+// });
 
 // export const onViewableItemsY = ({
 //   viewableItems,

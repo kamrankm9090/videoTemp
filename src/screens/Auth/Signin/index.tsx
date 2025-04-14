@@ -1,7 +1,6 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
 import {
   AppButton,
   AppContainer,
@@ -15,10 +14,13 @@ import {
   SectionSocialMedia,
   VStack,
 } from '~/components';
+import {useUser_SignInMutation} from '~/graphql/generated';
 import {navigate, replace} from '~/navigation/methods';
 import {loginSchema} from '~/schemas';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
+import {showErrorMessage} from '~/utils/utils';
 
 const defaultValues = {email: '', password: ''};
 
@@ -30,7 +32,39 @@ export default function SigninScreen() {
 
   const {handleSubmit, register, formState} = methods;
 
-  async function onSubmit(formData: typeof defaultValues) {}
+  const {setUserData, setAuthData, setIsUserLoggedIn} = userDataStore(
+    state => state,
+  );
+
+  const {mutate: mutateSignIn, isLoading: isLoadingSignIn} =
+    useUser_SignInMutation();
+
+  async function onSubmit(formData: typeof defaultValues) {
+    const variables = {
+      input: {
+        email: formData?.email,
+        password: formData?.password,
+      },
+    };
+    mutateSignIn(variables, {
+      onSuccess: response => {
+        if (response?.user_signIn?.status?.code === 1) {
+          const res = response?.user_signIn?.result;
+          const authData = {
+            token: res?.token,
+            expireDate: res?.expireDate,
+            refreshToken: res?.refreshToken,
+            refreshTokenExpiryTime: res?.refreshTokenExpiryTime,
+          };
+          setUserData(res?.user);
+          setAuthData(authData);
+          setIsUserLoggedIn(true);
+        } else {
+          showErrorMessage(response?.user_signIn?.status?.description);
+        }
+      },
+    });
+  }
 
   function signupOnPress() {
     replace('Signup');
@@ -42,10 +76,11 @@ export default function SigninScreen() {
 
   function onResponseSocialMedia() {}
 
+  const loading = isLoadingSignIn;
+
   return (
     <AppContainer barStyle="light-content" backgroundColor={Colors.BACKGROUND}>
-      <AppKeyboardAwareScrollView
-        contentContainerStyle={styles.contentContainerStyle}>
+      <AppKeyboardAwareScrollView>
         <VStack p={24} space={48} flex={1}>
           <AuthHeader />
           <VStack space={24}>
@@ -63,6 +98,7 @@ export default function SigninScreen() {
                   placeholder={'Email'}
                   autoComplete="email"
                   keyboardType="email-address"
+                  editable={!loading}
                   // disabled={loading}
                 />
                 <FormInput
@@ -81,7 +117,11 @@ export default function SigninScreen() {
                 </HStack>
                 <SectionSocialMedia onResponse={onResponseSocialMedia} />
               </VStack>
-              <AppButton title="Login" onPress={handleSubmit(onSubmit)} />
+              <AppButton
+                loading={loading}
+                title="Login"
+                onPress={handleSubmit(onSubmit)}
+              />
             </AppFormProvider>
           </VStack>
         </VStack>
@@ -100,9 +140,3 @@ export default function SigninScreen() {
     </AppContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  contentContainerStyle: {
-    flexGrow: 1,
-  },
-});

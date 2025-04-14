@@ -33,7 +33,7 @@ export default function AppToast({
   return (
     <View
       style={[
-        {backgroundColor, top: top ?? statusBarHeight},
+        {backgroundColor, top: top || statusBarHeight},
         styles.container,
       ]}>
       <View style={styles.direction}>
@@ -63,18 +63,10 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   container: {
-    borderRadius: 8,
     paddingHorizontal: scale(16),
     paddingVertical: verticalScale(16),
-    width: '90%',
-    shadowColor: Colors.BLACK,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    width: '100%',
+    minHeight: 64,
   },
   direction: {
     flexDirection: 'row',

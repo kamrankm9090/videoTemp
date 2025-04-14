@@ -6,6 +6,8 @@ import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {QueryClientProvider} from '~/components';
 import 'react-native-get-random-values';
 import 'react-native-url-polyfill/auto';
+import Toast from 'react-native-toast-message';
+import {toastConfig} from '~/utils/utils';
 
 function App(): React.JSX.Element {
   return (
@@ -13,6 +15,7 @@ function App(): React.JSX.Element {
       <GestureHandlerRootView style={styles.flex1}>
         <BottomSheetModalProvider>
           <AppNavigator />
+          <Toast config={toastConfig} />
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
     </QueryClientProvider>

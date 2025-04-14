@@ -1,25 +1,24 @@
-import {Keyboard, Linking} from 'react-native';
+import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
+import {CommonActions} from '@react-navigation/native';
+import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 import dayjs from 'dayjs';
 import React from 'react';
-import {AppToast, OptionalToast} from '~/components';
-import Toast, {
-  BaseToast,
-  ErrorToast,
-  ToastProps,
-} from 'react-native-toast-message';
-import {Colors} from '~/styles';
-import {isIos} from './helper';
-import {CommonActions} from '@react-navigation/native';
-import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
-import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
+import {Keyboard, Linking} from 'react-native';
 import {createThumbnail} from 'react-native-create-thumbnail';
-import {Platform} from 'react-native';
 import {
   ExternalCachesDirectoryPath,
   MainBundlePath,
   copyFileAssets,
   exists,
 } from 'react-native-fs';
+import Toast, {
+  BaseToast,
+  ErrorToast,
+  ToastProps,
+} from 'react-native-toast-message';
+import {AppToast, OptionalToast} from '~/components';
+import {Colors} from '~/styles';
+import {isAndroid, isIos} from './helper';
 
 import {AgoraDropdownItem} from '~/components/ui';
 
@@ -35,7 +34,8 @@ export const toastConfig = {
           icon: props.icon,
           color: props.color,
           onPress: props.onPress,
-          backgroundColor: Colors.ERROR,
+          backgroundColor: props.backgroundColor,
+          text1Color: Colors.WHITE,
         }}
       />
     );
@@ -128,6 +128,26 @@ export function showSuccessMessage(
     props: {
       icon,
       color: Colors.WHITE,
+    },
+  });
+}
+
+export function showErrorMessage(
+  message: any = 'Error',
+  message2?: any,
+  icon?: any,
+  autoHide: boolean = true,
+) {
+  Toast.show({
+    autoHide: autoHide,
+    type: 'baseError',
+    text1: message,
+    text2: message2,
+    position: 'top',
+    props: {
+      icon,
+      color: Colors.WHITE,
+      backgroundColor: Colors.ERROR_BACKGROUND,
     },
   });
 }
@@ -281,14 +301,14 @@ export const enumToItems = (enumType: any): AgoraDropdownItem[] => {
 };
 
 export function getResourcePath(fileName: string): string {
-  if (Platform.OS === 'android') {
+  if (isAndroid) {
     return `/assets/${fileName}`;
   }
   return `${MainBundlePath}/${fileName}`;
 }
 
 export async function getAbsolutePath(filePath: string): Promise<string> {
-  if (Platform.OS === 'android') {
+  if (isAndroid) {
     if (filePath.startsWith('/assets/')) {
       // const fileName = filePath;
       const fileName = filePath.replace('/assets/', '');
