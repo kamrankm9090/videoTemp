@@ -36,6 +36,7 @@ const AppInput = React.forwardRef<TextInput, Props>(
       borderColor = Colors.PRIMARY,
       labelColor = Colors.GARY_4,
       keyboardType,
+      selectionColor = Colors.SEMI_TRANSPARENT,
       ...rest
     },
     ref,
@@ -93,6 +94,7 @@ const AppInput = React.forwardRef<TextInput, Props>(
             style,
           ]}
           onFocus={handleFocus}
+          selectionColor={selectionColor}
           onBlur={handleBlur}
           keyboardType={keyboardType}
           secureTextEntry={isPasswordType ? secureText : false}

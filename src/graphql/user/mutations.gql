@@ -1,0 +1,315 @@
+mutation user_signIn($input: SignInInput){
+    user_signIn(input: $input){
+        result{
+            token
+            expireDate
+            refreshToken
+            refreshTokenExpiryTime
+            user{
+                username
+                phoneNumber
+                photoUrl
+                fullName
+                about
+                location
+                age
+                dateOfBirth
+                gender
+                lastSeen
+                userType
+                userRole
+                isPrivateAccount
+                stripeConnectAccountId
+                stripeConnectCompleted
+                isVerified
+                verificationPhotos
+                verificationErrors
+                socialLinks
+                profession
+                yearsOfExperience
+                height
+                favoriteCategories
+                isDeleted
+                createdDate
+                id
+                email
+                emailConfirmed
+                phoneNumberConfirmed
+                twoFactorEnabled
+            }
+        }
+        status
+    }
+}
+
+mutation user_signUp($input: SignUpInput, $userInput: UserInput){
+    user_signUp(input: $input, userInput: $userInput){
+        result{
+            username
+            phoneNumber
+            photoUrl
+            fullName
+            about
+            location
+            age
+            dateOfBirth
+            gender
+            lastSeen
+            userType
+            userRole
+            isPrivateAccount
+            stripeConnectAccountId
+            stripeConnectCompleted
+            isVerified
+            verificationPhotos
+            verificationErrors
+            socialLinks
+            profession
+            yearsOfExperience
+            height
+            favoriteCategories
+            isDeleted
+            createdDate
+            id
+            email
+            emailConfirmed
+            phoneNumberConfirmed
+            twoFactorEnabled
+        }
+        status
+    }
+}
+
+mutation user_updateUser($userId: Int, $userInput: UserInput){
+    user_updateUser(userId: $userId, userInput: $userInput){
+        result{
+            username
+            phoneNumber
+            photoUrl
+            fullName
+            about
+            location
+            age
+            dateOfBirth
+            gender
+            lastSeen
+            userType
+            userRole
+            isPrivateAccount
+            stripeConnectAccountId
+            stripeConnectCompleted
+            isVerified
+            verificationPhotos
+            verificationErrors
+            socialLinks
+            profession
+            yearsOfExperience
+            height
+            favoriteCategories
+            isDeleted
+            createdDate
+            id
+            email
+            emailConfirmed
+            phoneNumberConfirmed
+            twoFactorEnabled
+        }
+        status
+    }
+}
+
+mutation user_sendVerificationCodeToEmail($input: SendVerificationCodeToEmailInput){
+    user_sendVerificationCodeToEmail(input: $input){
+        code
+        value
+        description
+    }
+}
+
+mutation user_resetPasswordUsingEmail($input: ResetPasswordUsingEmailInput){
+    user_resetPasswordUsingEmail(input: $input){
+        code
+        value
+        description
+    }
+}
+
+mutation user_removeUser($userId: Int){
+    user_removeUser(userId: $userId){
+        code
+        value
+        description
+    }
+}
+
+mutation user_generateTwoFactorAuthenticationCode{
+    user_generateTwoFactorAuthenticationCode{
+        result{
+            username
+            phoneNumber
+            photoUrl
+            fullName
+            about
+            location
+            age
+            dateOfBirth
+            gender
+            lastSeen
+            userType
+            userRole
+            isPrivateAccount
+            stripeConnectAccountId
+            stripeConnectCompleted
+            isVerified
+            verificationPhotos
+            verificationErrors
+            socialLinks
+            profession
+            yearsOfExperience
+            height
+            favoriteCategories
+            isDeleted
+            createdDate
+            id
+            email
+            emailConfirmed
+            phoneNumberConfirmed
+            twoFactorEnabled
+        }
+        status
+    }
+}
+
+mutation user_generateTokenViaEmail($input: ConfirmEmailInput){
+    user_generateTokenViaEmail(input: $input){
+        result{
+            token
+            expireDate
+            refreshToken
+            refreshTokenExpiryTime
+            user{
+                username
+                phoneNumber
+                photoUrl
+                fullName
+                about
+                location
+                age
+                dateOfBirth
+                gender
+                lastSeen
+                userType
+                userRole
+                isPrivateAccount
+                stripeConnectAccountId
+                stripeConnectCompleted
+                isVerified
+                verificationPhotos
+                verificationErrors
+                socialLinks
+                profession
+                yearsOfExperience
+                height
+                favoriteCategories
+                isDeleted
+                createdDate
+                id
+                email
+                emailConfirmed
+                phoneNumberConfirmed
+                twoFactorEnabled
+            }
+        }
+        status
+    }
+}
+
+mutation user_createRequestForVerification{
+    user_createRequestForVerification{
+        result{
+            userId
+            user{
+                username
+                phoneNumber
+                photoUrl
+                fullName
+                about
+                location
+                age
+                dateOfBirth
+                gender
+                lastSeen
+                userType
+                userRole
+                isPrivateAccount
+                stripeConnectAccountId
+                stripeConnectCompleted
+                isVerified
+                verificationPhotos
+                verificationErrors
+                socialLinks
+                profession
+                yearsOfExperience
+                height
+                favoriteCategories
+                isDeleted
+                createdDate
+                id
+                email
+                emailConfirmed
+                phoneNumberConfirmed
+                twoFactorEnabled
+            }
+            status
+            id
+            isDeleted
+            createdDate
+            lastModifiedDate
+        }
+        status
+    }
+}
+
+mutation user_checkVerificationCodeOfEmail($email: String, $verificationCode: String, $isForResetPassword: Boolean!){
+    user_checkVerificationCodeOfEmail(email: $email, verificationCode: $verificationCode, isForResetPassword: $isForResetPassword){
+        result{
+            token
+            expireDate
+            refreshToken
+            refreshTokenExpiryTime
+            user {
+                username
+                phoneNumber
+                photoUrl
+                fullName
+                about
+                location
+                age
+                dateOfBirth
+                gender
+                lastSeen
+                userType
+                userRole
+                isPrivateAccount
+                stripeConnectAccountId
+                stripeConnectCompleted
+                isVerified
+                verificationPhotos
+                verificationErrors
+                socialLinks
+                profession
+                yearsOfExperience
+                height
+                favoriteCategories
+                isDeleted
+                createdDate
+                id
+                email
+                emailConfirmed
+                phoneNumberConfirmed
+                twoFactorEnabled
+            }
+        }
+        status
+    }
+}

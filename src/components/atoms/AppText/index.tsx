@@ -52,7 +52,7 @@ export default function AppText(props: Props) {
     fontFamily = 'regular',
     underline,
     fontSize = font_size.normal,
-    color = Colors.BLACK,
+    color = Colors.WHITE,
     alignSelf = 'auto',
     lineHeight,
     textAlign,

@@ -1,6 +1,7 @@
 import React, {ReactNode} from 'react';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import {TextInputProps, TextStyle, ViewProps, ViewStyle} from 'react-native';
+import {User as UserType} from '~/graphql/generated';
 
 declare global {
   type ReactChildren = ReactNode;
@@ -16,18 +17,26 @@ declare global {
     | 'isOnboardingViewed'
     | 'FCM_TOKEN';
 
-  type User = {
-    firstName?: string;
-    lastName?: string;
-    userName?: string;
-    id?: number;
-    email?: string;
+  type User = UserType;
+
+  type AuthDataType = {
+    token?: string | null;
+    expireDate?: string | null;
+    refreshToken?: string | null;
+    refreshTokenExpiryTime?: string | null;
   };
+
   type UserDataStoreType = {
-    userData: User;
+    userData?: User;
     isOnboardingViewed: boolean;
+    isUserLoggedIn: boolean;
+    token?: string;
+    authData?: AuthDataType;
     setUserData: (userData: User) => void;
     setIsOnboardingViewed: (isOnboardingViewed: boolean) => void;
+    setIsUserLoggedIn: (isUserLoggedIn: boolean) => void;
+    setToken: (token: string) => void;
+    setAuthData: (authData: AuthDataType) => void;
   };
   type AgoraStoreType = {
     appId: string;
@@ -229,4 +238,13 @@ declare global {
   };
 
   type ModalRef = React.Ref<ModalRefType>;
+
+  type authenticationStoreType = {
+    email: string;
+    isForResetPassword: boolean;
+    verificationCode: string;
+    setEmail: (email: string) => void;
+    setIsForResetPassword: (isForResetPassword: boolean) => void;
+    setVerificationCode: (verificationCode: string) => void;
+  };
 }

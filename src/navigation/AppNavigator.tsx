@@ -9,6 +9,7 @@ import {AppLoading} from '~/components';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
 import {navigationRef} from './methods';
+import {userDataStore} from '~/stores';
 
 export type AppNavigatorParamList = {
   Main: undefined;
@@ -22,6 +23,8 @@ const navigatorOptions: NativeStackNavigationOptions = {
 };
 
 export default function AppNavigator() {
+  const {isUserLoggedIn} = userDataStore(state => state);
+
   const hideSplash = useCallback(() => {
     setTimeout(() => {
       SplashScreen.hide();
@@ -38,8 +41,11 @@ export default function AppNavigator() {
       ref={navigationRef}
       fallback={<AppLoading />}>
       <Stack.Navigator screenOptions={navigatorOptions}>
-        <Stack.Screen name="Auth" component={AuthStack} />
-        <Stack.Screen name="Main" component={MainStack} />
+        {isUserLoggedIn ? (
+          <Stack.Screen name="Main" component={MainStack} />
+        ) : (
+          <Stack.Screen name="Auth" component={AuthStack} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

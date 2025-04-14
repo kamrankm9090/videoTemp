@@ -1,0 +1,46 @@
+query category_getCategories($skip: Int, $take: Int, $where: CategoryFilterInput, $order: [CategorySortInput!] ){
+    category_getCategories{
+        result(skip: $skip, take: $take, where: $where, order: $order){
+            pageInfo{
+                hasNextPage
+                hasPreviousPage
+            }
+            items{
+                parentId
+                title
+                group
+                createdByGamma
+                imageUrl
+                priority
+                tags
+                userId
+                id
+                isDeleted
+                createdDate
+                lastModifiedDate
+            }
+            totalCount
+        }
+        status
+    }
+}
+
+query category_getCategory($entityId: Int!){
+    category_getCategory(entityId: $entityId){
+        result{
+            parentId
+            title
+            group
+            createdByGamma
+            imageUrl
+            priority
+            tags
+            userId
+            id
+            isDeleted
+            createdDate
+            lastModifiedDate
+        }
+        status
+    }
+}

@@ -19,9 +19,9 @@ export default function AppContainer(props: Props) {
     children,
     isLoading,
     safeArea = true,
-    backgroundColor = Colors.WHITE,
+    backgroundColor = Colors.BACKGROUND,
     statusBarBackgroundColor,
-    barStyle,
+    barStyle = 'light-content',
     isStatusBarHeight = false,
   } = props;
 

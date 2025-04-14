@@ -32,6 +32,24 @@ const registerSchema = yup.object().shape({
     .trim(),
 });
 
+const resetPasswordSchema = yup.object().shape({
+  newPassword: yup
+    .string()
+    // .min(8, t('auth.minPassword1'))
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/,
+      'Passwords must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+    )
+    .max(36, 'Must be 36 characters or less')
+    .required('Required')
+    .trim(),
+  confirm: yup
+    .string()
+    .required('Required')
+    .oneOf([yup.ref('newPassword')], 'Passwords must match')
+    .trim(),
+});
+
 const forgotPasswordSchema = yup.object().shape({
   email: yup.string().required('Required').trim(),
 });
@@ -96,4 +114,5 @@ export {
   verificationSchema,
   UserSchema,
   selectCategorySchema,
+  resetPasswordSchema,
 };

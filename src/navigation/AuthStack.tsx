@@ -7,8 +7,9 @@ import {
   ForgotPasswordScreen,
   VerificationCodeScreen,
   SignupSuccessScreen,
-  EmailVerificationScreen,
   SelectCategoryScreen,
+  ResetPasswordScreen,
+  ResetPasswordSuccessScreen,
 } from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
 
@@ -18,9 +19,10 @@ export type AuthStackParamList = {
   Signin: undefined;
   ForgotPassword: undefined;
   VerificationCode: undefined;
-  EmailVerification: undefined;
   SignupSuccess: undefined;
   SelectCategory: undefined;
+  ResetPassword: undefined;
+  ResetPasswordSuccess: undefined;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -47,16 +49,20 @@ const screens = [
     component: VerificationCodeScreen,
   },
   {
-    name: 'EmailVerification',
-    component: EmailVerificationScreen,
-  },
-  {
     name: 'SignupSuccess',
     component: SignupSuccessScreen,
   },
   {
     name: 'SelectCategory',
     component: SelectCategoryScreen,
+  },
+  {
+    name: 'ResetPassword',
+    component: ResetPasswordScreen,
+  },
+  {
+    name: 'ResetPasswordSuccess',
+    component: ResetPasswordSuccessScreen,
   },
 ];
 

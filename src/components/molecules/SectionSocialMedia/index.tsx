@@ -1,5 +1,5 @@
 import React from 'react';
-import {Apple, Facebook, Google} from '~/assets/svgs';
+import {Apple, Google} from '~/assets/svgs';
 import {AppText, AppTouchable, Divider, HStack, VStack} from '~/components';
 import {Colors} from '~/styles';
 import {isIos} from '~/utils/helper';
@@ -11,7 +11,6 @@ export default function SectionSocialMedia({
 }) {
   function googleOnPress() {}
   function appleOnPress() {}
-  function facebookOnPress() {}
 
   return (
     <VStack space={24}>
@@ -25,9 +24,6 @@ export default function SectionSocialMedia({
       <HStack justifyContent="center" space={24}>
         <AppTouchable onPress={googleOnPress}>
           <Google />
-        </AppTouchable>
-        <AppTouchable onPress={facebookOnPress}>
-          <Facebook />
         </AppTouchable>
         {isIos && (
           <AppTouchable onPress={appleOnPress}>

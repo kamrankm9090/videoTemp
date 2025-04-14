@@ -32,8 +32,10 @@ export type Scalars = {
   Any: {input: any; output: any};
   Coordinates: {input: any; output: any};
   DateTime: {input: any; output: any};
+  Decimal: {input: any; output: any};
   Geometry: {input: any; output: any};
   Position: {input: any; output: any};
+  TimeSpan: {input: any; output: any};
 };
 
 export enum ApplyPolicy {
@@ -47,9 +49,140 @@ export type BooleanOperationFilterInput = {
   neq?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type Category = {
+  __typename?: 'Category';
+  children?: Maybe<Array<Category>>;
+  createdByGamma: Scalars['Boolean']['output'];
+  createdDate: Scalars['DateTime']['output'];
+  group?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  parent?: Maybe<Category>;
+  parentId?: Maybe<Scalars['Int']['output']>;
+  priority: Scalars['Int']['output'];
+  tags?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<User>;
+  userId?: Maybe<Scalars['Int']['output']>;
+};
+
+/** A segment of a collection. */
+export type CategoryCollectionSegment = {
+  __typename?: 'CategoryCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<Category>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type CategoryConnection = {
+  __typename?: 'CategoryConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<CategoryEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<Category>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type CategoryEdge = {
+  __typename?: 'CategoryEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Category>;
+};
+
+export type CategoryFilterInput = {
+  and?: InputMaybe<Array<CategoryFilterInput>>;
+  children?: InputMaybe<ListFilterInputTypeOfCategoryFilterInput>;
+  createdByGamma?: InputMaybe<BooleanOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  group?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  imageUrl?: InputMaybe<StringOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<CategoryFilterInput>>;
+  parent?: InputMaybe<CategoryFilterInput>;
+  parentId?: InputMaybe<IntOperationFilterInput>;
+  priority?: InputMaybe<IntOperationFilterInput>;
+  tags?: InputMaybe<StringOperationFilterInput>;
+  title?: InputMaybe<StringOperationFilterInput>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type CategoryInput = {
+  group?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  parentId?: InputMaybe<Scalars['Int']['input']>;
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  tags?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CategorySortInput = {
+  createdByGamma?: InputMaybe<SortEnumType>;
+  createdDate?: InputMaybe<SortEnumType>;
+  group?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  imageUrl?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  parent?: InputMaybe<CategorySortInput>;
+  parentId?: InputMaybe<SortEnumType>;
+  priority?: InputMaybe<SortEnumType>;
+  tags?: InputMaybe<SortEnumType>;
+  title?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+  userId?: InputMaybe<SortEnumType>;
+};
+
 export type ChangePassowrdInput = {
   newPassword?: InputMaybe<Scalars['String']['input']>;
   oldPassword?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ChannelRecord = {
+  __typename?: 'ChannelRecord';
+  channelName?: Maybe<Scalars['String']['output']>;
+  createdDate: Scalars['DateTime']['output'];
+  duration: Scalars['TimeSpan']['output'];
+  endDate?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  live?: Maybe<Live>;
+  liveId?: Maybe<Scalars['Int']['output']>;
+  resourceId?: Maybe<Scalars['String']['output']>;
+  sessionId?: Maybe<Scalars['String']['output']>;
+  sid?: Maybe<Scalars['String']['output']>;
+};
+
+export type ChannelRecordFilterInput = {
+  and?: InputMaybe<Array<ChannelRecordFilterInput>>;
+  channelName?: InputMaybe<StringOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  duration?: InputMaybe<TimeSpanOperationFilterInput>;
+  endDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  live?: InputMaybe<LiveFilterInput>;
+  liveId?: InputMaybe<IntOperationFilterInput>;
+  or?: InputMaybe<Array<ChannelRecordFilterInput>>;
+  resourceId?: InputMaybe<StringOperationFilterInput>;
+  sessionId?: InputMaybe<StringOperationFilterInput>;
+  sid?: InputMaybe<StringOperationFilterInput>;
 };
 
 /** Information about the offset pagination. */
@@ -61,6 +194,192 @@ export type CollectionSegmentInfo = {
   hasPreviousPage: Scalars['Boolean']['output'];
 };
 
+export type Community = {
+  __typename?: 'Community';
+  communityType: CommunityType;
+  createdDate: Scalars['DateTime']['output'];
+  creator?: Maybe<User>;
+  creatorId: Scalars['Int']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  messages?: Maybe<Array<Maybe<CommunityMessage>>>;
+  photoUrl?: Maybe<Scalars['String']['output']>;
+  requests?: Maybe<Array<Maybe<CommunityRequest>>>;
+  title?: Maybe<Scalars['String']['output']>;
+  userCount: Scalars['Int']['output'];
+  users?: Maybe<Array<Maybe<CommunityUser>>>;
+};
+
+/** A segment of a collection. */
+export type CommunityCollectionSegment = {
+  __typename?: 'CommunityCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<Community>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type CommunityConnection = {
+  __typename?: 'CommunityConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<CommunityEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<Community>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type CommunityEdge = {
+  __typename?: 'CommunityEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Community>;
+};
+
+export type CommunityFilterInput = {
+  and?: InputMaybe<Array<CommunityFilterInput>>;
+  communityType?: InputMaybe<CommunityTypeOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  creator?: InputMaybe<UserFilterInput>;
+  creatorId?: InputMaybe<IntOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  messages?: InputMaybe<ListFilterInputTypeOfCommunityMessageFilterInput>;
+  or?: InputMaybe<Array<CommunityFilterInput>>;
+  photoUrl?: InputMaybe<StringOperationFilterInput>;
+  requests?: InputMaybe<ListFilterInputTypeOfCommunityRequestFilterInput>;
+  title?: InputMaybe<StringOperationFilterInput>;
+  userCount?: InputMaybe<IntOperationFilterInput>;
+  users?: InputMaybe<ListFilterInputTypeOfCommunityUserFilterInput>;
+};
+
+export type CommunityInput = {
+  communityType?: InputMaybe<CommunityType>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  photoUrl?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CommunityMessage = {
+  __typename?: 'CommunityMessage';
+  community?: Maybe<Community>;
+  communityId: Scalars['Int']['output'];
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+export type CommunityMessageFilterInput = {
+  and?: InputMaybe<Array<CommunityMessageFilterInput>>;
+  community?: InputMaybe<CommunityFilterInput>;
+  communityId?: InputMaybe<IntOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  message?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<CommunityMessageFilterInput>>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type CommunityMessageInput = {
+  communityId?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  message?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CommunityRequest = {
+  __typename?: 'CommunityRequest';
+  community?: Maybe<Community>;
+  communityId: Scalars['Int']['output'];
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+export type CommunityRequestFilterInput = {
+  and?: InputMaybe<Array<CommunityRequestFilterInput>>;
+  community?: InputMaybe<CommunityFilterInput>;
+  communityId?: InputMaybe<IntOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<CommunityRequestFilterInput>>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type CommunitySortInput = {
+  communityType?: InputMaybe<SortEnumType>;
+  createdDate?: InputMaybe<SortEnumType>;
+  creator?: InputMaybe<UserSortInput>;
+  creatorId?: InputMaybe<SortEnumType>;
+  description?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  photoUrl?: InputMaybe<SortEnumType>;
+  title?: InputMaybe<SortEnumType>;
+  userCount?: InputMaybe<SortEnumType>;
+};
+
+export enum CommunityType {
+  Private = 'PRIVATE',
+  Public = 'PUBLIC',
+}
+
+export type CommunityTypeOperationFilterInput = {
+  eq?: InputMaybe<CommunityType>;
+  in?: InputMaybe<Array<CommunityType>>;
+  neq?: InputMaybe<CommunityType>;
+  nin?: InputMaybe<Array<CommunityType>>;
+};
+
+export type CommunityUser = {
+  __typename?: 'CommunityUser';
+  community?: Maybe<Community>;
+  communityId: Scalars['Int']['output'];
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+export type CommunityUserFilterInput = {
+  and?: InputMaybe<Array<CommunityUserFilterInput>>;
+  community?: InputMaybe<CommunityFilterInput>;
+  communityId?: InputMaybe<IntOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<CommunityUserFilterInput>>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
 export type ConfirmEmailInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   tokenConfirmationCode?: InputMaybe<Scalars['String']['input']>;
@@ -69,6 +388,204 @@ export type ConfirmEmailInput = {
 export type ConfirmPhoneNumberInput = {
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
   verificationCode?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type Contact = {
+  __typename?: 'Contact';
+  contactUser?: Maybe<User>;
+  contactUserId: Scalars['Int']['output'];
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+};
+
+/** A segment of a collection. */
+export type ContactCollectionSegment = {
+  __typename?: 'ContactCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<Contact>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type ContactConnection = {
+  __typename?: 'ContactConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<ContactEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<Contact>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type ContactEdge = {
+  __typename?: 'ContactEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Contact>;
+};
+
+export type ContactFilterInput = {
+  and?: InputMaybe<Array<ContactFilterInput>>;
+  contactUser?: InputMaybe<UserFilterInput>;
+  contactUserId?: InputMaybe<IntOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<ContactFilterInput>>;
+};
+
+export type ContactInput = {
+  contactUserId: Scalars['Int']['input'];
+};
+
+export type ContactSortInput = {
+  contactUser?: InputMaybe<UserSortInput>;
+  contactUserId?: InputMaybe<SortEnumType>;
+  createdDate?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+};
+
+export type Conversation = {
+  __typename?: 'Conversation';
+  createdDate: Scalars['DateTime']['output'];
+  firstUnreadCount: Scalars['Int']['output'];
+  firstUser?: Maybe<User>;
+  firstUserId?: Maybe<Scalars['Int']['output']>;
+  groupDescription?: Maybe<Scalars['String']['output']>;
+  groupImgageUrl?: Maybe<Scalars['String']['output']>;
+  groupName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  isGroup: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  latestMessageDate: Scalars['DateTime']['output'];
+  messages: Array<Message>;
+  secondUnreadCount: Scalars['Int']['output'];
+  secondUser?: Maybe<User>;
+  secondUserId?: Maybe<Scalars['Int']['output']>;
+  userGroups: Array<UserGroup>;
+};
+
+export type ConversationDto = {
+  __typename?: 'ConversationDto';
+  conversationId: Scalars['Int']['output'];
+  groupImgageUrl?: Maybe<Scalars['String']['output']>;
+  groupName?: Maybe<Scalars['String']['output']>;
+  isGroup: Scalars['Boolean']['output'];
+  lastMessage?: Maybe<Message>;
+  latestMessageDate: Scalars['DateTime']['output'];
+  receiver?: Maybe<Array<Maybe<User>>>;
+  unreadCount: Scalars['Int']['output'];
+};
+
+export type ConversationDtoReceiverArgs = {
+  where?: InputMaybe<UserFilterInput>;
+};
+
+/** A segment of a collection. */
+export type ConversationDtoCollectionSegment = {
+  __typename?: 'ConversationDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<ConversationDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type ConversationDtoConnection = {
+  __typename?: 'ConversationDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<ConversationDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<ConversationDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type ConversationDtoEdge = {
+  __typename?: 'ConversationDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<ConversationDto>;
+};
+
+export type ConversationDtoFilterInput = {
+  and?: InputMaybe<Array<ConversationDtoFilterInput>>;
+  conversationId?: InputMaybe<IntOperationFilterInput>;
+  groupImgageUrl?: InputMaybe<StringOperationFilterInput>;
+  groupName?: InputMaybe<StringOperationFilterInput>;
+  isGroup?: InputMaybe<BooleanOperationFilterInput>;
+  lastMessage?: InputMaybe<MessageFilterInput>;
+  latestMessageDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<ConversationDtoFilterInput>>;
+  receiver?: InputMaybe<ListFilterInputTypeOfUserFilterInput>;
+  unreadCount?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type ConversationDtoSortInput = {
+  conversationId?: InputMaybe<SortEnumType>;
+  groupImgageUrl?: InputMaybe<SortEnumType>;
+  groupName?: InputMaybe<SortEnumType>;
+  isGroup?: InputMaybe<SortEnumType>;
+  lastMessage?: InputMaybe<MessageSortInput>;
+  latestMessageDate?: InputMaybe<SortEnumType>;
+  unreadCount?: InputMaybe<SortEnumType>;
+};
+
+export type ConversationFilterInput = {
+  and?: InputMaybe<Array<ConversationFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  firstUnreadCount?: InputMaybe<IntOperationFilterInput>;
+  firstUser?: InputMaybe<UserFilterInput>;
+  firstUserId?: InputMaybe<IntOperationFilterInput>;
+  groupDescription?: InputMaybe<StringOperationFilterInput>;
+  groupImgageUrl?: InputMaybe<StringOperationFilterInput>;
+  groupName?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isGroup?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  latestMessageDate?: InputMaybe<DateTimeOperationFilterInput>;
+  messages?: InputMaybe<ListFilterInputTypeOfMessageFilterInput>;
+  or?: InputMaybe<Array<ConversationFilterInput>>;
+  secondUnreadCount?: InputMaybe<IntOperationFilterInput>;
+  secondUser?: InputMaybe<UserFilterInput>;
+  secondUserId?: InputMaybe<IntOperationFilterInput>;
+  userGroups?: InputMaybe<ListFilterInputTypeOfUserGroupFilterInput>;
+};
+
+export type ConversationSortInput = {
+  createdDate?: InputMaybe<SortEnumType>;
+  firstUnreadCount?: InputMaybe<SortEnumType>;
+  firstUser?: InputMaybe<UserSortInput>;
+  firstUserId?: InputMaybe<SortEnumType>;
+  groupDescription?: InputMaybe<SortEnumType>;
+  groupImgageUrl?: InputMaybe<SortEnumType>;
+  groupName?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  isGroup?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  latestMessageDate?: InputMaybe<SortEnumType>;
+  secondUnreadCount?: InputMaybe<SortEnumType>;
+  secondUser?: InputMaybe<UserSortInput>;
+  secondUserId?: InputMaybe<SortEnumType>;
 };
 
 export type DateTimeOperationFilterInput = {
@@ -84,6 +601,87 @@ export type DateTimeOperationFilterInput = {
   nin?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   nlt?: InputMaybe<Scalars['DateTime']['input']>;
   nlte?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type DecimalOperationFilterInput = {
+  eq?: InputMaybe<Scalars['Decimal']['input']>;
+  gt?: InputMaybe<Scalars['Decimal']['input']>;
+  gte?: InputMaybe<Scalars['Decimal']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['Decimal']['input']>>>;
+  lt?: InputMaybe<Scalars['Decimal']['input']>;
+  lte?: InputMaybe<Scalars['Decimal']['input']>;
+  neq?: InputMaybe<Scalars['Decimal']['input']>;
+  ngt?: InputMaybe<Scalars['Decimal']['input']>;
+  ngte?: InputMaybe<Scalars['Decimal']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['Decimal']['input']>>>;
+  nlt?: InputMaybe<Scalars['Decimal']['input']>;
+  nlte?: InputMaybe<Scalars['Decimal']['input']>;
+};
+
+export type DefaultViolation = {
+  __typename?: 'DefaultViolation';
+  content: Scalars['String']['output'];
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  violationReports?: Maybe<Array<ViolationReport>>;
+};
+
+/** A segment of a collection. */
+export type DefaultViolationCollectionSegment = {
+  __typename?: 'DefaultViolationCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<DefaultViolation>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type DefaultViolationConnection = {
+  __typename?: 'DefaultViolationConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<DefaultViolationEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<DefaultViolation>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type DefaultViolationEdge = {
+  __typename?: 'DefaultViolationEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<DefaultViolation>;
+};
+
+export type DefaultViolationFilterInput = {
+  and?: InputMaybe<Array<DefaultViolationFilterInput>>;
+  content?: InputMaybe<StringOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<DefaultViolationFilterInput>>;
+  violationReports?: InputMaybe<ListFilterInputTypeOfViolationReportFilterInput>;
+};
+
+export type DefaultViolationInput = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type DefaultViolationSortInput = {
+  content?: InputMaybe<SortEnumType>;
+  createdDate?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
 };
 
 export enum Dimension {
@@ -116,6 +714,150 @@ export type FloatOperationFilterInput = {
   nin?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
   nlt?: InputMaybe<Scalars['Float']['input']>;
   nlte?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type FollowSummaryDto = {
+  __typename?: 'FollowSummaryDto';
+  followCount: Scalars['Int']['output'];
+  mutualFollowCount: Scalars['Int']['output'];
+  unfollowCount: Scalars['Int']['output'];
+};
+
+export type Follower = {
+  __typename?: 'Follower';
+  createdDate: Scalars['DateTime']['output'];
+  followed?: Maybe<User>;
+  followedId: Scalars['Int']['output'];
+  follower?: Maybe<User>;
+  followerId: Scalars['Int']['output'];
+  hideStory: Scalars['Boolean']['output'];
+  id: Scalars['Int']['output'];
+  isAccepted: Scalars['Boolean']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  isMutual: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+};
+
+/** A segment of a collection. */
+export type FollowerCollectionSegment = {
+  __typename?: 'FollowerCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<Follower>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type FollowerConnection = {
+  __typename?: 'FollowerConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<FollowerEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<Follower>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type FollowerEdge = {
+  __typename?: 'FollowerEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Follower>;
+};
+
+export type FollowerFilterInput = {
+  and?: InputMaybe<Array<FollowerFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  followed?: InputMaybe<UserFilterInput>;
+  followedId?: InputMaybe<IntOperationFilterInput>;
+  follower?: InputMaybe<UserFilterInput>;
+  followerId?: InputMaybe<IntOperationFilterInput>;
+  hideStory?: InputMaybe<BooleanOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isAccepted?: InputMaybe<BooleanOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isMutual?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<FollowerFilterInput>>;
+};
+
+export type FollowerFolloweeDto = {
+  __typename?: 'FollowerFolloweeDto';
+  followedByCurrentUser: Scalars['Boolean']['output'];
+  followerOfCurrentUser: Scalars['Boolean']['output'];
+  isFollower: Scalars['Boolean']['output'];
+  user?: Maybe<User>;
+};
+
+/** A segment of a collection. */
+export type FollowerFolloweeDtoCollectionSegment = {
+  __typename?: 'FollowerFolloweeDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<FollowerFolloweeDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type FollowerFolloweeDtoConnection = {
+  __typename?: 'FollowerFolloweeDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<FollowerFolloweeDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<FollowerFolloweeDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type FollowerFolloweeDtoEdge = {
+  __typename?: 'FollowerFolloweeDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<FollowerFolloweeDto>;
+};
+
+export type FollowerFolloweeDtoFilterInput = {
+  and?: InputMaybe<Array<FollowerFolloweeDtoFilterInput>>;
+  followedByCurrentUser?: InputMaybe<BooleanOperationFilterInput>;
+  followerOfCurrentUser?: InputMaybe<BooleanOperationFilterInput>;
+  isFollower?: InputMaybe<BooleanOperationFilterInput>;
+  or?: InputMaybe<Array<FollowerFolloweeDtoFilterInput>>;
+  user?: InputMaybe<UserFilterInput>;
+};
+
+export type FollowerFolloweeDtoSortInput = {
+  followedByCurrentUser?: InputMaybe<SortEnumType>;
+  followerOfCurrentUser?: InputMaybe<SortEnumType>;
+  isFollower?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+};
+
+export type FollowerInput = {
+  followedId: Scalars['Int']['input'];
+};
+
+export type FollowerSortInput = {
+  createdDate?: InputMaybe<SortEnumType>;
+  followed?: InputMaybe<UserSortInput>;
+  followedId?: InputMaybe<SortEnumType>;
+  follower?: InputMaybe<UserSortInput>;
+  followerId?: InputMaybe<SortEnumType>;
+  hideStory?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isAccepted?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  isMutual?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
 };
 
 export enum Gender {
@@ -362,6 +1104,267 @@ export type IntOperationFilterInput = {
   nlte?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type ListFilterInputTypeOfCategoryFilterInput = {
+  all?: InputMaybe<CategoryFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<CategoryFilterInput>;
+  some?: InputMaybe<CategoryFilterInput>;
+};
+
+export type ListFilterInputTypeOfChannelRecordFilterInput = {
+  all?: InputMaybe<ChannelRecordFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<ChannelRecordFilterInput>;
+  some?: InputMaybe<ChannelRecordFilterInput>;
+};
+
+export type ListFilterInputTypeOfCommunityMessageFilterInput = {
+  all?: InputMaybe<CommunityMessageFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<CommunityMessageFilterInput>;
+  some?: InputMaybe<CommunityMessageFilterInput>;
+};
+
+export type ListFilterInputTypeOfCommunityRequestFilterInput = {
+  all?: InputMaybe<CommunityRequestFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<CommunityRequestFilterInput>;
+  some?: InputMaybe<CommunityRequestFilterInput>;
+};
+
+export type ListFilterInputTypeOfCommunityUserFilterInput = {
+  all?: InputMaybe<CommunityUserFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<CommunityUserFilterInput>;
+  some?: InputMaybe<CommunityUserFilterInput>;
+};
+
+export type ListFilterInputTypeOfFollowerFilterInput = {
+  all?: InputMaybe<FollowerFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<FollowerFilterInput>;
+  some?: InputMaybe<FollowerFilterInput>;
+};
+
+export type ListFilterInputTypeOfLiveRoleFilterInput = {
+  all?: InputMaybe<LiveRoleFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<LiveRoleFilterInput>;
+  some?: InputMaybe<LiveRoleFilterInput>;
+};
+
+export type ListFilterInputTypeOfMessageFilterInput = {
+  all?: InputMaybe<MessageFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<MessageFilterInput>;
+  some?: InputMaybe<MessageFilterInput>;
+};
+
+export type ListFilterInputTypeOfUserFilterInput = {
+  all?: InputMaybe<UserFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<UserFilterInput>;
+  some?: InputMaybe<UserFilterInput>;
+};
+
+export type ListFilterInputTypeOfUserGroupFilterInput = {
+  all?: InputMaybe<UserGroupFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<UserGroupFilterInput>;
+  some?: InputMaybe<UserGroupFilterInput>;
+};
+
+export type ListFilterInputTypeOfViolationReportFilterInput = {
+  all?: InputMaybe<ViolationReportFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<ViolationReportFilterInput>;
+  some?: InputMaybe<ViolationReportFilterInput>;
+};
+
+export type ListResponseBaseOfCategory = {
+  __typename?: 'ListResponseBaseOfCategory';
+  result?: Maybe<CategoryCollectionSegment>;
+  result2?: Maybe<CategoryConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfCategoryResultArgs = {
+  order?: InputMaybe<Array<CategorySortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CategoryFilterInput>;
+};
+
+export type ListResponseBaseOfCategoryResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<CategorySortInput>>;
+  where?: InputMaybe<CategoryFilterInput>;
+};
+
+export type ListResponseBaseOfCommunity = {
+  __typename?: 'ListResponseBaseOfCommunity';
+  result?: Maybe<CommunityCollectionSegment>;
+  result2?: Maybe<CommunityConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfCommunityResultArgs = {
+  order?: InputMaybe<Array<CommunitySortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityFilterInput>;
+};
+
+export type ListResponseBaseOfCommunityResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<CommunitySortInput>>;
+  where?: InputMaybe<CommunityFilterInput>;
+};
+
+export type ListResponseBaseOfContact = {
+  __typename?: 'ListResponseBaseOfContact';
+  result?: Maybe<ContactCollectionSegment>;
+  result2?: Maybe<ContactConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfContactResultArgs = {
+  order?: InputMaybe<Array<ContactSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ContactFilterInput>;
+};
+
+export type ListResponseBaseOfContactResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<ContactSortInput>>;
+  where?: InputMaybe<ContactFilterInput>;
+};
+
+export type ListResponseBaseOfConversationDto = {
+  __typename?: 'ListResponseBaseOfConversationDto';
+  result?: Maybe<ConversationDtoCollectionSegment>;
+  result2?: Maybe<ConversationDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfConversationDtoResultArgs = {
+  order?: InputMaybe<Array<ConversationDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ConversationDtoFilterInput>;
+};
+
+export type ListResponseBaseOfConversationDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<ConversationDtoSortInput>>;
+  where?: InputMaybe<ConversationDtoFilterInput>;
+};
+
+export type ListResponseBaseOfDefaultViolation = {
+  __typename?: 'ListResponseBaseOfDefaultViolation';
+  result?: Maybe<DefaultViolationCollectionSegment>;
+  result2?: Maybe<DefaultViolationConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfDefaultViolationResultArgs = {
+  order?: InputMaybe<Array<DefaultViolationSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<DefaultViolationFilterInput>;
+};
+
+export type ListResponseBaseOfDefaultViolationResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<DefaultViolationSortInput>>;
+  where?: InputMaybe<DefaultViolationFilterInput>;
+};
+
+export type ListResponseBaseOfFollower = {
+  __typename?: 'ListResponseBaseOfFollower';
+  result?: Maybe<FollowerCollectionSegment>;
+  result2?: Maybe<FollowerConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfFollowerResultArgs = {
+  order?: InputMaybe<Array<FollowerSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<FollowerFilterInput>;
+};
+
+export type ListResponseBaseOfFollowerResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<FollowerSortInput>>;
+  where?: InputMaybe<FollowerFilterInput>;
+};
+
+export type ListResponseBaseOfFollowerFolloweeDto = {
+  __typename?: 'ListResponseBaseOfFollowerFolloweeDto';
+  result?: Maybe<FollowerFolloweeDtoCollectionSegment>;
+  result2?: Maybe<FollowerFolloweeDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfFollowerFolloweeDtoResultArgs = {
+  order?: InputMaybe<Array<FollowerFolloweeDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<FollowerFolloweeDtoFilterInput>;
+};
+
+export type ListResponseBaseOfFollowerFolloweeDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<FollowerFolloweeDtoSortInput>>;
+  where?: InputMaybe<FollowerFolloweeDtoFilterInput>;
+};
+
+export type ListResponseBaseOfLive = {
+  __typename?: 'ListResponseBaseOfLive';
+  result?: Maybe<LiveCollectionSegment>;
+  result2?: Maybe<LiveConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfLiveResultArgs = {
+  order?: InputMaybe<Array<LiveSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveFilterInput>;
+};
+
+export type ListResponseBaseOfLiveResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<LiveSortInput>>;
+  where?: InputMaybe<LiveFilterInput>;
+};
+
 export type ListResponseBaseOfLoginActivity = {
   __typename?: 'ListResponseBaseOfLoginActivity';
   result?: Maybe<LoginActivityCollectionSegment>;
@@ -383,6 +1386,29 @@ export type ListResponseBaseOfLoginActivityResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<LoginActivitySortInput>>;
   where?: InputMaybe<LoginActivityFilterInput>;
+};
+
+export type ListResponseBaseOfMessage = {
+  __typename?: 'ListResponseBaseOfMessage';
+  result?: Maybe<MessageCollectionSegment>;
+  result2?: Maybe<MessageConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfMessageResultArgs = {
+  order?: InputMaybe<Array<MessageSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<MessageFilterInput>;
+};
+
+export type ListResponseBaseOfMessageResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<MessageSortInput>>;
+  where?: InputMaybe<MessageFilterInput>;
 };
 
 export type ListResponseBaseOfRecordFileDto = {
@@ -477,6 +1503,29 @@ export type ListResponseBaseOfUserResult2Args = {
   where?: InputMaybe<UserFilterInput>;
 };
 
+export type ListResponseBaseOfUserDto = {
+  __typename?: 'ListResponseBaseOfUserDto';
+  result?: Maybe<UserDtoCollectionSegment>;
+  result2?: Maybe<UserDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfUserDtoResultArgs = {
+  order?: InputMaybe<Array<UserDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<UserDtoFilterInput>;
+};
+
+export type ListResponseBaseOfUserDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<UserDtoSortInput>>;
+  where?: InputMaybe<UserDtoFilterInput>;
+};
+
 export type ListResponseBaseOfUserPhotoGallery = {
   __typename?: 'ListResponseBaseOfUserPhotoGallery';
   result?: Maybe<UserPhotoGalleryCollectionSegment>;
@@ -498,6 +1547,218 @@ export type ListResponseBaseOfUserPhotoGalleryResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<UserPhotoGallerySortInput>>;
   where?: InputMaybe<UserPhotoGalleryFilterInput>;
+};
+
+export type ListResponseBaseOfViolationReport = {
+  __typename?: 'ListResponseBaseOfViolationReport';
+  result?: Maybe<ViolationReportCollectionSegment>;
+  result2?: Maybe<ViolationReportConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfViolationReportResultArgs = {
+  order?: InputMaybe<Array<ViolationReportSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ViolationReportFilterInput>;
+};
+
+export type ListResponseBaseOfViolationReportResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<ViolationReportSortInput>>;
+  where?: InputMaybe<ViolationReportFilterInput>;
+};
+
+export type Live = {
+  __typename?: 'Live';
+  category?: Maybe<Scalars['String']['output']>;
+  channelRecords?: Maybe<Array<Maybe<ChannelRecord>>>;
+  consumerCount: Scalars['Int']['output'];
+  createdDate: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  funding: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  isDraft: Scalars['Boolean']['output'];
+  isFree: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  liveType: LiveType;
+  photoUrl?: Maybe<Scalars['String']['output']>;
+  previewUrl?: Maybe<Scalars['String']['output']>;
+  price: Scalars['Decimal']['output'];
+  proposalCategory?: Maybe<Scalars['String']['output']>;
+  proposalSummary?: Maybe<Scalars['String']['output']>;
+  proposalTitle?: Maybe<Scalars['String']['output']>;
+  publishingScheduleDate?: Maybe<Scalars['DateTime']['output']>;
+  publishingScheduleTime?: Maybe<Scalars['TimeSpan']['output']>;
+  roles?: Maybe<Array<Maybe<LiveRole>>>;
+  setSchedule: Scalars['Boolean']['output'];
+  title?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+  value: Scalars['Decimal']['output'];
+  viewerCount: Scalars['Int']['output'];
+};
+
+/** A segment of a collection. */
+export type LiveCollectionSegment = {
+  __typename?: 'LiveCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<Live>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type LiveConnection = {
+  __typename?: 'LiveConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<LiveEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<Live>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type LiveEdge = {
+  __typename?: 'LiveEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Live>;
+};
+
+export type LiveFilterInput = {
+  and?: InputMaybe<Array<LiveFilterInput>>;
+  category?: InputMaybe<StringOperationFilterInput>;
+  channelRecords?: InputMaybe<ListFilterInputTypeOfChannelRecordFilterInput>;
+  consumerCount?: InputMaybe<IntOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  funding?: InputMaybe<IntOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isDraft?: InputMaybe<BooleanOperationFilterInput>;
+  isFree?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  liveType?: InputMaybe<LiveTypeOperationFilterInput>;
+  or?: InputMaybe<Array<LiveFilterInput>>;
+  photoUrl?: InputMaybe<StringOperationFilterInput>;
+  previewUrl?: InputMaybe<StringOperationFilterInput>;
+  price?: InputMaybe<DecimalOperationFilterInput>;
+  proposalCategory?: InputMaybe<StringOperationFilterInput>;
+  proposalSummary?: InputMaybe<StringOperationFilterInput>;
+  proposalTitle?: InputMaybe<StringOperationFilterInput>;
+  publishingScheduleDate?: InputMaybe<DateTimeOperationFilterInput>;
+  publishingScheduleTime?: InputMaybe<TimeSpanOperationFilterInput>;
+  roles?: InputMaybe<ListFilterInputTypeOfLiveRoleFilterInput>;
+  setSchedule?: InputMaybe<BooleanOperationFilterInput>;
+  title?: InputMaybe<StringOperationFilterInput>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+  value?: InputMaybe<DecimalOperationFilterInput>;
+  viewerCount?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type LiveInput = {
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  funding?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  isDraft?: InputMaybe<Scalars['Boolean']['input']>;
+  isFree?: InputMaybe<Scalars['Boolean']['input']>;
+  photoUrl?: InputMaybe<Scalars['String']['input']>;
+  previewUrl?: InputMaybe<Scalars['String']['input']>;
+  price?: InputMaybe<Scalars['Decimal']['input']>;
+  proposalCategoryId?: InputMaybe<Scalars['Int']['input']>;
+  proposalSummary?: InputMaybe<Scalars['String']['input']>;
+  proposalTitle?: InputMaybe<Scalars['String']['input']>;
+  publishingScheduleDate?: InputMaybe<Scalars['DateTime']['input']>;
+  publishingScheduleTime?: InputMaybe<Scalars['TimeSpan']['input']>;
+  roleList?: InputMaybe<Array<InputMaybe<LiveRoleInput>>>;
+  setSchedule?: InputMaybe<Scalars['Boolean']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['Decimal']['input']>;
+};
+
+export type LiveRole = {
+  __typename?: 'LiveRole';
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  live?: Maybe<Live>;
+  liveId: Scalars['Int']['output'];
+  present: Scalars['Int']['output'];
+  roleName?: Maybe<Scalars['String']['output']>;
+};
+
+export type LiveRoleFilterInput = {
+  and?: InputMaybe<Array<LiveRoleFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  live?: InputMaybe<LiveFilterInput>;
+  liveId?: InputMaybe<IntOperationFilterInput>;
+  or?: InputMaybe<Array<LiveRoleFilterInput>>;
+  present?: InputMaybe<IntOperationFilterInput>;
+  roleName?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type LiveRoleInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  present: Scalars['Int']['input'];
+  roleName?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type LiveSortInput = {
+  category?: InputMaybe<SortEnumType>;
+  consumerCount?: InputMaybe<SortEnumType>;
+  createdDate?: InputMaybe<SortEnumType>;
+  description?: InputMaybe<SortEnumType>;
+  funding?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  isDraft?: InputMaybe<SortEnumType>;
+  isFree?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  liveType?: InputMaybe<SortEnumType>;
+  photoUrl?: InputMaybe<SortEnumType>;
+  previewUrl?: InputMaybe<SortEnumType>;
+  price?: InputMaybe<SortEnumType>;
+  proposalCategory?: InputMaybe<SortEnumType>;
+  proposalSummary?: InputMaybe<SortEnumType>;
+  proposalTitle?: InputMaybe<SortEnumType>;
+  publishingScheduleDate?: InputMaybe<SortEnumType>;
+  publishingScheduleTime?: InputMaybe<SortEnumType>;
+  setSchedule?: InputMaybe<SortEnumType>;
+  title?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+  userId?: InputMaybe<SortEnumType>;
+  value?: InputMaybe<SortEnumType>;
+  viewerCount?: InputMaybe<SortEnumType>;
+};
+
+export enum LiveType {
+  Collaboration = 'COLLABORATION',
+  Investment = 'INVESTMENT',
+  LiveContent = 'LIVE_CONTENT',
+  Promotion = 'PROMOTION',
+}
+
+export type LiveTypeOperationFilterInput = {
+  eq?: InputMaybe<LiveType>;
+  in?: InputMaybe<Array<LiveType>>;
+  neq?: InputMaybe<LiveType>;
+  nin?: InputMaybe<Array<LiveType>>;
 };
 
 export type LoginActivity = {
@@ -578,12 +1839,190 @@ export type LoginActivitySortInput = {
   userId?: InputMaybe<SortEnumType>;
 };
 
+export enum MediaType {
+  Audio = 'AUDIO',
+  Contact = 'CONTACT',
+  Document = 'DOCUMENT',
+  Image = 'IMAGE',
+  Location = 'LOCATION',
+  None = 'NONE',
+  ReplyStory = 'REPLY_STORY',
+  Report = 'REPORT',
+  SharedEvent = 'SHARED_EVENT',
+  SharedPost = 'SHARED_POST',
+  SharedProduct = 'SHARED_PRODUCT',
+  SharedStory = 'SHARED_STORY',
+  Ticket = 'TICKET',
+  Video = 'VIDEO',
+}
+
+export type MediaTypeOperationFilterInput = {
+  eq?: InputMaybe<MediaType>;
+  in?: InputMaybe<Array<MediaType>>;
+  neq?: InputMaybe<MediaType>;
+  nin?: InputMaybe<Array<MediaType>>;
+};
+
+export type Message = {
+  __typename?: 'Message';
+  conversation?: Maybe<Conversation>;
+  conversationId?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  createdDate: Scalars['DateTime']['output'];
+  groupId?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  isEdited: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  mediaEntityId?: Maybe<Scalars['Int']['output']>;
+  mediaType: MediaType;
+  mediaUrl?: Maybe<Scalars['String']['output']>;
+  parent?: Maybe<Message>;
+  parentId?: Maybe<Scalars['Int']['output']>;
+  sender?: Maybe<User>;
+  senderId: Scalars['Int']['output'];
+  text?: Maybe<Scalars['String']['output']>;
+};
+
+/** A segment of a collection. */
+export type MessageCollectionSegment = {
+  __typename?: 'MessageCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<Message>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type MessageConnection = {
+  __typename?: 'MessageConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<MessageEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<Message>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type MessageEdge = {
+  __typename?: 'MessageEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Message>;
+};
+
+export type MessageFilterInput = {
+  and?: InputMaybe<Array<MessageFilterInput>>;
+  conversation?: InputMaybe<ConversationFilterInput>;
+  conversationId?: InputMaybe<IntOperationFilterInput>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  groupId?: InputMaybe<IntOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isEdited?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  mediaEntityId?: InputMaybe<IntOperationFilterInput>;
+  mediaType?: InputMaybe<MediaTypeOperationFilterInput>;
+  mediaUrl?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<MessageFilterInput>>;
+  parent?: InputMaybe<MessageFilterInput>;
+  parentId?: InputMaybe<IntOperationFilterInput>;
+  sender?: InputMaybe<UserFilterInput>;
+  senderId?: InputMaybe<IntOperationFilterInput>;
+  text?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type MessageInput = {
+  conversationId?: InputMaybe<Scalars['Int']['input']>;
+  mediaEntityId?: InputMaybe<Scalars['Int']['input']>;
+  mediaType: MediaType;
+  mediaUrl?: InputMaybe<Scalars['String']['input']>;
+  parentId?: InputMaybe<Scalars['Int']['input']>;
+  text?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MessageSortInput = {
+  conversation?: InputMaybe<ConversationSortInput>;
+  conversationId?: InputMaybe<SortEnumType>;
+  createdAt?: InputMaybe<SortEnumType>;
+  createdDate?: InputMaybe<SortEnumType>;
+  groupId?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  isEdited?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  mediaEntityId?: InputMaybe<SortEnumType>;
+  mediaType?: InputMaybe<SortEnumType>;
+  mediaUrl?: InputMaybe<SortEnumType>;
+  parent?: InputMaybe<MessageSortInput>;
+  parentId?: InputMaybe<SortEnumType>;
+  sender?: InputMaybe<UserSortInput>;
+  senderId?: InputMaybe<SortEnumType>;
+  text?: InputMaybe<SortEnumType>;
+};
+
+export type MessageSummaryDto = {
+  __typename?: 'MessageSummaryDto';
+  directConversationCount: Scalars['Int']['output'];
+  groupConversationCount: Scalars['Int']['output'];
+  messageCount: Scalars['Int']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   agora_createToken?: Maybe<ResponseBaseOfString>;
+  category_createCategory: ResponseBaseOfCategory;
+  category_deleteCategory: ResponseStatus;
+  category_updateCategory: ResponseBaseOfCategory;
+  community_acceptRequest?: Maybe<ResponseStatus>;
+  community_createCommunity?: Maybe<ResponseBaseOfCommunity>;
+  community_createMessage?: Maybe<ResponseBaseOfCommunityMessage>;
+  community_createRequest?: Maybe<ResponseBaseOfCommunityRequest>;
+  community_deleteCommunity?: Maybe<ResponseStatus>;
+  community_joinCommunity?: Maybe<ResponseBaseOfCommunityUser>;
+  community_leaveCommunity?: Maybe<ResponseBaseOfCommunityUser>;
+  community_rejectRequest?: Maybe<ResponseStatus>;
+  community_updateCommunity?: Maybe<ResponseBaseOfCommunity>;
+  create: ResponseBaseOfViolationReport;
+  defaultViolation_createDefaultViolation: ResponseBaseOfDefaultViolation;
+  defaultViolation_deleteDefaultViolation: ResponseBaseOfDefaultViolation;
+  defaultViolation_updateDefaultViolation: ResponseBaseOfDefaultViolation;
+  delete: ResponseStatus;
+  live_createLive?: Maybe<ResponseBaseOfLive>;
+  live_createNotInterested?: Maybe<ResponseStatus>;
+  live_deleteLive?: Maybe<ResponseStatus>;
+  live_incrementConsumerCount?: Maybe<ResponseStatus>;
+  live_incrementViewerCount?: Maybe<ResponseStatus>;
+  live_updateLive?: Maybe<ResponseBaseOfLive>;
+  message_addUserToGroup?: Maybe<ResponseStatus>;
+  message_createContact?: Maybe<ResponseBaseOfContact>;
+  message_createConversationGroup?: Maybe<ResponseBaseOfConversation>;
+  message_createDirectMessage?: Maybe<ResponseBaseOfMessage>;
+  message_createGroupMessage?: Maybe<ResponseBaseOfMessage>;
+  message_removeContact?: Maybe<ResponseBaseOfContact>;
+  message_removeConversation?: Maybe<ResponseStatus>;
+  message_removeMessage?: Maybe<ResponseStatus>;
+  message_removeMessages?: Maybe<ResponseStatus>;
+  message_removeUserFromGroup?: Maybe<ResponseStatus>;
+  message_updateMessage?: Maybe<ResponseBaseOfMessage>;
+  social_acceptFollow?: Maybe<ResponseBase>;
+  social_followUser?: Maybe<ResponseBaseOfFollower>;
+  social_hideStory?: Maybe<ResponseStatus>;
+  social_removeFollower?: Maybe<ResponseBase>;
+  social_removeFollowerAndFollowee?: Maybe<ResponseStatus>;
+  social_unfollow?: Maybe<ResponseBase>;
+  social_unhideStory?: Maybe<ResponseStatus>;
+  update?: Maybe<ResponseBaseOfViolationReport>;
   user_addPhoto?: Maybe<ResponseBaseOfUserPhotoGallery>;
   user_addPhotos?: Maybe<ListResponseBaseOfUserPhotoGallery>;
   user_changeUserPassowrd?: Maybe<ResponseStatus>;
+  user_checkVerificationCodeOfEmail?: Maybe<ResponseBaseOfUserTokenDtoOfUser>;
   user_confirmPhoneNumber?: Maybe<ResponseStatus>;
   user_createLoginActivity?: Maybe<ResponseBaseOfLoginActivity>;
   user_createRequestForVerification?: Maybe<ResponseBaseOfRequestForVerification>;
@@ -613,6 +2052,178 @@ export type MutationAgora_CreateTokenArgs = {
   publisher: Scalars['Boolean']['input'];
 };
 
+export type MutationCategory_CreateCategoryArgs = {
+  input: CategoryInput;
+};
+
+export type MutationCategory_DeleteCategoryArgs = {
+  entityId: Scalars['Int']['input'];
+};
+
+export type MutationCategory_UpdateCategoryArgs = {
+  input: CategoryInput;
+};
+
+export type MutationCommunity_AcceptRequestArgs = {
+  requestId: Scalars['Int']['input'];
+};
+
+export type MutationCommunity_CreateCommunityArgs = {
+  input?: InputMaybe<CommunityInput>;
+};
+
+export type MutationCommunity_CreateMessageArgs = {
+  input?: InputMaybe<CommunityMessageInput>;
+};
+
+export type MutationCommunity_CreateRequestArgs = {
+  communityId: Scalars['Int']['input'];
+};
+
+export type MutationCommunity_DeleteCommunityArgs = {
+  communityId: Scalars['Int']['input'];
+};
+
+export type MutationCommunity_JoinCommunityArgs = {
+  communityId: Scalars['Int']['input'];
+};
+
+export type MutationCommunity_LeaveCommunityArgs = {
+  communityId: Scalars['Int']['input'];
+};
+
+export type MutationCommunity_RejectRequestArgs = {
+  requestId: Scalars['Int']['input'];
+};
+
+export type MutationCommunity_UpdateCommunityArgs = {
+  input?: InputMaybe<CommunityInput>;
+};
+
+export type MutationCreateArgs = {
+  input: ViolationReportInput;
+};
+
+export type MutationDefaultViolation_CreateDefaultViolationArgs = {
+  input: DefaultViolationInput;
+};
+
+export type MutationDefaultViolation_DeleteDefaultViolationArgs = {
+  defaultViolationId: Scalars['Int']['input'];
+};
+
+export type MutationDefaultViolation_UpdateDefaultViolationArgs = {
+  input: DefaultViolationInput;
+};
+
+export type MutationDeleteArgs = {
+  violationReportId: Scalars['Int']['input'];
+};
+
+export type MutationLive_CreateLiveArgs = {
+  input?: InputMaybe<LiveInput>;
+};
+
+export type MutationLive_CreateNotInterestedArgs = {
+  liveId: Scalars['Int']['input'];
+};
+
+export type MutationLive_DeleteLiveArgs = {
+  liveId: Scalars['Int']['input'];
+};
+
+export type MutationLive_IncrementConsumerCountArgs = {
+  liveId: Scalars['Int']['input'];
+};
+
+export type MutationLive_IncrementViewerCountArgs = {
+  liveId: Scalars['Int']['input'];
+};
+
+export type MutationLive_UpdateLiveArgs = {
+  input?: InputMaybe<LiveInput>;
+};
+
+export type MutationMessage_AddUserToGroupArgs = {
+  conversationId: Scalars['Int']['input'];
+  userIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type MutationMessage_CreateContactArgs = {
+  input?: InputMaybe<ContactInput>;
+};
+
+export type MutationMessage_CreateConversationGroupArgs = {
+  input?: InputMaybe<UserGroupInput>;
+  userIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type MutationMessage_CreateDirectMessageArgs = {
+  input?: InputMaybe<MessageInput>;
+  receiverId: Scalars['Int']['input'];
+};
+
+export type MutationMessage_CreateGroupMessageArgs = {
+  messageInput?: InputMaybe<MessageInput>;
+};
+
+export type MutationMessage_RemoveContactArgs = {
+  entityId: Scalars['Int']['input'];
+};
+
+export type MutationMessage_RemoveConversationArgs = {
+  conversationId: Scalars['Int']['input'];
+};
+
+export type MutationMessage_RemoveMessageArgs = {
+  messageId: Scalars['Int']['input'];
+};
+
+export type MutationMessage_RemoveMessagesArgs = {
+  messageIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type MutationMessage_RemoveUserFromGroupArgs = {
+  conversationId: Scalars['Int']['input'];
+};
+
+export type MutationMessage_UpdateMessageArgs = {
+  messageId: Scalars['Int']['input'];
+  text?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MutationSocial_AcceptFollowArgs = {
+  followerId: Scalars['Int']['input'];
+};
+
+export type MutationSocial_FollowUserArgs = {
+  input?: InputMaybe<FollowerInput>;
+};
+
+export type MutationSocial_HideStoryArgs = {
+  followerId: Scalars['Int']['input'];
+};
+
+export type MutationSocial_RemoveFollowerArgs = {
+  followerId: Scalars['Int']['input'];
+};
+
+export type MutationSocial_RemoveFollowerAndFolloweeArgs = {
+  targetUserId: Scalars['Int']['input'];
+};
+
+export type MutationSocial_UnfollowArgs = {
+  input?: InputMaybe<FollowerInput>;
+};
+
+export type MutationSocial_UnhideStoryArgs = {
+  targetUserId: Scalars['Int']['input'];
+};
+
+export type MutationUpdateArgs = {
+  input?: InputMaybe<ViolationReportInput>;
+};
+
 export type MutationUser_AddPhotoArgs = {
   photo?: InputMaybe<Scalars['String']['input']>;
 };
@@ -623,6 +2234,12 @@ export type MutationUser_AddPhotosArgs = {
 
 export type MutationUser_ChangeUserPassowrdArgs = {
   input?: InputMaybe<ChangePassowrdInput>;
+};
+
+export type MutationUser_CheckVerificationCodeOfEmailArgs = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  isForResetPassword: Scalars['Boolean']['input'];
+  verificationCode?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type MutationUser_ConfirmPhoneNumberArgs = {
@@ -805,6 +2422,25 @@ export type Query = {
   __typename?: 'Query';
   agora_getAppId?: Maybe<ResponseBaseOfString>;
   agora_getRecordFiles?: Maybe<ListResponseBaseOfRecordFileDto>;
+  category_getCategories: ListResponseBaseOfCategory;
+  category_getCategory: SingleResponseBaseOfCategory;
+  community_getCommunities?: Maybe<ListResponseBaseOfCommunity>;
+  community_getOtherCommunities?: Maybe<ListResponseBaseOfCommunity>;
+  defaultViolation_getDefaultViolations: ListResponseBaseOfDefaultViolation;
+  live_getLiveStreams?: Maybe<ListResponseBaseOfLive>;
+  live_getLives?: Maybe<ListResponseBaseOfLive>;
+  live_getRecommendedLives?: Maybe<ListResponseBaseOfLive>;
+  message_getAllReceivers?: Maybe<ListResponseBaseOfUser>;
+  message_getContacts?: Maybe<ListResponseBaseOfContact>;
+  message_getConversation?: Maybe<SingleResponseBaseOfConversation>;
+  message_getMessages?: Maybe<ListResponseBaseOfMessage>;
+  message_getSummary?: Maybe<ResponseBaseOfMessageSummaryDto>;
+  message_getUserMessages?: Maybe<ListResponseBaseOfConversationDto>;
+  social_getFollowSummary?: Maybe<ResponseBaseOfFollowSummaryDto>;
+  social_getUser?: Maybe<SingleResponseBaseOfUserDto>;
+  social_getUserFollowerFollowees?: Maybe<ListResponseBaseOfFollowerFolloweeDto>;
+  social_getUsers?: Maybe<ListResponseBaseOfUserDto>;
+  social_isUserFollower?: Maybe<ResponseBaseOfBoolean>;
   user_doesEmailExist?: Maybe<ResponseStatus>;
   user_doesPhoneNumberExist?: Maybe<ResponseStatus>;
   user_getCurrentUser?: Maybe<SingleResponseBaseOfUser>;
@@ -816,6 +2452,29 @@ export type Query = {
   user_getRolesForSignUp?: Maybe<ListResponseBaseOfRole>;
   user_getSummary?: Maybe<ResponseBaseOfUserSummaryDto>;
   user_getUsers?: Maybe<ListResponseBaseOfUser>;
+  violationReport_getViolationReport: SingleResponseBaseOfViolationReport;
+  violationReport_getViolationReports: ListResponseBaseOfViolationReport;
+};
+
+export type QueryCategory_GetCategoryArgs = {
+  entityId: Scalars['Int']['input'];
+};
+
+export type QueryMessage_GetConversationArgs = {
+  conversationId: Scalars['Int']['input'];
+};
+
+export type QuerySocial_GetUserArgs = {
+  otherId: Scalars['Int']['input'];
+};
+
+export type QuerySocial_GetUserFollowerFolloweesArgs = {
+  userId: Scalars['Int']['input'];
+};
+
+export type QuerySocial_IsUserFollowerArgs = {
+  followerId: Scalars['Int']['input'];
+  userid: Scalars['Int']['input'];
 };
 
 export type QueryUser_DoesEmailExistArgs = {
@@ -841,9 +2500,14 @@ export type QueryUser_GetPhotosArgs = {
   userId?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type QueryViolationReport_GetViolationReportArgs = {
+  entityId: Scalars['Int']['input'];
+};
+
 export type RecordFileDto = {
   __typename?: 'RecordFileDto';
   name?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 /** A segment of a collection. */
@@ -882,10 +2546,12 @@ export type RecordFileDtoFilterInput = {
   and?: InputMaybe<Array<RecordFileDtoFilterInput>>;
   name?: InputMaybe<StringOperationFilterInput>;
   or?: InputMaybe<Array<RecordFileDtoFilterInput>>;
+  url?: InputMaybe<StringOperationFilterInput>;
 };
 
 export type RecordFileDtoSortInput = {
   name?: InputMaybe<SortEnumType>;
+  url?: InputMaybe<SortEnumType>;
 };
 
 export type RequestForVerification = {
@@ -964,9 +2630,98 @@ export type ResetPasswordUsingEmailInput = {
   verificationCode?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type ResponseBase = {
+  __typename?: 'ResponseBase';
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfBoolean = {
+  __typename?: 'ResponseBaseOfBoolean';
+  result: Scalars['Boolean']['output'];
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfCategory = {
+  __typename?: 'ResponseBaseOfCategory';
+  result?: Maybe<Category>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfCommunity = {
+  __typename?: 'ResponseBaseOfCommunity';
+  result?: Maybe<Community>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfCommunityMessage = {
+  __typename?: 'ResponseBaseOfCommunityMessage';
+  result?: Maybe<CommunityMessage>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfCommunityRequest = {
+  __typename?: 'ResponseBaseOfCommunityRequest';
+  result?: Maybe<CommunityRequest>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfCommunityUser = {
+  __typename?: 'ResponseBaseOfCommunityUser';
+  result?: Maybe<CommunityUser>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfContact = {
+  __typename?: 'ResponseBaseOfContact';
+  result?: Maybe<Contact>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfConversation = {
+  __typename?: 'ResponseBaseOfConversation';
+  result?: Maybe<Conversation>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfDefaultViolation = {
+  __typename?: 'ResponseBaseOfDefaultViolation';
+  result?: Maybe<DefaultViolation>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfFollowSummaryDto = {
+  __typename?: 'ResponseBaseOfFollowSummaryDto';
+  result?: Maybe<FollowSummaryDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfFollower = {
+  __typename?: 'ResponseBaseOfFollower';
+  result?: Maybe<Follower>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfLive = {
+  __typename?: 'ResponseBaseOfLive';
+  result?: Maybe<Live>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type ResponseBaseOfLoginActivity = {
   __typename?: 'ResponseBaseOfLoginActivity';
   result?: Maybe<LoginActivity>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfMessage = {
+  __typename?: 'ResponseBaseOfMessage';
+  result?: Maybe<Message>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfMessageSummaryDto = {
+  __typename?: 'ResponseBaseOfMessageSummaryDto';
+  result?: Maybe<MessageSummaryDto>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -1003,6 +2758,12 @@ export type ResponseBaseOfUserSummaryDto = {
 export type ResponseBaseOfUserTokenDtoOfUser = {
   __typename?: 'ResponseBaseOfUserTokenDtoOfUser';
   result?: Maybe<UserTokenDtoOfUser>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfViolationReport = {
+  __typename?: 'ResponseBaseOfViolationReport';
+  result?: Maybe<ViolationReport>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -1103,15 +2864,45 @@ export type SignUpInput = {
   roleId?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type SingleResponseBaseOfCategory = {
+  __typename?: 'SingleResponseBaseOfCategory';
+  result?: Maybe<Category>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type SingleResponseBaseOfConversation = {
+  __typename?: 'SingleResponseBaseOfConversation';
+  result?: Maybe<Conversation>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type SingleResponseBaseOfFollower = {
+  __typename?: 'SingleResponseBaseOfFollower';
+  result?: Maybe<Follower>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type SingleResponseBaseOfUser = {
   __typename?: 'SingleResponseBaseOfUser';
   result?: Maybe<User>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
+export type SingleResponseBaseOfUserDto = {
+  __typename?: 'SingleResponseBaseOfUserDto';
+  result?: Maybe<UserDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type SingleResponseBaseOfUserPhotoGallery = {
   __typename?: 'SingleResponseBaseOfUserPhotoGallery';
   result?: Maybe<UserPhotoGallery>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type SingleResponseBaseOfViolationReport = {
+  __typename?: 'SingleResponseBaseOfViolationReport';
+  result?: Maybe<ViolationReport>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -1133,6 +2924,21 @@ export type StringOperationFilterInput = {
   nstartsWith?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<StringOperationFilterInput>>;
   startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type TimeSpanOperationFilterInput = {
+  eq?: InputMaybe<Scalars['TimeSpan']['input']>;
+  gt?: InputMaybe<Scalars['TimeSpan']['input']>;
+  gte?: InputMaybe<Scalars['TimeSpan']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['TimeSpan']['input']>>>;
+  lt?: InputMaybe<Scalars['TimeSpan']['input']>;
+  lte?: InputMaybe<Scalars['TimeSpan']['input']>;
+  neq?: InputMaybe<Scalars['TimeSpan']['input']>;
+  ngt?: InputMaybe<Scalars['TimeSpan']['input']>;
+  ngte?: InputMaybe<Scalars['TimeSpan']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['TimeSpan']['input']>>>;
+  nlt?: InputMaybe<Scalars['TimeSpan']['input']>;
+  nlte?: InputMaybe<Scalars['TimeSpan']['input']>;
 };
 
 export type TokenInput = {
@@ -1157,6 +2963,10 @@ export type User = {
   emailConfirmed: Scalars['Boolean']['output'];
   externalId: Scalars['String']['output'];
   favoriteCategories?: Maybe<Scalars['String']['output']>;
+  followeeCount: Scalars['Int']['output'];
+  followees?: Maybe<Array<Maybe<Follower>>>;
+  followerCount: Scalars['Int']['output'];
+  followers?: Maybe<Array<Maybe<Follower>>>;
   fullName?: Maybe<Scalars['String']['output']>;
   gender?: Maybe<Gender>;
   height?: Maybe<Scalars['Int']['output']>;
@@ -1231,6 +3041,71 @@ export type UserConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
+export type UserDto = {
+  __typename?: 'UserDto';
+  followedCount: Scalars['Int']['output'];
+  followersCount: Scalars['Int']['output'];
+  isFollowed: Scalars['Boolean']['output'];
+  isFollower: Scalars['Boolean']['output'];
+  requestReceived: Scalars['Boolean']['output'];
+  requestSent: Scalars['Boolean']['output'];
+  user?: Maybe<User>;
+};
+
+/** A segment of a collection. */
+export type UserDtoCollectionSegment = {
+  __typename?: 'UserDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<UserDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type UserDtoConnection = {
+  __typename?: 'UserDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<UserDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<UserDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type UserDtoEdge = {
+  __typename?: 'UserDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<UserDto>;
+};
+
+export type UserDtoFilterInput = {
+  and?: InputMaybe<Array<UserDtoFilterInput>>;
+  followedCount?: InputMaybe<IntOperationFilterInput>;
+  followersCount?: InputMaybe<IntOperationFilterInput>;
+  isFollowed?: InputMaybe<BooleanOperationFilterInput>;
+  isFollower?: InputMaybe<BooleanOperationFilterInput>;
+  or?: InputMaybe<Array<UserDtoFilterInput>>;
+  requestReceived?: InputMaybe<BooleanOperationFilterInput>;
+  requestSent?: InputMaybe<BooleanOperationFilterInput>;
+  user?: InputMaybe<UserFilterInput>;
+};
+
+export type UserDtoSortInput = {
+  followedCount?: InputMaybe<SortEnumType>;
+  followersCount?: InputMaybe<SortEnumType>;
+  isFollowed?: InputMaybe<SortEnumType>;
+  isFollower?: InputMaybe<SortEnumType>;
+  requestReceived?: InputMaybe<SortEnumType>;
+  requestSent?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+};
+
 /** An edge in a connection. */
 export type UserEdge = {
   __typename?: 'UserEdge';
@@ -1257,6 +3132,10 @@ export type UserFilterInput = {
   emailConfirmed?: InputMaybe<BooleanOperationFilterInput>;
   externalId?: InputMaybe<StringOperationFilterInput>;
   favoriteCategories?: InputMaybe<StringOperationFilterInput>;
+  followeeCount?: InputMaybe<IntOperationFilterInput>;
+  followees?: InputMaybe<ListFilterInputTypeOfFollowerFilterInput>;
+  followerCount?: InputMaybe<IntOperationFilterInput>;
+  followers?: InputMaybe<ListFilterInputTypeOfFollowerFilterInput>;
   fullName?: InputMaybe<StringOperationFilterInput>;
   gender?: InputMaybe<NullableOfGenderOperationFilterInput>;
   height?: InputMaybe<IntOperationFilterInput>;
@@ -1305,6 +3184,40 @@ export type UserFilterInput = {
   verificationPhotos?: InputMaybe<StringOperationFilterInput>;
   yearsOfExperience?: InputMaybe<IntOperationFilterInput>;
   zipCode?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type UserGroup = {
+  __typename?: 'UserGroup';
+  conversation?: Maybe<Conversation>;
+  conversationId: Scalars['Int']['output'];
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  unreadCount: Scalars['Int']['output'];
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+export type UserGroupFilterInput = {
+  and?: InputMaybe<Array<UserGroupFilterInput>>;
+  conversation?: InputMaybe<ConversationFilterInput>;
+  conversationId?: InputMaybe<IntOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<UserGroupFilterInput>>;
+  unreadCount?: InputMaybe<IntOperationFilterInput>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type UserGroupInput = {
+  groupDescription?: InputMaybe<Scalars['String']['input']>;
+  groupImgageUrl?: InputMaybe<Scalars['String']['input']>;
+  groupName: Scalars['String']['input'];
+  parentId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type UserInput = {
@@ -1425,6 +3338,8 @@ export type UserSortInput = {
   emailConfirmed?: InputMaybe<SortEnumType>;
   externalId?: InputMaybe<SortEnumType>;
   favoriteCategories?: InputMaybe<SortEnumType>;
+  followeeCount?: InputMaybe<SortEnumType>;
+  followerCount?: InputMaybe<SortEnumType>;
   fullName?: InputMaybe<SortEnumType>;
   gender?: InputMaybe<SortEnumType>;
   height?: InputMaybe<SortEnumType>;
@@ -1507,6 +3422,96 @@ export type VerificationStatusOperationFilterInput = {
   nin?: InputMaybe<Array<VerificationStatus>>;
 };
 
+export type ViolationReport = {
+  __typename?: 'ViolationReport';
+  createdDate: Scalars['DateTime']['output'];
+  data?: Maybe<Scalars['String']['output']>;
+  defaultViolation?: Maybe<DefaultViolation>;
+  defaultViolationId?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  reason?: Maybe<Scalars['String']['output']>;
+  targetEntityId?: Maybe<Scalars['Int']['output']>;
+  targetEntityName: Scalars['String']['output'];
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+/** A segment of a collection. */
+export type ViolationReportCollectionSegment = {
+  __typename?: 'ViolationReportCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<ViolationReport>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type ViolationReportConnection = {
+  __typename?: 'ViolationReportConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<ViolationReportEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<ViolationReport>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type ViolationReportEdge = {
+  __typename?: 'ViolationReportEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<ViolationReport>;
+};
+
+export type ViolationReportFilterInput = {
+  and?: InputMaybe<Array<ViolationReportFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  data?: InputMaybe<StringOperationFilterInput>;
+  defaultViolation?: InputMaybe<DefaultViolationFilterInput>;
+  defaultViolationId?: InputMaybe<IntOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<ViolationReportFilterInput>>;
+  reason?: InputMaybe<StringOperationFilterInput>;
+  targetEntityId?: InputMaybe<IntOperationFilterInput>;
+  targetEntityName?: InputMaybe<StringOperationFilterInput>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type ViolationReportInput = {
+  data?: InputMaybe<Scalars['String']['input']>;
+  defaultViolationId?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  reason?: InputMaybe<Scalars['String']['input']>;
+  targetEntityId?: InputMaybe<Scalars['Int']['input']>;
+  targetEntityName?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ViolationReportSortInput = {
+  createdDate?: InputMaybe<SortEnumType>;
+  data?: InputMaybe<SortEnumType>;
+  defaultViolation?: InputMaybe<DefaultViolationSortInput>;
+  defaultViolationId?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  reason?: InputMaybe<SortEnumType>;
+  targetEntityId?: InputMaybe<SortEnumType>;
+  targetEntityName?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+  userId?: InputMaybe<SortEnumType>;
+};
+
 export type Agora_CreateTokenMutationVariables = Exact<{
   channelName?: InputMaybe<Scalars['String']['input']>;
   publisher: Scalars['Boolean']['input'];
@@ -1555,6 +3560,563 @@ export type Agora_GetRecordFilesQuery = {
       items?: Array<{
         __typename?: 'RecordFileDto';
         name?: string | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Category_GetCategoriesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CategoryFilterInput>;
+  order?: InputMaybe<Array<CategorySortInput> | CategorySortInput>;
+}>;
+
+export type Category_GetCategoriesQuery = {
+  __typename?: 'Query';
+  category_getCategories: {
+    __typename?: 'ListResponseBaseOfCategory';
+    status?: any | null;
+    result?: {
+      __typename?: 'CategoryCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'Category';
+        parentId?: number | null;
+        title?: string | null;
+        group?: string | null;
+        createdByGamma: boolean;
+        imageUrl?: string | null;
+        priority: number;
+        tags?: string | null;
+        userId?: number | null;
+        id: number;
+        isDeleted: boolean;
+        createdDate: any;
+        lastModifiedDate?: any | null;
+      } | null> | null;
+    } | null;
+  };
+};
+
+export type Category_GetCategoryQueryVariables = Exact<{
+  entityId: Scalars['Int']['input'];
+}>;
+
+export type Category_GetCategoryQuery = {
+  __typename?: 'Query';
+  category_getCategory: {
+    __typename?: 'SingleResponseBaseOfCategory';
+    status?: any | null;
+    result?: {
+      __typename?: 'Category';
+      parentId?: number | null;
+      title?: string | null;
+      group?: string | null;
+      createdByGamma: boolean;
+      imageUrl?: string | null;
+      priority: number;
+      tags?: string | null;
+      userId?: number | null;
+      id: number;
+      isDeleted: boolean;
+      createdDate: any;
+      lastModifiedDate?: any | null;
+    } | null;
+  };
+};
+
+export type User_SignInMutationVariables = Exact<{
+  input?: InputMaybe<SignInInput>;
+}>;
+
+export type User_SignInMutation = {
+  __typename?: 'Mutation';
+  user_signIn?: {
+    __typename?: 'ResponseBaseOfUserTokenDtoOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'UserTokenDtoOfUser';
+      token?: string | null;
+      expireDate?: any | null;
+      refreshToken?: string | null;
+      refreshTokenExpiryTime?: any | null;
+      user?: {
+        __typename?: 'User';
+        username?: string | null;
+        phoneNumber?: string | null;
+        photoUrl?: string | null;
+        fullName?: string | null;
+        about?: string | null;
+        location?: string | null;
+        age?: number | null;
+        dateOfBirth?: any | null;
+        gender?: Gender | null;
+        lastSeen?: any | null;
+        userType?: UserType | null;
+        userRole?: string | null;
+        isPrivateAccount: boolean;
+        stripeConnectAccountId?: string | null;
+        stripeConnectCompleted: boolean;
+        isVerified: boolean;
+        verificationPhotos?: string | null;
+        verificationErrors?: string | null;
+        socialLinks?: string | null;
+        profession?: string | null;
+        yearsOfExperience?: number | null;
+        height?: number | null;
+        favoriteCategories?: string | null;
+        isDeleted: boolean;
+        createdDate?: any | null;
+        id: number;
+        email?: string | null;
+        emailConfirmed: boolean;
+        phoneNumberConfirmed: boolean;
+        twoFactorEnabled: boolean;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type User_SignUpMutationVariables = Exact<{
+  input?: InputMaybe<SignUpInput>;
+  userInput?: InputMaybe<UserInput>;
+}>;
+
+export type User_SignUpMutation = {
+  __typename?: 'Mutation';
+  user_signUp?: {
+    __typename?: 'ResponseBaseOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'User';
+      username?: string | null;
+      phoneNumber?: string | null;
+      photoUrl?: string | null;
+      fullName?: string | null;
+      about?: string | null;
+      location?: string | null;
+      age?: number | null;
+      dateOfBirth?: any | null;
+      gender?: Gender | null;
+      lastSeen?: any | null;
+      userType?: UserType | null;
+      userRole?: string | null;
+      isPrivateAccount: boolean;
+      stripeConnectAccountId?: string | null;
+      stripeConnectCompleted: boolean;
+      isVerified: boolean;
+      verificationPhotos?: string | null;
+      verificationErrors?: string | null;
+      socialLinks?: string | null;
+      profession?: string | null;
+      yearsOfExperience?: number | null;
+      height?: number | null;
+      favoriteCategories?: string | null;
+      isDeleted: boolean;
+      createdDate?: any | null;
+      id: number;
+      email?: string | null;
+      emailConfirmed: boolean;
+      phoneNumberConfirmed: boolean;
+      twoFactorEnabled: boolean;
+    } | null;
+  } | null;
+};
+
+export type User_UpdateUserMutationVariables = Exact<{
+  userId?: InputMaybe<Scalars['Int']['input']>;
+  userInput?: InputMaybe<UserInput>;
+}>;
+
+export type User_UpdateUserMutation = {
+  __typename?: 'Mutation';
+  user_updateUser?: {
+    __typename?: 'ResponseBaseOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'User';
+      username?: string | null;
+      phoneNumber?: string | null;
+      photoUrl?: string | null;
+      fullName?: string | null;
+      about?: string | null;
+      location?: string | null;
+      age?: number | null;
+      dateOfBirth?: any | null;
+      gender?: Gender | null;
+      lastSeen?: any | null;
+      userType?: UserType | null;
+      userRole?: string | null;
+      isPrivateAccount: boolean;
+      stripeConnectAccountId?: string | null;
+      stripeConnectCompleted: boolean;
+      isVerified: boolean;
+      verificationPhotos?: string | null;
+      verificationErrors?: string | null;
+      socialLinks?: string | null;
+      profession?: string | null;
+      yearsOfExperience?: number | null;
+      height?: number | null;
+      favoriteCategories?: string | null;
+      isDeleted: boolean;
+      createdDate?: any | null;
+      id: number;
+      email?: string | null;
+      emailConfirmed: boolean;
+      phoneNumberConfirmed: boolean;
+      twoFactorEnabled: boolean;
+    } | null;
+  } | null;
+};
+
+export type User_SendVerificationCodeToEmailMutationVariables = Exact<{
+  input?: InputMaybe<SendVerificationCodeToEmailInput>;
+}>;
+
+export type User_SendVerificationCodeToEmailMutation = {
+  __typename?: 'Mutation';
+  user_sendVerificationCodeToEmail?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
+export type User_ResetPasswordUsingEmailMutationVariables = Exact<{
+  input?: InputMaybe<ResetPasswordUsingEmailInput>;
+}>;
+
+export type User_ResetPasswordUsingEmailMutation = {
+  __typename?: 'Mutation';
+  user_resetPasswordUsingEmail?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
+export type User_RemoveUserMutationVariables = Exact<{
+  userId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+export type User_RemoveUserMutation = {
+  __typename?: 'Mutation';
+  user_removeUser?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
+export type User_GenerateTwoFactorAuthenticationCodeMutationVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type User_GenerateTwoFactorAuthenticationCodeMutation = {
+  __typename?: 'Mutation';
+  user_generateTwoFactorAuthenticationCode?: {
+    __typename?: 'ResponseBaseOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'User';
+      username?: string | null;
+      phoneNumber?: string | null;
+      photoUrl?: string | null;
+      fullName?: string | null;
+      about?: string | null;
+      location?: string | null;
+      age?: number | null;
+      dateOfBirth?: any | null;
+      gender?: Gender | null;
+      lastSeen?: any | null;
+      userType?: UserType | null;
+      userRole?: string | null;
+      isPrivateAccount: boolean;
+      stripeConnectAccountId?: string | null;
+      stripeConnectCompleted: boolean;
+      isVerified: boolean;
+      verificationPhotos?: string | null;
+      verificationErrors?: string | null;
+      socialLinks?: string | null;
+      profession?: string | null;
+      yearsOfExperience?: number | null;
+      height?: number | null;
+      favoriteCategories?: string | null;
+      isDeleted: boolean;
+      createdDate?: any | null;
+      id: number;
+      email?: string | null;
+      emailConfirmed: boolean;
+      phoneNumberConfirmed: boolean;
+      twoFactorEnabled: boolean;
+    } | null;
+  } | null;
+};
+
+export type User_GenerateTokenViaEmailMutationVariables = Exact<{
+  input?: InputMaybe<ConfirmEmailInput>;
+}>;
+
+export type User_GenerateTokenViaEmailMutation = {
+  __typename?: 'Mutation';
+  user_generateTokenViaEmail?: {
+    __typename?: 'ResponseBaseOfUserTokenDtoOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'UserTokenDtoOfUser';
+      token?: string | null;
+      expireDate?: any | null;
+      refreshToken?: string | null;
+      refreshTokenExpiryTime?: any | null;
+      user?: {
+        __typename?: 'User';
+        username?: string | null;
+        phoneNumber?: string | null;
+        photoUrl?: string | null;
+        fullName?: string | null;
+        about?: string | null;
+        location?: string | null;
+        age?: number | null;
+        dateOfBirth?: any | null;
+        gender?: Gender | null;
+        lastSeen?: any | null;
+        userType?: UserType | null;
+        userRole?: string | null;
+        isPrivateAccount: boolean;
+        stripeConnectAccountId?: string | null;
+        stripeConnectCompleted: boolean;
+        isVerified: boolean;
+        verificationPhotos?: string | null;
+        verificationErrors?: string | null;
+        socialLinks?: string | null;
+        profession?: string | null;
+        yearsOfExperience?: number | null;
+        height?: number | null;
+        favoriteCategories?: string | null;
+        isDeleted: boolean;
+        createdDate?: any | null;
+        id: number;
+        email?: string | null;
+        emailConfirmed: boolean;
+        phoneNumberConfirmed: boolean;
+        twoFactorEnabled: boolean;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type User_CreateRequestForVerificationMutationVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type User_CreateRequestForVerificationMutation = {
+  __typename?: 'Mutation';
+  user_createRequestForVerification?: {
+    __typename?: 'ResponseBaseOfRequestForVerification';
+    status?: any | null;
+    result?: {
+      __typename?: 'RequestForVerification';
+      userId: number;
+      status: VerificationStatus;
+      id: number;
+      isDeleted: boolean;
+      createdDate: any;
+      lastModifiedDate?: any | null;
+      user?: {
+        __typename?: 'User';
+        username?: string | null;
+        phoneNumber?: string | null;
+        photoUrl?: string | null;
+        fullName?: string | null;
+        about?: string | null;
+        location?: string | null;
+        age?: number | null;
+        dateOfBirth?: any | null;
+        gender?: Gender | null;
+        lastSeen?: any | null;
+        userType?: UserType | null;
+        userRole?: string | null;
+        isPrivateAccount: boolean;
+        stripeConnectAccountId?: string | null;
+        stripeConnectCompleted: boolean;
+        isVerified: boolean;
+        verificationPhotos?: string | null;
+        verificationErrors?: string | null;
+        socialLinks?: string | null;
+        profession?: string | null;
+        yearsOfExperience?: number | null;
+        height?: number | null;
+        favoriteCategories?: string | null;
+        isDeleted: boolean;
+        createdDate?: any | null;
+        id: number;
+        email?: string | null;
+        emailConfirmed: boolean;
+        phoneNumberConfirmed: boolean;
+        twoFactorEnabled: boolean;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type User_CheckVerificationCodeOfEmailMutationVariables = Exact<{
+  email?: InputMaybe<Scalars['String']['input']>;
+  verificationCode?: InputMaybe<Scalars['String']['input']>;
+  isForResetPassword: Scalars['Boolean']['input'];
+}>;
+
+export type User_CheckVerificationCodeOfEmailMutation = {
+  __typename?: 'Mutation';
+  user_checkVerificationCodeOfEmail?: {
+    __typename?: 'ResponseBaseOfUserTokenDtoOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'UserTokenDtoOfUser';
+      token?: string | null;
+      expireDate?: any | null;
+      refreshToken?: string | null;
+      refreshTokenExpiryTime?: any | null;
+      user?: {
+        __typename?: 'User';
+        username?: string | null;
+        phoneNumber?: string | null;
+        photoUrl?: string | null;
+        fullName?: string | null;
+        about?: string | null;
+        location?: string | null;
+        age?: number | null;
+        dateOfBirth?: any | null;
+        gender?: Gender | null;
+        lastSeen?: any | null;
+        userType?: UserType | null;
+        userRole?: string | null;
+        isPrivateAccount: boolean;
+        stripeConnectAccountId?: string | null;
+        stripeConnectCompleted: boolean;
+        isVerified: boolean;
+        verificationPhotos?: string | null;
+        verificationErrors?: string | null;
+        socialLinks?: string | null;
+        profession?: string | null;
+        yearsOfExperience?: number | null;
+        height?: number | null;
+        favoriteCategories?: string | null;
+        isDeleted: boolean;
+        createdDate?: any | null;
+        id: number;
+        email?: string | null;
+        emailConfirmed: boolean;
+        phoneNumberConfirmed: boolean;
+        twoFactorEnabled: boolean;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type User_GetCurrentUserQueryVariables = Exact<{[key: string]: never}>;
+
+export type User_GetCurrentUserQuery = {
+  __typename?: 'Query';
+  user_getCurrentUser?: {
+    __typename?: 'SingleResponseBaseOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'User';
+      username?: string | null;
+      phoneNumber?: string | null;
+      photoUrl?: string | null;
+      fullName?: string | null;
+      about?: string | null;
+      location?: string | null;
+      age?: number | null;
+      dateOfBirth?: any | null;
+      gender?: Gender | null;
+      lastSeen?: any | null;
+      userType?: UserType | null;
+      userRole?: string | null;
+      isPrivateAccount: boolean;
+      stripeConnectAccountId?: string | null;
+      stripeConnectCompleted: boolean;
+      isVerified: boolean;
+      verificationPhotos?: string | null;
+      verificationErrors?: string | null;
+      socialLinks?: string | null;
+      profession?: string | null;
+      yearsOfExperience?: number | null;
+      height?: number | null;
+      favoriteCategories?: string | null;
+      isDeleted: boolean;
+      createdDate?: any | null;
+      id: number;
+      email?: string | null;
+      emailConfirmed: boolean;
+      phoneNumberConfirmed: boolean;
+      twoFactorEnabled: boolean;
+    } | null;
+  } | null;
+};
+
+export type User_GetUsersQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<UserFilterInput>;
+  order?: InputMaybe<Array<UserSortInput> | UserSortInput>;
+}>;
+
+export type User_GetUsersQuery = {
+  __typename?: 'Query';
+  user_getUsers?: {
+    __typename?: 'ListResponseBaseOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'UserCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'User';
+        username?: string | null;
+        phoneNumber?: string | null;
+        photoUrl?: string | null;
+        fullName?: string | null;
+        about?: string | null;
+        location?: string | null;
+        age?: number | null;
+        dateOfBirth?: any | null;
+        gender?: Gender | null;
+        lastSeen?: any | null;
+        userType?: UserType | null;
+        userRole?: string | null;
+        isPrivateAccount: boolean;
+        stripeConnectAccountId?: string | null;
+        stripeConnectCompleted: boolean;
+        isVerified: boolean;
+        verificationPhotos?: string | null;
+        verificationErrors?: string | null;
+        socialLinks?: string | null;
+        profession?: string | null;
+        yearsOfExperience?: number | null;
+        height?: number | null;
+        favoriteCategories?: string | null;
+        isDeleted: boolean;
+        createdDate?: any | null;
+        id: number;
+        email?: string | null;
+        emailConfirmed: boolean;
+        phoneNumberConfirmed: boolean;
+        twoFactorEnabled: boolean;
       } | null> | null;
     } | null;
   } | null;
@@ -1695,6 +4257,901 @@ export const useInfiniteAgora_GetRecordFilesQuery = <
     metaData =>
       fetcher<Agora_GetRecordFilesQuery, Agora_GetRecordFilesQueryVariables>(
         Agora_GetRecordFilesDocument,
+        {...variables, ...(metaData.pageParam ?? {})},
+      )(),
+    options,
+  );
+};
+
+export const Category_GetCategoriesDocument = `
+    query category_getCategories($skip: Int, $take: Int, $where: CategoryFilterInput, $order: [CategorySortInput!]) {
+  category_getCategories {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        parentId
+        title
+        group
+        createdByGamma
+        imageUrl
+        priority
+        tags
+        userId
+        id
+        isDeleted
+        createdDate
+        lastModifiedDate
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useCategory_GetCategoriesQuery = <
+  TData = Category_GetCategoriesQuery,
+  TError = unknown,
+>(
+  variables?: Category_GetCategoriesQueryVariables,
+  options?: UseQueryOptions<Category_GetCategoriesQuery, TError, TData>,
+) => {
+  return useQuery<Category_GetCategoriesQuery, TError, TData>(
+    variables === undefined
+      ? ['category_getCategories']
+      : ['category_getCategories', variables],
+    fetcher<Category_GetCategoriesQuery, Category_GetCategoriesQueryVariables>(
+      Category_GetCategoriesDocument,
+      variables,
+    ),
+    options,
+  );
+};
+
+export const useInfiniteCategory_GetCategoriesQuery = <
+  TData = Category_GetCategoriesQuery,
+  TError = unknown,
+>(
+  variables?: Category_GetCategoriesQueryVariables,
+  options?: UseInfiniteQueryOptions<Category_GetCategoriesQuery, TError, TData>,
+) => {
+  return useInfiniteQuery<Category_GetCategoriesQuery, TError, TData>(
+    variables === undefined
+      ? ['category_getCategories.infinite']
+      : ['category_getCategories.infinite', variables],
+    metaData =>
+      fetcher<
+        Category_GetCategoriesQuery,
+        Category_GetCategoriesQueryVariables
+      >(Category_GetCategoriesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
+export const Category_GetCategoryDocument = `
+    query category_getCategory($entityId: Int!) {
+  category_getCategory(entityId: $entityId) {
+    result {
+      parentId
+      title
+      group
+      createdByGamma
+      imageUrl
+      priority
+      tags
+      userId
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+    `;
+
+export const useCategory_GetCategoryQuery = <
+  TData = Category_GetCategoryQuery,
+  TError = unknown,
+>(
+  variables: Category_GetCategoryQueryVariables,
+  options?: UseQueryOptions<Category_GetCategoryQuery, TError, TData>,
+) => {
+  return useQuery<Category_GetCategoryQuery, TError, TData>(
+    ['category_getCategory', variables],
+    fetcher<Category_GetCategoryQuery, Category_GetCategoryQueryVariables>(
+      Category_GetCategoryDocument,
+      variables,
+    ),
+    options,
+  );
+};
+
+export const useInfiniteCategory_GetCategoryQuery = <
+  TData = Category_GetCategoryQuery,
+  TError = unknown,
+>(
+  variables: Category_GetCategoryQueryVariables,
+  options?: UseInfiniteQueryOptions<Category_GetCategoryQuery, TError, TData>,
+) => {
+  return useInfiniteQuery<Category_GetCategoryQuery, TError, TData>(
+    ['category_getCategory.infinite', variables],
+    metaData =>
+      fetcher<Category_GetCategoryQuery, Category_GetCategoryQueryVariables>(
+        Category_GetCategoryDocument,
+        {...variables, ...(metaData.pageParam ?? {})},
+      )(),
+    options,
+  );
+};
+
+export const User_SignInDocument = `
+    mutation user_signIn($input: SignInInput) {
+  user_signIn(input: $input) {
+    result {
+      token
+      expireDate
+      refreshToken
+      refreshTokenExpiryTime
+      user {
+        username
+        phoneNumber
+        photoUrl
+        fullName
+        about
+        location
+        age
+        dateOfBirth
+        gender
+        lastSeen
+        userType
+        userRole
+        isPrivateAccount
+        stripeConnectAccountId
+        stripeConnectCompleted
+        isVerified
+        verificationPhotos
+        verificationErrors
+        socialLinks
+        profession
+        yearsOfExperience
+        height
+        favoriteCategories
+        isDeleted
+        createdDate
+        id
+        email
+        emailConfirmed
+        phoneNumberConfirmed
+        twoFactorEnabled
+      }
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_SignInMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    User_SignInMutation,
+    TError,
+    User_SignInMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_SignInMutation,
+    TError,
+    User_SignInMutationVariables,
+    TContext
+  >(
+    ['user_signIn'],
+    (variables?: User_SignInMutationVariables) =>
+      fetcher<User_SignInMutation, User_SignInMutationVariables>(
+        User_SignInDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const User_SignUpDocument = `
+    mutation user_signUp($input: SignUpInput, $userInput: UserInput) {
+  user_signUp(input: $input, userInput: $userInput) {
+    result {
+      username
+      phoneNumber
+      photoUrl
+      fullName
+      about
+      location
+      age
+      dateOfBirth
+      gender
+      lastSeen
+      userType
+      userRole
+      isPrivateAccount
+      stripeConnectAccountId
+      stripeConnectCompleted
+      isVerified
+      verificationPhotos
+      verificationErrors
+      socialLinks
+      profession
+      yearsOfExperience
+      height
+      favoriteCategories
+      isDeleted
+      createdDate
+      id
+      email
+      emailConfirmed
+      phoneNumberConfirmed
+      twoFactorEnabled
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_SignUpMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    User_SignUpMutation,
+    TError,
+    User_SignUpMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_SignUpMutation,
+    TError,
+    User_SignUpMutationVariables,
+    TContext
+  >(
+    ['user_signUp'],
+    (variables?: User_SignUpMutationVariables) =>
+      fetcher<User_SignUpMutation, User_SignUpMutationVariables>(
+        User_SignUpDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const User_UpdateUserDocument = `
+    mutation user_updateUser($userId: Int, $userInput: UserInput) {
+  user_updateUser(userId: $userId, userInput: $userInput) {
+    result {
+      username
+      phoneNumber
+      photoUrl
+      fullName
+      about
+      location
+      age
+      dateOfBirth
+      gender
+      lastSeen
+      userType
+      userRole
+      isPrivateAccount
+      stripeConnectAccountId
+      stripeConnectCompleted
+      isVerified
+      verificationPhotos
+      verificationErrors
+      socialLinks
+      profession
+      yearsOfExperience
+      height
+      favoriteCategories
+      isDeleted
+      createdDate
+      id
+      email
+      emailConfirmed
+      phoneNumberConfirmed
+      twoFactorEnabled
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_UpdateUserMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_UpdateUserMutation,
+    TError,
+    User_UpdateUserMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_UpdateUserMutation,
+    TError,
+    User_UpdateUserMutationVariables,
+    TContext
+  >(
+    ['user_updateUser'],
+    (variables?: User_UpdateUserMutationVariables) =>
+      fetcher<User_UpdateUserMutation, User_UpdateUserMutationVariables>(
+        User_UpdateUserDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const User_SendVerificationCodeToEmailDocument = `
+    mutation user_sendVerificationCodeToEmail($input: SendVerificationCodeToEmailInput) {
+  user_sendVerificationCodeToEmail(input: $input) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useUser_SendVerificationCodeToEmailMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_SendVerificationCodeToEmailMutation,
+    TError,
+    User_SendVerificationCodeToEmailMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_SendVerificationCodeToEmailMutation,
+    TError,
+    User_SendVerificationCodeToEmailMutationVariables,
+    TContext
+  >(
+    ['user_sendVerificationCodeToEmail'],
+    (variables?: User_SendVerificationCodeToEmailMutationVariables) =>
+      fetcher<
+        User_SendVerificationCodeToEmailMutation,
+        User_SendVerificationCodeToEmailMutationVariables
+      >(User_SendVerificationCodeToEmailDocument, variables)(),
+    options,
+  );
+};
+
+export const User_ResetPasswordUsingEmailDocument = `
+    mutation user_resetPasswordUsingEmail($input: ResetPasswordUsingEmailInput) {
+  user_resetPasswordUsingEmail(input: $input) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useUser_ResetPasswordUsingEmailMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_ResetPasswordUsingEmailMutation,
+    TError,
+    User_ResetPasswordUsingEmailMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_ResetPasswordUsingEmailMutation,
+    TError,
+    User_ResetPasswordUsingEmailMutationVariables,
+    TContext
+  >(
+    ['user_resetPasswordUsingEmail'],
+    (variables?: User_ResetPasswordUsingEmailMutationVariables) =>
+      fetcher<
+        User_ResetPasswordUsingEmailMutation,
+        User_ResetPasswordUsingEmailMutationVariables
+      >(User_ResetPasswordUsingEmailDocument, variables)(),
+    options,
+  );
+};
+
+export const User_RemoveUserDocument = `
+    mutation user_removeUser($userId: Int) {
+  user_removeUser(userId: $userId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useUser_RemoveUserMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_RemoveUserMutation,
+    TError,
+    User_RemoveUserMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_RemoveUserMutation,
+    TError,
+    User_RemoveUserMutationVariables,
+    TContext
+  >(
+    ['user_removeUser'],
+    (variables?: User_RemoveUserMutationVariables) =>
+      fetcher<User_RemoveUserMutation, User_RemoveUserMutationVariables>(
+        User_RemoveUserDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const User_GenerateTwoFactorAuthenticationCodeDocument = `
+    mutation user_generateTwoFactorAuthenticationCode {
+  user_generateTwoFactorAuthenticationCode {
+    result {
+      username
+      phoneNumber
+      photoUrl
+      fullName
+      about
+      location
+      age
+      dateOfBirth
+      gender
+      lastSeen
+      userType
+      userRole
+      isPrivateAccount
+      stripeConnectAccountId
+      stripeConnectCompleted
+      isVerified
+      verificationPhotos
+      verificationErrors
+      socialLinks
+      profession
+      yearsOfExperience
+      height
+      favoriteCategories
+      isDeleted
+      createdDate
+      id
+      email
+      emailConfirmed
+      phoneNumberConfirmed
+      twoFactorEnabled
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_GenerateTwoFactorAuthenticationCodeMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_GenerateTwoFactorAuthenticationCodeMutation,
+    TError,
+    User_GenerateTwoFactorAuthenticationCodeMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_GenerateTwoFactorAuthenticationCodeMutation,
+    TError,
+    User_GenerateTwoFactorAuthenticationCodeMutationVariables,
+    TContext
+  >(
+    ['user_generateTwoFactorAuthenticationCode'],
+    (variables?: User_GenerateTwoFactorAuthenticationCodeMutationVariables) =>
+      fetcher<
+        User_GenerateTwoFactorAuthenticationCodeMutation,
+        User_GenerateTwoFactorAuthenticationCodeMutationVariables
+      >(User_GenerateTwoFactorAuthenticationCodeDocument, variables)(),
+    options,
+  );
+};
+
+export const User_GenerateTokenViaEmailDocument = `
+    mutation user_generateTokenViaEmail($input: ConfirmEmailInput) {
+  user_generateTokenViaEmail(input: $input) {
+    result {
+      token
+      expireDate
+      refreshToken
+      refreshTokenExpiryTime
+      user {
+        username
+        phoneNumber
+        photoUrl
+        fullName
+        about
+        location
+        age
+        dateOfBirth
+        gender
+        lastSeen
+        userType
+        userRole
+        isPrivateAccount
+        stripeConnectAccountId
+        stripeConnectCompleted
+        isVerified
+        verificationPhotos
+        verificationErrors
+        socialLinks
+        profession
+        yearsOfExperience
+        height
+        favoriteCategories
+        isDeleted
+        createdDate
+        id
+        email
+        emailConfirmed
+        phoneNumberConfirmed
+        twoFactorEnabled
+      }
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_GenerateTokenViaEmailMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_GenerateTokenViaEmailMutation,
+    TError,
+    User_GenerateTokenViaEmailMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_GenerateTokenViaEmailMutation,
+    TError,
+    User_GenerateTokenViaEmailMutationVariables,
+    TContext
+  >(
+    ['user_generateTokenViaEmail'],
+    (variables?: User_GenerateTokenViaEmailMutationVariables) =>
+      fetcher<
+        User_GenerateTokenViaEmailMutation,
+        User_GenerateTokenViaEmailMutationVariables
+      >(User_GenerateTokenViaEmailDocument, variables)(),
+    options,
+  );
+};
+
+export const User_CreateRequestForVerificationDocument = `
+    mutation user_createRequestForVerification {
+  user_createRequestForVerification {
+    result {
+      userId
+      user {
+        username
+        phoneNumber
+        photoUrl
+        fullName
+        about
+        location
+        age
+        dateOfBirth
+        gender
+        lastSeen
+        userType
+        userRole
+        isPrivateAccount
+        stripeConnectAccountId
+        stripeConnectCompleted
+        isVerified
+        verificationPhotos
+        verificationErrors
+        socialLinks
+        profession
+        yearsOfExperience
+        height
+        favoriteCategories
+        isDeleted
+        createdDate
+        id
+        email
+        emailConfirmed
+        phoneNumberConfirmed
+        twoFactorEnabled
+      }
+      status
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_CreateRequestForVerificationMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_CreateRequestForVerificationMutation,
+    TError,
+    User_CreateRequestForVerificationMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_CreateRequestForVerificationMutation,
+    TError,
+    User_CreateRequestForVerificationMutationVariables,
+    TContext
+  >(
+    ['user_createRequestForVerification'],
+    (variables?: User_CreateRequestForVerificationMutationVariables) =>
+      fetcher<
+        User_CreateRequestForVerificationMutation,
+        User_CreateRequestForVerificationMutationVariables
+      >(User_CreateRequestForVerificationDocument, variables)(),
+    options,
+  );
+};
+
+export const User_CheckVerificationCodeOfEmailDocument = `
+    mutation user_checkVerificationCodeOfEmail($email: String, $verificationCode: String, $isForResetPassword: Boolean!) {
+  user_checkVerificationCodeOfEmail(
+    email: $email
+    verificationCode: $verificationCode
+    isForResetPassword: $isForResetPassword
+  ) {
+    result {
+      token
+      expireDate
+      refreshToken
+      refreshTokenExpiryTime
+      user {
+        username
+        phoneNumber
+        photoUrl
+        fullName
+        about
+        location
+        age
+        dateOfBirth
+        gender
+        lastSeen
+        userType
+        userRole
+        isPrivateAccount
+        stripeConnectAccountId
+        stripeConnectCompleted
+        isVerified
+        verificationPhotos
+        verificationErrors
+        socialLinks
+        profession
+        yearsOfExperience
+        height
+        favoriteCategories
+        isDeleted
+        createdDate
+        id
+        email
+        emailConfirmed
+        phoneNumberConfirmed
+        twoFactorEnabled
+      }
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_CheckVerificationCodeOfEmailMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_CheckVerificationCodeOfEmailMutation,
+    TError,
+    User_CheckVerificationCodeOfEmailMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_CheckVerificationCodeOfEmailMutation,
+    TError,
+    User_CheckVerificationCodeOfEmailMutationVariables,
+    TContext
+  >(
+    ['user_checkVerificationCodeOfEmail'],
+    (variables?: User_CheckVerificationCodeOfEmailMutationVariables) =>
+      fetcher<
+        User_CheckVerificationCodeOfEmailMutation,
+        User_CheckVerificationCodeOfEmailMutationVariables
+      >(User_CheckVerificationCodeOfEmailDocument, variables)(),
+    options,
+  );
+};
+
+export const User_GetCurrentUserDocument = `
+    query user_getCurrentUser {
+  user_getCurrentUser {
+    result {
+      username
+      phoneNumber
+      photoUrl
+      fullName
+      about
+      location
+      age
+      dateOfBirth
+      gender
+      lastSeen
+      userType
+      userRole
+      isPrivateAccount
+      stripeConnectAccountId
+      stripeConnectCompleted
+      isVerified
+      verificationPhotos
+      verificationErrors
+      socialLinks
+      profession
+      yearsOfExperience
+      height
+      favoriteCategories
+      isDeleted
+      createdDate
+      id
+      email
+      emailConfirmed
+      phoneNumberConfirmed
+      twoFactorEnabled
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_GetCurrentUserQuery = <
+  TData = User_GetCurrentUserQuery,
+  TError = unknown,
+>(
+  variables?: User_GetCurrentUserQueryVariables,
+  options?: UseQueryOptions<User_GetCurrentUserQuery, TError, TData>,
+) => {
+  return useQuery<User_GetCurrentUserQuery, TError, TData>(
+    variables === undefined
+      ? ['user_getCurrentUser']
+      : ['user_getCurrentUser', variables],
+    fetcher<User_GetCurrentUserQuery, User_GetCurrentUserQueryVariables>(
+      User_GetCurrentUserDocument,
+      variables,
+    ),
+    options,
+  );
+};
+
+export const useInfiniteUser_GetCurrentUserQuery = <
+  TData = User_GetCurrentUserQuery,
+  TError = unknown,
+>(
+  variables?: User_GetCurrentUserQueryVariables,
+  options?: UseInfiniteQueryOptions<User_GetCurrentUserQuery, TError, TData>,
+) => {
+  return useInfiniteQuery<User_GetCurrentUserQuery, TError, TData>(
+    variables === undefined
+      ? ['user_getCurrentUser.infinite']
+      : ['user_getCurrentUser.infinite', variables],
+    metaData =>
+      fetcher<User_GetCurrentUserQuery, User_GetCurrentUserQueryVariables>(
+        User_GetCurrentUserDocument,
+        {...variables, ...(metaData.pageParam ?? {})},
+      )(),
+    options,
+  );
+};
+
+export const User_GetUsersDocument = `
+    query user_getUsers($skip: Int, $take: Int, $where: UserFilterInput, $order: [UserSortInput!]) {
+  user_getUsers {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        username
+        phoneNumber
+        photoUrl
+        fullName
+        about
+        location
+        age
+        dateOfBirth
+        gender
+        lastSeen
+        userType
+        userRole
+        isPrivateAccount
+        stripeConnectAccountId
+        stripeConnectCompleted
+        isVerified
+        verificationPhotos
+        verificationErrors
+        socialLinks
+        profession
+        yearsOfExperience
+        height
+        favoriteCategories
+        isDeleted
+        createdDate
+        id
+        email
+        emailConfirmed
+        phoneNumberConfirmed
+        twoFactorEnabled
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_GetUsersQuery = <
+  TData = User_GetUsersQuery,
+  TError = unknown,
+>(
+  variables?: User_GetUsersQueryVariables,
+  options?: UseQueryOptions<User_GetUsersQuery, TError, TData>,
+) => {
+  return useQuery<User_GetUsersQuery, TError, TData>(
+    variables === undefined ? ['user_getUsers'] : ['user_getUsers', variables],
+    fetcher<User_GetUsersQuery, User_GetUsersQueryVariables>(
+      User_GetUsersDocument,
+      variables,
+    ),
+    options,
+  );
+};
+
+export const useInfiniteUser_GetUsersQuery = <
+  TData = User_GetUsersQuery,
+  TError = unknown,
+>(
+  variables?: User_GetUsersQueryVariables,
+  options?: UseInfiniteQueryOptions<User_GetUsersQuery, TError, TData>,
+) => {
+  return useInfiniteQuery<User_GetUsersQuery, TError, TData>(
+    variables === undefined
+      ? ['user_getUsers.infinite']
+      : ['user_getUsers.infinite', variables],
+    metaData =>
+      fetcher<User_GetUsersQuery, User_GetUsersQueryVariables>(
+        User_GetUsersDocument,
         {...variables, ...(metaData.pageParam ?? {})},
       )(),
     options,
