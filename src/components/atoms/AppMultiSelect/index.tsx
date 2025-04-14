@@ -49,40 +49,45 @@ const AppMultiSelect = React.forwardRef(
           }
           return itm !== item;
         });
-        setItems(filtered);
+        handleItems(filtered);
       } else {
         if (limit) {
           if (items?.length > 0) {
             if (items?.length < limit) {
               if (valueKey) {
-                setItems(prevState => [...prevState, item?.[valueKey]]);
+                handleItems([...items, item?.[valueKey]]);
               } else {
-                setItems(prevState => [...prevState, item]);
+                handleItems([...items, item]);
               }
             }
           } else {
             if (valueKey) {
-              setItems([item?.[valueKey]]);
+              handleItems([item?.[valueKey]]);
             } else {
-              setItems([item]);
+              handleItems([item]);
             }
           }
         } else {
           if (items?.length > 0) {
             if (valueKey) {
-              setItems(prevState => [...prevState, item?.[valueKey]]);
+              handleItems([...items, item?.[valueKey]]);
             } else {
-              setItems(prevState => [...prevState, item]);
+              handleItems([...items, item]);
             }
           } else {
             if (valueKey) {
-              setItems([item?.[valueKey]]);
+              handleItems([item?.[valueKey]]);
             } else {
-              setItems([item]);
+              handleItems([item]);
             }
           }
         }
       }
+    }
+
+    function handleItems(data: any) {
+      setItems(data);
+      field.onChange(data);
     }
 
     function isEnable(item: any) {

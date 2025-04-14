@@ -1,26 +1,29 @@
-import {DarkTheme, NavigationContainer} from '@react-navigation/native';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
+import {DarkTheme, NavigationContainer, Theme} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import React, {useCallback, useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import {AppLoading} from '~/components';
+import {userDataStore} from '~/stores';
+import {Colors} from '~/styles';
+import {publicScreenOption} from '~/utils/utils';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
 import {navigationRef} from './methods';
-import {userDataStore} from '~/stores';
 
 export type AppNavigatorParamList = {
   Main: undefined;
   Auth: undefined;
 };
 
-const Stack = createNativeStackNavigator<AppNavigatorParamList>();
-
-const navigatorOptions: NativeStackNavigationOptions = {
-  headerShown: false,
+const AppTheme: Theme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: Colors.BACKGROUND,
+  },
 };
+
+const Stack = createStackNavigator<AppNavigatorParamList>();
 
 export default function AppNavigator() {
   const {isUserLoggedIn} = userDataStore(state => state);
@@ -37,10 +40,10 @@ export default function AppNavigator() {
 
   return (
     <NavigationContainer
-      theme={DarkTheme}
+      theme={AppTheme}
       ref={navigationRef}
       fallback={<AppLoading />}>
-      <Stack.Navigator screenOptions={navigatorOptions}>
+      <Stack.Navigator screenOptions={publicScreenOption}>
         {isUserLoggedIn ? (
           <Stack.Screen name="Main" component={MainStack} />
         ) : (

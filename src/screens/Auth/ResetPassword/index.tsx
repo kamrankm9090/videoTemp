@@ -47,15 +47,11 @@ export default function ResetPasswordScreen() {
     };
     mutateResetPassword(variables, {
       onSuccess: response => {
-        console.log('response-->', response);
         if (response?.user_resetPasswordUsingEmail?.code === 1) {
           navigate('ResetPasswordSuccess');
         } else {
           showErrorMessage(response?.user_resetPasswordUsingEmail?.description);
         }
-      },
-      onError: err => {
-        console.log('err-->', err);
       },
     });
   }

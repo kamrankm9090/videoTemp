@@ -1,4 +1,4 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {HomeScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
@@ -7,7 +7,7 @@ export type HomeStackParamList = {
   Home: undefined;
 };
 
-const Stack = createNativeStackNavigator<HomeStackParamList>();
+const Stack = createStackNavigator<HomeStackParamList>();
 
 const screens = [
   {

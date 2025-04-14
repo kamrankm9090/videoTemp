@@ -1,4 +1,4 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {CommunityScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
@@ -7,7 +7,7 @@ export type CommunityStackParamList = {
   Community: undefined;
 };
 
-const Stack = createNativeStackNavigator<CommunityStackParamList>();
+const Stack = createStackNavigator<CommunityStackParamList>();
 
 const screens = [
   {

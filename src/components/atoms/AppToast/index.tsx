@@ -1,9 +1,15 @@
 import React from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {AppText} from '~/components';
+import {Close, CloseCircle} from '~/assets/svgs';
+import {AppText, AppTouchable} from '~/components';
 import {useGetStatusBarHeight} from '~/hooks';
 import {Colors} from '~/styles';
 import {fontSize, scale, verticalScale} from '~/utils/style';
+import Toast, {
+  BaseToast,
+  ErrorToast,
+  ToastProps,
+} from 'react-native-toast-message';
 
 type Props = {
   text1: string;
@@ -14,17 +20,21 @@ type Props = {
   text1Color?: string;
   top?: number;
   onPress?: () => void;
+  closeIcon?: JSX.Element;
+  closeAction?: () => void;
 };
 
 export default function AppToast({
   text1,
   text2,
   icon,
-  backgroundColor = Colors.SUCCESS,
-  color = Colors.WHITE,
+  backgroundColor = Colors.CosmicLatte,
+  color = Colors.BLACK,
   text1Color = Colors.BLACK,
   top,
   onPress,
+  closeIcon = <Close />,
+  closeAction = () => Toast.hide(),
 }: Props) {
   const {statusBarHeight} = useGetStatusBarHeight();
 
@@ -53,6 +63,7 @@ export default function AppToast({
             </TouchableOpacity>
           )}
         </ScrollView>
+        <AppTouchable onPress={closeAction}>{closeIcon}</AppTouchable>
       </View>
     </View>
   );
@@ -66,7 +77,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(16),
     paddingVertical: verticalScale(16),
     width: '100%',
-    minHeight: 64,
+    minHeight: 72,
+    marginHorizontal: 8,
+    borderRadius: 8,
   },
   direction: {
     flexDirection: 'row',
