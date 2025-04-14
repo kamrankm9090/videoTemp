@@ -4,6 +4,11 @@ import {
   StackActions,
 } from '@react-navigation/native';
 import {RootStackParamList} from './types';
+import {Platform} from 'react-native';
+import {
+  TransitionPresets,
+  StackNavigationOptions,
+} from '@react-navigation/stack';
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -110,3 +115,153 @@ export function pop(numberOfPages: number) {
     navigationRef?.current?.dispatch(StackActions.pop(numberOfPages));
   });
 }
+
+//
+// ────────────────────────────────────────────────────────────────────────────────
+// DEFAULT TRANSITIONS FOR IOS AND ANDROID
+// ────────────────────────────────────────────────────────────────────────────────
+//
+
+/**
+ * iOS Transition Configuration
+ * Uses SlideFromRight preset and applies a scale + opacity animation.
+ */
+const iosTransitionConfig: StackNavigationOptions = {
+  ...TransitionPresets.SlideFromRightIOS,
+
+  cardStyleInterpolator: ({current, next, layouts}) => ({
+    cardStyle: {
+      opacity: current.progress,
+      transform: [
+        {
+          // Scale animation: Shrinks slightly when going back
+          scale: next
+            ? next.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 0.95],
+              })
+            : current.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.95, 1],
+              }),
+        },
+        {
+          // Slide in from the right
+          translateX: current.progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [layouts.screen.width, 0],
+          }),
+        },
+      ],
+    },
+  }),
+
+  gestureEnabled: true,
+  gestureDirection: 'horizontal',
+};
+
+/**
+ * Android Transition Configuration
+ * Uses FadeFromBottom preset and a slide-in with opacity animation.
+ */
+const androidTransitionConfig: StackNavigationOptions = {
+  ...TransitionPresets.FadeFromBottomAndroid,
+
+  cardStyleInterpolator: ({current}) => ({
+    cardStyle: {
+      opacity: current.progress,
+      transform: [
+        {
+          // Slight slide-in from the right
+          translateX: current.progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [50, 0],
+          }),
+        },
+      ],
+    },
+  }),
+
+  gestureEnabled: true,
+  gestureDirection: 'horizontal',
+};
+
+/**
+ * Platform-Based Transition Export
+ * iOS uses slide, Android uses fade with slight slide.
+ */
+const screenTransitionConfig: StackNavigationOptions =
+  Platform.OS === 'ios' ? iosTransitionConfig : androidTransitionConfig;
+
+//
+// ────────────────────────────────────────────────────────────────────────────────
+// FADE ONLY TRANSITION (NO GESTURE)
+// ────────────────────────────────────────────────────────────────────────────────
+//
+
+/**
+ * Fade Only Transition
+ * Clean fade-in effect with no gestures.
+ */
+const fadeOnlyTransitionConfigFade: StackNavigationOptions = {
+  cardStyleInterpolator: ({current}) => ({
+    cardStyle: {
+      opacity: current.progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+      }),
+    },
+  }),
+
+  gestureEnabled: false,
+};
+
+const screenTransitionConfigFade: StackNavigationOptions =
+  fadeOnlyTransitionConfigFade;
+
+//
+// ────────────────────────────────────────────────────────────────────────────────
+// SMOOTH FADE WITH SCALE TRANSITION (RECOMMENDED)
+// ────────────────────────────────────────────────────────────────────────────────
+//
+
+/**
+ * Smooth Fade + Scale Transition
+ * A subtle zoom-in with fade effect for a polished experience.
+ */
+const smoothFadeTransitionConfig: StackNavigationOptions = {
+  cardStyleInterpolator: ({current}) => ({
+    cardStyle: {
+      opacity: current.progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+      }),
+      transform: [
+        {
+          // Slight zoom-in effect
+          scale: current.progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0.98, 1],
+          }),
+        },
+      ],
+    },
+  }),
+
+  gestureEnabled: false,
+};
+
+const screenTransitionConfigSmooth: StackNavigationOptions =
+  smoothFadeTransitionConfig;
+
+//
+// ────────────────────────────────────────────────────────────────────────────────
+// EXPORTS
+// ────────────────────────────────────────────────────────────────────────────────
+//
+
+export {
+  screenTransitionConfig, // Platform-based default transition
+  screenTransitionConfigFade, // Fade only (no scale, no gesture)
+  screenTransitionConfigSmooth, // Recommended smooth fade + scale
+};

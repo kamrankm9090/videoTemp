@@ -1,15 +1,15 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {
-  SignupScreen,
-  SignupSigninScreen,
-  SigninScreen,
   ForgotPasswordScreen,
-  VerificationCodeScreen,
-  SignupSuccessScreen,
-  SelectCategoryScreen,
   ResetPasswordScreen,
   ResetPasswordSuccessScreen,
+  SelectCategoryScreen,
+  SigninScreen,
+  SignupScreen,
+  SignupSigninScreen,
+  SignupSuccessScreen,
+  VerificationCodeScreen,
 } from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
 
@@ -25,7 +25,7 @@ export type AuthStackParamList = {
   ResetPasswordSuccess: undefined;
 };
 
-const Stack = createNativeStackNavigator<AuthStackParamList>();
+const Stack = createStackNavigator<AuthStackParamList>();
 
 const screens = [
   {

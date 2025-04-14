@@ -1,4 +1,4 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {LiveScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
@@ -7,7 +7,7 @@ export type LiveStackParamList = {
   Live: undefined;
 };
 
-const Stack = createNativeStackNavigator<LiveStackParamList>();
+const Stack = createStackNavigator<LiveStackParamList>();
 
 const screens = [
   {

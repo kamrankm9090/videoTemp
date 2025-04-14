@@ -21,6 +21,7 @@ import {selectCategorySchema} from '~/schemas';
 import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
+import {showErrorMessage} from '~/utils/utils';
 
 const defaultValues = {categories: []};
 
@@ -31,7 +32,7 @@ export default function SelectCategoryScreen() {
   });
 
   const {handleSubmit} = methods;
-  const {userData} = userDataStore(state => state);
+  const {userData, setIsUserLoggedIn} = userDataStore(state => state);
 
   const {mutate: mutateUserUpdate, isLoading: isLoadingUpdateUser} =
     useUser_UpdateUserMutation();
@@ -42,21 +43,27 @@ export default function SelectCategoryScreen() {
     ?.map(a => a?.category_getCategories?.result?.items)
     .flat();
 
-  console.log('categories-->', categories);
-
   async function onSubmit(formData: typeof defaultValues) {
     const variables = {
       userId: userData?.id,
       userInput: {
-        favoriteCategories: formData?.categories,
+        favoriteCategories: formData?.categories?.join(','),
       },
     };
     mutateUserUpdate(variables, {
-      onSuccess: () => {},
+      onSuccess: response => {
+        if (response?.user_updateUser?.status?.code === 1) {
+          setIsUserLoggedIn(true);
+        } else {
+          showErrorMessage(response?.user_updateUser?.status?.description);
+        }
+      },
     });
   }
 
-  function skipOnPress() {}
+  function skipOnPress() {
+    setIsUserLoggedIn(true);
+  }
 
   return (
     <AppContainer
@@ -84,6 +91,7 @@ export default function SelectCategoryScreen() {
             <AppMultiSelect
               prompt="You can select multiple answers."
               name="categories"
+              valueKey="title"
               data={categories}
             />
           </AppFormProvider>

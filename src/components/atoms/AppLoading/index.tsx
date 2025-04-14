@@ -4,6 +4,7 @@ import {AppIndicator} from '~/components';
 import {useGetStatusBarHeight} from '~/hooks';
 import {Colors} from '~/styles';
 import {isAndroid} from '~/utils/helper';
+import {height} from '~/utils/style';
 
 interface Props {
   style?: ViewStyle;
@@ -34,9 +35,9 @@ export default function AppLoading({
 const styles = StyleSheet.create({
   loading: {
     flex: 1,
-    zIndex: 999,
+    zIndex: 9999,
     width: '100%',
-    height: '100%',
+    height: height,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',

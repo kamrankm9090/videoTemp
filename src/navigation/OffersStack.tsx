@@ -1,4 +1,4 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {OffersScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
@@ -7,7 +7,7 @@ export type OffersStackParamList = {
   Offers: undefined;
 };
 
-const Stack = createNativeStackNavigator<OffersStackParamList>();
+const Stack = createStackNavigator<OffersStackParamList>();
 
 const screens = [
   {

@@ -21,6 +21,9 @@ import {Colors} from '~/styles';
 import {isAndroid, isIos} from './helper';
 
 import {AgoraDropdownItem} from '~/components/ui';
+import {Error, InfoCircle, TickCircle, Warning} from '~/assets/svgs';
+import {screenTransitionConfig} from '~/navigation/methods';
+import {StackNavigationOptions} from '@react-navigation/stack';
 
 export const toastConfig = {
   success: (props: ToastProps) => <BaseToast {...props} />,
@@ -35,7 +38,7 @@ export const toastConfig = {
           color: props.color,
           onPress: props.onPress,
           backgroundColor: props.backgroundColor,
-          text1Color: Colors.WHITE,
+          text1Color: Colors.BLACK,
         }}
       />
     );
@@ -49,7 +52,7 @@ export const toastConfig = {
         icon: props.icon,
         color: props.color,
         onPress: props.onPress,
-        backgroundColor: Colors.SUCCESS,
+        backgroundColor: props.backgroundColor,
       }}
     />
   ),
@@ -72,7 +75,7 @@ export const toastConfig = {
         icon: props.icon,
         color: props.color,
         onPress: props.onPress,
-        backgroundColor: Colors.INFO,
+        backgroundColor: props.backgroundColor,
       }}
     />
   ),
@@ -84,7 +87,7 @@ export const toastConfig = {
         icon: props.icon,
         color: props.color,
         onPress: props.onPress,
-        backgroundColor: Colors.WARNING,
+        backgroundColor: props.backgroundColor,
       }}
     />
   ),
@@ -126,8 +129,8 @@ export function showSuccessMessage(
     text2: message2,
     position: 'top',
     props: {
-      icon,
-      color: Colors.WHITE,
+      icon: <TickCircle />,
+      color: Colors.BLACK,
     },
   });
 }
@@ -145,9 +148,9 @@ export function showErrorMessage(
     text2: message2,
     position: 'top',
     props: {
-      icon,
+      icon: <Error />,
       color: Colors.WHITE,
-      backgroundColor: Colors.ERROR_BACKGROUND,
+      backgroundColor: Colors.WePeep,
     },
   });
 }
@@ -165,8 +168,9 @@ export function showInfoMessage(
     text2: message2,
     position: 'top',
     props: {
-      icon,
+      icon: <InfoCircle />,
       color: Colors.BACKGROUND,
+      backgroundColor: Colors.Gainsboro,
     },
   });
 }
@@ -184,8 +188,9 @@ export function showWarningMessage(
     text2: message2,
     position: 'top',
     props: {
-      icon,
-      color: Colors.BACKGROUND,
+      icon: <Warning />,
+      color: Colors.BlanchedAlmond,
+      backgroundColor: Colors.BlanchedAlmond,
     },
   });
 }
@@ -231,11 +236,15 @@ export const publicTabScreenOption: BottomTabNavigationOptions = {
   ...CommonActions,
 };
 
-export const publicScreenOption: NativeStackNavigationOptions = {
-  animation: 'slide_from_right',
-  gestureEnabled: true,
-  gestureDirection: 'horizontal',
+// export const publicScreenOption: NativeStackNavigationOptions = {
+//   animation: 'slide_from_right',
+//   gestureEnabled: true,
+//   gestureDirection: 'horizontal',
+//   headerShown: false,
+// };
+export const publicScreenOption: StackNavigationOptions = {
   headerShown: false,
+  ...screenTransitionConfig,
 };
 
 export function openCall(phoneNumber: string) {

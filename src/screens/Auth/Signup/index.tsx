@@ -104,8 +104,7 @@ export default function SignupScreen() {
   }
 
   function loginOnPress() {
-    // replace('Signin');
-    replace('SelectCategory');
+    replace('Signin');
   }
 
   function onResponseSocialMedia() {}

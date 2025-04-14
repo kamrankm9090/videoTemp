@@ -1,4 +1,4 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {publicScreenOption} from '~/utils/utils';
 import MainTabs from './MainTabs';
@@ -11,7 +11,7 @@ export type MainStackParamList = {
 
 export type MainTabScreensParams = 'HomeTab' | 'LiveTab';
 
-const Stack = createNativeStackNavigator<MainStackParamList>();
+const Stack = createStackNavigator<MainStackParamList>();
 
 const screens = [
   {

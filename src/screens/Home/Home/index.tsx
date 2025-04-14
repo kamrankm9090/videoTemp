@@ -1,10 +1,33 @@
 import React from 'react';
-import {AppContainer, ScreensHeader} from '~/components';
+import {AppLogo, Message, Notification, Search} from '~/assets/svgs';
+import {AppContainer, AppTouchable, HStack, ScreensHeader} from '~/components';
+import {showErrorMessage, showSuccessMessage} from '~/utils/utils';
 
 export default function HomeScreen() {
+  function searchOnPress() {
+    showErrorMessage();
+  }
+  function messageOnPress() {}
+  function notificationOnPress() {}
+
   return (
     <AppContainer>
-      <ScreensHeader title="Home" />
+      <ScreensHeader
+        leftHeader={<AppLogo height={27} width={63} />}
+        rightHeader={
+          <HStack space={16}>
+            <AppTouchable onPress={searchOnPress}>
+              <Search />
+            </AppTouchable>
+            <AppTouchable onPress={messageOnPress}>
+              <Message />
+            </AppTouchable>
+            <AppTouchable onPress={notificationOnPress}>
+              <Notification />
+            </AppTouchable>
+          </HStack>
+        }
+      />
     </AppContainer>
   );
 }
