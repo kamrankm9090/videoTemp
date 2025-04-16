@@ -1,92 +1,157 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+  useMemo,
+} from 'react';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import Video, {
-  VideoRef,
-  ReactVideoProps,
   BufferingStrategyType,
+  ReactVideoProps,
+  VideoRef,
 } from 'react-native-video';
-import {VideoImageViewer} from '~/components';
 import {useIsFocused} from '@react-navigation/native';
+import {Save} from '~/assets/svgs';
 
-const videoPlayerControlsStyles: ReactVideoProps['controlsStyles'] = {
-  hideDuration: true,
-  hideForward: true,
-  hideSeekBar: true,
-  hidePrevious: true,
-  hideNext: true,
-  hideRewind: true,
-  hideSettingButton: true,
-  hidePosition: true,
-};
+type AppVideoPlayerProps = {
+  isPlaying?: boolean;
+} & ReactVideoProps;
 
-export default function AppVideoPlayer({
-  isPlaying,
-  style = styles.video,
-  resizeMode = 'cover',
-  repeat = true,
-  source,
-  ...rest
-}: {isPlaying?: boolean} & ReactVideoProps) {
-  const videoRef = useRef<VideoRef>(null);
+const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
+  function AppVideoPlayerBase(
+    {
+      isPlaying = true,
+      style = styles.video,
+      resizeMode = 'cover',
+      repeat = true,
+      source,
+      ...rest
+    },
+    ref,
+  ) {
+    const videoRef = useRef<VideoRef>(null);
+    const isFocused = useIsFocused();
+    const [duration, setDuration] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
 
-  // const [play, setPlay] = useState<boolean>(false);
-  const isFocused = useIsFocused();
+    const paused = useMemo(() => !(isPlaying && isFocused), [isPlaying, isFocused]);
 
-  useEffect(() => {
-    if (isPlaying && isFocused) {
-      // setPlay(true);
-      videoRef.current?.resume();
-    } else {
-      // setPlay(false);
-      videoRef.current?.pause();
-    }
-  }, [isPlaying, isFocused]);
+    useImperativeHandle(ref, () => videoRef.current!, []);
 
-  // if (!isPlaying) {
-  //   return <VideoImageViewer url={source?.uri} />;
-  // }
+    const handleProgress = useCallback(({currentTime}: {currentTime: number}) => {
+      setCurrentTime(currentTime);
+    }, []);
 
-  return (
-    <Video
-      {...rest}
-      // source={
-      //   {
-      //     uri: convertToProxyURL(source?.uri),
-      //   } // Converts the video URL to a proxy URL if visible
-      // }
-      source={source}
-      // source={{
-      //   uri: source?.uri,
-      //   // bufferConfig: {
-      //   //   minBufferMs: 1000,
-      //   //   maxBufferMs: 2000,
-      //   //   bufferForPlaybackMs: 5000,
-      //   //   bufferForPlaybackAfterRebufferMs: 2000,
-      //   // },
-      //   shouldCache: true,
-      // }}
-      repeat={repeat}
-      controls={true}
-      filter=""
-      // paused={!play}
-      ref={videoRef}
-      resizeMode={resizeMode}
-      playInBackground={false}
-      controlsStyles={videoPlayerControlsStyles}
-      style={style}
-      muted={false}
-      disableFocus={true}
-      useTextureView={false}
-      minLoadRetryCount={3}
-      bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}
-      ignoreSilentSwitch="ignore"
-      onLoadStart={() => console.log('Video loading started')}
-      onLoad={() => console.log('Video loaded successfully')}
-      onError={error => console.log('Video error:', error)}
-    />
-  );
-}
+    const handleLoad = useCallback(({duration}: {duration: number}) => {
+      setDuration(duration);
+    }, []);
+
+    const handleError = useCallback((error: any) => {
+      console.error('Video error:', error);
+    }, []);
+
+    const formatTime = useCallback((seconds: number) => {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }, []);
+
+    const remainingTime = useMemo(
+      () => formatTime(Math.max(duration - currentTime, 0)),
+      [duration, currentTime, formatTime],
+    );
+
+    return (
+      <View style={[style, styles.container]}>
+        <Video
+          {...rest}
+          ref={videoRef}
+          source={source}
+          repeat={repeat}
+          paused={paused}
+          resizeMode={resizeMode}
+          playInBackground={false}
+          playWhenInactive={false}
+          muted={false}
+          ignoreSilentSwitch="ignore"
+          useTextureView={false}
+          minLoadRetryCount={3}
+          bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}
+          onLoad={handleLoad}
+          onError={handleError}
+          onProgress={handleProgress}
+          style={StyleSheet.absoluteFill}
+        />
+
+        {/* Live Badge */}
+        <View style={styles.liveBadge}>
+          <Text style={styles.liveText}>Live</Text>
+        </View>
+
+        {/* Save Icon */}
+        <TouchableOpacity style={styles.saveIcon}>
+          <Save />
+        </TouchableOpacity>
+
+        {/* Timer */}
+        <View style={styles.timer}>
+          <Text style={styles.timerText}>{remainingTime}</Text>
+        </View>
+      </View>
+    );
+  },
+);
+
+const AppVideoPlayer = memo(AppVideoPlayerBase);
+
+export default AppVideoPlayer;
+
 
 const styles = StyleSheet.create({
-  video: {width: '100%', height: '100%', borderRadius: 16},
+  video: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 16,
+    overflow: 'hidden',
+    backgroundColor: 'black',
+  },
+  container: {
+    position: 'relative',
+    backgroundColor: 'black',
+  },
+  liveBadge: {
+    position: 'absolute',
+    top: 12,
+    left: 12,
+    backgroundColor: '#ff4e5e',
+    borderRadius: 20,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+  },
+  liveText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  saveIcon: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+  },
+  timer: {
+    position: 'absolute',
+    bottom: 12,
+    right: 12,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    borderRadius: 16,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+  },
+  timerText: {
+    color: 'white',
+    fontSize: 12,
+  },
 });

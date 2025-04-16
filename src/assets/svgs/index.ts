@@ -35,3 +35,5 @@ export {default as Error} from './error.svg';
 export {default as TickCircle} from './tickCircle.svg';
 export {default as Warning} from './warning.svg';
 export {default as InfoCircle} from './infoCircle.svg';
+export {default as Save} from './save.svg';
+export {default as Saved} from './saved.svg';
