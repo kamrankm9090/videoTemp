@@ -33,11 +33,11 @@ export function getAspectRatio(width: number, height: number) {
   return 1;
 }
 
-export const formatTime = useCallback((seconds: number) => {
+export const formatTime = (seconds: number) => {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
   return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-}, []);
+}
 // form helper
 export {useForm} from 'react-hook-form';
 export {Yup, yupResolver};

@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 12,
     left: 12,
-    backgroundColor: Colors.ERROR_BACKGROUND,
+    backgroundColor: Colors.ERROR,
     borderRadius: 20,
     paddingVertical: 4,
     paddingHorizontal: 10,
