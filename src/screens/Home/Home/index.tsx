@@ -1,14 +1,63 @@
-import React, {useRef, useState, useCallback} from 'react';
-import {FlatList, View, ViewToken} from 'react-native';
+import React, {useCallback, useRef, useState} from 'react';
+import {ViewToken} from 'react-native';
 import {AppLogo, Message, Notification, Search} from '~/assets/svgs';
 import {
   AppContainer,
+  AppFlatList,
   AppTouchable,
-  AppVideoPlayer,
+  Box,
+  HomePostItem,
   HStack,
   ScreensHeader,
 } from '~/components';
-import {showErrorMessage} from '~/utils/utils';
+
+const data = [
+  {
+    id: 0,
+    previewUrl:
+      'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[0].mp4',
+    title: 'Cs go_mc',
+    description: 'a live stream where the person',
+    viewCount: 34000,
+    purchaseCount: 34500,
+    isSave: false,
+    isLive: false,
+    user: {
+      fullName: 'Kamran km',
+      imageUrl: 'https://picsum.photos/200/300',
+    },
+  },
+  {
+    id: 1,
+    previewUrl:
+      'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[1].mp4',
+    title: 'Cs go_mc',
+    description: 'a live stream where the person',
+    viewCount: 34000,
+    purchaseCount: 34500,
+    isSave: false,
+    isLive: false,
+    user: {
+      fullName: 'David Beckham',
+      imageUrl: 'https://picsum.photos/id/237/200/300',
+    },
+  },
+  {
+    id: 2,
+    previewUrl:
+      'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[3].mp4',
+    title: 'Cs go_mc',
+    description: 'a live stream where the person',
+    viewCount: 34000,
+    purchaseCount: 34500,
+    isSave: false,
+    isLive: false,
+    user: {
+      fullName: 'Cristiano Ronaldo',
+      imageUrl: 'https://picsum.photos/seed/picsum/200/300',
+    },
+  },
+];
 
 export default function HomeScreen() {
   const [visibleIndex, setVisibleIndex] = useState<number | null>(null);
@@ -18,33 +67,17 @@ export default function HomeScreen() {
     console.log(viewableItems.length > 0);
 
     if (viewableItems.length > 0) {
-      
-      setVisibleIndex(viewableItems[0]?.index  ?? null);
+      setVisibleIndex(viewableItems[0]?.index ?? null);
     }
   });
 
-  function searchOnPress() {
-    showErrorMessage();
-  }
+  function searchOnPress() {}
   function messageOnPress() {}
   function notificationOnPress() {}
 
   const renderItem = useCallback(
     ({item, index}: {item: any; index: number}) => {
-      return (
-        <AppVideoPlayer
-          key={index}
-          style={{
-            height: 200,
-            backgroundColor: '#222',
-            margin: 7,
-          }}
-          isPlaying={index === visibleIndex}
-          source={{
-            uri: 'https://www.w3schools.com/html/mov_bbb.mp4'
-          }}
-        />
-      );
+      return <HomePostItem {...{item, index, visibleIndex}} />;
     },
     [visibleIndex],
   );
@@ -67,14 +100,15 @@ export default function HomeScreen() {
           </HStack>
         }
       />
-      <FlatList
-        data={[...new Array(20)]}
+
+      <AppFlatList
+        data={data}
         renderItem={renderItem}
         keyExtractor={(_, i) => String(i)}
         viewabilityConfig={viewConfigRef.current}
         onViewableItemsChanged={onViewRef.current}
         removeClippedSubviews
-        ListFooterComponent={<View style={{bottom:40}} />}
+        listFooterComponent={<Box bottom={40} />}
       />
     </AppContainer>
   );

@@ -1,9 +1,10 @@
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useCallback} from 'react';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {Platform} from 'react-native';
 import {v4 as uuidv4} from 'uuid';
 import * as Yup from 'yup';
 import config from '~/config';
+import {showSuccessMessage} from './utils';
 
 export function generateUuid() {
   return uuidv4().replace(/-/g, '');
@@ -33,11 +34,35 @@ export function getAspectRatio(width: number, height: number) {
   return 1;
 }
 
+export function formatNumber(num: number): string {
+  if (num >= 1_000_000_000) {
+    return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+  }
+  if (num >= 1_000_000) {
+    return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+  }
+  if (num >= 1_000) {
+    return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+  }
+  return num.toString();
+}
+
+export function copyToClipBoard({
+  value,
+  message = 'Copied',
+}: {
+  value: string;
+  message?: string | null;
+}) {
+  Clipboard.setString(value);
+  message && showSuccessMessage(message);
+}
+
 export const formatTime = (seconds: number) => {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
   return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-}
+};
 // form helper
 export {useForm} from 'react-hook-form';
 export {Yup, yupResolver};
