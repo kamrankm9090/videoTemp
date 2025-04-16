@@ -18,6 +18,7 @@ import {Save} from '~/assets/svgs';
 import { Colors } from '~/styles';
 import AppTouchable from '../AppTouchable';
 import AppText from '../AppText';
+import { formatTime } from '~/utils/helper';
 
 type AppVideoPlayerProps = {
   isPlaying?: boolean;
@@ -56,11 +57,7 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
       console.error('Video error:', error);
     }, []);
 
-    const formatTime = useCallback((seconds: number) => {
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    }, []);
+  
 
     const remainingTime = useMemo(
       () => formatTime(Math.max(duration - currentTime, 0)),
