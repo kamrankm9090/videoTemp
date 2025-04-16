@@ -15,6 +15,9 @@ import Video, {
 } from 'react-native-video';
 import {useIsFocused} from '@react-navigation/native';
 import {Save} from '~/assets/svgs';
+import { Colors } from '~/styles';
+import AppTouchable from '../AppTouchable';
+import AppText from '../AppText';
 
 type AppVideoPlayerProps = {
   isPlaying?: boolean;
@@ -88,17 +91,17 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
 
         {/* Live Badge */}
         <View style={styles.liveBadge}>
-          <Text style={styles.liveText}>Live</Text>
+          <AppText style={styles.liveText}>Live</AppText>
         </View>
 
         {/* Save Icon */}
-        <TouchableOpacity style={styles.saveIcon}>
+        <AppTouchable style={styles.saveIcon}>
           <Save />
-        </TouchableOpacity>
+        </AppTouchable>
 
         {/* Timer */}
         <View style={styles.timer}>
-          <Text style={styles.timerText}>{remainingTime}</Text>
+          <AppText style={styles.timerText}>{remainingTime}</AppText>
         </View>
       </View>
     );
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 12,
     left: 12,
-    backgroundColor: '#ff4e5e',
+    backgroundColor: Colors.ERROR_BACKGROUND,
     borderRadius: 20,
     paddingVertical: 4,
     paddingHorizontal: 10,
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 12,
     right: 12,
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: Colors.BLACK_TRANSPARENT_7,
     borderRadius: 16,
     paddingVertical: 4,
     paddingHorizontal: 10,
