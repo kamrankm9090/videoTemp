@@ -91,7 +91,7 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
 
         {/* Live Badge */}
         <View style={styles.liveBadge}>
-          <AppText style={styles.liveText}>Live</AppText>
+          <AppText fontFamily='bold' style={styles.liveText}>Live</AppText>
         </View>
 
         {/* Save Icon */}
@@ -135,8 +135,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   liveText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: Colors.WHITE,
     fontSize: 14,
   },
   saveIcon: {
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   timerText: {
-    color: 'white',
+    color: Colors.WHITE,
     fontSize: 12,
   },
 });
