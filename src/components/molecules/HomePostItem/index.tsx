@@ -1,37 +1,26 @@
-import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet} from 'react-native';
-import {HotSpot, Purchase, ThreePoint} from '~/assets/svgs';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {HotSpot, Purchase} from '~/assets/svgs';
 import {
   AppImage,
   AppText,
-  AppTouchable,
   AppVideoPlayer,
-  Box,
   HomePostOptions,
   HStack,
   VStack,
 } from '~/components';
-import {homePostsStore} from '~/stores';
-import {formatNumber, getFullImageUrl} from '~/utils/helper';
 import {Colors} from '~/styles';
+import {formatNumber} from '~/utils/helper';
 
-export default function HomePostItem({item, yIndex, preloading}: any) {
-  const isPlaying = homePostsStore.currentYIndex === yIndex;
-
-  // useEffect(() => {
-  //   if (preloading === item?.url && item?.url) {
-  //     // console.log('item?.--->', item?.id, '---->', item?.url);
-  //     const url = getFullImageUrl(item.url);
-  //     Image.prefetch(url); // Prefetch the image/video
-  //   }
-  // }, [preloading, item?.url]);
-
+export default function HomePostItem({item, index, visibleIndex}: any) {
   return (
     <VStack h={335} w="100%">
       <AppVideoPlayer
-        isPlaying={isPlaying}
+        key={index}
+        style={styles.player}
+        isPlaying={index === visibleIndex}
         source={{
-          uri: getFullImageUrl(item?.name),
+          uri: item?.previewUrl,
         }}
       />
       <SectionUserRow data={item} />
@@ -86,5 +75,10 @@ const styles = StyleSheet.create({
     height: 42,
     width: 42,
     borderRadius: 42,
+  },
+  player: {
+    height: 200,
+    backgroundColor: Colors.Nero,
+    margin: 7,
   },
 });

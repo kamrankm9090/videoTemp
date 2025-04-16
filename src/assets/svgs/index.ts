@@ -43,3 +43,5 @@ export {default as InformationCircle} from './informationCircle.svg';
 export {default as Search2} from './search2.svg';
 export {default as Copy} from './copy.svg';
 export {default as ChevronRight} from './chevronRight.svg';
+export {default as Save} from './save.svg';
+export {default as Saved} from './saved.svg';

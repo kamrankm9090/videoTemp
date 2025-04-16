@@ -1,9 +1,9 @@
 import {yupResolver} from '@hookform/resolvers/yup';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {Platform} from 'react-native';
+import {v4 as uuidv4} from 'uuid';
 import * as Yup from 'yup';
 import config from '~/config';
-import {v4 as uuidv4} from 'uuid';
-import Clipboard from '@react-native-clipboard/clipboard';
 import {showSuccessMessage} from './utils';
 
 export function generateUuid() {
@@ -58,6 +58,11 @@ export function copyToClipBoard({
   message && showSuccessMessage(message);
 }
 
+export const formatTime = (seconds: number) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+};
 // form helper
 export {useForm} from 'react-hook-form';
 export {Yup, yupResolver};
