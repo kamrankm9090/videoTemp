@@ -54,6 +54,10 @@ const forgotPasswordSchema = yup.object().shape({
   email: yup.string().required('Required').trim(),
 });
 
+const reportReasonSchema = yup.object().shape({
+  reason: yup.string().required('Required').trim(),
+});
+
 const selectCategorySchema = yup.object().shape({
   categories: yup.array().required('Required').nullable(),
 });
@@ -115,4 +119,5 @@ export {
   UserSchema,
   selectCategorySchema,
   resetPasswordSchema,
+  reportReasonSchema,
 };

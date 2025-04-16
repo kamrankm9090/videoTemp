@@ -38,3 +38,8 @@ export {default as InfoCircle} from './infoCircle.svg';
 export {default as ThreePoint} from './threePoint.svg';
 export {default as HotSpot} from './hotSpot.svg';
 export {default as Purchase} from './purchase.svg';
+export {default as Share} from './share.svg';
+export {default as InformationCircle} from './informationCircle.svg';
+export {default as Search2} from './search2.svg';
+export {default as Copy} from './copy.svg';
+export {default as ChevronRight} from './chevronRight.svg';
