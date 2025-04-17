@@ -1,11 +1,13 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {ViewToken} from 'react-native';
+import {StyleSheet, ViewToken} from 'react-native';
 import {
   AppContainer,
   AppFlatList,
-  Box,
   HomeHeader,
   HomePostItem,
+  InviteFriendsCard,
+  PeopleYouMayKnow,
+  VStack,
 } from '~/components';
 import {useInfiniteLive_GetLivesQuery} from '~/graphql/generated';
 
@@ -92,6 +94,15 @@ export default function HomeScreen() {
     [visibleIndex],
   );
 
+  const listFooterComponent = useCallback(() => {
+    return (
+      <VStack>
+        <PeopleYouMayKnow />
+        <InviteFriendsCard />
+      </VStack>
+    );
+  }, []);
+
   return (
     <AppContainer isLoading={isLoadingGetLives}>
       <HomeHeader />
@@ -102,9 +113,17 @@ export default function HomeScreen() {
         viewabilityConfig={viewConfigRef.current}
         onViewableItemsChanged={onViewRef.current}
         removeClippedSubviews
-        listFooterComponent={<Box bottom={40} />}
+        listFooterComponent={listFooterComponent}
         onEndReached={onLoadMore}
+        contentContainerStyle={styles.contentContainerStyle}
       />
     </AppContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  contentContainerStyle: {
+    flexGrow: 1,
+    paddingBottom: 48,
+  },
+});

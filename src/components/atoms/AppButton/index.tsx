@@ -37,6 +37,7 @@ interface Props {
   borderWidth?: ViewStyle['borderWidth'];
   leftIconPosition?: ViewStyle['position'];
   space?: number;
+  minW?: ViewStyle['minWidth'];
 }
 
 export default function AppButton({
@@ -55,7 +56,7 @@ export default function AppButton({
   spinnerSize = 'small',
   width = '100%',
   height = 54,
-  borderRadius = 11,
+  borderRadius = 8,
   fontSize = fs.small,
   font_family = fontFamily.bold,
   mt,
@@ -72,6 +73,7 @@ export default function AppButton({
   borderWidth,
   leftIconPosition = 'absolute',
   space = 16,
+  minW,
 }: Props) {
   function onPressHandler() {
     onPress?.();
@@ -93,6 +95,7 @@ export default function AppButton({
       mx={mx}
       px={px}
       py={py}
+      minW={minW}
       w={hasWidth ? width : undefined}
       flex={flex}
       h={height}
