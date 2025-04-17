@@ -8,6 +8,8 @@ import {
   HStack,
   ScreensHeader,
 } from '~/components';
+import InviteFriendsCard from '~/components/molecules/InviteFriendsCard';
+import PeopleYouMayKnow from '~/components/molecules/PeopleYouMayKnow';
 import {showErrorMessage} from '~/utils/utils';
 
 export default function HomeScreen() {
@@ -67,6 +69,8 @@ export default function HomeScreen() {
           </HStack>
         }
       />
+      <PeopleYouMayKnow />
+      <InviteFriendsCard onPress={() =>{}}/>
       <FlatList
         data={[...new Array(20)]}
         renderItem={renderItem}
