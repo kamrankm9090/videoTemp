@@ -44,36 +44,36 @@ query user_getUsers($skip: Int, $take: Int, $where: UserFilterInput, $order: [Us
                 hasPreviousPage
             }
             items{
-                 username
-            phoneNumber
-            photoUrl
-            fullName
-            about
-            location
-            age
-            dateOfBirth
-            gender
-            lastSeen
-            userType
-            userRole
-            isPrivateAccount
-            stripeConnectAccountId
-            stripeConnectCompleted
-            isVerified
-            verificationPhotos
-            verificationErrors
-            socialLinks
-            profession
-            yearsOfExperience
-            height
-            favoriteCategories
-            isDeleted
-            createdDate
-            id
-            email
-            emailConfirmed
-            phoneNumberConfirmed
-            twoFactorEnabled
+                username
+                phoneNumber
+                photoUrl
+                fullName
+                about
+                location
+                age
+                dateOfBirth
+                gender
+                lastSeen
+                userType
+                userRole
+                isPrivateAccount
+                stripeConnectAccountId
+                stripeConnectCompleted
+                isVerified
+                verificationPhotos
+                verificationErrors
+                socialLinks
+                profession
+                yearsOfExperience
+                height
+                favoriteCategories
+                isDeleted
+                createdDate
+                id
+                email
+                emailConfirmed
+                phoneNumberConfirmed
+                twoFactorEnabled
             }
             totalCount
         }

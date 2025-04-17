@@ -701,6 +701,20 @@ export type DimensionOperationFilterInput = {
   nin?: InputMaybe<Array<Dimension>>;
 };
 
+export type EmailAttachmentDefInput = {
+  fileName: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type EmailInput = {
+  attachments?: InputMaybe<Array<EmailAttachmentDefInput>>;
+  htmlContent?: InputMaybe<Scalars['String']['input']>;
+  plainTextContent?: InputMaybe<Scalars['String']['input']>;
+  subject: Scalars['String']['input'];
+  toEmailAddress: Scalars['String']['input'];
+  toName?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type FloatOperationFilterInput = {
   eq?: InputMaybe<Scalars['Float']['input']>;
   gt?: InputMaybe<Scalars['Float']['input']>;
@@ -1146,6 +1160,13 @@ export type ListFilterInputTypeOfFollowerFilterInput = {
   some?: InputMaybe<FollowerFilterInput>;
 };
 
+export type ListFilterInputTypeOfLiveFilterInput = {
+  all?: InputMaybe<LiveFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<LiveFilterInput>;
+  some?: InputMaybe<LiveFilterInput>;
+};
+
 export type ListFilterInputTypeOfLiveRoleFilterInput = {
   all?: InputMaybe<LiveRoleFilterInput>;
   any?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1342,27 +1363,27 @@ export type ListResponseBaseOfFollowerFolloweeDtoResult2Args = {
   where?: InputMaybe<FollowerFolloweeDtoFilterInput>;
 };
 
-export type ListResponseBaseOfLive = {
-  __typename?: 'ListResponseBaseOfLive';
-  result?: Maybe<LiveCollectionSegment>;
-  result2?: Maybe<LiveConnection>;
+export type ListResponseBaseOfLiveDto = {
+  __typename?: 'ListResponseBaseOfLiveDto';
+  result?: Maybe<LiveDtoCollectionSegment>;
+  result2?: Maybe<LiveDtoConnection>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
-export type ListResponseBaseOfLiveResultArgs = {
-  order?: InputMaybe<Array<LiveSortInput>>;
+export type ListResponseBaseOfLiveDtoResultArgs = {
+  order?: InputMaybe<Array<LiveDtoSortInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<LiveFilterInput>;
+  where?: InputMaybe<LiveDtoFilterInput>;
 };
 
-export type ListResponseBaseOfLiveResult2Args = {
+export type ListResponseBaseOfLiveDtoResult2Args = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<Array<LiveSortInput>>;
-  where?: InputMaybe<LiveFilterInput>;
+  order?: InputMaybe<Array<LiveDtoSortInput>>;
+  where?: InputMaybe<LiveDtoFilterInput>;
 };
 
 export type ListResponseBaseOfLoginActivity = {
@@ -1576,7 +1597,6 @@ export type Live = {
   __typename?: 'Live';
   category?: Maybe<Scalars['String']['output']>;
   channelRecords?: Maybe<Array<Maybe<ChannelRecord>>>;
-  consumerCount: Scalars['Int']['output'];
   createdDate: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
   funding: Scalars['Int']['output'];
@@ -1594,32 +1614,40 @@ export type Live = {
   proposalTitle?: Maybe<Scalars['String']['output']>;
   publishingScheduleDate?: Maybe<Scalars['DateTime']['output']>;
   publishingScheduleTime?: Maybe<Scalars['TimeSpan']['output']>;
+  purchaseCount: Scalars['Int']['output'];
   roles?: Maybe<Array<Maybe<LiveRole>>>;
   setSchedule: Scalars['Boolean']['output'];
   title?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
   userId: Scalars['Int']['output'];
   value: Scalars['Decimal']['output'];
-  viewerCount: Scalars['Int']['output'];
+  viewCount: Scalars['Int']['output'];
+};
+
+export type LiveDto = {
+  __typename?: 'LiveDto';
+  isSaved: Scalars['Boolean']['output'];
+  isViewed: Scalars['Boolean']['output'];
+  live?: Maybe<Live>;
 };
 
 /** A segment of a collection. */
-export type LiveCollectionSegment = {
-  __typename?: 'LiveCollectionSegment';
+export type LiveDtoCollectionSegment = {
+  __typename?: 'LiveDtoCollectionSegment';
   /** A flattened list of the items. */
-  items?: Maybe<Array<Maybe<Live>>>;
+  items?: Maybe<Array<Maybe<LiveDto>>>;
   /** Information to aid in pagination. */
   pageInfo: CollectionSegmentInfo;
   totalCount: Scalars['Int']['output'];
 };
 
 /** A connection to a list of items. */
-export type LiveConnection = {
-  __typename?: 'LiveConnection';
+export type LiveDtoConnection = {
+  __typename?: 'LiveDtoConnection';
   /** A list of edges. */
-  edges?: Maybe<Array<LiveEdge>>;
+  edges?: Maybe<Array<LiveDtoEdge>>;
   /** A flattened list of the nodes. */
-  nodes?: Maybe<Array<Maybe<Live>>>;
+  nodes?: Maybe<Array<Maybe<LiveDto>>>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** Identifies the total count of items in the connection. */
@@ -1627,19 +1655,32 @@ export type LiveConnection = {
 };
 
 /** An edge in a connection. */
-export type LiveEdge = {
-  __typename?: 'LiveEdge';
+export type LiveDtoEdge = {
+  __typename?: 'LiveDtoEdge';
   /** A cursor for use in pagination. */
   cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
-  node?: Maybe<Live>;
+  node?: Maybe<LiveDto>;
+};
+
+export type LiveDtoFilterInput = {
+  and?: InputMaybe<Array<LiveDtoFilterInput>>;
+  isSaved?: InputMaybe<BooleanOperationFilterInput>;
+  isViewed?: InputMaybe<BooleanOperationFilterInput>;
+  live?: InputMaybe<LiveFilterInput>;
+  or?: InputMaybe<Array<LiveDtoFilterInput>>;
+};
+
+export type LiveDtoSortInput = {
+  isSaved?: InputMaybe<SortEnumType>;
+  isViewed?: InputMaybe<SortEnumType>;
+  live?: InputMaybe<LiveSortInput>;
 };
 
 export type LiveFilterInput = {
   and?: InputMaybe<Array<LiveFilterInput>>;
   category?: InputMaybe<StringOperationFilterInput>;
   channelRecords?: InputMaybe<ListFilterInputTypeOfChannelRecordFilterInput>;
-  consumerCount?: InputMaybe<IntOperationFilterInput>;
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   description?: InputMaybe<StringOperationFilterInput>;
   funding?: InputMaybe<IntOperationFilterInput>;
@@ -1658,13 +1699,14 @@ export type LiveFilterInput = {
   proposalTitle?: InputMaybe<StringOperationFilterInput>;
   publishingScheduleDate?: InputMaybe<DateTimeOperationFilterInput>;
   publishingScheduleTime?: InputMaybe<TimeSpanOperationFilterInput>;
+  purchaseCount?: InputMaybe<IntOperationFilterInput>;
   roles?: InputMaybe<ListFilterInputTypeOfLiveRoleFilterInput>;
   setSchedule?: InputMaybe<BooleanOperationFilterInput>;
   title?: InputMaybe<StringOperationFilterInput>;
   user?: InputMaybe<UserFilterInput>;
   userId?: InputMaybe<IntOperationFilterInput>;
   value?: InputMaybe<DecimalOperationFilterInput>;
-  viewerCount?: InputMaybe<IntOperationFilterInput>;
+  viewCount?: InputMaybe<IntOperationFilterInput>;
 };
 
 export type LiveInput = {
@@ -1721,7 +1763,6 @@ export type LiveRoleInput = {
 
 export type LiveSortInput = {
   category?: InputMaybe<SortEnumType>;
-  consumerCount?: InputMaybe<SortEnumType>;
   createdDate?: InputMaybe<SortEnumType>;
   description?: InputMaybe<SortEnumType>;
   funding?: InputMaybe<SortEnumType>;
@@ -1739,12 +1780,13 @@ export type LiveSortInput = {
   proposalTitle?: InputMaybe<SortEnumType>;
   publishingScheduleDate?: InputMaybe<SortEnumType>;
   publishingScheduleTime?: InputMaybe<SortEnumType>;
+  purchaseCount?: InputMaybe<SortEnumType>;
   setSchedule?: InputMaybe<SortEnumType>;
   title?: InputMaybe<SortEnumType>;
   user?: InputMaybe<UserSortInput>;
   userId?: InputMaybe<SortEnumType>;
   value?: InputMaybe<SortEnumType>;
-  viewerCount?: InputMaybe<SortEnumType>;
+  viewCount?: InputMaybe<SortEnumType>;
 };
 
 export enum LiveType {
@@ -1994,12 +2036,14 @@ export type Mutation = {
   defaultViolation_deleteDefaultViolation: ResponseBaseOfDefaultViolation;
   defaultViolation_updateDefaultViolation: ResponseBaseOfDefaultViolation;
   delete: ResponseStatus;
+  email_sendEmail: ResponseBaseOfSentEmail;
+  email_sendEmailWithAWS: ResponseBaseOfSentEmail;
   live_createLive?: Maybe<ResponseBaseOfLive>;
   live_createNotInterested?: Maybe<ResponseStatus>;
   live_deleteLive?: Maybe<ResponseStatus>;
-  live_incrementConsumerCount?: Maybe<ResponseStatus>;
-  live_incrementViewerCount?: Maybe<ResponseStatus>;
+  live_incrementPurchaseCount?: Maybe<ResponseStatus>;
   live_updateLive?: Maybe<ResponseBaseOfLive>;
+  live_viewLive?: Maybe<ResponseStatus>;
   message_addUserToGroup?: Maybe<ResponseStatus>;
   message_createContact?: Maybe<ResponseBaseOfContact>;
   message_createConversationGroup?: Maybe<ResponseBaseOfConversation>;
@@ -2120,6 +2164,14 @@ export type MutationDeleteArgs = {
   violationReportId: Scalars['Int']['input'];
 };
 
+export type MutationEmail_SendEmailArgs = {
+  emailInput: EmailInput;
+};
+
+export type MutationEmail_SendEmailWithAwsArgs = {
+  emailInput: EmailInput;
+};
+
 export type MutationLive_CreateLiveArgs = {
   input?: InputMaybe<LiveInput>;
 };
@@ -2132,16 +2184,16 @@ export type MutationLive_DeleteLiveArgs = {
   liveId: Scalars['Int']['input'];
 };
 
-export type MutationLive_IncrementConsumerCountArgs = {
-  liveId: Scalars['Int']['input'];
-};
-
-export type MutationLive_IncrementViewerCountArgs = {
+export type MutationLive_IncrementPurchaseCountArgs = {
   liveId: Scalars['Int']['input'];
 };
 
 export type MutationLive_UpdateLiveArgs = {
   input?: InputMaybe<LiveInput>;
+};
+
+export type MutationLive_ViewLiveArgs = {
+  liveId: Scalars['Int']['input'];
 };
 
 export type MutationMessage_AddUserToGroupArgs = {
@@ -2427,9 +2479,9 @@ export type Query = {
   community_getCommunities?: Maybe<ListResponseBaseOfCommunity>;
   community_getOtherCommunities?: Maybe<ListResponseBaseOfCommunity>;
   defaultViolation_getDefaultViolations: ListResponseBaseOfDefaultViolation;
-  live_getLiveStreams?: Maybe<ListResponseBaseOfLive>;
-  live_getLives?: Maybe<ListResponseBaseOfLive>;
-  live_getRecommendedLives?: Maybe<ListResponseBaseOfLive>;
+  live_getLiveStreams?: Maybe<ListResponseBaseOfLiveDto>;
+  live_getLives?: Maybe<ListResponseBaseOfLiveDto>;
+  live_getRecommendedLives?: Maybe<ListResponseBaseOfLiveDto>;
   message_getAllReceivers?: Maybe<ListResponseBaseOfUser>;
   message_getContacts?: Maybe<ListResponseBaseOfContact>;
   message_getConversation?: Maybe<SingleResponseBaseOfConversation>;
@@ -2443,6 +2495,7 @@ export type Query = {
   social_isUserFollower?: Maybe<ResponseBaseOfBoolean>;
   user_doesEmailExist?: Maybe<ResponseStatus>;
   user_doesPhoneNumberExist?: Maybe<ResponseStatus>;
+  user_getCastersToFollow?: Maybe<ListResponseBaseOfUser>;
   user_getCurrentUser?: Maybe<SingleResponseBaseOfUser>;
   user_getLoginActivities?: Maybe<ListResponseBaseOfLoginActivity>;
   user_getNearbyUsers?: Maybe<ListResponseBaseOfUser>;
@@ -2731,6 +2784,12 @@ export type ResponseBaseOfRequestForVerification = {
   status?: Maybe<Scalars['Any']['output']>;
 };
 
+export type ResponseBaseOfSentEmail = {
+  __typename?: 'ResponseBaseOfSentEmail';
+  result?: Maybe<SentEmail>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type ResponseBaseOfString = {
   __typename?: 'ResponseBaseOfString';
   result?: Maybe<Scalars['String']['output']>;
@@ -2837,6 +2896,19 @@ export type SendVerificationCodeToEmailInput = {
   callbackUrl?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   isForResetPassword: Scalars['Boolean']['input'];
+};
+
+export type SentEmail = {
+  __typename?: 'SentEmail';
+  createdDate: Scalars['DateTime']['output'];
+  htmlContent?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  plainTextContent: Scalars['String']['output'];
+  subject: Scalars['String']['output'];
+  toEmailAddress: Scalars['String']['output'];
+  toName?: Maybe<Scalars['String']['output']>;
 };
 
 export type SignInExternalInput = {
@@ -2979,6 +3051,7 @@ export type User = {
   lastSeen?: Maybe<Scalars['DateTime']['output']>;
   /** @deprecated Use LocationOfUser */
   latitude?: Maybe<Scalars['Float']['output']>;
+  lives?: Maybe<Array<Maybe<Live>>>;
   location?: Maybe<Scalars['String']['output']>;
   locationOfUser?: Maybe<GeoJsonPointType>;
   lockoutEnabled: Scalars['Boolean']['output'];
@@ -3147,6 +3220,7 @@ export type UserFilterInput = {
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   lastSeen?: InputMaybe<DateTimeOperationFilterInput>;
   latitude?: InputMaybe<FloatOperationFilterInput>;
+  lives?: InputMaybe<ListFilterInputTypeOfLiveFilterInput>;
   location?: InputMaybe<StringOperationFilterInput>;
   locationOfUser?: InputMaybe<PointFilterInput>;
   lockoutEnabled?: InputMaybe<BooleanOperationFilterInput>;
@@ -3629,6 +3703,119 @@ export type Category_GetCategoryQuery = {
       lastModifiedDate?: any | null;
     } | null;
   };
+};
+
+export type Live_GetLivesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveDtoFilterInput>;
+  order?: InputMaybe<Array<LiveDtoSortInput> | LiveDtoSortInput>;
+}>;
+
+export type Live_GetLivesQuery = {
+  __typename?: 'Query';
+  live_getLives?: {
+    __typename?: 'ListResponseBaseOfLiveDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'LiveDtoCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'LiveDto';
+        isViewed: boolean;
+        isSaved: boolean;
+        live?: {
+          __typename?: 'Live';
+          userId: number;
+          liveType: LiveType;
+          photoUrl?: string | null;
+          title?: string | null;
+          description?: string | null;
+          proposalTitle?: string | null;
+          proposalCategory?: string | null;
+          proposalSummary?: string | null;
+          isDraft: boolean;
+          category?: string | null;
+          price: any;
+          isFree: boolean;
+          previewUrl?: string | null;
+          value: any;
+          funding: number;
+          setSchedule: boolean;
+          publishingScheduleDate?: any | null;
+          publishingScheduleTime?: any | null;
+          viewCount: number;
+          purchaseCount: number;
+          id: number;
+          isDeleted: boolean;
+          createdDate: any;
+          lastModifiedDate?: any | null;
+          user?: {
+            __typename?: 'User';
+            username?: string | null;
+            phoneNumber?: string | null;
+            photoUrl?: string | null;
+            fullName?: string | null;
+            about?: string | null;
+            location?: string | null;
+            age?: number | null;
+            dateOfBirth?: any | null;
+            gender?: Gender | null;
+            lastSeen?: any | null;
+            userType?: UserType | null;
+            userRole?: string | null;
+            isPrivateAccount: boolean;
+            stripeConnectAccountId?: string | null;
+            stripeConnectCompleted: boolean;
+            isVerified: boolean;
+            verificationPhotos?: string | null;
+            verificationErrors?: string | null;
+            socialLinks?: string | null;
+            profession?: string | null;
+            yearsOfExperience?: number | null;
+            height?: number | null;
+            favoriteCategories?: string | null;
+            isDeleted: boolean;
+            createdDate?: any | null;
+            id: number;
+            email?: string | null;
+            emailConfirmed: boolean;
+            phoneNumberConfirmed: boolean;
+            twoFactorEnabled: boolean;
+          } | null;
+          roles?: Array<{
+            __typename?: 'LiveRole';
+            liveId: number;
+            roleName?: string | null;
+            present: number;
+            id: number;
+            isDeleted: boolean;
+            createdDate: any;
+            lastModifiedDate?: any | null;
+          } | null> | null;
+          channelRecords?: Array<{
+            __typename?: 'ChannelRecord';
+            sessionId?: string | null;
+            resourceId?: string | null;
+            sid?: string | null;
+            channelName?: string | null;
+            duration: any;
+            endDate?: any | null;
+            liveId?: number | null;
+            id: number;
+            isDeleted: boolean;
+            createdDate: any;
+            lastModifiedDate?: any | null;
+          } | null> | null;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
 };
 
 export type User_SignInMutationVariables = Exact<{
@@ -4385,6 +4572,142 @@ export const useInfiniteCategory_GetCategoryQuery = <
     metaData =>
       fetcher<Category_GetCategoryQuery, Category_GetCategoryQueryVariables>(
         Category_GetCategoryDocument,
+        {...variables, ...(metaData.pageParam ?? {})},
+      )(),
+    options,
+  );
+};
+
+export const Live_GetLivesDocument = `
+    query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]) {
+  live_getLives {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        live {
+          userId
+          liveType
+          photoUrl
+          title
+          description
+          proposalTitle
+          proposalCategory
+          proposalSummary
+          isDraft
+          category
+          price
+          isFree
+          previewUrl
+          value
+          funding
+          setSchedule
+          publishingScheduleDate
+          publishingScheduleTime
+          viewCount
+          purchaseCount
+          user {
+            username
+            phoneNumber
+            photoUrl
+            fullName
+            about
+            location
+            age
+            dateOfBirth
+            gender
+            lastSeen
+            userType
+            userRole
+            isPrivateAccount
+            stripeConnectAccountId
+            stripeConnectCompleted
+            isVerified
+            verificationPhotos
+            verificationErrors
+            socialLinks
+            profession
+            yearsOfExperience
+            height
+            favoriteCategories
+            isDeleted
+            createdDate
+            id
+            email
+            emailConfirmed
+            phoneNumberConfirmed
+            twoFactorEnabled
+          }
+          roles {
+            liveId
+            roleName
+            present
+            id
+            isDeleted
+            createdDate
+            lastModifiedDate
+          }
+          channelRecords {
+            sessionId
+            resourceId
+            sid
+            channelName
+            duration
+            endDate
+            liveId
+            id
+            isDeleted
+            createdDate
+            lastModifiedDate
+          }
+          id
+          isDeleted
+          createdDate
+          lastModifiedDate
+        }
+        isViewed
+        isSaved
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useLive_GetLivesQuery = <
+  TData = Live_GetLivesQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetLivesQueryVariables,
+  options?: UseQueryOptions<Live_GetLivesQuery, TError, TData>,
+) => {
+  return useQuery<Live_GetLivesQuery, TError, TData>(
+    variables === undefined ? ['live_getLives'] : ['live_getLives', variables],
+    fetcher<Live_GetLivesQuery, Live_GetLivesQueryVariables>(
+      Live_GetLivesDocument,
+      variables,
+    ),
+    options,
+  );
+};
+
+export const useInfiniteLive_GetLivesQuery = <
+  TData = Live_GetLivesQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetLivesQueryVariables,
+  options?: UseInfiniteQueryOptions<Live_GetLivesQuery, TError, TData>,
+) => {
+  return useInfiniteQuery<Live_GetLivesQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getLives.infinite']
+      : ['live_getLives.infinite', variables],
+    metaData =>
+      fetcher<Live_GetLivesQuery, Live_GetLivesQueryVariables>(
+        Live_GetLivesDocument,
         {...variables, ...(metaData.pageParam ?? {})},
       )(),
     options,

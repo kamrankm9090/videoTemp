@@ -2,7 +2,7 @@ import debounce from 'lodash.debounce';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet, TextInput, TextInputProps, ViewStyle} from 'react-native';
 import {Close, Search} from '~/assets/svgs';
-import {AppTouchable, HStack} from '~/components';
+import {AppInput, AppTouchable, HStack} from '~/components';
 import {Colors} from '~/styles';
 import {fontFamily, fontSize} from '~/utils/style';
 
@@ -89,7 +89,7 @@ export default function SearchInput(props: Props) {
       bg={backgroundColor}
       borderColor={Colors.Grey}>
       <Search stroke={Colors.Grey} />
-      <TextInput
+      <AppInput
         ref={inputRef}
         autoCapitalize="sentences"
         value={userQuery}

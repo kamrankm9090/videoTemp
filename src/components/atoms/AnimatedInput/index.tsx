@@ -14,7 +14,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {Eye, EyeOff} from '~/assets/svgs';
-import {AppTouchable} from '~/components';
+import {AppInput, AppTouchable} from '~/components';
 import {Colors} from '~/styles';
 import {fontFamily as app_font, fontSize as fs} from '~/utils/style';
 
@@ -97,7 +97,7 @@ const AnimatedInput = React.forwardRef<TextInput, Props>(
     return (
       <View style={[containerStyle, {borderColor, height: inputHeight}]}>
         <AnimatedText style={labelStyle}>{label ?? placeholder}</AnimatedText>
-        <TextInput
+        <AppInput
           {...rest}
           ref={ref}
           value={value}
