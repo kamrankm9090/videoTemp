@@ -1,15 +1,15 @@
-import React, {useCallback, useRef, useState} from 'react';
-import {ViewToken} from 'react-native';
-import {AppLogo, Message, Notification, Search} from '~/assets/svgs';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
+import {StyleSheet, ViewToken} from 'react-native';
 import {
   AppContainer,
   AppFlatList,
-  AppTouchable,
-  Box,
+  HomeHeader,
   HomePostItem,
-  HStack,
-  ScreensHeader,
+  InviteFriendsCard,
+  PeopleYouMayKnow,
+  VStack,
 } from '~/components';
+import {useInfiniteLive_GetLivesQuery} from '~/graphql/generated';
 
 const data = [
   {
@@ -63,17 +63,29 @@ export default function HomeScreen() {
   const [visibleIndex, setVisibleIndex] = useState<number | null>(null);
   const viewConfigRef = useRef({viewAreaCoveragePercentThreshold: 70});
 
-  const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
-    console.log(viewableItems.length > 0);
+  const {
+    data: getLives,
+    isLoading: isLoadingGetLives,
+    hasNextPage: hasNextPageLives,
+    fetchNextPage: fetchNextPageLives,
+  } = useInfiniteLive_GetLivesQuery();
 
+  const lives = useMemo(() => {
+    return getLives?.pages?.map(a => a?.live_getLives?.result?.items).flat();
+  }, [getLives]);
+
+  console.log('lives-->', lives);
+  const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
     if (viewableItems.length > 0) {
       setVisibleIndex(viewableItems[0]?.index ?? null);
     }
   });
 
-  function searchOnPress() {}
-  function messageOnPress() {}
-  function notificationOnPress() {}
+  function onLoadMore() {
+    if (hasNextPageLives) {
+      fetchNextPageLives();
+    }
+  }
 
   const renderItem = useCallback(
     ({item, index}: {item: any; index: number}) => {
@@ -82,25 +94,18 @@ export default function HomeScreen() {
     [visibleIndex],
   );
 
-  return (
-    <AppContainer>
-      <ScreensHeader
-        leftHeader={<AppLogo height={27} width={63} />}
-        rightHeader={
-          <HStack space={16}>
-            <AppTouchable onPress={searchOnPress}>
-              <Search />
-            </AppTouchable>
-            <AppTouchable onPress={messageOnPress}>
-              <Message />
-            </AppTouchable>
-            <AppTouchable onPress={notificationOnPress}>
-              <Notification />
-            </AppTouchable>
-          </HStack>
-        }
-      />
+  const listFooterComponent = useCallback(() => {
+    return (
+      <VStack>
+        <PeopleYouMayKnow />
+        <InviteFriendsCard />
+      </VStack>
+    );
+  }, []);
 
+  return (
+    <AppContainer isLoading={isLoadingGetLives}>
+      <HomeHeader />
       <AppFlatList
         data={data}
         renderItem={renderItem}
@@ -108,8 +113,17 @@ export default function HomeScreen() {
         viewabilityConfig={viewConfigRef.current}
         onViewableItemsChanged={onViewRef.current}
         removeClippedSubviews
-        listFooterComponent={<Box bottom={40} />}
+        listFooterComponent={listFooterComponent}
+        onEndReached={onLoadMore}
+        contentContainerStyle={styles.contentContainerStyle}
       />
     </AppContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  contentContainerStyle: {
+    flexGrow: 1,
+    paddingBottom: 48,
+  },
+});

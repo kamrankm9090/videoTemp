@@ -23,7 +23,6 @@ export function fetcher<TData, TVariables>(
 
 export async function handleToken() {
   const token = userDataStore.getState()?.authData?.token;
-  console.log('token-->', token);
 
   if (token && isTokenExpired(token)) {
     const newTokenData = await getNewToken();
@@ -90,7 +89,9 @@ async function getNewToken(): Promise<{
 }
 
 export const isTokenExpired = (token: string | null): boolean => {
-  if (!token) return true;
+  if (!token) {
+    return true;
+  }
   try {
     const decoded = jwtDecode<JwtPayload>(token);
     return (decoded.exp ?? 0) < Date.now() / 1000;

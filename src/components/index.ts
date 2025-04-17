@@ -57,6 +57,11 @@ export {default as SectionSocialMedia} from './molecules/SectionSocialMedia';
 export {default as AuthHeader} from './molecules/AuthHeader';
 export {default as SectionResendCode} from './molecules/SectionResendCode';
 export {default as HomePostOptions} from './molecules/HomePostOptions';
+export {default as HomeHeader} from './molecules/HomeHeader';
+export {default as SectionHomeNotification} from './molecules/SectionHomeNotification';
+export {default as SectionHomeMessage} from './molecules/SectionHomeMessage';
+export {default as InviteFriendsCard} from './molecules/InviteFriendsCard';
+export {default as PeopleYouMayKnow} from './molecules/PeopleYouMayKnow';
 //#endregion ---------Molecules
 
 //#region ---------Organisms
