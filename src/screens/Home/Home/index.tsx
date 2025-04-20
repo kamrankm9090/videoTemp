@@ -76,7 +76,7 @@ export default function HomeScreen() {
     return getLives?.pages?.map(a => a?.live_getLives?.result?.items).flat();
   }, [getLives]);
 
-  console.log('lives-->', lives);
+  console.log('lives-->', lives?.[0]?.live?.user);
   const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
     if (viewableItems.length > 0) {
       setVisibleIndex(viewableItems[0]?.index ?? null);
@@ -90,7 +90,7 @@ export default function HomeScreen() {
   }
 
   const renderItem = useCallback(
-    ({item, index}: {item: any; index: number}) => {
+    ({item, index}: {item: LiveDto; index: number}) => {
       return <HomePostItem {...{item, index, visibleIndex}} />;
     },
     [visibleIndex],

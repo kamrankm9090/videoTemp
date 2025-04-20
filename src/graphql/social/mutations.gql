@@ -1,0 +1,15 @@
+mutation social_followUser($input: FollowerInput){
+    social_followUser(input: $input){
+        result{
+            followerId
+            id
+        }
+        status
+    }
+}
+
+mutation social_unfollow($input: FollowerInput){
+    social_unfollow(input: $input){
+        status
+    }
+}

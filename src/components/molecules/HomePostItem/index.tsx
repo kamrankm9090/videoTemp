@@ -11,55 +11,72 @@ import {
   HStack,
   VStack,
 } from '~/components';
+import {
+  LiveType,
+  useLive_AddToBookmarkMutation,
+  useLive_RemoveFromBookmarkMutation,
+} from '~/graphql/generated';
 import {Colors} from '~/styles';
 import {formatNumber} from '~/utils/helper';
+import {showErrorMessage} from '~/utils/utils';
 
-export default function HomePostItem({item, index, visibleIndex}: any) {
+export default function HomePostItem({
+  item,
+  index,
+  visibleIndex,
+}: {
+  item: LiveDto;
+  index: number;
+  visibleIndex: number;
+}) {
+  function onPressHandler() {}
+
   return (
-    <VStack h={335} w="100%">
+    <AppTouchable onPress={onPressHandler} mx={16} h={335}>
       <AppVideoPlayer
         key={index}
         showTimer
         style={styles.player}
         isPlaying={index === visibleIndex}
         source={{
-          uri: item?.previewUrl,
+          uri: item?.live?.previewUrl,
         }}
       />
-      <LiveBadge isLive />
-      <SaveButton />
+      <LiveBadge isLive={item?.live?.liveType === LiveType.LiveContent} />
+      <SaveButton isSaved={item?.isBookmark} liveId={item?.live?.id} />
 
       <SectionUserRow data={item} />
-    </VStack>
+    </AppTouchable>
   );
 }
 
-function SectionUserRow({data}: any) {
-  const user = data?.user;
+function SectionUserRow({data}: {data: LiveDto}) {
+  const live = data.live;
+  const user = live?.user;
 
   return (
     <HStack alignItems="flex-start" space={20}>
       <AppImage
         resizeMode="stretch"
-        imageSource={user?.imageUrl}
+        imageSource={user?.photoUrl}
         style={styles.avatar}
       />
       <VStack space={20} flex={1}>
         <HStack alignItems="flex-start">
           <VStack space={8} flex={1}>
-            <AppText fontFamily="medium">{data?.title}</AppText>
-            <AppText>{data?.description}</AppText>
+            <AppText fontFamily="medium">{data?.live?.title ?? '-'}</AppText>
+            <AppText>{live?.description ?? '-'}</AppText>
           </VStack>
           <HomePostOptions />
         </HStack>
         <HStack justifyContent="space-between" space={16}>
           <TextIcon
             icon={<HotSpot />}
-            text={`${formatNumber(data?.viewCount)} viewers`}
+            text={`${formatNumber(live?.viewCount)} viewers`}
           />
           <TextIcon
             icon={<Purchase />}
-            text={`${formatNumber(data?.purchaseCount)} Purchases`}
+            text={`${formatNumber(live?.purchaseCount)} Purchases`}
           />
         </HStack>
       </VStack>
@@ -76,8 +93,12 @@ function TextIcon({icon, text}: {icon?: JSX.Element; text?: string}) {
   );
 }
 
-function SaveButton({isSaved}: {isSaved?: boolean}) {
+function SaveButton({isSaved, liveId}: {isSaved?: boolean; liveId: number}) {
   const [saved, setSaved] = useState<boolean>(false);
+
+  const {mutate: mutateAddToBookmark} = useLive_AddToBookmarkMutation();
+  const {mutate: mutateRemoveFromBookmark} =
+    useLive_RemoveFromBookmarkMutation();
 
   useEffect(() => {
     setSaved(isSaved ?? false);
@@ -86,8 +107,28 @@ function SaveButton({isSaved}: {isSaved?: boolean}) {
   async function saveOnPress() {
     if (saved) {
       setSaved(false);
+      mutateRemoveFromBookmark(
+        {liveId},
+        {
+          onSuccess: response => {
+            if (response?.live_removeFromBookmark?.code !== 1) {
+              showErrorMessage(response?.live_removeFromBookmark?.description);
+            }
+          },
+        },
+      );
     } else {
       setSaved(true);
+      mutateAddToBookmark(
+        {liveId},
+        {
+          onSuccess: response => {
+            if (response?.live_addToBookmark?.code !== 1) {
+              showErrorMessage(response?.live_addToBookmark?.description);
+            }
+          },
+        },
+      );
     }
   }
 
@@ -127,6 +168,6 @@ const styles = StyleSheet.create({
   player: {
     height: 200,
     backgroundColor: Colors.Nero,
-    margin: 7,
+    borderRadius: 8,
   },
 });
