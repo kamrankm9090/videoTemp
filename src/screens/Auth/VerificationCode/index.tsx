@@ -13,6 +13,7 @@ import {
   SectionResendCode,
   VStack,
 } from '~/components';
+import {setHeader} from '~/graphql/fetcher';
 import {useUser_CheckVerificationCodeOfEmailMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {verificationSchema} from '~/schemas';
@@ -54,11 +55,12 @@ export default function VerificationCodeScreen() {
       {
         onSuccess: response => {
           if (response?.user_checkVerificationCodeOfEmail?.status?.code === 1) {
+            const res = response?.user_checkVerificationCodeOfEmail?.result;
+            setHeader(res?.token);
             if (isForResetPassword) {
               setVerificationCode(verifyCode);
               navigate('ResetPassword');
             } else {
-              const res = response?.user_checkVerificationCodeOfEmail?.result;
               const authData = {
                 token: res?.token,
                 expireDate: res?.expireDate,
