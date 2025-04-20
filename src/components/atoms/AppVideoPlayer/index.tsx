@@ -1,27 +1,27 @@
+import {useIsFocused} from '@react-navigation/native';
 import React, {
   forwardRef,
   memo,
   useCallback,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
-  useMemo,
 } from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Video, {
   BufferingStrategyType,
   ReactVideoProps,
   VideoRef,
 } from 'react-native-video';
-import {useIsFocused} from '@react-navigation/native';
-import {Save} from '~/assets/svgs';
-import { Colors } from '~/styles';
-import AppTouchable from '../AppTouchable';
-import AppText from '../AppText';
-import { formatTime } from '~/utils/helper';
+import {Center, AppText} from '~/components';
+import {Colors} from '~/styles';
+import {formatTime} from '~/utils/helper';
+import {fontSize} from '~/utils/style';
 
 type AppVideoPlayerProps = {
   isPlaying?: boolean;
+  showTimer?: boolean;
 } & ReactVideoProps;
 
 const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
@@ -32,37 +32,48 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
       resizeMode = 'cover',
       repeat = true,
       source,
+      showTimer,
       ...rest
     },
     ref,
   ) {
     const videoRef = useRef<VideoRef>(null);
     const isFocused = useIsFocused();
-    const [duration, setDuration] = useState(0);
-    const [currentTime, setCurrentTime] = useState(0);
+    const [durationState, setDurationState] = useState(0);
+    const [curTime, setCurTime] = useState(0);
+    const currentTimeRef = useRef(0);
 
-    const paused = useMemo(() => !(isPlaying && isFocused), [isPlaying, isFocused]);
+    const paused = useMemo(
+      () => !(isPlaying && isFocused),
+      [isPlaying, isFocused],
+    );
 
     useImperativeHandle(ref, () => videoRef.current!, []);
 
-    const handleProgress = useCallback(({currentTime}: {currentTime: number}) => {
-      setCurrentTime(currentTime);
-    }, []);
+    const handleProgress = useCallback(
+      ({currentTime}: {currentTime: number}) => {
+        if (showTimer) {
+          currentTimeRef.current = currentTime;
+          setCurTime(currentTime);
+        }
+      },
+      [showTimer],
+    );
 
     const handleLoad = useCallback(({duration}: {duration: number}) => {
-      setDuration(duration);
+      setDurationState(duration);
     }, []);
 
     const handleError = useCallback((error: any) => {
       console.error('Video error:', error);
     }, []);
 
-  
-
-    const remainingTime = useMemo(
-      () => formatTime(Math.max(duration - currentTime, 0)),
-      [duration, currentTime, formatTime],
-    );
+    const remainingTime = useMemo(() => {
+      if (!showTimer) {
+        return '';
+      }
+      return formatTime(Math.max(durationState - curTime, 0));
+    }, [durationState, curTime, showTimer]);
 
     return (
       <View style={[style, styles.container]}>
@@ -85,21 +96,18 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
           onProgress={handleProgress}
           style={StyleSheet.absoluteFill}
         />
-
-        {/* Live Badge */}
-        <View style={styles.liveBadge}>
-          <AppText fontFamily='bold' style={styles.liveText}>Live</AppText>
-        </View>
-
-        {/* Save Icon */}
-        <AppTouchable style={styles.saveIcon}>
-          <Save />
-        </AppTouchable>
-
-        {/* Timer */}
-        <View style={styles.timer}>
-          <AppText style={styles.timerText}>{remainingTime}</AppText>
-        </View>
+        {showTimer && (
+          <Center
+            py={4}
+            px={10}
+            right={12}
+            bottom={12}
+            rounded={16}
+            position="absolute"
+            bg={Colors.BLACK_TRANSPARENT_7}>
+            <AppText fontSize={fontSize.tiny}>{remainingTime}</AppText>
+          </Center>
+        )}
       </View>
     );
   },
@@ -109,48 +117,16 @@ const AppVideoPlayer = memo(AppVideoPlayerBase);
 
 export default AppVideoPlayer;
 
-
 const styles = StyleSheet.create({
   video: {
     width: '100%',
     height: '100%',
     borderRadius: 16,
     overflow: 'hidden',
-    backgroundColor: 'black',
+    backgroundColor: Colors.BLACK,
   },
   container: {
     position: 'relative',
-    backgroundColor: 'black',
-  },
-  liveBadge: {
-    position: 'absolute',
-    top: 12,
-    left: 12,
-    backgroundColor: Colors.ERROR,
-    borderRadius: 20,
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-  },
-  liveText: {
-    color: Colors.WHITE,
-    fontSize: 14,
-  },
-  saveIcon: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-  },
-  timer: {
-    position: 'absolute',
-    bottom: 12,
-    right: 12,
-    backgroundColor: Colors.BLACK_TRANSPARENT_7,
-    borderRadius: 16,
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-  },
-  timerText: {
-    color: Colors.WHITE,
-    fontSize: 12,
+    backgroundColor: Colors.BLACK,
   },
 });

@@ -23,8 +23,9 @@ export function fetcher<TData, TVariables>(
 
 export async function handleToken() {
   const token = userDataStore.getState()?.authData?.token;
+  const isUserLoggedIn = userDataStore.getState()?.isUserLoggedIn;
 
-  if (token && isTokenExpired(token)) {
+  if (isUserLoggedIn && isTokenExpired(token)) {
     const newTokenData = await getNewToken();
     if (newTokenData?.token) {
       userDataStore.setState({
@@ -36,7 +37,7 @@ export async function handleToken() {
           refreshTokenExpiryTime: newTokenData.refreshTokenExpiryTime,
         },
       });
-      graphQLClient.setHeader('authorization', 'Bearer ' + newTokenData.token);
+      setHeader(newTokenData.token);
       return newTokenData.token;
     } else {
       throw new Error('Unable to refresh token');
@@ -52,7 +53,9 @@ async function getNewToken(): Promise<{
 } | null> {
   const refreshToken = userDataStore.getState()?.authData?.refreshToken;
 
-  if (!refreshToken) return null;
+  if (!refreshToken) {
+    return null;
+  }
 
   const query = gql`
     mutation RefreshToken($refreshToken: String!) {
@@ -100,6 +103,10 @@ export const isTokenExpired = (token: string | null): boolean => {
     return true;
   }
 };
+
+export function setHeader(token: string) {
+  graphQLClient.setHeader('authorization', 'Bearer ' + token);
+}
 
 // import {GraphQLClient} from 'graphql-request';
 // import jwtDecode, {JwtPayload} from 'jwt-decode';

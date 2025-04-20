@@ -59,6 +59,8 @@ export default function SignupScreen() {
       onSuccess: response => {
         if (response?.user_signUp?.status?.code === 1) {
           sendVerificationCode(formData?.email, response?.user_signUp?.result);
+        } else {
+          showErrorMessage(response?.user_signUp?.status?.description);
         }
       },
     });

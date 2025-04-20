@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {HotSpot, Purchase} from '~/assets/svgs';
+import {HotSpot, Purchase, Save, Saved} from '~/assets/svgs';
 import {
   AppImage,
   AppText,
+  AppTouchable,
   AppVideoPlayer,
+  Center,
   HomePostOptions,
   HStack,
   VStack,
@@ -17,12 +19,16 @@ export default function HomePostItem({item, index, visibleIndex}: any) {
     <VStack h={335} w="100%">
       <AppVideoPlayer
         key={index}
+        showTimer
         style={styles.player}
         isPlaying={index === visibleIndex}
         source={{
           uri: item?.previewUrl,
         }}
       />
+      <LiveBadge isLive />
+      <SaveButton />
+
       <SectionUserRow data={item} />
     </VStack>
   );
@@ -68,6 +74,48 @@ function TextIcon({icon, text}: {icon?: JSX.Element; text?: string}) {
       <AppText color={Colors.DarkGray}>{text}</AppText>
     </HStack>
   );
+}
+
+function SaveButton({isSaved}: {isSaved?: boolean}) {
+  const [saved, setSaved] = useState<boolean>(false);
+
+  useEffect(() => {
+    setSaved(isSaved ?? false);
+  }, [isSaved]);
+
+  async function saveOnPress() {
+    if (saved) {
+      setSaved(false);
+    } else {
+      setSaved(true);
+    }
+  }
+
+  return (
+    <AppTouchable onPress={saveOnPress} position="absolute" top={12} right={12}>
+      {saved ? <Saved /> : <Save />}
+    </AppTouchable>
+  );
+}
+
+function LiveBadge({isLive}: {isLive?: boolean}) {
+  if (isLive) {
+    return (
+      <Center
+        pt={3}
+        pb={5}
+        px={10}
+        top={12}
+        left={12}
+        rounded={20}
+        bg={Colors.ERROR}
+        position="absolute">
+        <AppText fontFamily="bold">Live</AppText>
+      </Center>
+    );
+  }
+
+  return null;
 }
 
 const styles = StyleSheet.create({

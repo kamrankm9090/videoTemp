@@ -68,6 +68,8 @@ export default function HomeScreen() {
     isLoading: isLoadingGetLives,
     hasNextPage: hasNextPageLives,
     fetchNextPage: fetchNextPageLives,
+    refetch: refetchGetLives,
+    isRefetching: isRefetchingGetLives,
   } = useInfiniteLive_GetLivesQuery();
 
   const lives = useMemo(() => {
@@ -116,6 +118,8 @@ export default function HomeScreen() {
         listFooterComponent={listFooterComponent}
         onEndReached={onLoadMore}
         contentContainerStyle={styles.contentContainerStyle}
+        refreshing={isRefetchingGetLives}
+        onRefresh={refetchGetLives}
       />
     </AppContainer>
   );
