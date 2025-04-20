@@ -24,6 +24,7 @@ import {AgoraDropdownItem} from '~/components/ui';
 import {Error, InfoCircle, TickCircle, Warning} from '~/assets/svgs';
 import {screenTransitionConfig} from '~/navigation/methods';
 import {StackNavigationOptions} from '@react-navigation/stack';
+import {SheetManager} from 'react-native-actions-sheet';
 
 export const toastConfig = {
   success: (props: ToastProps) => <BaseToast {...props} />,
@@ -329,4 +330,26 @@ export async function getAbsolutePath(filePath: string): Promise<string> {
     }
   }
   return filePath;
+}
+
+export function showSheet<T extends SheetNames>(
+  name: T,
+  payload?: Parameters<typeof SheetManager.show>[1],
+) {
+  return SheetManager.show(name, payload);
+}
+
+export function hideSheet<T extends SheetNames>(name: T) {
+  return SheetManager.hide(name);
+}
+
+export function switchActions(
+  newAction: SheetNames,
+  oldAction: SheetNames = 'post-options-action',
+  payload?: Parameters<typeof SheetManager.show>[1],
+) {
+  hideSheet(oldAction);
+  setTimeout(() => {
+    showSheet(newAction, payload);
+  }, 300);
 }

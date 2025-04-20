@@ -67,7 +67,6 @@ export default function VerificationCodeScreen() {
               };
               setUserData(res?.user);
               setAuthData(authData);
-              setIsUserLoggedIn(true);
               navigate('SignupSuccess');
             }
           } else {

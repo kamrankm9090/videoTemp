@@ -1,43 +1,26 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import AppText from '~/components/atoms/AppText';
-import { Colors } from '~/styles';
+import {AppButton, AppText, HStack, VStack} from '~/components';
+import {Colors} from '~/styles';
+import {fontSize} from '~/utils/style';
 
-export default function InviteFriendsCard({ onPress }: { onPress: () => void }) {
+export default function InviteFriendsCard() {
+  function onPressHandler() {}
+
   return (
-    <View style={styles.card}>
-      <View>
-        <AppText fontWeight={"bold"} marginBottom={8}>Invite friends to get KLP</AppText>
-        <AppText color={Colors.WHITE_TRANSPARENT_4} style={styles.subtitle}>Get 10 KLP for each other</AppText>
-      </View>
-      <TouchableOpacity style={styles.button} onPress={onPress}>
-        <AppText fontWeight={"600"}>Invite friend</AppText>
-      </TouchableOpacity>
-    </View>
+    <HStack px={16} py={24} mx={16} rounded={12} bg={Colors.Nero_1}>
+      <VStack space={16} flex={1}>
+        <AppText fontFamily="bold">Invite friends to get KLP</AppText>
+        <AppText fontSize={fontSize.small} color={Colors.GreySuit}>
+          Get 10 KLP for each other
+        </AppText>
+      </VStack>
+      <AppButton
+        width={100}
+        height={32}
+        hasWidth
+        title="Invite friend"
+        onPress={onPressHandler}
+      />
+    </HStack>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#1a1a1a',
-    borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 12,
-  },
-
-  subtitle: {
-    color: '#999',
-    fontSize: 13,
-    marginTop: 4,
-  },
-  button: {
-    backgroundColor: '#F97316',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 12,
-  },
- 
-});

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useController} from 'react-hook-form';
-import {AppInput, VStack, AppHelperText} from '~/components';
+import {AnimatedInput, AppHelperText, VStack} from '~/components';
 import {Colors} from '~/styles';
 
 type FormInputProps = {
@@ -14,7 +14,7 @@ export default React.forwardRef((props: FormInputProps, ref: any) => {
 
   return (
     <VStack space={4}>
-      <AppInput
+      <AnimatedInput
         {...rest}
         borderColor={
           fieldState.error

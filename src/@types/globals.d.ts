@@ -228,7 +228,9 @@ declare global {
     rounded?: ViewStyle['borderRadius'];
     w?: ViewStyle['width'];
     style?: TextInputProps['style'];
+    containerStyle?: ViewStyle | ViewStyle[];
     textAlign?: TextStyle['textAlign'];
+    textArea?: boolean;
   } & TextInputProps &
     HStackProps;
 
@@ -247,4 +249,18 @@ declare global {
     setIsForResetPassword: (isForResetPassword: boolean) => void;
     setVerificationCode: (verificationCode: string) => void;
   };
+
+  type PostOptionItemType = {
+    id: number;
+    title: string;
+    onPress: () => void;
+    icon: JSX.Element;
+    color?: string;
+  };
+
+  type SheetNames =
+    | 'sharing-action'
+    | 'post-options-action'
+    | 'report-action'
+    | 'report-reason-action';
 }
