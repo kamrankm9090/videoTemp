@@ -2753,6 +2753,9 @@ export type Mutation = {
   user_updateLoginActivity?: Maybe<ResponseBaseOfLoginActivity>;
   user_updateRequestForVerification?: Maybe<ResponseBaseOfRequestForVerification>;
   user_updateUser?: Maybe<ResponseBaseOfUser>;
+  violationReport_createViolationReport: ResponseBaseOfViolationReport;
+  violationReport_deleteViolationReport: ResponseStatus;
+  violationReport_updateViolationReport?: Maybe<ResponseBaseOfViolationReport>;
 };
 
 export type MutationAgora_CreateTokenArgs = {
@@ -3135,6 +3138,18 @@ export type MutationUser_UpdateRequestForVerificationArgs = {
 export type MutationUser_UpdateUserArgs = {
   userId?: InputMaybe<Scalars['Int']['input']>;
   userInput?: InputMaybe<UserInput>;
+};
+
+export type MutationViolationReport_CreateViolationReportArgs = {
+  input: ViolationReportInput;
+};
+
+export type MutationViolationReport_DeleteViolationReportArgs = {
+  violationReportId: Scalars['Int']['input'];
+};
+
+export type MutationViolationReport_UpdateViolationReportArgs = {
+  input?: InputMaybe<ViolationReportInput>;
 };
 
 export type NullableOfGenderOperationFilterInput = {
@@ -5105,6 +5120,20 @@ export type Live_RemoveFromBookmarkMutation = {
   } | null;
 };
 
+export type Live_CreateNotInterestedMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_CreateNotInterestedMutation = {
+  __typename?: 'Mutation';
+  live_createNotInterested?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Live_GetLivesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -5218,6 +5247,20 @@ export type Live_GetLivesQuery = {
   } | null;
 };
 
+export type Message_CreateDirectMessageMutationVariables = Exact<{
+  input?: InputMaybe<MessageInput>;
+  receiverId: Scalars['Int']['input'];
+}>;
+
+export type Message_CreateDirectMessageMutation = {
+  __typename?: 'Mutation';
+  message_createDirectMessage?: {
+    __typename?: 'ResponseBaseOfMessage';
+    status?: any | null;
+    result?: {__typename?: 'Message'; createdAt: any; id: number} | null;
+  } | null;
+};
+
 export type Social_FollowUserMutationVariables = Exact<{
   input?: InputMaybe<FollowerInput>;
 }>;
@@ -5238,6 +5281,61 @@ export type Social_UnfollowMutationVariables = Exact<{
 export type Social_UnfollowMutation = {
   __typename?: 'Mutation';
   social_unfollow?: {__typename?: 'ResponseBase'; status?: any | null} | null;
+};
+
+export type Social_GetUserFollowerFolloweesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<FollowerFolloweeDtoFilterInput>;
+  order?: InputMaybe<
+    Array<FollowerFolloweeDtoSortInput> | FollowerFolloweeDtoSortInput
+  >;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  where1?: InputMaybe<FollowerFolloweeDtoFilterInput>;
+  order1?: InputMaybe<
+    Array<FollowerFolloweeDtoSortInput> | FollowerFolloweeDtoSortInput
+  >;
+  userId: Scalars['Int']['input'];
+}>;
+
+export type Social_GetUserFollowerFolloweesQuery = {
+  __typename?: 'Query';
+  social_getUserFollowerFollowees?: {
+    __typename?: 'ListResponseBaseOfFollowerFolloweeDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'FollowerFolloweeDtoCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'FollowerFolloweeDto';
+        isFollower: boolean;
+        followedByCurrentUser: boolean;
+        followerOfCurrentUser: boolean;
+        user?: {
+          __typename?: 'User';
+          username?: string | null;
+          phoneNumber?: string | null;
+          photoUrl?: string | null;
+          fullName?: string | null;
+          about?: string | null;
+          userType?: UserType | null;
+          displayGender?: boolean | null;
+          displayContactInfo?: boolean | null;
+          isVerified: boolean;
+          id: number;
+          email?: string | null;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
 };
 
 export type User_SignInMutationVariables = Exact<{
@@ -5631,6 +5729,25 @@ export type User_CheckVerificationCodeOfEmailMutation = {
   } | null;
 };
 
+export type User_RefreshTokenMutationVariables = Exact<{
+  input?: InputMaybe<TokenInput>;
+}>;
+
+export type User_RefreshTokenMutation = {
+  __typename?: 'Mutation';
+  user_refreshToken?: {
+    __typename?: 'ResponseBaseOfUserTokenDtoOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'UserTokenDtoOfUser';
+      token?: string | null;
+      expireDate?: any | null;
+      refreshToken?: string | null;
+      refreshTokenExpiryTime?: any | null;
+    } | null;
+  } | null;
+};
+
 export type User_GetCurrentUserQueryVariables = Exact<{[key: string]: never}>;
 
 export type User_GetCurrentUserQuery = {
@@ -5774,6 +5891,23 @@ export type User_GetCastersToFollowQuery = {
       } | null> | null;
     } | null;
   } | null;
+};
+
+export type ViolationReport_CreateViolationReportMutationVariables = Exact<{
+  input: ViolationReportInput;
+}>;
+
+export type ViolationReport_CreateViolationReportMutation = {
+  __typename?: 'Mutation';
+  violationReport_createViolationReport: {
+    __typename?: 'ResponseBaseOfViolationReport';
+    status?: any | null;
+    result?: {
+      __typename?: 'ViolationReport';
+      userId: number;
+      id: number;
+    } | null;
+  };
 };
 
 export const Agora_CreateTokenDocument = `
@@ -6119,6 +6253,43 @@ export const useLive_RemoveFromBookmarkMutation = <
   );
 };
 
+export const Live_CreateNotInterestedDocument = `
+    mutation live_createNotInterested($liveId: Int!) {
+  live_createNotInterested(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_CreateNotInterestedMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Live_CreateNotInterestedMutation,
+    TError,
+    Live_CreateNotInterestedMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_CreateNotInterestedMutation,
+    TError,
+    Live_CreateNotInterestedMutationVariables,
+    TContext
+  >(
+    ['live_createNotInterested'],
+    (variables?: Live_CreateNotInterestedMutationVariables) =>
+      fetcher<
+        Live_CreateNotInterestedMutation,
+        Live_CreateNotInterestedMutationVariables
+      >(Live_CreateNotInterestedDocument, variables)(),
+    options,
+  );
+};
+
 export const Live_GetLivesDocument = `
     query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]) {
   live_getLives {
@@ -6255,6 +6426,45 @@ export const useInfiniteLive_GetLivesQuery = <
   );
 };
 
+export const Message_CreateDirectMessageDocument = `
+    mutation message_createDirectMessage($input: MessageInput, $receiverId: Int!) {
+  message_createDirectMessage(input: $input, receiverId: $receiverId) {
+    result {
+      createdAt
+      id
+    }
+    status
+  }
+}
+    `;
+
+export const useMessage_CreateDirectMessageMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Message_CreateDirectMessageMutation,
+    TError,
+    Message_CreateDirectMessageMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Message_CreateDirectMessageMutation,
+    TError,
+    Message_CreateDirectMessageMutationVariables,
+    TContext
+  >(
+    ['message_createDirectMessage'],
+    (variables?: Message_CreateDirectMessageMutationVariables) =>
+      fetcher<
+        Message_CreateDirectMessageMutation,
+        Message_CreateDirectMessageMutationVariables
+      >(Message_CreateDirectMessageDocument, variables)(),
+    options,
+  );
+};
+
 export const Social_FollowUserDocument = `
     mutation social_followUser($input: FollowerInput) {
   social_followUser(input: $input) {
@@ -6325,6 +6535,85 @@ export const useSocial_UnfollowMutation = <
         Social_UnfollowDocument,
         variables,
       )(),
+    options,
+  );
+};
+
+export const Social_GetUserFollowerFolloweesDocument = `
+    query social_getUserFollowerFollowees($skip: Int, $take: Int, $where: FollowerFolloweeDtoFilterInput, $order: [FollowerFolloweeDtoSortInput!], $first: Int, $after: String, $last: Int, $before: String, $where1: FollowerFolloweeDtoFilterInput, $order1: [FollowerFolloweeDtoSortInput!], $userId: Int!) {
+  social_getUserFollowerFollowees(userId: $userId) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        user {
+          username
+          phoneNumber
+          photoUrl
+          fullName
+          about
+          userType
+          displayGender
+          displayContactInfo
+          isVerified
+          id
+          email
+        }
+        isFollower
+        followedByCurrentUser
+        followerOfCurrentUser
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useSocial_GetUserFollowerFolloweesQuery = <
+  TData = Social_GetUserFollowerFolloweesQuery,
+  TError = unknown,
+>(
+  variables: Social_GetUserFollowerFolloweesQueryVariables,
+  options?: UseQueryOptions<
+    Social_GetUserFollowerFolloweesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useQuery<Social_GetUserFollowerFolloweesQuery, TError, TData>(
+    ['social_getUserFollowerFollowees', variables],
+    fetcher<
+      Social_GetUserFollowerFolloweesQuery,
+      Social_GetUserFollowerFolloweesQueryVariables
+    >(Social_GetUserFollowerFolloweesDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteSocial_GetUserFollowerFolloweesQuery = <
+  TData = Social_GetUserFollowerFolloweesQuery,
+  TError = unknown,
+>(
+  variables: Social_GetUserFollowerFolloweesQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Social_GetUserFollowerFolloweesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Social_GetUserFollowerFolloweesQuery, TError, TData>(
+    ['social_getUserFollowerFollowees.infinite', variables],
+    metaData =>
+      fetcher<
+        Social_GetUserFollowerFolloweesQuery,
+        Social_GetUserFollowerFolloweesQueryVariables
+      >(Social_GetUserFollowerFolloweesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
     options,
   );
 };
@@ -6933,6 +7222,47 @@ export const useUser_CheckVerificationCodeOfEmailMutation = <
   );
 };
 
+export const User_RefreshTokenDocument = `
+    mutation user_refreshToken($input: TokenInput) {
+  user_refreshToken(input: $input) {
+    result {
+      token
+      expireDate
+      refreshToken
+      refreshTokenExpiryTime
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_RefreshTokenMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_RefreshTokenMutation,
+    TError,
+    User_RefreshTokenMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_RefreshTokenMutation,
+    TError,
+    User_RefreshTokenMutationVariables,
+    TContext
+  >(
+    ['user_refreshToken'],
+    (variables?: User_RefreshTokenMutationVariables) =>
+      fetcher<User_RefreshTokenMutation, User_RefreshTokenMutationVariables>(
+        User_RefreshTokenDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
 export const User_GetCurrentUserDocument = `
     query user_getCurrentUser {
   user_getCurrentUser {
@@ -7173,6 +7503,45 @@ export const useInfiniteUser_GetCastersToFollowQuery = <
         ...variables,
         ...(metaData.pageParam ?? {}),
       })(),
+    options,
+  );
+};
+
+export const ViolationReport_CreateViolationReportDocument = `
+    mutation violationReport_createViolationReport($input: ViolationReportInput!) {
+  violationReport_createViolationReport(input: $input) {
+    result {
+      userId
+      id
+    }
+    status
+  }
+}
+    `;
+
+export const useViolationReport_CreateViolationReportMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    ViolationReport_CreateViolationReportMutation,
+    TError,
+    ViolationReport_CreateViolationReportMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    ViolationReport_CreateViolationReportMutation,
+    TError,
+    ViolationReport_CreateViolationReportMutationVariables,
+    TContext
+  >(
+    ['violationReport_createViolationReport'],
+    (variables?: ViolationReport_CreateViolationReportMutationVariables) =>
+      fetcher<
+        ViolationReport_CreateViolationReportMutation,
+        ViolationReport_CreateViolationReportMutationVariables
+      >(ViolationReport_CreateViolationReportDocument, variables)(),
     options,
   );
 };

@@ -1,0 +1,30 @@
+query social_getUserFollowerFollowees($skip: Int, $take: Int, $where: FollowerFolloweeDtoFilterInput, $order: [FollowerFolloweeDtoSortInput!], $first: Int, $after: String, $last: Int, $before: String, $where1: FollowerFolloweeDtoFilterInput, $order1: [FollowerFolloweeDtoSortInput!], $userId: Int!){
+    social_getUserFollowerFollowees(userId: $userId){
+        result(skip: $skip, take: $take, where: $where, order: $order){
+            pageInfo{
+                hasNextPage
+                hasPreviousPage
+            }
+            items{
+                user{
+                    username
+                    phoneNumber
+                    photoUrl
+                    fullName
+                    about
+                    userType
+                    displayGender
+                    displayContactInfo
+                    isVerified
+                    id
+                    email
+                }
+                isFollower
+                followedByCurrentUser
+                followerOfCurrentUser
+            }
+            totalCount
+        }
+        status
+    }
+}

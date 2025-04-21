@@ -51,7 +51,7 @@ export default function HomePostItem({
 }
 
 function SectionUserRow({data}: {data: LiveDto}) {
-  const live = data.live;
+  const live = data?.live;
   const user = live?.user;
 
   return (
@@ -67,7 +67,7 @@ function SectionUserRow({data}: {data: LiveDto}) {
             <AppText fontFamily="medium">{data?.live?.title ?? '-'}</AppText>
             <AppText>{live?.description ?? '-'}</AppText>
           </VStack>
-          <HomePostOptions />
+          <HomePostOptions data={data} />
         </HStack>
         <HStack justifyContent="space-between" space={16}>
           <TextIcon

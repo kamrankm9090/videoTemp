@@ -13,10 +13,11 @@ import ActionSheet, {
 import {KeyboardAwareScrollViewProps} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import {AppKeyboardAwareScrollView, Box} from '~/components';
+import {AppKeyboardAwareScrollView, AppLoading, Box} from '~/components';
 import {useGetStatusBarHeight} from '~/hooks';
 import {Colors} from '~/styles';
 import {isAndroid} from '~/utils/helper';
+import {width} from '~/utils/style';
 import {toastConfig} from '~/utils/utils';
 
 type Props = {
@@ -29,6 +30,11 @@ type Props = {
   style?: ViewStyle | ViewStyle[];
   contentContainerStyle?: KeyboardAwareScrollViewProps['contentContainerStyle'];
   containerStyle?: ActionSheetProps['containerStyle'];
+  indicatorStyle?: ActionSheetProps['indicatorStyle'];
+  loadingColor?: ViewStyle['backgroundColor'];
+  indicatorBackgroundColor?: ViewStyle['backgroundColor'];
+  backgroundColor?: ViewStyle['backgroundColor'];
+  isLoading?: boolean;
 };
 
 function ActionSheetContainer(props: Props, ref: ModalRef) {
@@ -45,6 +51,11 @@ function ActionSheetContainer(props: Props, ref: ModalRef) {
     style,
     contentContainerStyle = styles.main,
     containerStyle = styles.container,
+    loadingColor = Colors.WHITE_TRANSPARENT_1,
+    indicatorStyle,
+    backgroundColor = Colors.Nero,
+    indicatorBackgroundColor = Colors.TRANSPARENT,
+    isLoading,
   } = props;
 
   useImperativeHandle(ref, () => ({
@@ -72,9 +83,12 @@ function ActionSheetContainer(props: Props, ref: ModalRef) {
       safeAreaInsets={insets}
       defaultOverlayOpacity={0.7}
       gestureEnabled={gestureEnabled}
-      containerStyle={containerStyle}
+      containerStyle={{...containerStyle, backgroundColor}}
       enableGesturesInScrollView={scrollable}
-      indicatorStyle={styles.indicator}
+      indicatorStyle={{
+        ...indicatorStyle,
+        backgroundColor: indicatorBackgroundColor,
+      }}
       ref={actionSheetRef}
       onClose={closeModal}>
       {scrollable ? (
@@ -92,6 +106,15 @@ function ActionSheetContainer(props: Props, ref: ModalRef) {
           <Toast config={toastConfig} />
         </View>
       )}
+      {isLoading && (
+        <AppLoading
+          backgroundColor={loadingColor}
+          width={width}
+          height="115%"
+          top={0}
+          bottom={0}
+        />
+      )}
     </ActionSheet>
   );
 }
@@ -100,13 +123,9 @@ export default forwardRef(ActionSheetContainer);
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.Nero,
     paddingHorizontal: 20,
   },
   main: {
     backgroundColor: Colors.Nero,
-  },
-  indicator: {
-    backgroundColor: Colors.TRANSPARENT,
   },
 });

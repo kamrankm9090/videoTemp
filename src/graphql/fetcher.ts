@@ -2,6 +2,7 @@ import {GraphQLClient, gql} from 'graphql-request';
 import jwtDecode, {JwtPayload} from 'jwt-decode';
 import config from '~/config';
 import {userDataStore} from '~/stores';
+import {TokenInput} from '~/graphql/generated';
 
 export const graphQLClient = new GraphQLClient(config.apiURL);
 
@@ -52,18 +53,19 @@ async function getNewToken(): Promise<{
   refreshTokenExpiryTime: string;
 } | null> {
   const refreshToken = userDataStore.getState()?.authData?.refreshToken;
+  const accessToken = userDataStore.getState()?.authData?.token;
 
   if (!refreshToken) {
     return null;
   }
 
   const query = gql`
-    mutation RefreshToken($refreshToken: String!) {
-      user_refreshToken(input: {refreshToken: $refreshToken}) {
+    mutation user_refreshToken($input: TokenInput) {
+      user_refreshToken(input: $input) {
         result {
           token
-          refreshToken
           expireDate
+          refreshToken
           refreshTokenExpiryTime
         }
         status
@@ -72,7 +74,13 @@ async function getNewToken(): Promise<{
   `;
 
   try {
-    const response = await graphQLClient.request(query, {refreshToken});
+    const variables: TokenInput = {
+      refreshToken,
+      accessToken,
+    };
+    console.log('variables---->', variables);
+    const response = await graphQLClient.request(query, {input: variables});
+    console.log('rrrr---->', response);
     const result = response?.user_refreshToken?.result;
 
     if (result?.token && result?.refreshToken) {
