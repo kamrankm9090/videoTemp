@@ -263,4 +263,92 @@ declare global {
     | 'post-options-action'
     | 'report-action'
     | 'report-reason-action';
+
+  type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
+
+  type LiveDto = {
+    isViewed: boolean;
+    isBookmark: boolean;
+    live?: {
+      userId: number;
+      liveType: LiveType;
+      photoUrl?: string | null;
+      title?: string | null;
+      description?: string | null;
+      proposalTitle?: string | null;
+      proposalCategory?: string | null;
+      proposalSummary?: string | null;
+      isDraft: boolean;
+      category?: string | null;
+      price: any;
+      isFree: boolean;
+      previewUrl?: string | null;
+      value: any;
+      funding: number;
+      setSchedule: boolean;
+      publishingScheduleDate?: any | null;
+      publishingScheduleTime?: any | null;
+      viewCount: number;
+      purchaseCount: number;
+      id: number;
+      isDeleted: boolean;
+      createdDate: any;
+      lastModifiedDate?: any | null;
+      user?: {
+        __typename?: 'User';
+        username?: string | null;
+        phoneNumber?: string | null;
+        photoUrl?: string | null;
+        fullName?: string | null;
+        about?: string | null;
+        location?: string | null;
+        age?: number | null;
+        dateOfBirth?: any | null;
+        gender?: Gender | null;
+        lastSeen?: any | null;
+        userType?: UserType | null;
+        userRole?: string | null;
+        isPrivateAccount: boolean;
+        stripeConnectAccountId?: string | null;
+        stripeConnectCompleted: boolean;
+        isVerified: boolean;
+        verificationPhotos?: string | null;
+        verificationErrors?: string | null;
+        socialLinks?: string | null;
+        profession?: string | null;
+        yearsOfExperience?: number | null;
+        height?: number | null;
+        favoriteCategories?: string | null;
+        isDeleted: boolean;
+        createdDate?: any | null;
+        id: number;
+        email?: string | null;
+        emailConfirmed: boolean;
+        phoneNumberConfirmed: boolean;
+        twoFactorEnabled: boolean;
+      } | null;
+      roles?: Array<{
+        liveId: number;
+        roleName?: string | null;
+        present: number;
+        id: number;
+        isDeleted: boolean;
+        createdDate: any;
+        lastModifiedDate?: any | null;
+      } | null> | null;
+      channelRecords?: Array<{
+        sessionId?: string | null;
+        resourceId?: string | null;
+        sid?: string | null;
+        channelName?: string | null;
+        duration: any;
+        endDate?: any | null;
+        liveId?: number | null;
+        id: number;
+        isDeleted: boolean;
+        createdDate: any;
+        lastModifiedDate?: any | null;
+      } | null> | null;
+    } | null;
+  };
 }

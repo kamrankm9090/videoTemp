@@ -34,8 +34,55 @@ export type Scalars = {
   DateTime: {input: any; output: any};
   Decimal: {input: any; output: any};
   Geometry: {input: any; output: any};
+  Long: {input: any; output: any};
   Position: {input: any; output: any};
   TimeSpan: {input: any; output: any};
+};
+
+export type AccountDto = {
+  __typename?: 'AccountDto';
+  businessType?: Maybe<Scalars['String']['output']>;
+  chargesEnabled: Scalars['Boolean']['output'];
+  country?: Maybe<Scalars['String']['output']>;
+  created: Scalars['DateTime']['output'];
+  defaultCurrency?: Maybe<Scalars['String']['output']>;
+  deleted?: Maybe<Scalars['Boolean']['output']>;
+  detailsSubmitted: Scalars['Boolean']['output'];
+  email?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  object?: Maybe<Scalars['String']['output']>;
+  payoutsEnabled: Scalars['Boolean']['output'];
+  type?: Maybe<Scalars['String']['output']>;
+};
+
+export type AddressDto = {
+  __typename?: 'AddressDto';
+  city?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['String']['output']>;
+  line1?: Maybe<Scalars['String']['output']>;
+  line2?: Maybe<Scalars['String']['output']>;
+  postalCode?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
+};
+
+export type AddressDtoFilterInput = {
+  and?: InputMaybe<Array<AddressDtoFilterInput>>;
+  city?: InputMaybe<StringOperationFilterInput>;
+  country?: InputMaybe<StringOperationFilterInput>;
+  line1?: InputMaybe<StringOperationFilterInput>;
+  line2?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<AddressDtoFilterInput>>;
+  postalCode?: InputMaybe<StringOperationFilterInput>;
+  state?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type AddressDtoSortInput = {
+  city?: InputMaybe<SortEnumType>;
+  country?: InputMaybe<SortEnumType>;
+  line1?: InputMaybe<SortEnumType>;
+  line2?: InputMaybe<SortEnumType>;
+  postalCode?: InputMaybe<SortEnumType>;
+  state?: InputMaybe<SortEnumType>;
 };
 
 export enum ApplyPolicy {
@@ -43,6 +90,103 @@ export enum ApplyPolicy {
   BeforeResolver = 'BEFORE_RESOLVER',
   Validation = 'VALIDATION',
 }
+
+export type BalanceAmountDto = {
+  __typename?: 'BalanceAmountDto';
+  amount: Scalars['Long']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
+};
+
+export type BalanceDto = {
+  __typename?: 'BalanceDto';
+  available?: Maybe<Array<Maybe<BalanceAmountDto>>>;
+  connectReserved?: Maybe<Array<Maybe<BalanceAmountDto>>>;
+  object?: Maybe<Scalars['String']['output']>;
+  pending?: Maybe<Array<Maybe<BalanceAmountDto>>>;
+};
+
+export type BalanceTransactionDto = {
+  __typename?: 'BalanceTransactionDto';
+  amount: Scalars['Long']['output'];
+  availableOn: Scalars['DateTime']['output'];
+  created: Scalars['DateTime']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  exchangeRate?: Maybe<Scalars['Decimal']['output']>;
+  fee: Scalars['Long']['output'];
+  id?: Maybe<Scalars['String']['output']>;
+  net: Scalars['Long']['output'];
+  object?: Maybe<Scalars['String']['output']>;
+  reportingCategory?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+};
+
+/** A segment of a collection. */
+export type BalanceTransactionDtoCollectionSegment = {
+  __typename?: 'BalanceTransactionDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<BalanceTransactionDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type BalanceTransactionDtoConnection = {
+  __typename?: 'BalanceTransactionDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<BalanceTransactionDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<BalanceTransactionDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type BalanceTransactionDtoEdge = {
+  __typename?: 'BalanceTransactionDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<BalanceTransactionDto>;
+};
+
+export type BalanceTransactionDtoFilterInput = {
+  amount?: InputMaybe<LongOperationFilterInput>;
+  and?: InputMaybe<Array<BalanceTransactionDtoFilterInput>>;
+  availableOn?: InputMaybe<DateTimeOperationFilterInput>;
+  created?: InputMaybe<DateTimeOperationFilterInput>;
+  currency?: InputMaybe<StringOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  exchangeRate?: InputMaybe<DecimalOperationFilterInput>;
+  fee?: InputMaybe<LongOperationFilterInput>;
+  id?: InputMaybe<StringOperationFilterInput>;
+  net?: InputMaybe<LongOperationFilterInput>;
+  object?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<BalanceTransactionDtoFilterInput>>;
+  reportingCategory?: InputMaybe<StringOperationFilterInput>;
+  status?: InputMaybe<StringOperationFilterInput>;
+  type?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type BalanceTransactionDtoSortInput = {
+  amount?: InputMaybe<SortEnumType>;
+  availableOn?: InputMaybe<SortEnumType>;
+  created?: InputMaybe<SortEnumType>;
+  currency?: InputMaybe<SortEnumType>;
+  description?: InputMaybe<SortEnumType>;
+  exchangeRate?: InputMaybe<SortEnumType>;
+  fee?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  net?: InputMaybe<SortEnumType>;
+  object?: InputMaybe<SortEnumType>;
+  reportingCategory?: InputMaybe<SortEnumType>;
+  status?: InputMaybe<SortEnumType>;
+  type?: InputMaybe<SortEnumType>;
+};
 
 export type BooleanOperationFilterInput = {
   eq?: InputMaybe<Scalars['Boolean']['input']>;
@@ -183,6 +327,125 @@ export type ChannelRecordFilterInput = {
   resourceId?: InputMaybe<StringOperationFilterInput>;
   sessionId?: InputMaybe<StringOperationFilterInput>;
   sid?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type ChargeDto = {
+  __typename?: 'ChargeDto';
+  amount: Scalars['Long']['output'];
+  amountCaptured: Scalars['Long']['output'];
+  amountRefunded: Scalars['Long']['output'];
+  applicationFeeAmount?: Maybe<Scalars['Long']['output']>;
+  applicationFeeId?: Maybe<Scalars['String']['output']>;
+  applicationId?: Maybe<Scalars['String']['output']>;
+  balanceTransactionId?: Maybe<Scalars['String']['output']>;
+  currency?: Maybe<Scalars['String']['output']>;
+  customerId?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  disputed: Scalars['Boolean']['output'];
+  entityId?: Maybe<Scalars['Int']['output']>;
+  failureCode?: Maybe<Scalars['String']['output']>;
+  failureMessage?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  invoice?: Maybe<Scalars['String']['output']>;
+  invoiceId?: Maybe<Scalars['String']['output']>;
+  last4CardNumber?: Maybe<Scalars['String']['output']>;
+  livemode: Scalars['Boolean']['output'];
+  paymentDate: Scalars['DateTime']['output'];
+  paymentIntentId?: Maybe<Scalars['String']['output']>;
+  paymentMethod?: Maybe<Scalars['String']['output']>;
+  receiptEmail?: Maybe<Scalars['String']['output']>;
+  receiptNumber?: Maybe<Scalars['String']['output']>;
+  receiptUrl?: Maybe<Scalars['String']['output']>;
+};
+
+/** A segment of a collection. */
+export type ChargeDtoCollectionSegment = {
+  __typename?: 'ChargeDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<ChargeDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type ChargeDtoConnection = {
+  __typename?: 'ChargeDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<ChargeDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<ChargeDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type ChargeDtoEdge = {
+  __typename?: 'ChargeDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<ChargeDto>;
+};
+
+export type ChargeDtoFilterInput = {
+  amount?: InputMaybe<LongOperationFilterInput>;
+  amountCaptured?: InputMaybe<LongOperationFilterInput>;
+  amountRefunded?: InputMaybe<LongOperationFilterInput>;
+  and?: InputMaybe<Array<ChargeDtoFilterInput>>;
+  applicationFeeAmount?: InputMaybe<LongOperationFilterInput>;
+  applicationFeeId?: InputMaybe<StringOperationFilterInput>;
+  applicationId?: InputMaybe<StringOperationFilterInput>;
+  balanceTransactionId?: InputMaybe<StringOperationFilterInput>;
+  currency?: InputMaybe<StringOperationFilterInput>;
+  customerId?: InputMaybe<StringOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  disputed?: InputMaybe<BooleanOperationFilterInput>;
+  entityId?: InputMaybe<IntOperationFilterInput>;
+  failureCode?: InputMaybe<StringOperationFilterInput>;
+  failureMessage?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<StringOperationFilterInput>;
+  invoice?: InputMaybe<StringOperationFilterInput>;
+  invoiceId?: InputMaybe<StringOperationFilterInput>;
+  last4CardNumber?: InputMaybe<StringOperationFilterInput>;
+  livemode?: InputMaybe<BooleanOperationFilterInput>;
+  or?: InputMaybe<Array<ChargeDtoFilterInput>>;
+  paymentDate?: InputMaybe<DateTimeOperationFilterInput>;
+  paymentIntentId?: InputMaybe<StringOperationFilterInput>;
+  paymentMethod?: InputMaybe<StringOperationFilterInput>;
+  receiptEmail?: InputMaybe<StringOperationFilterInput>;
+  receiptNumber?: InputMaybe<StringOperationFilterInput>;
+  receiptUrl?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type ChargeDtoSortInput = {
+  amount?: InputMaybe<SortEnumType>;
+  amountCaptured?: InputMaybe<SortEnumType>;
+  amountRefunded?: InputMaybe<SortEnumType>;
+  applicationFeeAmount?: InputMaybe<SortEnumType>;
+  applicationFeeId?: InputMaybe<SortEnumType>;
+  applicationId?: InputMaybe<SortEnumType>;
+  balanceTransactionId?: InputMaybe<SortEnumType>;
+  currency?: InputMaybe<SortEnumType>;
+  customerId?: InputMaybe<SortEnumType>;
+  description?: InputMaybe<SortEnumType>;
+  disputed?: InputMaybe<SortEnumType>;
+  entityId?: InputMaybe<SortEnumType>;
+  failureCode?: InputMaybe<SortEnumType>;
+  failureMessage?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  invoice?: InputMaybe<SortEnumType>;
+  invoiceId?: InputMaybe<SortEnumType>;
+  last4CardNumber?: InputMaybe<SortEnumType>;
+  livemode?: InputMaybe<SortEnumType>;
+  paymentDate?: InputMaybe<SortEnumType>;
+  paymentIntentId?: InputMaybe<SortEnumType>;
+  paymentMethod?: InputMaybe<SortEnumType>;
+  receiptEmail?: InputMaybe<SortEnumType>;
+  receiptNumber?: InputMaybe<SortEnumType>;
+  receiptUrl?: InputMaybe<SortEnumType>;
 };
 
 /** Information about the offset pagination. */
@@ -588,6 +851,86 @@ export type ConversationSortInput = {
   secondUserId?: InputMaybe<SortEnumType>;
 };
 
+export type CustomerDto = {
+  __typename?: 'CustomerDto';
+  address?: Maybe<AddressDto>;
+  balance: Scalars['Long']['output'];
+  created: Scalars['DateTime']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
+  deleted?: Maybe<Scalars['Boolean']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  invoicePrefix?: Maybe<Scalars['String']['output']>;
+  livemode: Scalars['Boolean']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  object?: Maybe<Scalars['String']['output']>;
+};
+
+/** A segment of a collection. */
+export type CustomerDtoCollectionSegment = {
+  __typename?: 'CustomerDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<CustomerDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type CustomerDtoConnection = {
+  __typename?: 'CustomerDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<CustomerDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<CustomerDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type CustomerDtoEdge = {
+  __typename?: 'CustomerDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<CustomerDto>;
+};
+
+export type CustomerDtoFilterInput = {
+  address?: InputMaybe<AddressDtoFilterInput>;
+  and?: InputMaybe<Array<CustomerDtoFilterInput>>;
+  balance?: InputMaybe<LongOperationFilterInput>;
+  created?: InputMaybe<DateTimeOperationFilterInput>;
+  currency?: InputMaybe<StringOperationFilterInput>;
+  deleted?: InputMaybe<BooleanOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  email?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<StringOperationFilterInput>;
+  invoicePrefix?: InputMaybe<StringOperationFilterInput>;
+  livemode?: InputMaybe<BooleanOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  object?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<CustomerDtoFilterInput>>;
+};
+
+export type CustomerDtoSortInput = {
+  address?: InputMaybe<AddressDtoSortInput>;
+  balance?: InputMaybe<SortEnumType>;
+  created?: InputMaybe<SortEnumType>;
+  currency?: InputMaybe<SortEnumType>;
+  deleted?: InputMaybe<SortEnumType>;
+  description?: InputMaybe<SortEnumType>;
+  email?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  invoicePrefix?: InputMaybe<SortEnumType>;
+  livemode?: InputMaybe<SortEnumType>;
+  name?: InputMaybe<SortEnumType>;
+  object?: InputMaybe<SortEnumType>;
+};
+
 export type DateTimeOperationFilterInput = {
   eq?: InputMaybe<Scalars['DateTime']['input']>;
   gt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -699,6 +1042,91 @@ export type DimensionOperationFilterInput = {
   in?: InputMaybe<Array<Dimension>>;
   neq?: InputMaybe<Dimension>;
   nin?: InputMaybe<Array<Dimension>>;
+};
+
+export type DisputeDto = {
+  __typename?: 'DisputeDto';
+  amount?: Maybe<Scalars['Long']['output']>;
+  charge?: Maybe<ChargeDto>;
+  chargeId?: Maybe<Scalars['String']['output']>;
+  created: Scalars['DateTime']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  isChargeRefundable: Scalars['Boolean']['output'];
+  livemode: Scalars['Boolean']['output'];
+  metadata?: Maybe<Array<KeyValuePairOfStringAndString>>;
+  networkReasonCode?: Maybe<Scalars['String']['output']>;
+  object?: Maybe<Scalars['String']['output']>;
+  paymentIntentId?: Maybe<Scalars['String']['output']>;
+  reason?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+};
+
+/** A segment of a collection. */
+export type DisputeDtoCollectionSegment = {
+  __typename?: 'DisputeDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<DisputeDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type DisputeDtoConnection = {
+  __typename?: 'DisputeDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<DisputeDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<DisputeDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type DisputeDtoEdge = {
+  __typename?: 'DisputeDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<DisputeDto>;
+};
+
+export type DisputeDtoFilterInput = {
+  amount?: InputMaybe<LongOperationFilterInput>;
+  and?: InputMaybe<Array<DisputeDtoFilterInput>>;
+  charge?: InputMaybe<ChargeDtoFilterInput>;
+  chargeId?: InputMaybe<StringOperationFilterInput>;
+  created?: InputMaybe<DateTimeOperationFilterInput>;
+  currency?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<StringOperationFilterInput>;
+  isChargeRefundable?: InputMaybe<BooleanOperationFilterInput>;
+  livemode?: InputMaybe<BooleanOperationFilterInput>;
+  metadata?: InputMaybe<ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput>;
+  networkReasonCode?: InputMaybe<StringOperationFilterInput>;
+  object?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<DisputeDtoFilterInput>>;
+  paymentIntentId?: InputMaybe<StringOperationFilterInput>;
+  reason?: InputMaybe<StringOperationFilterInput>;
+  status?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type DisputeDtoSortInput = {
+  amount?: InputMaybe<SortEnumType>;
+  charge?: InputMaybe<ChargeDtoSortInput>;
+  chargeId?: InputMaybe<SortEnumType>;
+  created?: InputMaybe<SortEnumType>;
+  currency?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isChargeRefundable?: InputMaybe<SortEnumType>;
+  livemode?: InputMaybe<SortEnumType>;
+  networkReasonCode?: InputMaybe<SortEnumType>;
+  object?: InputMaybe<SortEnumType>;
+  paymentIntentId?: InputMaybe<SortEnumType>;
+  reason?: InputMaybe<SortEnumType>;
+  status?: InputMaybe<SortEnumType>;
 };
 
 export type EmailAttachmentDefInput = {
@@ -1118,6 +1546,24 @@ export type IntOperationFilterInput = {
   nlte?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type KeyValuePairOfStringAndString = {
+  __typename?: 'KeyValuePairOfStringAndString';
+  key: Scalars['String']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type KeyValuePairOfStringAndStringFilterInput = {
+  and?: InputMaybe<Array<KeyValuePairOfStringAndStringFilterInput>>;
+  key?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<KeyValuePairOfStringAndStringFilterInput>>;
+  value?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type KeyValuePairOfStringAndStringInput = {
+  key: Scalars['String']['input'];
+  value: Scalars['String']['input'];
+};
+
 export type ListFilterInputTypeOfCategoryFilterInput = {
   all?: InputMaybe<CategoryFilterInput>;
   any?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1158,6 +1604,13 @@ export type ListFilterInputTypeOfFollowerFilterInput = {
   any?: InputMaybe<Scalars['Boolean']['input']>;
   none?: InputMaybe<FollowerFilterInput>;
   some?: InputMaybe<FollowerFilterInput>;
+};
+
+export type ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput = {
+  all?: InputMaybe<KeyValuePairOfStringAndStringFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<KeyValuePairOfStringAndStringFilterInput>;
+  some?: InputMaybe<KeyValuePairOfStringAndStringFilterInput>;
 };
 
 export type ListFilterInputTypeOfLiveFilterInput = {
@@ -1202,6 +1655,29 @@ export type ListFilterInputTypeOfViolationReportFilterInput = {
   some?: InputMaybe<ViolationReportFilterInput>;
 };
 
+export type ListResponseBaseOfBalanceTransactionDto = {
+  __typename?: 'ListResponseBaseOfBalanceTransactionDto';
+  result?: Maybe<BalanceTransactionDtoCollectionSegment>;
+  result2?: Maybe<BalanceTransactionDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfBalanceTransactionDtoResultArgs = {
+  order?: InputMaybe<Array<BalanceTransactionDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<BalanceTransactionDtoFilterInput>;
+};
+
+export type ListResponseBaseOfBalanceTransactionDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<BalanceTransactionDtoSortInput>>;
+  where?: InputMaybe<BalanceTransactionDtoFilterInput>;
+};
+
 export type ListResponseBaseOfCategory = {
   __typename?: 'ListResponseBaseOfCategory';
   result?: Maybe<CategoryCollectionSegment>;
@@ -1223,6 +1699,29 @@ export type ListResponseBaseOfCategoryResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<CategorySortInput>>;
   where?: InputMaybe<CategoryFilterInput>;
+};
+
+export type ListResponseBaseOfChargeDto = {
+  __typename?: 'ListResponseBaseOfChargeDto';
+  result?: Maybe<ChargeDtoCollectionSegment>;
+  result2?: Maybe<ChargeDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfChargeDtoResultArgs = {
+  order?: InputMaybe<Array<ChargeDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ChargeDtoFilterInput>;
+};
+
+export type ListResponseBaseOfChargeDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<ChargeDtoSortInput>>;
+  where?: InputMaybe<ChargeDtoFilterInput>;
 };
 
 export type ListResponseBaseOfCommunity = {
@@ -1294,6 +1793,29 @@ export type ListResponseBaseOfConversationDtoResult2Args = {
   where?: InputMaybe<ConversationDtoFilterInput>;
 };
 
+export type ListResponseBaseOfCustomerDto = {
+  __typename?: 'ListResponseBaseOfCustomerDto';
+  result?: Maybe<CustomerDtoCollectionSegment>;
+  result2?: Maybe<CustomerDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfCustomerDtoResultArgs = {
+  order?: InputMaybe<Array<CustomerDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CustomerDtoFilterInput>;
+};
+
+export type ListResponseBaseOfCustomerDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<CustomerDtoSortInput>>;
+  where?: InputMaybe<CustomerDtoFilterInput>;
+};
+
 export type ListResponseBaseOfDefaultViolation = {
   __typename?: 'ListResponseBaseOfDefaultViolation';
   result?: Maybe<DefaultViolationCollectionSegment>;
@@ -1315,6 +1837,29 @@ export type ListResponseBaseOfDefaultViolationResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<DefaultViolationSortInput>>;
   where?: InputMaybe<DefaultViolationFilterInput>;
+};
+
+export type ListResponseBaseOfDisputeDto = {
+  __typename?: 'ListResponseBaseOfDisputeDto';
+  result?: Maybe<DisputeDtoCollectionSegment>;
+  result2?: Maybe<DisputeDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfDisputeDtoResultArgs = {
+  order?: InputMaybe<Array<DisputeDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<DisputeDtoFilterInput>;
+};
+
+export type ListResponseBaseOfDisputeDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<DisputeDtoSortInput>>;
+  where?: InputMaybe<DisputeDtoFilterInput>;
 };
 
 export type ListResponseBaseOfFollower = {
@@ -1432,6 +1977,29 @@ export type ListResponseBaseOfMessageResult2Args = {
   where?: InputMaybe<MessageFilterInput>;
 };
 
+export type ListResponseBaseOfPlanDto = {
+  __typename?: 'ListResponseBaseOfPlanDto';
+  result?: Maybe<PlanDtoCollectionSegment>;
+  result2?: Maybe<PlanDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfPlanDtoResultArgs = {
+  order?: InputMaybe<Array<PlanDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PlanDtoFilterInput>;
+};
+
+export type ListResponseBaseOfPlanDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<PlanDtoSortInput>>;
+  where?: InputMaybe<PlanDtoFilterInput>;
+};
+
 export type ListResponseBaseOfRecordFileDto = {
   __typename?: 'ListResponseBaseOfRecordFileDto';
   result?: Maybe<RecordFileDtoCollectionSegment>;
@@ -1453,6 +2021,29 @@ export type ListResponseBaseOfRecordFileDtoResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<RecordFileDtoSortInput>>;
   where?: InputMaybe<RecordFileDtoFilterInput>;
+};
+
+export type ListResponseBaseOfRefundDto = {
+  __typename?: 'ListResponseBaseOfRefundDto';
+  result?: Maybe<RefundDtoCollectionSegment>;
+  result2?: Maybe<RefundDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfRefundDtoResultArgs = {
+  order?: InputMaybe<Array<RefundDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RefundDtoFilterInput>;
+};
+
+export type ListResponseBaseOfRefundDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<RefundDtoSortInput>>;
+  where?: InputMaybe<RefundDtoFilterInput>;
 };
 
 export type ListResponseBaseOfRequestForVerification = {
@@ -1499,6 +2090,29 @@ export type ListResponseBaseOfRoleResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<RoleSortInput>>;
   where?: InputMaybe<RoleFilterInput>;
+};
+
+export type ListResponseBaseOfStripePaymentMethod = {
+  __typename?: 'ListResponseBaseOfStripePaymentMethod';
+  result?: Maybe<StripePaymentMethodCollectionSegment>;
+  result2?: Maybe<StripePaymentMethodConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfStripePaymentMethodResultArgs = {
+  order?: InputMaybe<Array<StripePaymentMethodSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<StripePaymentMethodFilterInput>;
+};
+
+export type ListResponseBaseOfStripePaymentMethodResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<StripePaymentMethodSortInput>>;
+  where?: InputMaybe<StripePaymentMethodFilterInput>;
 };
 
 export type ListResponseBaseOfUser = {
@@ -1593,6 +2207,13 @@ export type ListResponseBaseOfViolationReportResult2Args = {
   where?: InputMaybe<ViolationReportFilterInput>;
 };
 
+export type ListStringOperationFilterInput = {
+  all?: InputMaybe<StringOperationFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<StringOperationFilterInput>;
+  some?: InputMaybe<StringOperationFilterInput>;
+};
+
 export type Live = {
   __typename?: 'Live';
   category?: Maybe<Scalars['String']['output']>;
@@ -1626,7 +2247,8 @@ export type Live = {
 
 export type LiveDto = {
   __typename?: 'LiveDto';
-  isSaved: Scalars['Boolean']['output'];
+  isBookmark: Scalars['Boolean']['output'];
+  isPurchased: Scalars['Boolean']['output'];
   isViewed: Scalars['Boolean']['output'];
   live?: Maybe<Live>;
 };
@@ -1665,14 +2287,16 @@ export type LiveDtoEdge = {
 
 export type LiveDtoFilterInput = {
   and?: InputMaybe<Array<LiveDtoFilterInput>>;
-  isSaved?: InputMaybe<BooleanOperationFilterInput>;
+  isBookmark?: InputMaybe<BooleanOperationFilterInput>;
+  isPurchased?: InputMaybe<BooleanOperationFilterInput>;
   isViewed?: InputMaybe<BooleanOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
   or?: InputMaybe<Array<LiveDtoFilterInput>>;
 };
 
 export type LiveDtoSortInput = {
-  isSaved?: InputMaybe<SortEnumType>;
+  isBookmark?: InputMaybe<SortEnumType>;
+  isPurchased?: InputMaybe<SortEnumType>;
   isViewed?: InputMaybe<SortEnumType>;
   live?: InputMaybe<LiveSortInput>;
 };
@@ -1728,6 +2352,11 @@ export type LiveInput = {
   setSchedule?: InputMaybe<Scalars['Boolean']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   value?: InputMaybe<Scalars['Decimal']['input']>;
+};
+
+export type LiveRateInput = {
+  liveId: Scalars['Int']['input'];
+  rate: Scalars['Float']['input'];
 };
 
 export type LiveRole = {
@@ -1879,6 +2508,21 @@ export type LoginActivitySortInput = {
   logout?: InputMaybe<SortEnumType>;
   user?: InputMaybe<UserSortInput>;
   userId?: InputMaybe<SortEnumType>;
+};
+
+export type LongOperationFilterInput = {
+  eq?: InputMaybe<Scalars['Long']['input']>;
+  gt?: InputMaybe<Scalars['Long']['input']>;
+  gte?: InputMaybe<Scalars['Long']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['Long']['input']>>>;
+  lt?: InputMaybe<Scalars['Long']['input']>;
+  lte?: InputMaybe<Scalars['Long']['input']>;
+  neq?: InputMaybe<Scalars['Long']['input']>;
+  ngt?: InputMaybe<Scalars['Long']['input']>;
+  ngte?: InputMaybe<Scalars['Long']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['Long']['input']>>>;
+  nlt?: InputMaybe<Scalars['Long']['input']>;
+  nlte?: InputMaybe<Scalars['Long']['input']>;
 };
 
 export enum MediaType {
@@ -2038,10 +2682,14 @@ export type Mutation = {
   delete: ResponseStatus;
   email_sendEmail: ResponseBaseOfSentEmail;
   email_sendEmailWithAWS: ResponseBaseOfSentEmail;
+  live_addToBookmark?: Maybe<ResponseStatus>;
   live_createLive?: Maybe<ResponseBaseOfLive>;
   live_createNotInterested?: Maybe<ResponseStatus>;
   live_deleteLive?: Maybe<ResponseStatus>;
   live_incrementPurchaseCount?: Maybe<ResponseStatus>;
+  live_purchase?: Maybe<ResponseStatus>;
+  live_rate?: Maybe<ResponseStatus>;
+  live_removeFromBookmark?: Maybe<ResponseStatus>;
   live_updateLive?: Maybe<ResponseBaseOfLive>;
   live_viewLive?: Maybe<ResponseStatus>;
   message_addUserToGroup?: Maybe<ResponseStatus>;
@@ -2055,6 +2703,20 @@ export type Mutation = {
   message_removeMessages?: Maybe<ResponseStatus>;
   message_removeUserFromGroup?: Maybe<ResponseStatus>;
   message_updateMessage?: Maybe<ResponseBaseOfMessage>;
+  paymentStripe_createCharge?: Maybe<ResponseBaseOfChargeDto>;
+  paymentStripe_createChargeByToken?: Maybe<ResponseBaseOfChargeDto>;
+  paymentStripe_createCheckoutSessionAsync?: Maybe<ResponseBaseOfString>;
+  paymentStripe_createCustomer?: Maybe<ResponseBaseOfCustomerDto>;
+  paymentStripe_createPaymentMethod?: Maybe<ResponseStatus>;
+  paymentStripe_deletePaymentMethod?: Maybe<ResponseStatus>;
+  paymentStripe_getMoneyFromConnectAccoun?: Maybe<ResponseBaseOfChargeDto>;
+  paymentStripe_onboardUserInStripeConnect?: Maybe<ResponseBaseOfOnboardStripeConnectDto>;
+  paymentStripe_payWithIntent?: Maybe<ResponseBaseOfPayWithIntentDto>;
+  paymentStripe_payWithStripePage?: Maybe<ResponseBaseOfStringDto>;
+  paymentStripe_payment?: Maybe<ResponseBaseOfChargeDto>;
+  paymentStripe_subscribeToPlan?: Maybe<ResponseStatus>;
+  paymentStripe_transferMoneyToAccount?: Maybe<ResponseBaseOfTransferDto>;
+  paymentStripe_updatePaymentMethod?: Maybe<ResponseStatus>;
   social_acceptFollow?: Maybe<ResponseBase>;
   social_followUser?: Maybe<ResponseBaseOfFollower>;
   social_hideStory?: Maybe<ResponseStatus>;
@@ -2062,10 +2724,12 @@ export type Mutation = {
   social_removeFollowerAndFollowee?: Maybe<ResponseStatus>;
   social_unfollow?: Maybe<ResponseBase>;
   social_unhideStory?: Maybe<ResponseStatus>;
+  tip_createTip?: Maybe<ResponseBaseOfTip>;
   update?: Maybe<ResponseBaseOfViolationReport>;
   user_addPhoto?: Maybe<ResponseBaseOfUserPhotoGallery>;
   user_addPhotos?: Maybe<ListResponseBaseOfUserPhotoGallery>;
   user_changeUserPassowrd?: Maybe<ResponseStatus>;
+  user_chargeWallet?: Maybe<ResponseBaseOfUser>;
   user_checkVerificationCodeOfEmail?: Maybe<ResponseBaseOfUserTokenDtoOfUser>;
   user_confirmPhoneNumber?: Maybe<ResponseStatus>;
   user_createLoginActivity?: Maybe<ResponseBaseOfLoginActivity>;
@@ -2089,6 +2753,9 @@ export type Mutation = {
   user_updateLoginActivity?: Maybe<ResponseBaseOfLoginActivity>;
   user_updateRequestForVerification?: Maybe<ResponseBaseOfRequestForVerification>;
   user_updateUser?: Maybe<ResponseBaseOfUser>;
+  violationReport_createViolationReport: ResponseBaseOfViolationReport;
+  violationReport_deleteViolationReport: ResponseStatus;
+  violationReport_updateViolationReport?: Maybe<ResponseBaseOfViolationReport>;
 };
 
 export type MutationAgora_CreateTokenArgs = {
@@ -2172,6 +2839,10 @@ export type MutationEmail_SendEmailWithAwsArgs = {
   emailInput: EmailInput;
 };
 
+export type MutationLive_AddToBookmarkArgs = {
+  liveId: Scalars['Int']['input'];
+};
+
 export type MutationLive_CreateLiveArgs = {
   input?: InputMaybe<LiveInput>;
 };
@@ -2185,6 +2856,18 @@ export type MutationLive_DeleteLiveArgs = {
 };
 
 export type MutationLive_IncrementPurchaseCountArgs = {
+  liveId: Scalars['Int']['input'];
+};
+
+export type MutationLive_PurchaseArgs = {
+  liveId: Scalars['Int']['input'];
+};
+
+export type MutationLive_RateArgs = {
+  input?: InputMaybe<LiveRateInput>;
+};
+
+export type MutationLive_RemoveFromBookmarkArgs = {
   liveId: Scalars['Int']['input'];
 };
 
@@ -2244,6 +2927,78 @@ export type MutationMessage_UpdateMessageArgs = {
   text?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type MutationPaymentStripe_CreateChargeArgs = {
+  customerInput?: InputMaybe<PaymentCustomerInput>;
+  paymentInput?: InputMaybe<StripFullPaymentInput>;
+  userStripeAccountId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MutationPaymentStripe_CreateChargeByTokenArgs = {
+  input?: InputMaybe<StripPaymentInput>;
+};
+
+export type MutationPaymentStripe_CreateCheckoutSessionAsyncArgs = {
+  baseUrl?: InputMaybe<Scalars['String']['input']>;
+  customerId?: InputMaybe<Scalars['String']['input']>;
+  priceId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MutationPaymentStripe_CreateCustomerArgs = {
+  customerInput?: InputMaybe<PaymentCustomerInput>;
+};
+
+export type MutationPaymentStripe_CreatePaymentMethodArgs = {
+  input?: InputMaybe<PaymentMethodInput>;
+};
+
+export type MutationPaymentStripe_DeletePaymentMethodArgs = {
+  paymentMethodId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MutationPaymentStripe_GetMoneyFromConnectAccounArgs = {
+  cost: Scalars['Float']['input'];
+  currency?: InputMaybe<Scalars['String']['input']>;
+  metadata?: InputMaybe<Array<KeyValuePairOfStringAndStringInput>>;
+  userStripeAccountId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MutationPaymentStripe_OnboardUserInStripeConnectArgs = {
+  refreshUrl?: InputMaybe<Scalars['String']['input']>;
+  returnUrl?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MutationPaymentStripe_PayWithIntentArgs = {
+  amount: Scalars['Decimal']['input'];
+  amountForApsy?: InputMaybe<Scalars['Decimal']['input']>;
+};
+
+export type MutationPaymentStripe_PayWithStripePageArgs = {
+  amount: Scalars['Decimal']['input'];
+  cancelUrl?: InputMaybe<Scalars['String']['input']>;
+  successUrl?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MutationPaymentStripe_PaymentArgs = {
+  input?: InputMaybe<StripePaymentInput>;
+};
+
+export type MutationPaymentStripe_SubscribeToPlanArgs = {
+  customerId?: InputMaybe<Scalars['String']['input']>;
+  planId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MutationPaymentStripe_TransferMoneyToAccountArgs = {
+  cost: Scalars['Float']['input'];
+  currency?: InputMaybe<Scalars['String']['input']>;
+  metadata?: InputMaybe<Array<KeyValuePairOfStringAndStringInput>>;
+  transferGroup?: InputMaybe<Scalars['String']['input']>;
+  userStripeAccountId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MutationPaymentStripe_UpdatePaymentMethodArgs = {
+  input?: InputMaybe<PaymentMethodInput>;
+};
+
 export type MutationSocial_AcceptFollowArgs = {
   followerId: Scalars['Int']['input'];
 };
@@ -2272,6 +3027,10 @@ export type MutationSocial_UnhideStoryArgs = {
   targetUserId: Scalars['Int']['input'];
 };
 
+export type MutationTip_CreateTipArgs = {
+  input?: InputMaybe<TipInput>;
+};
+
 export type MutationUpdateArgs = {
   input?: InputMaybe<ViolationReportInput>;
 };
@@ -2286,6 +3045,10 @@ export type MutationUser_AddPhotosArgs = {
 
 export type MutationUser_ChangeUserPassowrdArgs = {
   input?: InputMaybe<ChangePassowrdInput>;
+};
+
+export type MutationUser_ChargeWalletArgs = {
+  value: Scalars['Decimal']['input'];
 };
 
 export type MutationUser_CheckVerificationCodeOfEmailArgs = {
@@ -2377,6 +3140,18 @@ export type MutationUser_UpdateUserArgs = {
   userInput?: InputMaybe<UserInput>;
 };
 
+export type MutationViolationReport_CreateViolationReportArgs = {
+  input: ViolationReportInput;
+};
+
+export type MutationViolationReport_DeleteViolationReportArgs = {
+  violationReportId: Scalars['Int']['input'];
+};
+
+export type MutationViolationReport_UpdateViolationReportArgs = {
+  input?: InputMaybe<ViolationReportInput>;
+};
+
 export type NullableOfGenderOperationFilterInput = {
   eq?: InputMaybe<Gender>;
   in?: InputMaybe<Array<InputMaybe<Gender>>>;
@@ -2417,6 +3192,13 @@ export type OgcGeometryTypeOperationFilterInput = {
   nin?: InputMaybe<Array<OgcGeometryType>>;
 };
 
+export type OnboardStripeConnectDto = {
+  __typename?: 'OnboardStripeConnectDto';
+  completed: Scalars['Boolean']['output'];
+  errors?: Maybe<Array<Maybe<StripeConnectError>>>;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
 /** Information about pagination in a connection. */
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -2428,6 +3210,210 @@ export type PageInfo = {
   hasPreviousPage: Scalars['Boolean']['output'];
   /** When paginating backwards, the cursor to continue. */
   startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+export type PayWithIntentDto = {
+  __typename?: 'PayWithIntentDto';
+  apsyClientSecret?: Maybe<Scalars['String']['output']>;
+  apsyPublishableKey?: Maybe<Scalars['String']['output']>;
+  clientSecret?: Maybe<Scalars['String']['output']>;
+  publishableKey?: Maybe<Scalars['String']['output']>;
+};
+
+export type PaymentCustomerInput = {
+  balance?: InputMaybe<Scalars['Long']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  metadata?: InputMaybe<Array<KeyValuePairOfStringAndStringInput>>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PaymentMethodInput = {
+  cardName?: InputMaybe<Scalars['String']['input']>;
+  cardNumber?: InputMaybe<Scalars['String']['input']>;
+  createForApsy: Scalars['Boolean']['input'];
+  cvc?: InputMaybe<Scalars['String']['input']>;
+  expMonth?: InputMaybe<Scalars['String']['input']>;
+  expYear?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  saveForFuturePurchases: Scalars['Boolean']['input'];
+  zipCode?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PaymentValidationResultDto = {
+  __typename?: 'PaymentValidationResultDto';
+  environment?: Maybe<Scalars['String']['output']>;
+  purchaseDate?: Maybe<Scalars['DateTime']['output']>;
+  receiptType?: Maybe<Scalars['String']['output']>;
+  status: Scalars['Int']['output'];
+};
+
+export type PlanDto = {
+  __typename?: 'PlanDto';
+  active: Scalars['Boolean']['output'];
+  aggregateUsage?: Maybe<Scalars['String']['output']>;
+  amount?: Maybe<Scalars['Long']['output']>;
+  amountDecimal?: Maybe<Scalars['Decimal']['output']>;
+  billingScheme?: Maybe<Scalars['String']['output']>;
+  created: Scalars['DateTime']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
+  deleted?: Maybe<Scalars['Boolean']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  interval?: Maybe<Scalars['String']['output']>;
+  intervalCount: Scalars['Long']['output'];
+  livemode: Scalars['Boolean']['output'];
+  metadata?: Maybe<Array<KeyValuePairOfStringAndString>>;
+  nickname?: Maybe<Scalars['String']['output']>;
+  object?: Maybe<Scalars['String']['output']>;
+  product?: Maybe<PlanProductDto>;
+  productId?: Maybe<Scalars['String']['output']>;
+  tiersMode?: Maybe<Scalars['String']['output']>;
+  trialPeriodDays?: Maybe<Scalars['Long']['output']>;
+  usageType?: Maybe<Scalars['String']['output']>;
+};
+
+/** A segment of a collection. */
+export type PlanDtoCollectionSegment = {
+  __typename?: 'PlanDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<PlanDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type PlanDtoConnection = {
+  __typename?: 'PlanDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<PlanDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<PlanDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type PlanDtoEdge = {
+  __typename?: 'PlanDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<PlanDto>;
+};
+
+export type PlanDtoFilterInput = {
+  active?: InputMaybe<BooleanOperationFilterInput>;
+  aggregateUsage?: InputMaybe<StringOperationFilterInput>;
+  amount?: InputMaybe<LongOperationFilterInput>;
+  amountDecimal?: InputMaybe<DecimalOperationFilterInput>;
+  and?: InputMaybe<Array<PlanDtoFilterInput>>;
+  billingScheme?: InputMaybe<StringOperationFilterInput>;
+  created?: InputMaybe<DateTimeOperationFilterInput>;
+  currency?: InputMaybe<StringOperationFilterInput>;
+  deleted?: InputMaybe<BooleanOperationFilterInput>;
+  id?: InputMaybe<StringOperationFilterInput>;
+  interval?: InputMaybe<StringOperationFilterInput>;
+  intervalCount?: InputMaybe<LongOperationFilterInput>;
+  livemode?: InputMaybe<BooleanOperationFilterInput>;
+  metadata?: InputMaybe<ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput>;
+  nickname?: InputMaybe<StringOperationFilterInput>;
+  object?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<PlanDtoFilterInput>>;
+  product?: InputMaybe<PlanProductDtoFilterInput>;
+  productId?: InputMaybe<StringOperationFilterInput>;
+  tiersMode?: InputMaybe<StringOperationFilterInput>;
+  trialPeriodDays?: InputMaybe<LongOperationFilterInput>;
+  usageType?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type PlanDtoSortInput = {
+  active?: InputMaybe<SortEnumType>;
+  aggregateUsage?: InputMaybe<SortEnumType>;
+  amount?: InputMaybe<SortEnumType>;
+  amountDecimal?: InputMaybe<SortEnumType>;
+  billingScheme?: InputMaybe<SortEnumType>;
+  created?: InputMaybe<SortEnumType>;
+  currency?: InputMaybe<SortEnumType>;
+  deleted?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  interval?: InputMaybe<SortEnumType>;
+  intervalCount?: InputMaybe<SortEnumType>;
+  livemode?: InputMaybe<SortEnumType>;
+  nickname?: InputMaybe<SortEnumType>;
+  object?: InputMaybe<SortEnumType>;
+  product?: InputMaybe<PlanProductDtoSortInput>;
+  productId?: InputMaybe<SortEnumType>;
+  tiersMode?: InputMaybe<SortEnumType>;
+  trialPeriodDays?: InputMaybe<SortEnumType>;
+  usageType?: InputMaybe<SortEnumType>;
+};
+
+export type PlanProductDto = {
+  __typename?: 'PlanProductDto';
+  active: Scalars['Boolean']['output'];
+  caption?: Maybe<Scalars['String']['output']>;
+  created: Scalars['DateTime']['output'];
+  defaultPriceId?: Maybe<Scalars['String']['output']>;
+  deleted?: Maybe<Scalars['Boolean']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  images?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  livemode: Scalars['Boolean']['output'];
+  metadata?: Maybe<Array<KeyValuePairOfStringAndString>>;
+  name?: Maybe<Scalars['String']['output']>;
+  object?: Maybe<Scalars['String']['output']>;
+  shippable?: Maybe<Scalars['Boolean']['output']>;
+  statementDescriptor?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  unitLabel?: Maybe<Scalars['String']['output']>;
+  updated: Scalars['DateTime']['output'];
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+export type PlanProductDtoFilterInput = {
+  active?: InputMaybe<BooleanOperationFilterInput>;
+  and?: InputMaybe<Array<PlanProductDtoFilterInput>>;
+  caption?: InputMaybe<StringOperationFilterInput>;
+  created?: InputMaybe<DateTimeOperationFilterInput>;
+  defaultPriceId?: InputMaybe<StringOperationFilterInput>;
+  deleted?: InputMaybe<BooleanOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<StringOperationFilterInput>;
+  images?: InputMaybe<ListStringOperationFilterInput>;
+  livemode?: InputMaybe<BooleanOperationFilterInput>;
+  metadata?: InputMaybe<ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  object?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<PlanProductDtoFilterInput>>;
+  shippable?: InputMaybe<BooleanOperationFilterInput>;
+  statementDescriptor?: InputMaybe<StringOperationFilterInput>;
+  type?: InputMaybe<StringOperationFilterInput>;
+  unitLabel?: InputMaybe<StringOperationFilterInput>;
+  updated?: InputMaybe<DateTimeOperationFilterInput>;
+  url?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type PlanProductDtoSortInput = {
+  active?: InputMaybe<SortEnumType>;
+  caption?: InputMaybe<SortEnumType>;
+  created?: InputMaybe<SortEnumType>;
+  defaultPriceId?: InputMaybe<SortEnumType>;
+  deleted?: InputMaybe<SortEnumType>;
+  description?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  livemode?: InputMaybe<SortEnumType>;
+  name?: InputMaybe<SortEnumType>;
+  object?: InputMaybe<SortEnumType>;
+  shippable?: InputMaybe<SortEnumType>;
+  statementDescriptor?: InputMaybe<SortEnumType>;
+  type?: InputMaybe<SortEnumType>;
+  unitLabel?: InputMaybe<SortEnumType>;
+  updated?: InputMaybe<SortEnumType>;
+  url?: InputMaybe<SortEnumType>;
 };
 
 export type PointFilterInput = {
@@ -2488,6 +3474,25 @@ export type Query = {
   message_getMessages?: Maybe<ListResponseBaseOfMessage>;
   message_getSummary?: Maybe<ResponseBaseOfMessageSummaryDto>;
   message_getUserMessages?: Maybe<ListResponseBaseOfConversationDto>;
+  paymentStripe_appStorePaymentValidation?: Maybe<ResponseBaseOfPaymentValidationResultDto>;
+  paymentStripe_geBalance?: Maybe<ResponseBaseOfBalanceDto>;
+  paymentStripe_geCharges?: Maybe<ListResponseBaseOfChargeDto>;
+  paymentStripe_geCustomers?: Maybe<ListResponseBaseOfCustomerDto>;
+  paymentStripe_geDisputes?: Maybe<ListResponseBaseOfDisputeDto>;
+  paymentStripe_gePlans?: Maybe<ListResponseBaseOfPlanDto>;
+  paymentStripe_geRefunds?: Maybe<ListResponseBaseOfRefundDto>;
+  paymentStripe_geTransactions?: Maybe<ListResponseBaseOfBalanceTransactionDto>;
+  paymentStripe_getApsyPublishableKey?: Maybe<Scalars['String']['output']>;
+  paymentStripe_getConnectUserBlance?: Maybe<ResponseBaseOfInt64>;
+  paymentStripe_getConnectedUser?: Maybe<ResponseBaseOfAccountDto>;
+  paymentStripe_getPaymentMethods?: Maybe<ListResponseBaseOfStripePaymentMethod>;
+  paymentStripe_getPlatformBlance?: Maybe<ResponseBaseOfInt64>;
+  paymentStripe_getPublishableKey?: Maybe<Scalars['String']['output']>;
+  paymentStripe_getUserPaymentAccount?: Maybe<SingleResponseBaseOfUserPaymentAccount>;
+  paymentStripe_hasEnoughBalanceForConnectUser?: Maybe<ResponseBaseOfBoolean>;
+  paymentStripe_hasEnoughBalanceForPlatform?: Maybe<ResponseBaseOfBoolean>;
+  paymentStripe_hasStripeAccount?: Maybe<ResponseBaseOfBoolean>;
+  paymentStripe_isTransferEnabled?: Maybe<ResponseStatus>;
   social_getFollowSummary?: Maybe<ResponseBaseOfFollowSummaryDto>;
   social_getUser?: Maybe<SingleResponseBaseOfUserDto>;
   social_getUserFollowerFollowees?: Maybe<ListResponseBaseOfFollowerFolloweeDto>;
@@ -2515,6 +3520,39 @@ export type QueryCategory_GetCategoryArgs = {
 
 export type QueryMessage_GetConversationArgs = {
   conversationId: Scalars['Int']['input'];
+};
+
+export type QueryPaymentStripe_AppStorePaymentValidationArgs = {
+  receiptData?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QueryPaymentStripe_GeBalanceArgs = {
+  stripeConnectedUserId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QueryPaymentStripe_GetConnectUserBlanceArgs = {
+  userStripeAccountId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QueryPaymentStripe_GetConnectedUserArgs = {
+  stripeConnectedUserId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QueryPaymentStripe_HasEnoughBalanceForConnectUserArgs = {
+  amount: Scalars['Float']['input'];
+  userStripeAccountId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QueryPaymentStripe_HasEnoughBalanceForPlatformArgs = {
+  amount: Scalars['Float']['input'];
+};
+
+export type QueryPaymentStripe_HasStripeAccountArgs = {
+  userStripeAccountId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QueryPaymentStripe_IsTransferEnabledArgs = {
+  userStripeAccountId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type QuerySocial_GetUserArgs = {
@@ -2607,6 +3645,103 @@ export type RecordFileDtoSortInput = {
   url?: InputMaybe<SortEnumType>;
 };
 
+export type RefundDto = {
+  __typename?: 'RefundDto';
+  amount: Scalars['Long']['output'];
+  charge?: Maybe<ChargeDto>;
+  chargeId?: Maybe<Scalars['String']['output']>;
+  created: Scalars['DateTime']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  failureBalanceTransactionId?: Maybe<Scalars['String']['output']>;
+  failureReason?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  instructionsEmail?: Maybe<Scalars['String']['output']>;
+  metadata?: Maybe<Array<KeyValuePairOfStringAndString>>;
+  object?: Maybe<Scalars['String']['output']>;
+  paymentIntentId?: Maybe<Scalars['String']['output']>;
+  reason?: Maybe<Scalars['String']['output']>;
+  receiptNumber?: Maybe<Scalars['String']['output']>;
+  sourceTransferReversalId?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+  transferReversalId?: Maybe<Scalars['String']['output']>;
+};
+
+/** A segment of a collection. */
+export type RefundDtoCollectionSegment = {
+  __typename?: 'RefundDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<RefundDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type RefundDtoConnection = {
+  __typename?: 'RefundDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<RefundDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<RefundDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type RefundDtoEdge = {
+  __typename?: 'RefundDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<RefundDto>;
+};
+
+export type RefundDtoFilterInput = {
+  amount?: InputMaybe<LongOperationFilterInput>;
+  and?: InputMaybe<Array<RefundDtoFilterInput>>;
+  charge?: InputMaybe<ChargeDtoFilterInput>;
+  chargeId?: InputMaybe<StringOperationFilterInput>;
+  created?: InputMaybe<DateTimeOperationFilterInput>;
+  currency?: InputMaybe<StringOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  failureBalanceTransactionId?: InputMaybe<StringOperationFilterInput>;
+  failureReason?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<StringOperationFilterInput>;
+  instructionsEmail?: InputMaybe<StringOperationFilterInput>;
+  metadata?: InputMaybe<ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput>;
+  object?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<RefundDtoFilterInput>>;
+  paymentIntentId?: InputMaybe<StringOperationFilterInput>;
+  reason?: InputMaybe<StringOperationFilterInput>;
+  receiptNumber?: InputMaybe<StringOperationFilterInput>;
+  sourceTransferReversalId?: InputMaybe<StringOperationFilterInput>;
+  status?: InputMaybe<StringOperationFilterInput>;
+  transferReversalId?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type RefundDtoSortInput = {
+  amount?: InputMaybe<SortEnumType>;
+  charge?: InputMaybe<ChargeDtoSortInput>;
+  chargeId?: InputMaybe<SortEnumType>;
+  created?: InputMaybe<SortEnumType>;
+  currency?: InputMaybe<SortEnumType>;
+  description?: InputMaybe<SortEnumType>;
+  failureBalanceTransactionId?: InputMaybe<SortEnumType>;
+  failureReason?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  instructionsEmail?: InputMaybe<SortEnumType>;
+  object?: InputMaybe<SortEnumType>;
+  paymentIntentId?: InputMaybe<SortEnumType>;
+  reason?: InputMaybe<SortEnumType>;
+  receiptNumber?: InputMaybe<SortEnumType>;
+  sourceTransferReversalId?: InputMaybe<SortEnumType>;
+  status?: InputMaybe<SortEnumType>;
+  transferReversalId?: InputMaybe<SortEnumType>;
+};
+
 export type RequestForVerification = {
   __typename?: 'RequestForVerification';
   createdDate: Scalars['DateTime']['output'];
@@ -2688,6 +3823,18 @@ export type ResponseBase = {
   status?: Maybe<Scalars['Any']['output']>;
 };
 
+export type ResponseBaseOfAccountDto = {
+  __typename?: 'ResponseBaseOfAccountDto';
+  result?: Maybe<AccountDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfBalanceDto = {
+  __typename?: 'ResponseBaseOfBalanceDto';
+  result?: Maybe<BalanceDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type ResponseBaseOfBoolean = {
   __typename?: 'ResponseBaseOfBoolean';
   result: Scalars['Boolean']['output'];
@@ -2697,6 +3844,12 @@ export type ResponseBaseOfBoolean = {
 export type ResponseBaseOfCategory = {
   __typename?: 'ResponseBaseOfCategory';
   result?: Maybe<Category>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfChargeDto = {
+  __typename?: 'ResponseBaseOfChargeDto';
+  result?: Maybe<ChargeDto>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -2736,6 +3889,12 @@ export type ResponseBaseOfConversation = {
   status?: Maybe<Scalars['Any']['output']>;
 };
 
+export type ResponseBaseOfCustomerDto = {
+  __typename?: 'ResponseBaseOfCustomerDto';
+  result?: Maybe<CustomerDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type ResponseBaseOfDefaultViolation = {
   __typename?: 'ResponseBaseOfDefaultViolation';
   result?: Maybe<DefaultViolation>;
@@ -2751,6 +3910,12 @@ export type ResponseBaseOfFollowSummaryDto = {
 export type ResponseBaseOfFollower = {
   __typename?: 'ResponseBaseOfFollower';
   result?: Maybe<Follower>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfInt64 = {
+  __typename?: 'ResponseBaseOfInt64';
+  result: Scalars['Long']['output'];
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -2778,6 +3943,24 @@ export type ResponseBaseOfMessageSummaryDto = {
   status?: Maybe<Scalars['Any']['output']>;
 };
 
+export type ResponseBaseOfOnboardStripeConnectDto = {
+  __typename?: 'ResponseBaseOfOnboardStripeConnectDto';
+  result?: Maybe<OnboardStripeConnectDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfPayWithIntentDto = {
+  __typename?: 'ResponseBaseOfPayWithIntentDto';
+  result?: Maybe<PayWithIntentDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfPaymentValidationResultDto = {
+  __typename?: 'ResponseBaseOfPaymentValidationResultDto';
+  result?: Maybe<PaymentValidationResultDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type ResponseBaseOfRequestForVerification = {
   __typename?: 'ResponseBaseOfRequestForVerification';
   result?: Maybe<RequestForVerification>;
@@ -2793,6 +3976,24 @@ export type ResponseBaseOfSentEmail = {
 export type ResponseBaseOfString = {
   __typename?: 'ResponseBaseOfString';
   result?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfStringDto = {
+  __typename?: 'ResponseBaseOfStringDto';
+  result?: Maybe<StringDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfTip = {
+  __typename?: 'ResponseBaseOfTip';
+  result?: Maybe<Tip>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfTransferDto = {
+  __typename?: 'ResponseBaseOfTransferDto';
+  result?: Maybe<TransferDto>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -2966,6 +4167,12 @@ export type SingleResponseBaseOfUserDto = {
   status?: Maybe<Scalars['Any']['output']>;
 };
 
+export type SingleResponseBaseOfUserPaymentAccount = {
+  __typename?: 'SingleResponseBaseOfUserPaymentAccount';
+  result?: Maybe<UserPaymentAccount>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type SingleResponseBaseOfUserPhotoGallery = {
   __typename?: 'SingleResponseBaseOfUserPhotoGallery';
   result?: Maybe<UserPhotoGallery>;
@@ -2983,6 +4190,11 @@ export enum SortEnumType {
   Desc = 'DESC',
 }
 
+export type StringDto = {
+  __typename?: 'StringDto';
+  data?: Maybe<Scalars['String']['output']>;
+};
+
 export type StringOperationFilterInput = {
   and?: InputMaybe<Array<StringOperationFilterInput>>;
   contains?: InputMaybe<Scalars['String']['input']>;
@@ -2996,6 +4208,120 @@ export type StringOperationFilterInput = {
   nstartsWith?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<StringOperationFilterInput>>;
   startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type StripFullPaymentInput = {
+  amount: Scalars['Long']['input'];
+  cardNumder: Scalars['String']['input'];
+  currency?: InputMaybe<Scalars['String']['input']>;
+  customerId?: InputMaybe<Scalars['String']['input']>;
+  cvc: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  entityId: Scalars['Int']['input'];
+  expMonth: Scalars['Long']['input'];
+  expYear: Scalars['Long']['input'];
+  metadata?: InputMaybe<Array<KeyValuePairOfStringAndStringInput>>;
+};
+
+export type StripPaymentInput = {
+  amount: Scalars['Float']['input'];
+  customerId?: InputMaybe<Scalars['String']['input']>;
+  metadata?: InputMaybe<Array<KeyValuePairOfStringAndStringInput>>;
+  stripeToken?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type StripeConnectError = {
+  __typename?: 'StripeConnectError';
+  code?: Maybe<Scalars['String']['output']>;
+  reason?: Maybe<Scalars['String']['output']>;
+  requirement?: Maybe<Scalars['String']['output']>;
+};
+
+export type StripePaymentInput = {
+  amount: Scalars['Long']['input'];
+  cardName?: InputMaybe<Scalars['String']['input']>;
+  cardNumder?: InputMaybe<Scalars['String']['input']>;
+  cvc?: InputMaybe<Scalars['String']['input']>;
+  entityId?: InputMaybe<Scalars['Int']['input']>;
+  entityName?: InputMaybe<Scalars['String']['input']>;
+  expMonth?: InputMaybe<Scalars['String']['input']>;
+  expYear?: InputMaybe<Scalars['String']['input']>;
+  paymentMethodId?: InputMaybe<Scalars['String']['input']>;
+  zipCode?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type StripePaymentMethod = {
+  __typename?: 'StripePaymentMethod';
+  apsyPaymentMethodId?: Maybe<Scalars['String']['output']>;
+  brand?: Maybe<Scalars['String']['output']>;
+  cardName?: Maybe<Scalars['String']['output']>;
+  expMonth?: Maybe<Scalars['Long']['output']>;
+  expYear?: Maybe<Scalars['Long']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  issuer?: Maybe<Scalars['String']['output']>;
+  last4?: Maybe<Scalars['String']['output']>;
+  saveForFuturePurchases: Scalars['Boolean']['output'];
+  zipCode?: Maybe<Scalars['String']['output']>;
+};
+
+/** A segment of a collection. */
+export type StripePaymentMethodCollectionSegment = {
+  __typename?: 'StripePaymentMethodCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<StripePaymentMethod>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type StripePaymentMethodConnection = {
+  __typename?: 'StripePaymentMethodConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<StripePaymentMethodEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<StripePaymentMethod>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type StripePaymentMethodEdge = {
+  __typename?: 'StripePaymentMethodEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<StripePaymentMethod>;
+};
+
+export type StripePaymentMethodFilterInput = {
+  and?: InputMaybe<Array<StripePaymentMethodFilterInput>>;
+  apsyPaymentMethodId?: InputMaybe<StringOperationFilterInput>;
+  brand?: InputMaybe<StringOperationFilterInput>;
+  cardName?: InputMaybe<StringOperationFilterInput>;
+  expMonth?: InputMaybe<LongOperationFilterInput>;
+  expYear?: InputMaybe<LongOperationFilterInput>;
+  id?: InputMaybe<StringOperationFilterInput>;
+  issuer?: InputMaybe<StringOperationFilterInput>;
+  last4?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<StripePaymentMethodFilterInput>>;
+  saveForFuturePurchases?: InputMaybe<BooleanOperationFilterInput>;
+  zipCode?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type StripePaymentMethodSortInput = {
+  apsyPaymentMethodId?: InputMaybe<SortEnumType>;
+  brand?: InputMaybe<SortEnumType>;
+  cardName?: InputMaybe<SortEnumType>;
+  expMonth?: InputMaybe<SortEnumType>;
+  expYear?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  issuer?: InputMaybe<SortEnumType>;
+  last4?: InputMaybe<SortEnumType>;
+  saveForFuturePurchases?: InputMaybe<SortEnumType>;
+  zipCode?: InputMaybe<SortEnumType>;
 };
 
 export type TimeSpanOperationFilterInput = {
@@ -3013,9 +4339,50 @@ export type TimeSpanOperationFilterInput = {
   nlte?: InputMaybe<Scalars['TimeSpan']['input']>;
 };
 
+export type Tip = {
+  __typename?: 'Tip';
+  createdDate: Scalars['DateTime']['output'];
+  forUser?: Maybe<User>;
+  forUserId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+  value: Scalars['Decimal']['output'];
+};
+
+export type TipInput = {
+  forUserId: Scalars['Int']['input'];
+  value: Scalars['Int']['input'];
+};
+
 export type TokenInput = {
   accessToken?: InputMaybe<Scalars['String']['input']>;
   refreshToken?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type TransferDto = {
+  __typename?: 'TransferDto';
+  amount: Scalars['Long']['output'];
+  amountReversed: Scalars['Long']['output'];
+  balanceTransactionId?: Maybe<Scalars['String']['output']>;
+  created: Scalars['DateTime']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  destination?: Maybe<AccountDto>;
+  destinationId?: Maybe<Scalars['String']['output']>;
+  destinationPayment?: Maybe<ChargeDto>;
+  destinationPaymentId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  livemode: Scalars['Boolean']['output'];
+  metadata?: Maybe<Array<KeyValuePairOfStringAndString>>;
+  object?: Maybe<Scalars['String']['output']>;
+  reversed: Scalars['Boolean']['output'];
+  sourceTransaction?: Maybe<ChargeDto>;
+  sourceTransactionId?: Maybe<Scalars['String']['output']>;
+  sourceType?: Maybe<Scalars['String']['output']>;
+  transferGroup?: Maybe<Scalars['String']['output']>;
 };
 
 export type User = {
@@ -3071,6 +4438,7 @@ export type User = {
   ratePercent_3: Scalars['Float']['output'];
   ratePercent_4: Scalars['Float']['output'];
   ratePercent_5: Scalars['Float']['output'];
+  resume?: Maybe<Scalars['String']['output']>;
   reviewCount: Scalars['Int']['output'];
   securityStamp?: Maybe<Scalars['String']['output']>;
   socialLinks?: Maybe<Scalars['String']['output']>;
@@ -3087,6 +4455,7 @@ export type User = {
   username?: Maybe<Scalars['String']['output']>;
   verificationErrors?: Maybe<Scalars['String']['output']>;
   verificationPhotos?: Maybe<Scalars['String']['output']>;
+  wallet: Scalars['Decimal']['output'];
   yearsOfExperience?: Maybe<Scalars['Int']['output']>;
   zipCode?: Maybe<Scalars['String']['output']>;
 };
@@ -3240,6 +4609,7 @@ export type UserFilterInput = {
   ratePercent_3?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_4?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_5?: InputMaybe<FloatOperationFilterInput>;
+  resume?: InputMaybe<StringOperationFilterInput>;
   reviewCount?: InputMaybe<IntOperationFilterInput>;
   securityStamp?: InputMaybe<StringOperationFilterInput>;
   socialLinks?: InputMaybe<StringOperationFilterInput>;
@@ -3256,6 +4626,7 @@ export type UserFilterInput = {
   username?: InputMaybe<StringOperationFilterInput>;
   verificationErrors?: InputMaybe<StringOperationFilterInput>;
   verificationPhotos?: InputMaybe<StringOperationFilterInput>;
+  wallet?: InputMaybe<DecimalOperationFilterInput>;
   yearsOfExperience?: InputMaybe<IntOperationFilterInput>;
   zipCode?: InputMaybe<StringOperationFilterInput>;
 };
@@ -3317,6 +4688,7 @@ export type UserInput = {
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
   photoUrl?: InputMaybe<Scalars['String']['input']>;
   profession?: InputMaybe<Scalars['String']['input']>;
+  resume?: InputMaybe<Scalars['String']['input']>;
   socialLinks?: InputMaybe<Scalars['String']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
   streetAddress?: InputMaybe<Scalars['String']['input']>;
@@ -3329,6 +4701,19 @@ export type UserInput = {
   verificationPhotos?: InputMaybe<Scalars['String']['input']>;
   yearsOfExperience?: InputMaybe<Scalars['Int']['input']>;
   zipCode?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UserPaymentAccount = {
+  __typename?: 'UserPaymentAccount';
+  apsyStripeAccountId?: Maybe<Scalars['String']['output']>;
+  createdDate: Scalars['DateTime']['output'];
+  defaultPaymentMethodId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  stripeAccountId?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
 };
 
 export type UserPhotoGallery = {
@@ -3443,6 +4828,7 @@ export type UserSortInput = {
   ratePercent_3?: InputMaybe<SortEnumType>;
   ratePercent_4?: InputMaybe<SortEnumType>;
   ratePercent_5?: InputMaybe<SortEnumType>;
+  resume?: InputMaybe<SortEnumType>;
   reviewCount?: InputMaybe<SortEnumType>;
   securityStamp?: InputMaybe<SortEnumType>;
   socialLinks?: InputMaybe<SortEnumType>;
@@ -3459,6 +4845,7 @@ export type UserSortInput = {
   username?: InputMaybe<SortEnumType>;
   verificationErrors?: InputMaybe<SortEnumType>;
   verificationPhotos?: InputMaybe<SortEnumType>;
+  wallet?: InputMaybe<SortEnumType>;
   yearsOfExperience?: InputMaybe<SortEnumType>;
   zipCode?: InputMaybe<SortEnumType>;
 };
@@ -3705,6 +5092,48 @@ export type Category_GetCategoryQuery = {
   };
 };
 
+export type Live_AddToBookmarkMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_AddToBookmarkMutation = {
+  __typename?: 'Mutation';
+  live_addToBookmark?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
+export type Live_RemoveFromBookmarkMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_RemoveFromBookmarkMutation = {
+  __typename?: 'Mutation';
+  live_removeFromBookmark?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
+export type Live_CreateNotInterestedMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_CreateNotInterestedMutation = {
+  __typename?: 'Mutation';
+  live_createNotInterested?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Live_GetLivesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -3728,7 +5157,7 @@ export type Live_GetLivesQuery = {
       items?: Array<{
         __typename?: 'LiveDto';
         isViewed: boolean;
-        isSaved: boolean;
+        isBookmark: boolean;
         live?: {
           __typename?: 'Live';
           userId: number;
@@ -3812,6 +5241,97 @@ export type Live_GetLivesQuery = {
             createdDate: any;
             lastModifiedDate?: any | null;
           } | null> | null;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Message_CreateDirectMessageMutationVariables = Exact<{
+  input?: InputMaybe<MessageInput>;
+  receiverId: Scalars['Int']['input'];
+}>;
+
+export type Message_CreateDirectMessageMutation = {
+  __typename?: 'Mutation';
+  message_createDirectMessage?: {
+    __typename?: 'ResponseBaseOfMessage';
+    status?: any | null;
+    result?: {__typename?: 'Message'; createdAt: any; id: number} | null;
+  } | null;
+};
+
+export type Social_FollowUserMutationVariables = Exact<{
+  input?: InputMaybe<FollowerInput>;
+}>;
+
+export type Social_FollowUserMutation = {
+  __typename?: 'Mutation';
+  social_followUser?: {
+    __typename?: 'ResponseBaseOfFollower';
+    status?: any | null;
+    result?: {__typename?: 'Follower'; followerId: number; id: number} | null;
+  } | null;
+};
+
+export type Social_UnfollowMutationVariables = Exact<{
+  input?: InputMaybe<FollowerInput>;
+}>;
+
+export type Social_UnfollowMutation = {
+  __typename?: 'Mutation';
+  social_unfollow?: {__typename?: 'ResponseBase'; status?: any | null} | null;
+};
+
+export type Social_GetUserFollowerFolloweesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<FollowerFolloweeDtoFilterInput>;
+  order?: InputMaybe<
+    Array<FollowerFolloweeDtoSortInput> | FollowerFolloweeDtoSortInput
+  >;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  where1?: InputMaybe<FollowerFolloweeDtoFilterInput>;
+  order1?: InputMaybe<
+    Array<FollowerFolloweeDtoSortInput> | FollowerFolloweeDtoSortInput
+  >;
+  userId: Scalars['Int']['input'];
+}>;
+
+export type Social_GetUserFollowerFolloweesQuery = {
+  __typename?: 'Query';
+  social_getUserFollowerFollowees?: {
+    __typename?: 'ListResponseBaseOfFollowerFolloweeDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'FollowerFolloweeDtoCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'FollowerFolloweeDto';
+        isFollower: boolean;
+        followedByCurrentUser: boolean;
+        followerOfCurrentUser: boolean;
+        user?: {
+          __typename?: 'User';
+          username?: string | null;
+          phoneNumber?: string | null;
+          photoUrl?: string | null;
+          fullName?: string | null;
+          about?: string | null;
+          userType?: UserType | null;
+          displayGender?: boolean | null;
+          displayContactInfo?: boolean | null;
+          isVerified: boolean;
+          id: number;
+          email?: string | null;
         } | null;
       } | null> | null;
     } | null;
@@ -4209,6 +5729,25 @@ export type User_CheckVerificationCodeOfEmailMutation = {
   } | null;
 };
 
+export type User_RefreshTokenMutationVariables = Exact<{
+  input?: InputMaybe<TokenInput>;
+}>;
+
+export type User_RefreshTokenMutation = {
+  __typename?: 'Mutation';
+  user_refreshToken?: {
+    __typename?: 'ResponseBaseOfUserTokenDtoOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'UserTokenDtoOfUser';
+      token?: string | null;
+      expireDate?: any | null;
+      refreshToken?: string | null;
+      refreshTokenExpiryTime?: any | null;
+    } | null;
+  } | null;
+};
+
 export type User_GetCurrentUserQueryVariables = Exact<{[key: string]: never}>;
 
 export type User_GetCurrentUserQuery = {
@@ -4307,6 +5846,68 @@ export type User_GetUsersQuery = {
       } | null> | null;
     } | null;
   } | null;
+};
+
+export type User_GetCastersToFollowQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<UserFilterInput>;
+  order?: InputMaybe<Array<UserSortInput> | UserSortInput>;
+}>;
+
+export type User_GetCastersToFollowQuery = {
+  __typename?: 'Query';
+  user_getCastersToFollow?: {
+    __typename?: 'ListResponseBaseOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'UserCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'User';
+        followerCount: number;
+        followeeCount: number;
+        username?: string | null;
+        phoneNumber?: string | null;
+        normalizedUserName?: string | null;
+        photoUrl?: string | null;
+        fullName?: string | null;
+        gender?: Gender | null;
+        lastSeen?: any | null;
+        userType?: UserType | null;
+        userRole?: string | null;
+        isVerified: boolean;
+        reviewCount: number;
+        isDeleted: boolean;
+        lastModifiedDate?: any | null;
+        createdDate?: any | null;
+        id: number;
+        email?: string | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type ViolationReport_CreateViolationReportMutationVariables = Exact<{
+  input: ViolationReportInput;
+}>;
+
+export type ViolationReport_CreateViolationReportMutation = {
+  __typename?: 'Mutation';
+  violationReport_createViolationReport: {
+    __typename?: 'ResponseBaseOfViolationReport';
+    status?: any | null;
+    result?: {
+      __typename?: 'ViolationReport';
+      userId: number;
+      id: number;
+    } | null;
+  };
 };
 
 export const Agora_CreateTokenDocument = `
@@ -4578,6 +6179,117 @@ export const useInfiniteCategory_GetCategoryQuery = <
   );
 };
 
+export const Live_AddToBookmarkDocument = `
+    mutation live_addToBookmark($liveId: Int!) {
+  live_addToBookmark(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_AddToBookmarkMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Live_AddToBookmarkMutation,
+    TError,
+    Live_AddToBookmarkMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_AddToBookmarkMutation,
+    TError,
+    Live_AddToBookmarkMutationVariables,
+    TContext
+  >(
+    ['live_addToBookmark'],
+    (variables?: Live_AddToBookmarkMutationVariables) =>
+      fetcher<Live_AddToBookmarkMutation, Live_AddToBookmarkMutationVariables>(
+        Live_AddToBookmarkDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const Live_RemoveFromBookmarkDocument = `
+    mutation live_removeFromBookmark($liveId: Int!) {
+  live_removeFromBookmark(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_RemoveFromBookmarkMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Live_RemoveFromBookmarkMutation,
+    TError,
+    Live_RemoveFromBookmarkMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_RemoveFromBookmarkMutation,
+    TError,
+    Live_RemoveFromBookmarkMutationVariables,
+    TContext
+  >(
+    ['live_removeFromBookmark'],
+    (variables?: Live_RemoveFromBookmarkMutationVariables) =>
+      fetcher<
+        Live_RemoveFromBookmarkMutation,
+        Live_RemoveFromBookmarkMutationVariables
+      >(Live_RemoveFromBookmarkDocument, variables)(),
+    options,
+  );
+};
+
+export const Live_CreateNotInterestedDocument = `
+    mutation live_createNotInterested($liveId: Int!) {
+  live_createNotInterested(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_CreateNotInterestedMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Live_CreateNotInterestedMutation,
+    TError,
+    Live_CreateNotInterestedMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_CreateNotInterestedMutation,
+    TError,
+    Live_CreateNotInterestedMutationVariables,
+    TContext
+  >(
+    ['live_createNotInterested'],
+    (variables?: Live_CreateNotInterestedMutationVariables) =>
+      fetcher<
+        Live_CreateNotInterestedMutation,
+        Live_CreateNotInterestedMutationVariables
+      >(Live_CreateNotInterestedDocument, variables)(),
+    options,
+  );
+};
+
 export const Live_GetLivesDocument = `
     query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]) {
   live_getLives {
@@ -4668,7 +6380,7 @@ export const Live_GetLivesDocument = `
           lastModifiedDate
         }
         isViewed
-        isSaved
+        isBookmark
       }
       totalCount
     }
@@ -4710,6 +6422,198 @@ export const useInfiniteLive_GetLivesQuery = <
         Live_GetLivesDocument,
         {...variables, ...(metaData.pageParam ?? {})},
       )(),
+    options,
+  );
+};
+
+export const Message_CreateDirectMessageDocument = `
+    mutation message_createDirectMessage($input: MessageInput, $receiverId: Int!) {
+  message_createDirectMessage(input: $input, receiverId: $receiverId) {
+    result {
+      createdAt
+      id
+    }
+    status
+  }
+}
+    `;
+
+export const useMessage_CreateDirectMessageMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Message_CreateDirectMessageMutation,
+    TError,
+    Message_CreateDirectMessageMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Message_CreateDirectMessageMutation,
+    TError,
+    Message_CreateDirectMessageMutationVariables,
+    TContext
+  >(
+    ['message_createDirectMessage'],
+    (variables?: Message_CreateDirectMessageMutationVariables) =>
+      fetcher<
+        Message_CreateDirectMessageMutation,
+        Message_CreateDirectMessageMutationVariables
+      >(Message_CreateDirectMessageDocument, variables)(),
+    options,
+  );
+};
+
+export const Social_FollowUserDocument = `
+    mutation social_followUser($input: FollowerInput) {
+  social_followUser(input: $input) {
+    result {
+      followerId
+      id
+    }
+    status
+  }
+}
+    `;
+
+export const useSocial_FollowUserMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Social_FollowUserMutation,
+    TError,
+    Social_FollowUserMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Social_FollowUserMutation,
+    TError,
+    Social_FollowUserMutationVariables,
+    TContext
+  >(
+    ['social_followUser'],
+    (variables?: Social_FollowUserMutationVariables) =>
+      fetcher<Social_FollowUserMutation, Social_FollowUserMutationVariables>(
+        Social_FollowUserDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const Social_UnfollowDocument = `
+    mutation social_unfollow($input: FollowerInput) {
+  social_unfollow(input: $input) {
+    status
+  }
+}
+    `;
+
+export const useSocial_UnfollowMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Social_UnfollowMutation,
+    TError,
+    Social_UnfollowMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Social_UnfollowMutation,
+    TError,
+    Social_UnfollowMutationVariables,
+    TContext
+  >(
+    ['social_unfollow'],
+    (variables?: Social_UnfollowMutationVariables) =>
+      fetcher<Social_UnfollowMutation, Social_UnfollowMutationVariables>(
+        Social_UnfollowDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const Social_GetUserFollowerFolloweesDocument = `
+    query social_getUserFollowerFollowees($skip: Int, $take: Int, $where: FollowerFolloweeDtoFilterInput, $order: [FollowerFolloweeDtoSortInput!], $first: Int, $after: String, $last: Int, $before: String, $where1: FollowerFolloweeDtoFilterInput, $order1: [FollowerFolloweeDtoSortInput!], $userId: Int!) {
+  social_getUserFollowerFollowees(userId: $userId) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        user {
+          username
+          phoneNumber
+          photoUrl
+          fullName
+          about
+          userType
+          displayGender
+          displayContactInfo
+          isVerified
+          id
+          email
+        }
+        isFollower
+        followedByCurrentUser
+        followerOfCurrentUser
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useSocial_GetUserFollowerFolloweesQuery = <
+  TData = Social_GetUserFollowerFolloweesQuery,
+  TError = unknown,
+>(
+  variables: Social_GetUserFollowerFolloweesQueryVariables,
+  options?: UseQueryOptions<
+    Social_GetUserFollowerFolloweesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useQuery<Social_GetUserFollowerFolloweesQuery, TError, TData>(
+    ['social_getUserFollowerFollowees', variables],
+    fetcher<
+      Social_GetUserFollowerFolloweesQuery,
+      Social_GetUserFollowerFolloweesQueryVariables
+    >(Social_GetUserFollowerFolloweesDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteSocial_GetUserFollowerFolloweesQuery = <
+  TData = Social_GetUserFollowerFolloweesQuery,
+  TError = unknown,
+>(
+  variables: Social_GetUserFollowerFolloweesQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Social_GetUserFollowerFolloweesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Social_GetUserFollowerFolloweesQuery, TError, TData>(
+    ['social_getUserFollowerFollowees.infinite', variables],
+    metaData =>
+      fetcher<
+        Social_GetUserFollowerFolloweesQuery,
+        Social_GetUserFollowerFolloweesQueryVariables
+      >(Social_GetUserFollowerFolloweesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
     options,
   );
 };
@@ -5318,6 +7222,47 @@ export const useUser_CheckVerificationCodeOfEmailMutation = <
   );
 };
 
+export const User_RefreshTokenDocument = `
+    mutation user_refreshToken($input: TokenInput) {
+  user_refreshToken(input: $input) {
+    result {
+      token
+      expireDate
+      refreshToken
+      refreshTokenExpiryTime
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_RefreshTokenMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_RefreshTokenMutation,
+    TError,
+    User_RefreshTokenMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_RefreshTokenMutation,
+    TError,
+    User_RefreshTokenMutationVariables,
+    TContext
+  >(
+    ['user_refreshToken'],
+    (variables?: User_RefreshTokenMutationVariables) =>
+      fetcher<User_RefreshTokenMutation, User_RefreshTokenMutationVariables>(
+        User_RefreshTokenDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
 export const User_GetCurrentUserDocument = `
     query user_getCurrentUser {
   user_getCurrentUser {
@@ -5477,6 +7422,126 @@ export const useInfiniteUser_GetUsersQuery = <
         User_GetUsersDocument,
         {...variables, ...(metaData.pageParam ?? {})},
       )(),
+    options,
+  );
+};
+
+export const User_GetCastersToFollowDocument = `
+    query user_getCastersToFollow($skip: Int, $take: Int, $where: UserFilterInput, $order: [UserSortInput!]) {
+  user_getCastersToFollow {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        followerCount
+        followeeCount
+        username
+        phoneNumber
+        normalizedUserName
+        photoUrl
+        fullName
+        gender
+        lastSeen
+        userType
+        userRole
+        isVerified
+        reviewCount
+        isDeleted
+        lastModifiedDate
+        createdDate
+        id
+        email
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useUser_GetCastersToFollowQuery = <
+  TData = User_GetCastersToFollowQuery,
+  TError = unknown,
+>(
+  variables?: User_GetCastersToFollowQueryVariables,
+  options?: UseQueryOptions<User_GetCastersToFollowQuery, TError, TData>,
+) => {
+  return useQuery<User_GetCastersToFollowQuery, TError, TData>(
+    variables === undefined
+      ? ['user_getCastersToFollow']
+      : ['user_getCastersToFollow', variables],
+    fetcher<
+      User_GetCastersToFollowQuery,
+      User_GetCastersToFollowQueryVariables
+    >(User_GetCastersToFollowDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteUser_GetCastersToFollowQuery = <
+  TData = User_GetCastersToFollowQuery,
+  TError = unknown,
+>(
+  variables?: User_GetCastersToFollowQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    User_GetCastersToFollowQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<User_GetCastersToFollowQuery, TError, TData>(
+    variables === undefined
+      ? ['user_getCastersToFollow.infinite']
+      : ['user_getCastersToFollow.infinite', variables],
+    metaData =>
+      fetcher<
+        User_GetCastersToFollowQuery,
+        User_GetCastersToFollowQueryVariables
+      >(User_GetCastersToFollowDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
+export const ViolationReport_CreateViolationReportDocument = `
+    mutation violationReport_createViolationReport($input: ViolationReportInput!) {
+  violationReport_createViolationReport(input: $input) {
+    result {
+      userId
+      id
+    }
+    status
+  }
+}
+    `;
+
+export const useViolationReport_CreateViolationReportMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    ViolationReport_CreateViolationReportMutation,
+    TError,
+    ViolationReport_CreateViolationReportMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    ViolationReport_CreateViolationReportMutation,
+    TError,
+    ViolationReport_CreateViolationReportMutationVariables,
+    TContext
+  >(
+    ['violationReport_createViolationReport'],
+    (variables?: ViolationReport_CreateViolationReportMutationVariables) =>
+      fetcher<
+        ViolationReport_CreateViolationReportMutation,
+        ViolationReport_CreateViolationReportMutationVariables
+      >(ViolationReport_CreateViolationReportDocument, variables)(),
     options,
   );
 };

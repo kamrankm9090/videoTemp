@@ -1,0 +1,9 @@
+mutation message_createDirectMessage($input: MessageInput, $receiverId: Int!){
+    message_createDirectMessage(input: $input, receiverId: $receiverId){
+        result{
+            createdAt
+            id
+        }
+        status
+    }
+}

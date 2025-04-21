@@ -1,0 +1,9 @@
+mutation violationReport_createViolationReport($input: ViolationReportInput!){
+    violationReport_createViolationReport(input: $input){
+        result{
+            userId
+            id
+        }
+        status
+    }
+}

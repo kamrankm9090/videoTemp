@@ -313,3 +313,15 @@ mutation user_checkVerificationCodeOfEmail($email: String, $verificationCode: St
         status
     }
 }
+
+mutation user_refreshToken($input: TokenInput){
+    user_refreshToken(input: $input){
+        result{
+            token
+            expireDate
+            refreshToken
+            refreshTokenExpiryTime
+        }
+        status
+    }
+}

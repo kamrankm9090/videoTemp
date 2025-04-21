@@ -32,7 +32,7 @@ export default function SelectCategoryScreen() {
   });
 
   const {handleSubmit} = methods;
-  const {userData, setIsUserLoggedIn} = userDataStore(state => state);
+  const {setIsUserLoggedIn} = userDataStore(state => state);
 
   const {mutate: mutateUserUpdate, isLoading: isLoadingUpdateUser} =
     useUser_UpdateUserMutation();
@@ -45,7 +45,7 @@ export default function SelectCategoryScreen() {
 
   async function onSubmit(formData: typeof defaultValues) {
     const variables = {
-      userId: userData?.id,
+      userId: null,
       userInput: {
         favoriteCategories: formData?.categories?.join(','),
       },

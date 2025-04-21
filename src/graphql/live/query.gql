@@ -87,7 +87,7 @@ query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: 
                     lastModifiedDate
                 }
                 isViewed
-                isSaved
+                isBookmark
             }
             totalCount
         }
