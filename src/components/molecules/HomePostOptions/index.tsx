@@ -3,9 +3,9 @@ import {ThreePoint} from '~/assets/svgs';
 import {AppTouchable} from '~/components';
 import {showSheet} from '~/utils/utils';
 
-export default function HomePostOptions() {
+export default function HomePostOptions({data}: {data: LiveDto}) {
   function openOptionsModal() {
-    showSheet('post-options-action');
+    showSheet('post-options-action', {payload: {data}});
   }
 
   return (

@@ -13,3 +13,11 @@ mutation live_removeFromBookmark($liveId: Int!){
         description
     }
 }
+
+mutation live_createNotInterested($liveId: Int!){
+    live_createNotInterested(liveId: $liveId){
+        code
+        value
+        description
+    }
+}
