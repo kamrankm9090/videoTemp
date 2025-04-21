@@ -80,3 +80,36 @@ query user_getUsers($skip: Int, $take: Int, $where: UserFilterInput, $order: [Us
         status
     }
 }
+
+query user_getCastersToFollow($skip: Int, $take: Int, $where: UserFilterInput, $order: [UserSortInput!]){
+    user_getCastersToFollow{
+        result(skip: $skip, take: $take, where: $where, order: $order){
+            pageInfo{
+                hasNextPage
+                hasPreviousPage
+            }
+            items{
+                followerCount
+                followeeCount
+                username
+                phoneNumber
+                normalizedUserName
+                photoUrl
+                fullName
+                gender
+                lastSeen
+                userType
+                userRole
+                isVerified
+                reviewCount
+                isDeleted
+                lastModifiedDate
+                createdDate
+                id
+                email
+            }
+            totalCount
+        }
+        status
+    }
+}
