@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,7 +14,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {Eye, EyeOff} from '~/assets/svgs';
-import {AppInput, AppTouchable} from '~/components';
+import {AppInput, AppText, AppTouchable} from '~/components';
 import {Colors} from '~/styles';
 import {fontFamily as app_font, fontSize as fs} from '~/utils/style';
 
@@ -28,6 +28,10 @@ type Props = TextInputProps & {
   containerStyle?: ViewStyle | ViewStyle[];
   textArea?: boolean;
   height?: ViewStyle['height'];
+  backgroundColor?: ViewStyle['backgroundColor'];
+  editable?: boolean;
+  disableColor?: string;
+  mandatory?: boolean;
 };
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
@@ -50,6 +54,10 @@ const AnimatedInput = React.forwardRef<TextInput, Props>(
       selectionColor = Colors.SEMI_TRANSPARENT,
       textArea,
       height = 48,
+      editable = true,
+      backgroundColor = Colors.TRANSPARENT,
+      disableColor = Colors.Nero_2,
+      mandatory,
       ...rest
     },
     ref,
@@ -78,7 +86,9 @@ const AnimatedInput = React.forwardRef<TextInput, Props>(
       setSecureText(prevState => !prevState);
     }
 
-    const background = containerStyle?.backgroundColor || Colors.BACKGROUND;
+    const background = !editable
+      ? disableColor
+      : containerStyle?.backgroundColor || Colors.BACKGROUND;
     const inputHeight = textArea ? 120 : height;
 
     const labelStyle = useAnimatedStyle(() => {
@@ -87,19 +97,39 @@ const AnimatedInput = React.forwardRef<TextInput, Props>(
         left: 12,
         top: interpolate(labelAnim.value, [0, 1], [14, -8]),
         fontSize: interpolate(labelAnim.value, [0, 1], [fs.xNormal, 12]),
-        color: isFocused ? labelColor : Colors.GARY_4,
+        color: !editable
+          ? Colors.Dim_Gray
+          : isFocused
+          ? labelColor
+          : Colors.GARY_4,
         fontFamily: app_font.medium,
         backgroundColor: active ? background : Colors.TRANSPARENT,
         paddingHorizontal: active ? 4 : 0,
       };
     });
 
+    const bgColor = useMemo(() => {
+      return editable ? backgroundColor : disableColor;
+    }, [editable, disableColor, backgroundColor]);
+
     return (
-      <View style={[containerStyle, {borderColor, height: inputHeight}]}>
-        <AnimatedText style={labelStyle}>{label ?? placeholder}</AnimatedText>
+      <View
+        style={[
+          containerStyle,
+          {borderColor, height: inputHeight, backgroundColor: bgColor},
+        ]}>
+        <AnimatedText style={labelStyle}>
+          {label ?? placeholder}
+          {mandatory && (
+            <AppText fontFamily="bold" color={Colors.PRIMARY}>
+              {'  *'}
+            </AppText>
+          )}
+        </AnimatedText>
         <AppInput
           {...rest}
           ref={ref}
+          editable={editable}
           value={value}
           style={[
             styles.input,
@@ -136,12 +166,11 @@ export default AnimatedInput;
 const styles = StyleSheet.create({
   container: {
     height: 48,
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: Colors.GARY_2,
     paddingHorizontal: 12,
     justifyContent: 'center',
-    backgroundColor: Colors.BLACK,
     flexDirection: 'row',
     alignItems: 'center',
   },

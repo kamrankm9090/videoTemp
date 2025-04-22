@@ -4,9 +4,9 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   Close2,
   HotSpot2,
+  Note,
   Reload,
   ThreePointVertical,
-  Note,
 } from '~/assets/svgs';
 import {
   AppButton,
@@ -21,12 +21,12 @@ import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
 
-export default function CreateScreen() {
+export default function LiveScreen() {
   return (
     <AppContainer>
       <CreateLiveHeader />
-      <LiveCard />
       <ExperienceCard />
+      <LiveCard />
       <CreateLiveFooter />
     </AppContainer>
   );
@@ -185,11 +185,7 @@ function LiveCard() {
     remoteUsers,
     startPreview,
     engine,
-  } =
-    /**
-     * Step 1: initRtcEngine
-     */
-    useInitRtcEngine(enableVideo);
+  } = useInitRtcEngine(enableVideo);
 
   return (
     <>

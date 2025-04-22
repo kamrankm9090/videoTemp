@@ -260,11 +260,21 @@ declare global {
     color?: string;
   };
 
+  type CreateOptionItemType = {
+    id: number;
+    title: string;
+    description: string;
+    onPress: () => void;
+    icon: JSX.Element;
+    color?: string;
+  };
+
   type SheetNames =
     | 'sharing-action'
     | 'post-options-action'
     | 'report-action'
-    | 'report-reason-action';
+    | 'report-reason-action'
+    | 'create-options-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 

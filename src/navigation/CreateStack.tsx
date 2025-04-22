@@ -1,18 +1,28 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {CreateScreen} from '~/screens';
+import {CollaborativeScreen, CreateContentScreen, LiveScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
 
 export type CreateStackParamList = {
-  Create: undefined;
+  CreateContent: undefined;
+  Collaborative?: undefined;
+  Live?: undefined;
 };
 
 const Stack = createStackNavigator<CreateStackParamList>();
 
 const screens = [
   {
-    name: 'Create',
-    component: CreateScreen,
+    name: 'CreateContent',
+    component: CreateContentScreen,
+  },
+  {
+    name: 'Collaborative',
+    component: CollaborativeScreen,
+  },
+  {
+    name: 'Live',
+    component: LiveScreen,
   },
 ];
 
