@@ -111,6 +111,18 @@ const UserSchema = yup.object({
     .required('Gender is required'),
 });
 
+const createContentSchema = yup.object({
+  title: yup.string().required('Title is required').trim(),
+  description: yup.string().required('Description is required').trim(),
+  category: yup.string().required('Category is required').trim(),
+  price: yup.string().required('Price is required').trim(),
+  date: yup
+    .date()
+    .required('Date is required')
+    .max(new Date(), 'Date cannot be in the future'),
+  time: yup.string().required('Price is required').trim(),
+});
+
 export {
   loginSchema,
   registerSchema,
@@ -120,4 +132,5 @@ export {
   selectCategorySchema,
   resetPasswordSchema,
   reportReasonSchema,
+  createContentSchema,
 };

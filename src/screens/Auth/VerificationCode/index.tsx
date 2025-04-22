@@ -13,14 +13,13 @@ import {
   SectionResendCode,
   VStack,
 } from '~/components';
-import {setHeader} from '~/graphql/fetcher';
 import {useUser_CheckVerificationCodeOfEmailMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {verificationSchema} from '~/schemas';
 import {authenticationStore, userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
-import {showErrorMessage} from '~/utils/utils';
+import {setHeader, showErrorMessage} from '~/utils/utils';
 
 const defaultValues = {verificationCode: ''};
 
@@ -56,7 +55,7 @@ export default function VerificationCodeScreen() {
         onSuccess: response => {
           if (response?.user_checkVerificationCodeOfEmail?.status?.code === 1) {
             const res = response?.user_checkVerificationCodeOfEmail?.result;
-            setHeader(res?.token);
+            setHeader(res?.token || '');
             if (isForResetPassword) {
               setVerificationCode(verifyCode);
               navigate('ResetPassword');

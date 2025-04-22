@@ -33,10 +33,12 @@ declare global {
     token?: string;
     authData?: AuthDataType;
     setUserData: (userData: User) => void;
+    resetUserData: () => void;
     setIsOnboardingViewed: (isOnboardingViewed: boolean) => void;
     setIsUserLoggedIn: (isUserLoggedIn: boolean) => void;
     setToken: (token: string) => void;
     setAuthData: (authData: AuthDataType) => void;
+    resetAuthData: () => void;
   };
   type AgoraStoreType = {
     appId: string;
@@ -258,11 +260,21 @@ declare global {
     color?: string;
   };
 
+  type CreateOptionItemType = {
+    id: number;
+    title: string;
+    description: string;
+    onPress: () => void;
+    icon: JSX.Element;
+    color?: string;
+  };
+
   type SheetNames =
     | 'sharing-action'
     | 'post-options-action'
     | 'report-action'
-    | 'report-reason-action';
+    | 'report-reason-action'
+    | 'create-options-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 

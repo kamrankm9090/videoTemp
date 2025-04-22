@@ -14,6 +14,7 @@ const userDataStore = create<UserDataStoreType>(
       isUserLoggedIn: false,
       authData: undefined,
       setUserData: (userData: User) => set({userData}),
+      resetUserData: () => set({userData: undefined}),
       setIsOnboardingViewed: (isOnboardingViewed: boolean) =>
         set({isOnboardingViewed}),
       setIsUserLoggedIn: (isUserLoggedIn: boolean) => set({isUserLoggedIn}),
@@ -26,6 +27,10 @@ const userDataStore = create<UserDataStoreType>(
       }: AuthDataType) =>
         set({
           authData: {token, expireDate, refreshToken, refreshTokenExpiryTime},
+        }),
+      resetAuthData: () =>
+        set({
+          authData: undefined,
         }),
     }),
     {

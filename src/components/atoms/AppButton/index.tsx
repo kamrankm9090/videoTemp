@@ -55,7 +55,7 @@ export default function AppButton({
   spinnerColor = Colors.WHITE,
   spinnerSize = 'small',
   width = '100%',
-  height = 54,
+  height = 48,
   borderRadius = 8,
   fontSize = fs.small,
   font_family = fontFamily.bold,
