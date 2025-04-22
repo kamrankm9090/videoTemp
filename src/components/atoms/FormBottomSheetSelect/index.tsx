@@ -116,7 +116,7 @@ export default FormBottomSheetSelect;
 const styles = StyleSheet.create({
   dropdown: {
     backgroundColor: Colors.WHITE_TRANSPARENT_1,
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
     padding: 14,
     flexDirection: 'row',
