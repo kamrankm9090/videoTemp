@@ -4,7 +4,9 @@ import {CreateScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
 
 export type CreateStackParamList = {
-  Create: undefined;
+  Create: {
+    screen:string
+  };
 };
 
 const Stack = createStackNavigator<CreateStackParamList>();

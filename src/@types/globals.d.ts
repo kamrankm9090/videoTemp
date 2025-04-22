@@ -262,7 +262,8 @@ declare global {
     | 'sharing-action'
     | 'post-options-action'
     | 'report-action'
-    | 'report-reason-action';
+    | 'report-reason-action'
+    | 'create-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 
