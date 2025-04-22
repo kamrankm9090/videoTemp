@@ -9,7 +9,7 @@ import {
 } from '~/components';
 
 export default function HomeHeader() {
-  function searchOnPress() {}
+  async function searchOnPress() {}
 
   return (
     <ScreensHeader

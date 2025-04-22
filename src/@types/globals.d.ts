@@ -33,10 +33,12 @@ declare global {
     token?: string;
     authData?: AuthDataType;
     setUserData: (userData: User) => void;
+    resetUserData: () => void;
     setIsOnboardingViewed: (isOnboardingViewed: boolean) => void;
     setIsUserLoggedIn: (isUserLoggedIn: boolean) => void;
     setToken: (token: string) => void;
     setAuthData: (authData: AuthDataType) => void;
+    resetAuthData: () => void;
   };
   type AgoraStoreType = {
     appId: string;

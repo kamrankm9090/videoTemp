@@ -20,7 +20,7 @@ import {loginSchema} from '~/schemas';
 import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
-import {showErrorMessage} from '~/utils/utils';
+import {setHeader, showErrorMessage} from '~/utils/utils';
 
 const defaultValues = {email: '', password: ''};
 
@@ -50,14 +50,15 @@ export default function SigninScreen() {
       onSuccess: response => {
         if (response?.user_signIn?.status?.code === 1) {
           const res = response?.user_signIn?.result;
+          setHeader(res?.token || '');
           const authData = {
             token: res?.token,
             expireDate: res?.expireDate,
             refreshToken: res?.refreshToken,
             refreshTokenExpiryTime: res?.refreshTokenExpiryTime,
           };
-          setUserData(res?.user);
           setAuthData(authData);
+          setUserData(res?.user);
           setIsUserLoggedIn(true);
         } else {
           showErrorMessage(response?.user_signIn?.status?.description);

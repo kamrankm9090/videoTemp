@@ -1,6 +1,5 @@
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import {CommonActions} from '@react-navigation/native';
-import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 import dayjs from 'dayjs';
 import React from 'react';
 import {Keyboard, Linking} from 'react-native';
@@ -19,12 +18,15 @@ import Toast, {
 import {AppToast, OptionalToast} from '~/components';
 import {Colors} from '~/styles';
 import {isAndroid, isIos} from './helper';
-
-import {AgoraDropdownItem} from '~/components/ui';
-import {Error, InfoCircle, TickCircle, Warning} from '~/assets/svgs';
-import {screenTransitionConfig} from '~/navigation/methods';
 import {StackNavigationOptions} from '@react-navigation/stack';
 import {SheetManager} from 'react-native-actions-sheet';
+import {Error, InfoCircle, TickCircle, Warning} from '~/assets/svgs';
+import {queryClient} from '~/components/atoms/QueryClientProvider';
+import {AgoraDropdownItem} from '~/components/ui';
+import {screenTransitionConfig} from '~/navigation/methods';
+import {userDataStore} from '~/stores';
+import jwtDecode, {JwtPayload} from 'jwt-decode';
+import graphQLClient from '~/graphql/fetcher';
 
 export const toastConfig = {
   success: (props: ToastProps) => <BaseToast {...props} />,
@@ -352,4 +354,30 @@ export function switchActions(
   setTimeout(() => {
     showSheet(newAction, payload);
   }, 300);
+}
+
+export const isTokenExpired = (token?: string | null): boolean => {
+  if (!token) {
+    return true;
+  }
+  try {
+    const decoded = jwtDecode<JwtPayload>(token);
+    return (decoded.exp ?? 0) < Date.now() / 1000;
+  } catch (err) {
+    console.error('Invalid token:', err);
+    return true;
+  }
+};
+
+export function setHeader(token: string) {
+  graphQLClient.setHeader('authorization', 'Bearer ' + token);
+}
+
+export async function logout() {
+  setHeader('');
+  queryClient.cancelQueries();
+  queryClient.clear();
+  userDataStore.getState()?.resetAuthData();
+  userDataStore.getState()?.resetUserData();
+  userDataStore?.setState({isUserLoggedIn: false});
 }

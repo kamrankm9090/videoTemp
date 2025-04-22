@@ -45,3 +45,8 @@ export {default as Copy} from './copy.svg';
 export {default as ChevronRight} from './chevronRight.svg';
 export {default as Save} from './save.svg';
 export {default as Saved} from './saved.svg';
+export {default as Close2} from './close2.svg';
+export {default as HotSpot2} from './hotSpot2.svg';
+export {default as ThreePointVertical} from './threePointVertical.svg';
+export {default as Reload} from './reload.svg';
+export {default as Note} from './note.svg';
