@@ -5,6 +5,7 @@ import {Colors} from '~/styles';
 
 type FormInputProps = {
   name: string;
+  height?:number
 } & AppInputProps;
 
 export default React.forwardRef((props: FormInputProps, ref: any) => {

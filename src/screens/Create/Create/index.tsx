@@ -1,18 +1,19 @@
 import dayjs from 'dayjs';
 import React, {useCallback, useMemo, useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
-import {Platform, ScrollView, StyleSheet, View} from 'react-native';
+import {useForm} from 'react-hook-form';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {CalenderIcon, CheckBox, CheckBoxOutline, Clock} from '~/assets/svgs';
 import {
   AppButton,
   AppContainer,
   AppFormProvider,
-  AppInput,
   AppText,
   AppTouchable,
+  FormInput,
+  VStack,
 } from '~/components';
-import BottomSheetSelect from '~/components/atoms/BottomSheetSelect';
+import FormBottomSheetSelect from '~/components/atoms/FormBottomSheetSelect';
 import {useInfiniteCategory_GetCategoriesQuery} from '~/graphql/generated';
 import {Colors} from '~/styles';
 
@@ -28,7 +29,6 @@ const CreateScreen = () => {
     const flat = getCategories?.pages
       ?.map(a => a?.category_getCategories?.result?.items)
       .flat();
-
     return (
       flat?.map((c: any) => ({
         label: c?.title ?? '',
@@ -48,13 +48,7 @@ const CreateScreen = () => {
     },
   });
 
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: {errors},
-  } = form;
+  const {handleSubmit, setValue, watch, formState} = form;
 
   const onSubmit = useCallback((data: any) => {
     console.log('SUBMIT:', data);
@@ -81,87 +75,53 @@ const CreateScreen = () => {
       <AppFormProvider methods={form}>
         <ScrollView
           style={styles.container}
+          contentContainerStyle={{paddingBottom: 100}}
           keyboardShouldPersistTaps="handled">
-          <AppText
-            fontSize={18}
-            fontWeight="700"
-            color="white"
-            marginBottom={16}>
-            Create Content
-          </AppText>
-
-          <Controller
-            control={control}
-            name="title"
-            rules={{required: 'Title is required'}}
-            render={({field: {onChange, value}}) => (
-              <AppInput
-                placeholder="Title *"
-                value={value}
-                onChangeText={onChange}
-                style={styles.input}
-              />
-            )}
-          />
-          {errors.title && (
-            <AppText fontSize={12} color={Colors.ERROR} marginBottom={8}>
-              {errors.title.message}
+          <VStack mb={16} space={16}>
+            <AppText
+              fontSize={18}
+              fontWeight="700"
+              color="white"
+              marginBottom={16}>
+              Create Content
             </AppText>
-          )}
 
-          <Controller
-            control={control}
-            name="description"
-            render={({field: {onChange, value}}) => (
-              <AppInput
-                placeholder="Description"
-                value={value}
-                onChangeText={onChange}
-                multiline
-                numberOfLines={4}
-                style={[styles.input, {height: 100, textAlignVertical: 'top'}]}
-              />
-            )}
-          />
+            <FormInput name="title" placeholder="Title *" {...{formState}} />
 
-          <Controller
-            control={control}
-            name="category"
-            render={({field: {onChange, value}}) => {
-              const selected = useMemo(
-                () => options.find(opt => opt.value === value),
-                [value, options],
-              );
-              return (
-                <BottomSheetSelect
-                  options={options}
-                  selectedLabel={selected?.label}
-                  onSelect={item => onChange(item.value)}
-                />
-              );
-            }}
-          />
+            <FormInput
+              name="description"
+              placeholder="Description"
+              multiline
+              height={100}
+              textAlignVertical={'top'}
+              numberOfLines={4}
+              {...{formState}}
+            />
 
-          <Controller
-            control={control}
-            name="price"
-            render={({field: {onChange, value}}) => (
-              <AppInput
-                placeholder="Price"
-                value={value}
-                onChangeText={onChange}
-                editable={!isFree}
-                keyboardType="numeric"
-                style={[styles.input, isFree && {opacity: 0.4}]}
-              />
-            )}
-          />
+            <FormBottomSheetSelect name="category" options={options} />
+
+            <FormInput
+              name="price"
+              placeholder="Price"
+              keyboardType="numeric"
+              editable={!isFree}
+              containerStyle={[
+                isFree
+                  ? {
+                      backgroundColor: Colors.WHITE_TRANSPARENT_2,
+                    }
+                  : {backgroundColor: Colors.BACKGROUND},
+                {borderWidth: 1, borderRadius: 12, padding: 8},
+              ]}
+              {...{formState}}
+            />
+          </VStack>
 
           <AppTouchable
             onPress={() => setIsFree(p => !p)}
             style={styles.checkBoxContainer}>
             {isFree ? <CheckBox /> : <CheckBoxOutline />}
-            <AppText marginLeft={8} color="white">
+            <AppText marginLeft={8} color={Colors.WHITE}>
               This content is available for free
             </AppText>
           </AppTouchable>
@@ -170,7 +130,7 @@ const CreateScreen = () => {
             onPress={() => setIsScheduled(p => !p)}
             style={styles.checkBoxContainer}>
             {isScheduled ? <CheckBox /> : <CheckBoxOutline />}
-            <AppText marginLeft={8} color="white">
+            <AppText marginLeft={8} color={Colors.WHITE}>
               Set schedule
             </AppText>
           </AppTouchable>
@@ -187,7 +147,7 @@ const CreateScreen = () => {
                   <AppText
                     fontSize={14}
                     fontWeight="600"
-                    color="white"
+                    color={Colors.WHITE}
                     marginTop={4}>
                     {dayjs(watch('date')).format('YYYY/MM/DD')}
                   </AppText>
@@ -205,7 +165,7 @@ const CreateScreen = () => {
                   <AppText
                     fontSize={14}
                     fontWeight="600"
-                    color="white"
+                    color={Colors.WHITE}
                     marginTop={4}>
                     {dayjs(watch('time')).format('h:mm A')}
                   </AppText>
@@ -222,7 +182,6 @@ const CreateScreen = () => {
           <AppButton title="Continue" onPress={handleSubmit(onSubmit)} />
         </ScrollView>
 
-        {/* Date pickers */}
         <DateTimePickerModal
           isVisible={showDatePicker}
           mode="date"
@@ -249,23 +208,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BACKGROUND,
     paddingHorizontal: 16,
     paddingTop: 16,
-  },
-  input: {
-    backgroundColor: Colors.Nero_1,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: Platform.OS === 'ios' ? 14 : 10,
-    color: Colors.WHITE,
-    marginBottom: 12,
-  },
-  dropdown: {
-    backgroundColor: Colors.WHITE_TRANSPARENT_1,
-    borderRadius: 8,
-    padding: 14,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
   },
   checkBoxContainer: {
     flexDirection: 'row',
