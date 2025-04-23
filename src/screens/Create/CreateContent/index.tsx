@@ -1,16 +1,17 @@
 import {yupResolver} from '@hookform/resolvers/yup';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
+import {useSnapshot} from 'valtio';
 import {
   AppButton,
-  AppCheckBox,
   AppContainer,
   AppFormProvider,
   AppKeyboardAwareScrollView,
   AppText,
   AppTouchable,
   Divider,
+  FormCheckBox,
   FormDateTimePicker,
   FormInput,
   HStack,
@@ -18,32 +19,66 @@ import {
   SectionCategory,
   VStack,
 } from '~/components';
+import {LiveInput, useLive_CreateLiveMutation} from '~/graphql/generated';
+import {navigate} from '~/navigation/methods';
 import {createContentSchema} from '~/schemas';
+import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
+import {showErrorMessage} from '~/utils/utils';
 
 const defaultValues = {
   title: '',
+  isFree: false,
+  isSchedule: false,
   description: '',
-  category: '',
+  category: null,
   price: '',
   date: '',
   time: '',
 };
 
 export default function CreateContentScreen() {
-  const [isFree, setIsFree] = useState(true);
-  const [isScheduled, setIsScheduled] = useState(true);
-
   const {...methods} = useForm({
     resolver: yupResolver(createContentSchema),
     defaultValues,
   });
 
-  const {handleSubmit, register, formState} = methods;
+  const {handleSubmit, formState, watch} = methods;
+  const {setLiveId} = useSnapshot(liveStore);
 
-  const onSubmit = useCallback((data: any) => {
-    console.log('SUBMIT:', data);
-  }, []);
+  const {mutate: mutateCreateLive, isLoading: isLoadingCreateLive} =
+    useLive_CreateLiveMutation();
+
+  const onSubmit = useCallback(
+    (formData: typeof defaultValues) => {
+      const input: LiveInput = {
+        isFree: formData?.isFree,
+        description: formData?.description,
+        title: formData?.title,
+        categoryId: formData?.category?.id,
+        setSchedule: formData?.isSchedule,
+        // price: formData?.price,
+        // publishingScheduleDate: formData?.date,
+        // publishingScheduleTime: formData?.time,
+        previewUrl: '',
+      };
+      mutateCreateLive(
+        {input},
+        {
+          onSuccess: response => {
+            console.log('response-11->', response);
+            if (response?.live_createLive?.status?.code === 1) {
+              setLiveId(response?.live_createLive?.result?.id);
+              navigate('Live');
+            } else {
+              showErrorMessage(response?.live_createLive?.status?.description);
+            }
+          },
+        },
+      );
+    },
+    [mutateCreateLive, setLiveId],
+  );
 
   return (
     <AppContainer>
@@ -59,38 +94,26 @@ export default function CreateContentScreen() {
               {...{formState}}
             />
             <FormInput
+              textArea
               name="description"
               placeholder="Description"
-              multiline
-              textArea
               {...{formState}}
-            />
-            <FormInput
-              textArea
-              {...register('description')}
-              {...{formState}}
-              placeholder={'Type your reason'}
             />
             <SectionCategory name="category" />
             <FormInput
               name="price"
               placeholder="Price"
               keyboardType="numeric"
-              editable={!isFree}
+              editable={!watch('isFree')}
               {...{formState}}
             />
-            <AppCheckBox
+            <FormCheckBox
+              name="isFree"
               text=" This content is available for free"
-              isChecked={isFree}
-              onPress={checked => setIsFree(checked)}
             />
             <Divider backgroundColor={Colors.Nero_3} />
-            <AppCheckBox
-              text="Set schedule"
-              isChecked={isScheduled}
-              onPress={checked => setIsScheduled(checked)}
-            />
-            {isScheduled && (
+            <FormCheckBox name="isSchedule" text="Set schedule" />
+            {watch('isSchedule') && (
               <HStack alignItems="flex-start" space={8}>
                 <FormDateTimePicker
                   flex={1}
@@ -111,7 +134,11 @@ export default function CreateContentScreen() {
           <AppTouchable style={styles.previewBox} onPress={() => {}}>
             <AppText color={Colors.PLACEHOLDER}>Add video preview</AppText>
           </AppTouchable>
-          <AppButton title="Continue" onPress={handleSubmit(onSubmit)} />
+          <AppButton
+            loading={isLoadingCreateLive}
+            title="Continue"
+            onPress={handleSubmit(onSubmit)}
+          />
         </AppKeyboardAwareScrollView>
       </AppFormProvider>
     </AppContainer>

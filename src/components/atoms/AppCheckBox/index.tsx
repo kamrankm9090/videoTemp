@@ -6,27 +6,35 @@ import BouncyCheckbox, {
 import {Colors} from '~/styles';
 import {fontFamily, fontSize} from '~/utils/style';
 
-export default function AppCheckBox({
-  iconStyle = styles.checkboxIconStyle,
-  innerIconStyle = styles.innerIconStyle,
-  size = 24,
-  fillColor = Colors.PRIMARY,
-  textStyle = styles.textStyle,
-  unFillColor,
-  ...rest
-}: BouncyCheckboxProps) {
-  return (
-    <BouncyCheckbox
-      {...rest}
-      size={size}
-      fillColor={fillColor}
-      textStyle={textStyle}
-      unFillColor={unFillColor}
-      innerIconStyle={innerIconStyle}
-      iconStyle={iconStyle}
-    />
-  );
-}
+const AppCheckBox = React.forwardRef(
+  (
+    {
+      iconStyle = styles.checkboxIconStyle,
+      innerIconStyle = styles.innerIconStyle,
+      size = 24,
+      fillColor = Colors.PRIMARY,
+      textStyle = styles.textStyle,
+      unFillColor,
+      ...rest
+    }: BouncyCheckboxProps,
+    ref: any,
+  ) => {
+    return (
+      <BouncyCheckbox
+        ref={ref}
+        {...rest}
+        size={size}
+        fillColor={fillColor}
+        textStyle={textStyle}
+        unFillColor={unFillColor}
+        innerIconStyle={innerIconStyle}
+        iconStyle={iconStyle}
+      />
+    );
+  },
+);
+
+export default AppCheckBox;
 
 const styles = StyleSheet.create({
   innerIconStyle: {borderWidth: 0},

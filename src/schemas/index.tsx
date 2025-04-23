@@ -113,14 +113,13 @@ const UserSchema = yup.object({
 
 const createContentSchema = yup.object({
   title: yup.string().required('Title is required').trim(),
-  description: yup.string().required('Description is required').trim(),
-  category: yup.string().required('Category is required').trim(),
-  price: yup.string().required('Price is required').trim(),
-  date: yup
-    .date()
-    .required('Date is required')
-    .max(new Date(), 'Date cannot be in the future'),
-  time: yup.string().required('Price is required').trim(),
+  isFree: yup.boolean().nullable(),
+  isSchedule: yup.boolean().nullable(),
+  description: yup.string().trim().nullable(),
+  category: yup.object().nullable(),
+  price: yup.string().trim().nullable(),
+  date: yup.string().nullable(),
+  time: yup.string().trim().nullable(),
 });
 
 export {

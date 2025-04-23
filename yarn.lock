@@ -7166,18 +7166,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-request@npm:7.1.2":
-  version: 7.1.2
-  resolution: "graphql-request@npm:7.1.2"
-  dependencies:
-    "@graphql-typed-document-node/core": ^3.2.0
-  peerDependencies:
-    graphql: 14 - 16
-  checksum: 1b071bb8625ded9e487f93516a902b652502f781660dc1f1802b6988d2af90927f5b1efecbc2999a59e2f9cf586d7e78d5672e5bb6e7624f3e3eef355af3bb9a
-  languageName: node
-  linkType: hard
-
-"graphql-request@npm:^6.0.0":
+"graphql-request@npm:6.1.0, graphql-request@npm:^6.0.0":
   version: 6.1.0
   resolution: "graphql-request@npm:6.1.0"
   dependencies:
@@ -7219,10 +7208,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:16.10.0":
-  version: 16.10.0
-  resolution: "graphql@npm:16.10.0"
-  checksum: 969c2d1061d69ad6fe08a7fe642428212b0b8485a2f9b5d8650203eb6c3221479e81ec6a757708f849d84b85afcb3ebc5a8ff2f71778bb66c5e4850f051c170e
+"graphql@npm:16.6.0":
+  version: 16.6.0
+  resolution: "graphql@npm:16.6.0"
+  checksum: bf1d9e3c1938ce3c1a81e909bd3ead1ae4707c577f91cff1ca2eca474bfbc7873d5d7b942e1e9777ff5a8304421dba57a4b76d7a29eb19de8711cb70e3c2415e
   languageName: node
   linkType: hard
 
@@ -8806,8 +8795,8 @@ __metadata:
     babel-plugin-module-resolver: 5.0.2
     dayjs: 1.11.13
     eslint: ^8.19.0
-    graphql: 16.10.0
-    graphql-request: 7.1.2
+    graphql: 16.6.0
+    graphql-request: 6.1.0
     jest: ^29.6.3
     jwt-decode: 3.1.2
     lodash.debounce: 4.0.8

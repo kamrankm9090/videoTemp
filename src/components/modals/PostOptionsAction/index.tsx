@@ -3,8 +3,6 @@ import {SheetProps} from 'react-native-actions-sheet';
 import {EyeOff, InformationCircle, Share} from '~/assets/svgs';
 import {
   ActionSheetContainer,
-  AppIndicator,
-  AppLoading,
   AppText,
   AppTouchable,
   HStack,
@@ -12,11 +10,10 @@ import {
 } from '~/components';
 import {useLive_CreateNotInterestedMutation} from '~/graphql/generated';
 import {Colors} from '~/styles';
-import {hideSheet, showSuccessMessage, switchActions} from '~/utils/utils';
+import {hideSheet, showErrorMessage, switchActions} from '~/utils/utils';
 
 export default function PostOptionsAction(props: SheetProps) {
   const {payload} = props;
-  console.log('payload--->', payload);
 
   const {mutate: mutateNotInterested, isLoading: isLoadingNotInterested} =
     useLive_CreateNotInterestedMutation();
@@ -27,12 +24,15 @@ export default function PostOptionsAction(props: SheetProps) {
       title: 'Not interested',
       onPress: async () => {
         mutateNotInterested(
-          {liveId: payload?.data?.id},
+          {liveId: payload?.data?.live?.id},
           {
             onSuccess: response => {
-              console.log(response);
               if (response?.live_createNotInterested?.code === 1) {
                 hideSheet('post-options-action');
+              } else {
+                showErrorMessage(
+                  response?.live_createNotInterested?.description,
+                );
               }
             },
           },

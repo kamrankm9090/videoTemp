@@ -50,6 +50,7 @@ export {default as AppSelect} from './atoms/AppSelect';
 export {default as AppDropDown} from './atoms/AppDropDown';
 export {default as FormDateTimePicker} from './atoms/FormDateTimePicker';
 export {default as AppCheckBox} from './atoms/AppCheckBox';
+export {default as FormCheckBox} from './atoms/FormCheckBox';
 //#endregion ---------Atoms
 
 //#region ---------Molecules

@@ -1044,6 +1044,68 @@ export type DimensionOperationFilterInput = {
   nin?: InputMaybe<Array<Dimension>>;
 };
 
+export type DisabledNotificationFromUser = {
+  __typename?: 'DisabledNotificationFromUser';
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  targetUser?: Maybe<User>;
+  targetUserId: Scalars['Int']['output'];
+};
+
+/** A segment of a collection. */
+export type DisabledNotificationFromUserCollectionSegment = {
+  __typename?: 'DisabledNotificationFromUserCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<DisabledNotificationFromUser>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type DisabledNotificationFromUserConnection = {
+  __typename?: 'DisabledNotificationFromUserConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<DisabledNotificationFromUserEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<DisabledNotificationFromUser>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type DisabledNotificationFromUserEdge = {
+  __typename?: 'DisabledNotificationFromUserEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<DisabledNotificationFromUser>;
+};
+
+export type DisabledNotificationFromUserFilterInput = {
+  and?: InputMaybe<Array<DisabledNotificationFromUserFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<DisabledNotificationFromUserFilterInput>>;
+  targetUser?: InputMaybe<UserFilterInput>;
+  targetUserId?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type DisabledNotificationFromUserSortInput = {
+  createdDate?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  targetUser?: InputMaybe<UserSortInput>;
+  targetUserId?: InputMaybe<SortEnumType>;
+};
+
 export type DisputeDto = {
   __typename?: 'DisputeDto';
   amount?: Maybe<Scalars['Long']['output']>;
@@ -1839,6 +1901,29 @@ export type ListResponseBaseOfDefaultViolationResult2Args = {
   where?: InputMaybe<DefaultViolationFilterInput>;
 };
 
+export type ListResponseBaseOfDisabledNotificationFromUser = {
+  __typename?: 'ListResponseBaseOfDisabledNotificationFromUser';
+  result?: Maybe<DisabledNotificationFromUserCollectionSegment>;
+  result2?: Maybe<DisabledNotificationFromUserConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfDisabledNotificationFromUserResultArgs = {
+  order?: InputMaybe<Array<DisabledNotificationFromUserSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<DisabledNotificationFromUserFilterInput>;
+};
+
+export type ListResponseBaseOfDisabledNotificationFromUserResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<DisabledNotificationFromUserSortInput>>;
+  where?: InputMaybe<DisabledNotificationFromUserFilterInput>;
+};
+
 export type ListResponseBaseOfDisputeDto = {
   __typename?: 'ListResponseBaseOfDisputeDto';
   result?: Maybe<DisputeDtoCollectionSegment>;
@@ -1975,6 +2060,52 @@ export type ListResponseBaseOfMessageResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<MessageSortInput>>;
   where?: InputMaybe<MessageFilterInput>;
+};
+
+export type ListResponseBaseOfNotification = {
+  __typename?: 'ListResponseBaseOfNotification';
+  result?: Maybe<NotificationCollectionSegment>;
+  result2?: Maybe<NotificationConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfNotificationResultArgs = {
+  order?: InputMaybe<Array<NotificationSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<NotificationFilterInput>;
+};
+
+export type ListResponseBaseOfNotificationResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<NotificationSortInput>>;
+  where?: InputMaybe<NotificationFilterInput>;
+};
+
+export type ListResponseBaseOfNotificationSettings = {
+  __typename?: 'ListResponseBaseOfNotificationSettings';
+  result?: Maybe<NotificationSettingsCollectionSegment>;
+  result2?: Maybe<NotificationSettingsConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfNotificationSettingsResultArgs = {
+  order?: InputMaybe<Array<NotificationSettingsSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<NotificationSettingsFilterInput>;
+};
+
+export type ListResponseBaseOfNotificationSettingsResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<NotificationSettingsSortInput>>;
+  where?: InputMaybe<NotificationSettingsFilterInput>;
 };
 
 export type ListResponseBaseOfPlanDto = {
@@ -2243,6 +2374,29 @@ export type Live = {
   userId: Scalars['Int']['output'];
   value: Scalars['Decimal']['output'];
   viewCount: Scalars['Int']['output'];
+};
+
+export type LiveComment = {
+  __typename?: 'LiveComment';
+  children?: Maybe<Array<Maybe<LiveComment>>>;
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  live?: Maybe<Live>;
+  liveId: Scalars['Int']['output'];
+  parent?: Maybe<LiveComment>;
+  parentId?: Maybe<Scalars['Int']['output']>;
+  text?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+export type LiveCommentInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  liveId?: InputMaybe<Scalars['Int']['input']>;
+  parentId?: InputMaybe<Scalars['Int']['input']>;
+  text?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type LiveDto = {
@@ -2683,6 +2837,7 @@ export type Mutation = {
   email_sendEmail: ResponseBaseOfSentEmail;
   email_sendEmailWithAWS: ResponseBaseOfSentEmail;
   live_addToBookmark?: Maybe<ResponseStatus>;
+  live_createComment?: Maybe<ResponseBaseOfLiveComment>;
   live_createLive?: Maybe<ResponseBaseOfLive>;
   live_createNotInterested?: Maybe<ResponseStatus>;
   live_deleteLive?: Maybe<ResponseStatus>;
@@ -2703,6 +2858,11 @@ export type Mutation = {
   message_removeMessages?: Maybe<ResponseStatus>;
   message_removeUserFromGroup?: Maybe<ResponseStatus>;
   message_updateMessage?: Maybe<ResponseBaseOfMessage>;
+  notification_createNotification?: Maybe<ResponseStatus>;
+  notification_disableNotificationFromUser?: Maybe<ResponseBaseOfDisabledNotificationFromUser>;
+  notification_enableNotificationFromUser?: Maybe<ResponseBaseOfDisabledNotificationFromUser>;
+  notification_setRead?: Maybe<ResponseBaseOfNotification>;
+  notification_updateNotificationSettings?: Maybe<ResponseBaseOfNotification>;
   paymentStripe_createCharge?: Maybe<ResponseBaseOfChargeDto>;
   paymentStripe_createChargeByToken?: Maybe<ResponseBaseOfChargeDto>;
   paymentStripe_createCheckoutSessionAsync?: Maybe<ResponseBaseOfString>;
@@ -2843,6 +3003,10 @@ export type MutationLive_AddToBookmarkArgs = {
   liveId: Scalars['Int']['input'];
 };
 
+export type MutationLive_CreateCommentArgs = {
+  input?: InputMaybe<LiveCommentInput>;
+};
+
 export type MutationLive_CreateLiveArgs = {
   input?: InputMaybe<LiveInput>;
 };
@@ -2925,6 +3089,26 @@ export type MutationMessage_RemoveUserFromGroupArgs = {
 export type MutationMessage_UpdateMessageArgs = {
   messageId: Scalars['Int']['input'];
   text?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MutationNotification_CreateNotificationArgs = {
+  input?: InputMaybe<Array<InputMaybe<NotificationInput>>>;
+};
+
+export type MutationNotification_DisableNotificationFromUserArgs = {
+  targetUserId: Scalars['Int']['input'];
+};
+
+export type MutationNotification_EnableNotificationFromUserArgs = {
+  targetUserId: Scalars['Int']['input'];
+};
+
+export type MutationNotification_SetReadArgs = {
+  notificationId: Scalars['Int']['input'];
+};
+
+export type MutationNotification_UpdateNotificationSettingsArgs = {
+  input?: InputMaybe<Array<InputMaybe<NotificationSettingsInput>>>;
 };
 
 export type MutationPaymentStripe_CreateChargeArgs = {
@@ -3150,6 +3334,187 @@ export type MutationViolationReport_DeleteViolationReportArgs = {
 
 export type MutationViolationReport_UpdateViolationReportArgs = {
   input?: InputMaybe<ViolationReportInput>;
+};
+
+export type Notification = {
+  __typename?: 'Notification';
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  isRead: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  /**
+   * NewFollower,NewMessage,LikeComment,
+   *             NewTip,
+   *             NewLive,
+   *             CreateComment,
+   *
+   */
+  notificationType?: Maybe<Scalars['String']['output']>;
+  relatedEntity?: Maybe<Scalars['String']['output']>;
+  relatedEntityId?: Maybe<Scalars['Int']['output']>;
+  relatedUser?: Maybe<User>;
+  relatedUserId?: Maybe<Scalars['Int']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+/** A segment of a collection. */
+export type NotificationCollectionSegment = {
+  __typename?: 'NotificationCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<Notification>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type NotificationConnection = {
+  __typename?: 'NotificationConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<NotificationEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<Notification>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type NotificationEdge = {
+  __typename?: 'NotificationEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Notification>;
+};
+
+export type NotificationFilterInput = {
+  and?: InputMaybe<Array<NotificationFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isRead?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  /**
+   * NewFollower,NewMessage,LikeComment,
+   *             NewTip,
+   *             NewLive,
+   *             CreateComment,
+   *
+   */
+  notificationType?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<NotificationFilterInput>>;
+  relatedEntity?: InputMaybe<StringOperationFilterInput>;
+  relatedEntityId?: InputMaybe<IntOperationFilterInput>;
+  relatedUser?: InputMaybe<UserFilterInput>;
+  relatedUserId?: InputMaybe<IntOperationFilterInput>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type NotificationInput = {
+  notificationType?: InputMaybe<Scalars['String']['input']>;
+  relatedEntity?: InputMaybe<Scalars['String']['input']>;
+  relatedEntityId?: InputMaybe<Scalars['Int']['input']>;
+  userId: Scalars['Int']['input'];
+};
+
+export type NotificationSettings = {
+  __typename?: 'NotificationSettings';
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  isEnabled: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  notificationType?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+/** A segment of a collection. */
+export type NotificationSettingsCollectionSegment = {
+  __typename?: 'NotificationSettingsCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<NotificationSettings>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type NotificationSettingsConnection = {
+  __typename?: 'NotificationSettingsConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<NotificationSettingsEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<NotificationSettings>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type NotificationSettingsEdge = {
+  __typename?: 'NotificationSettingsEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<NotificationSettings>;
+};
+
+export type NotificationSettingsFilterInput = {
+  and?: InputMaybe<Array<NotificationSettingsFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isEnabled?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  notificationType?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<NotificationSettingsFilterInput>>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type NotificationSettingsInput = {
+  isEnabled: Scalars['Boolean']['input'];
+  notificationType?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type NotificationSettingsSortInput = {
+  createdDate?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  isEnabled?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  notificationType?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+  userId?: InputMaybe<SortEnumType>;
+};
+
+export type NotificationSortInput = {
+  createdDate?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  isRead?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  /**
+   * NewFollower,NewMessage,LikeComment,
+   *             NewTip,
+   *             NewLive,
+   *             CreateComment,
+   *
+   */
+  notificationType?: InputMaybe<SortEnumType>;
+  relatedEntity?: InputMaybe<SortEnumType>;
+  relatedEntityId?: InputMaybe<SortEnumType>;
+  relatedUser?: InputMaybe<UserSortInput>;
+  relatedUserId?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+  userId?: InputMaybe<SortEnumType>;
 };
 
 export type NullableOfGenderOperationFilterInput = {
@@ -3474,6 +3839,9 @@ export type Query = {
   message_getMessages?: Maybe<ListResponseBaseOfMessage>;
   message_getSummary?: Maybe<ResponseBaseOfMessageSummaryDto>;
   message_getUserMessages?: Maybe<ListResponseBaseOfConversationDto>;
+  notification_getDisabledNotificationFromUsers?: Maybe<ListResponseBaseOfDisabledNotificationFromUser>;
+  notification_getNotificationSettings?: Maybe<ListResponseBaseOfNotificationSettings>;
+  notification_getNotifications?: Maybe<ListResponseBaseOfNotification>;
   paymentStripe_appStorePaymentValidation?: Maybe<ResponseBaseOfPaymentValidationResultDto>;
   paymentStripe_geBalance?: Maybe<ResponseBaseOfBalanceDto>;
   paymentStripe_geCharges?: Maybe<ListResponseBaseOfChargeDto>;
@@ -3901,6 +4269,12 @@ export type ResponseBaseOfDefaultViolation = {
   status?: Maybe<Scalars['Any']['output']>;
 };
 
+export type ResponseBaseOfDisabledNotificationFromUser = {
+  __typename?: 'ResponseBaseOfDisabledNotificationFromUser';
+  result?: Maybe<DisabledNotificationFromUser>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type ResponseBaseOfFollowSummaryDto = {
   __typename?: 'ResponseBaseOfFollowSummaryDto';
   result?: Maybe<FollowSummaryDto>;
@@ -3925,6 +4299,12 @@ export type ResponseBaseOfLive = {
   status?: Maybe<Scalars['Any']['output']>;
 };
 
+export type ResponseBaseOfLiveComment = {
+  __typename?: 'ResponseBaseOfLiveComment';
+  result?: Maybe<LiveComment>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type ResponseBaseOfLoginActivity = {
   __typename?: 'ResponseBaseOfLoginActivity';
   result?: Maybe<LoginActivity>;
@@ -3940,6 +4320,12 @@ export type ResponseBaseOfMessage = {
 export type ResponseBaseOfMessageSummaryDto = {
   __typename?: 'ResponseBaseOfMessageSummaryDto';
   result?: Maybe<MessageSummaryDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfNotification = {
+  __typename?: 'ResponseBaseOfNotification';
+  result?: Maybe<Notification>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -4324,6 +4710,16 @@ export type StripePaymentMethodSortInput = {
   zipCode?: InputMaybe<SortEnumType>;
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  notificationAdded?: Maybe<Notification>;
+  testSubscription: Scalars['Int']['output'];
+};
+
+export type SubscriptionNotificationAddedArgs = {
+  userId: Scalars['Int']['input'];
+};
+
 export type TimeSpanOperationFilterInput = {
   eq?: InputMaybe<Scalars['TimeSpan']['input']>;
   gt?: InputMaybe<Scalars['TimeSpan']['input']>;
@@ -4398,6 +4794,7 @@ export type User = {
   dateOfBirth?: Maybe<Scalars['DateTime']['output']>;
   displayContactInfo?: Maybe<Scalars['Boolean']['output']>;
   displayGender?: Maybe<Scalars['Boolean']['output']>;
+  education?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   emailConfirmed: Scalars['Boolean']['output'];
   externalId: Scalars['String']['output'];
@@ -4414,6 +4811,7 @@ export type User = {
   isDeleted: Scalars['Boolean']['output'];
   isPrivateAccount: Scalars['Boolean']['output'];
   isVerified: Scalars['Boolean']['output'];
+  languages?: Maybe<Scalars['String']['output']>;
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   lastSeen?: Maybe<Scalars['DateTime']['output']>;
   /** @deprecated Use LocationOfUser */
@@ -4432,15 +4830,16 @@ export type User = {
   phoneNumberConfirmed: Scalars['Boolean']['output'];
   photoUrl?: Maybe<Scalars['String']['output']>;
   profession?: Maybe<Scalars['String']['output']>;
+  professionalSummary?: Maybe<Scalars['String']['output']>;
   rateAverage: Scalars['Float']['output'];
   ratePercent_1: Scalars['Float']['output'];
   ratePercent_2: Scalars['Float']['output'];
   ratePercent_3: Scalars['Float']['output'];
   ratePercent_4: Scalars['Float']['output'];
   ratePercent_5: Scalars['Float']['output'];
-  resume?: Maybe<Scalars['String']['output']>;
   reviewCount: Scalars['Int']['output'];
   securityStamp?: Maybe<Scalars['String']['output']>;
+  skills?: Maybe<Scalars['String']['output']>;
   socialLinks?: Maybe<Scalars['String']['output']>;
   state?: Maybe<Scalars['String']['output']>;
   streetAddress?: Maybe<Scalars['String']['output']>;
@@ -4456,6 +4855,7 @@ export type User = {
   verificationErrors?: Maybe<Scalars['String']['output']>;
   verificationPhotos?: Maybe<Scalars['String']['output']>;
   wallet: Scalars['Decimal']['output'];
+  workExperience?: Maybe<Scalars['String']['output']>;
   yearsOfExperience?: Maybe<Scalars['Int']['output']>;
   zipCode?: Maybe<Scalars['String']['output']>;
 };
@@ -4570,6 +4970,7 @@ export type UserFilterInput = {
   dateOfBirth?: InputMaybe<DateTimeOperationFilterInput>;
   displayContactInfo?: InputMaybe<BooleanOperationFilterInput>;
   displayGender?: InputMaybe<BooleanOperationFilterInput>;
+  education?: InputMaybe<StringOperationFilterInput>;
   email?: InputMaybe<StringOperationFilterInput>;
   emailConfirmed?: InputMaybe<BooleanOperationFilterInput>;
   externalId?: InputMaybe<StringOperationFilterInput>;
@@ -4586,6 +4987,7 @@ export type UserFilterInput = {
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   isPrivateAccount?: InputMaybe<BooleanOperationFilterInput>;
   isVerified?: InputMaybe<BooleanOperationFilterInput>;
+  languages?: InputMaybe<StringOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   lastSeen?: InputMaybe<DateTimeOperationFilterInput>;
   latitude?: InputMaybe<FloatOperationFilterInput>;
@@ -4603,15 +5005,16 @@ export type UserFilterInput = {
   phoneNumberConfirmed?: InputMaybe<BooleanOperationFilterInput>;
   photoUrl?: InputMaybe<StringOperationFilterInput>;
   profession?: InputMaybe<StringOperationFilterInput>;
+  professionalSummary?: InputMaybe<StringOperationFilterInput>;
   rateAverage?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_1?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_2?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_3?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_4?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_5?: InputMaybe<FloatOperationFilterInput>;
-  resume?: InputMaybe<StringOperationFilterInput>;
   reviewCount?: InputMaybe<IntOperationFilterInput>;
   securityStamp?: InputMaybe<StringOperationFilterInput>;
+  skills?: InputMaybe<StringOperationFilterInput>;
   socialLinks?: InputMaybe<StringOperationFilterInput>;
   state?: InputMaybe<StringOperationFilterInput>;
   streetAddress?: InputMaybe<StringOperationFilterInput>;
@@ -4627,6 +5030,7 @@ export type UserFilterInput = {
   verificationErrors?: InputMaybe<StringOperationFilterInput>;
   verificationPhotos?: InputMaybe<StringOperationFilterInput>;
   wallet?: InputMaybe<DecimalOperationFilterInput>;
+  workExperience?: InputMaybe<StringOperationFilterInput>;
   yearsOfExperience?: InputMaybe<IntOperationFilterInput>;
   zipCode?: InputMaybe<StringOperationFilterInput>;
 };
@@ -4674,6 +5078,7 @@ export type UserInput = {
   dateOfBirth?: InputMaybe<Scalars['DateTime']['input']>;
   displayContactInfo?: InputMaybe<Scalars['Boolean']['input']>;
   displayGender?: InputMaybe<Scalars['Boolean']['input']>;
+  education?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   favoriteCategories?: InputMaybe<Scalars['String']['input']>;
   fullName?: InputMaybe<Scalars['String']['input']>;
@@ -4682,13 +5087,15 @@ export type UserInput = {
   introSeen?: InputMaybe<Scalars['Boolean']['input']>;
   isPrivateAccount?: InputMaybe<Scalars['Boolean']['input']>;
   isVerified?: InputMaybe<Scalars['Boolean']['input']>;
+  languages?: InputMaybe<Scalars['String']['input']>;
   latitude?: InputMaybe<Scalars['Float']['input']>;
   location?: InputMaybe<Scalars['String']['input']>;
   longitude?: InputMaybe<Scalars['Float']['input']>;
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
   photoUrl?: InputMaybe<Scalars['String']['input']>;
   profession?: InputMaybe<Scalars['String']['input']>;
-  resume?: InputMaybe<Scalars['String']['input']>;
+  professionalSummary?: InputMaybe<Scalars['String']['input']>;
+  skills?: InputMaybe<Scalars['String']['input']>;
   socialLinks?: InputMaybe<Scalars['String']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
   streetAddress?: InputMaybe<Scalars['String']['input']>;
@@ -4699,6 +5106,7 @@ export type UserInput = {
   username?: InputMaybe<Scalars['String']['input']>;
   verificationErrors?: InputMaybe<Scalars['String']['input']>;
   verificationPhotos?: InputMaybe<Scalars['String']['input']>;
+  workExperience?: InputMaybe<Scalars['String']['input']>;
   yearsOfExperience?: InputMaybe<Scalars['Int']['input']>;
   zipCode?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4793,6 +5201,7 @@ export type UserSortInput = {
   dateOfBirth?: InputMaybe<SortEnumType>;
   displayContactInfo?: InputMaybe<SortEnumType>;
   displayGender?: InputMaybe<SortEnumType>;
+  education?: InputMaybe<SortEnumType>;
   email?: InputMaybe<SortEnumType>;
   emailConfirmed?: InputMaybe<SortEnumType>;
   externalId?: InputMaybe<SortEnumType>;
@@ -4807,6 +5216,7 @@ export type UserSortInput = {
   isDeleted?: InputMaybe<SortEnumType>;
   isPrivateAccount?: InputMaybe<SortEnumType>;
   isVerified?: InputMaybe<SortEnumType>;
+  languages?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   lastSeen?: InputMaybe<SortEnumType>;
   latitude?: InputMaybe<SortEnumType>;
@@ -4822,15 +5232,16 @@ export type UserSortInput = {
   phoneNumberConfirmed?: InputMaybe<SortEnumType>;
   photoUrl?: InputMaybe<SortEnumType>;
   profession?: InputMaybe<SortEnumType>;
+  professionalSummary?: InputMaybe<SortEnumType>;
   rateAverage?: InputMaybe<SortEnumType>;
   ratePercent_1?: InputMaybe<SortEnumType>;
   ratePercent_2?: InputMaybe<SortEnumType>;
   ratePercent_3?: InputMaybe<SortEnumType>;
   ratePercent_4?: InputMaybe<SortEnumType>;
   ratePercent_5?: InputMaybe<SortEnumType>;
-  resume?: InputMaybe<SortEnumType>;
   reviewCount?: InputMaybe<SortEnumType>;
   securityStamp?: InputMaybe<SortEnumType>;
+  skills?: InputMaybe<SortEnumType>;
   socialLinks?: InputMaybe<SortEnumType>;
   state?: InputMaybe<SortEnumType>;
   streetAddress?: InputMaybe<SortEnumType>;
@@ -4846,6 +5257,7 @@ export type UserSortInput = {
   verificationErrors?: InputMaybe<SortEnumType>;
   verificationPhotos?: InputMaybe<SortEnumType>;
   wallet?: InputMaybe<SortEnumType>;
+  workExperience?: InputMaybe<SortEnumType>;
   yearsOfExperience?: InputMaybe<SortEnumType>;
   zipCode?: InputMaybe<SortEnumType>;
 };
@@ -5131,6 +5543,24 @@ export type Live_CreateNotInterestedMutation = {
     code: number;
     value?: string | null;
     description?: string | null;
+  } | null;
+};
+
+export type Live_CreateLiveMutationVariables = Exact<{
+  input?: InputMaybe<LiveInput>;
+}>;
+
+export type Live_CreateLiveMutation = {
+  __typename?: 'Mutation';
+  live_createLive?: {
+    __typename?: 'ResponseBaseOfLive';
+    status?: any | null;
+    result?: {
+      __typename?: 'Live';
+      userId: number;
+      liveType: LiveType;
+      id: number;
+    } | null;
   } | null;
 };
 
@@ -6286,6 +6716,46 @@ export const useLive_CreateNotInterestedMutation = <
         Live_CreateNotInterestedMutation,
         Live_CreateNotInterestedMutationVariables
       >(Live_CreateNotInterestedDocument, variables)(),
+    options,
+  );
+};
+
+export const Live_CreateLiveDocument = `
+    mutation live_createLive($input: LiveInput) {
+  live_createLive(input: $input) {
+    result {
+      userId
+      liveType
+      id
+    }
+    status
+  }
+}
+    `;
+
+export const useLive_CreateLiveMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Live_CreateLiveMutation,
+    TError,
+    Live_CreateLiveMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_CreateLiveMutation,
+    TError,
+    Live_CreateLiveMutationVariables,
+    TContext
+  >(
+    ['live_createLive'],
+    (variables?: Live_CreateLiveMutationVariables) =>
+      fetcher<Live_CreateLiveMutation, Live_CreateLiveMutationVariables>(
+        Live_CreateLiveDocument,
+        variables,
+      )(),
     options,
   );
 };
