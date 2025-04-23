@@ -26,7 +26,7 @@ import {AgoraDropdownItem} from '~/components/ui';
 import {screenTransitionConfig} from '~/navigation/methods';
 import {userDataStore} from '~/stores';
 import jwtDecode, {JwtPayload} from 'jwt-decode';
-import graphQLClient from '~/graphql/fetcher';
+import {graphQLClient} from '~/graphql/fetcher';
 
 export const toastConfig = {
   success: (props: ToastProps) => <BaseToast {...props} />,

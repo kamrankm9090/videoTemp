@@ -21,3 +21,14 @@ mutation live_createNotInterested($liveId: Int!){
         description
     }
 }
+
+mutation live_createLive($input: LiveInput){
+    live_createLive(input: $input){
+        result{
+            userId
+            liveType
+            id
+        }
+        status
+    }
+}

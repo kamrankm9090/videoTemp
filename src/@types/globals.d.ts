@@ -252,6 +252,11 @@ declare global {
     setVerificationCode: (verificationCode: string) => void;
   };
 
+  type liveStoreType = {
+    liveId: string;
+    setLiveId: (liveId: string) => void;
+  };
+
   type PostOptionItemType = {
     id: number;
     title: string;
