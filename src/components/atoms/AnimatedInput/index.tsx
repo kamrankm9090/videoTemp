@@ -177,5 +177,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: Colors.WHITE,
+    textAlignVertical: 'top',
+    height: '100%',
   },
 });
