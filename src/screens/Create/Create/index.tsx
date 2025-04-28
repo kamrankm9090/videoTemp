@@ -1,3 +1,4 @@
+import { useNavigation, useRoute } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, {useCallback, useMemo, useState} from 'react';
 import {useForm} from 'react-hook-form';
@@ -15,6 +16,7 @@ import {
 } from '~/components';
 import FormBottomSheetSelect from '~/components/atoms/FormBottomSheetSelect';
 import {useInfiniteCategory_GetCategoriesQuery} from '~/graphql/generated';
+import { navigate } from '~/navigation/methods';
 import {Colors} from '~/styles';
 
 const CreateScreen = () => {
@@ -22,6 +24,8 @@ const CreateScreen = () => {
   const [isScheduled, setIsScheduled] = useState(true);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+
+  const {params}:any = useRoute()
 
   const {data: getCategories} = useInfiniteCategory_GetCategoriesQuery();
 
@@ -175,8 +179,8 @@ const CreateScreen = () => {
             </View>
           )}
 
-          <AppTouchable style={styles.previewBox} onPress={() => {}}>
-            <AppText color={Colors.PLACEHOLDER}>Add video preview</AppText>
+          <AppTouchable style={{...styles.previewBox, borderColor:params?.videoUrl ? Colors.GREEN_BRAND :  Colors.BORDER,}} onPress={() => navigate("VideoPreview")}>
+            <AppText numberOfLines={1} maxWidth={200} color={Colors.PLACEHOLDER}>{params?.videoUrl ? params?.videoUrl : "Add video preview"}</AppText>
           </AppTouchable>
 
           <AppButton title="Continue" onPress={handleSubmit(onSubmit)} />

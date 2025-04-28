@@ -1,12 +1,15 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {CreateScreen} from '~/screens';
+import VideoPreviewerScreen from '~/screens/Create/VideoPreviewer';
 import {publicScreenOption} from '~/utils/utils';
 
 export type CreateStackParamList = {
   Create: {
-    screen:string
+    screen?: string;
+    videoUrl?:string
   };
+  VideoPreview: undefined;
 };
 
 const Stack = createStackNavigator<CreateStackParamList>();
@@ -15,6 +18,10 @@ const screens = [
   {
     name: 'Create',
     component: CreateScreen,
+  },
+  {
+    name: 'VideoPreview',
+    component: VideoPreviewerScreen,
   },
 ];
 
