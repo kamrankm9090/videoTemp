@@ -5,10 +5,9 @@ import VideoPreviewerScreen from '~/screens/Create/VideoPreviewer';
 import {publicScreenOption} from '~/utils/utils';
 
 export type CreateStackParamList = {
-  CreateContent: undefined;
   Collaborative?: undefined;
   Live?: undefined;
-  Create: {
+  CreateContent: {
     screen?: string;
     videoUrl?:string
   };

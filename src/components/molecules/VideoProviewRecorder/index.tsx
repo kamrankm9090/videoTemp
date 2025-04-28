@@ -135,13 +135,10 @@ const VideoPreviewRecorder = () => {
 
       const response: any = await uploadFile(param, progress => {
         console.log(`Upload Progress: ${progress}%`);
-        setUploadProgress(progress); // 👈 update progress live
+        setUploadProgress(progress);
       });
 
-      // console.log('Uploaded Successfully:', response.uploadedUrl);
-
-      // Alert.alert('Success', 'Video uploaded successfully!');
-      navigate('Create', {videoUrl: response.uploadedUrl});
+      navigate('CreateContent', {videoUrl: response.uploadedUrl});
       setVideoUri(null);
     } catch (error) {
       console.error('Upload error:', error);
