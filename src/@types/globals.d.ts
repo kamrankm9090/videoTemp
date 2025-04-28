@@ -33,10 +33,12 @@ declare global {
     token?: string;
     authData?: AuthDataType;
     setUserData: (userData: User) => void;
+    resetUserData: () => void;
     setIsOnboardingViewed: (isOnboardingViewed: boolean) => void;
     setIsUserLoggedIn: (isUserLoggedIn: boolean) => void;
     setToken: (token: string) => void;
     setAuthData: (authData: AuthDataType) => void;
+    resetAuthData: () => void;
   };
   type AgoraStoreType = {
     appId: string;
@@ -250,9 +252,23 @@ declare global {
     setVerificationCode: (verificationCode: string) => void;
   };
 
+  type liveStoreType = {
+    liveId: string;
+    setLiveId: (liveId: string) => void;
+  };
+
   type PostOptionItemType = {
     id: number;
     title: string;
+    onPress: () => void;
+    icon: JSX.Element;
+    color?: string;
+  };
+
+  type CreateOptionItemType = {
+    id: number;
+    title: string;
+    description: string;
     onPress: () => void;
     icon: JSX.Element;
     color?: string;
@@ -263,7 +279,7 @@ declare global {
     | 'post-options-action'
     | 'report-action'
     | 'report-reason-action'
-    | 'create-action';
+    | 'create-options-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 

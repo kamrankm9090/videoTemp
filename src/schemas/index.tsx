@@ -111,6 +111,17 @@ const UserSchema = yup.object({
     .required('Gender is required'),
 });
 
+const createContentSchema = yup.object({
+  title: yup.string().required('Title is required').trim(),
+  isFree: yup.boolean().nullable(),
+  isSchedule: yup.boolean().nullable(),
+  description: yup.string().trim().nullable(),
+  category: yup.object().nullable(),
+  price: yup.string().trim().nullable(),
+  date: yup.string().nullable(),
+  time: yup.string().trim().nullable(),
+});
+
 export {
   loginSchema,
   registerSchema,
@@ -120,4 +131,5 @@ export {
   selectCategorySchema,
   resetPasswordSchema,
   reportReasonSchema,
+  createContentSchema,
 };

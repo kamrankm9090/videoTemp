@@ -1,5 +1,4 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {initialWindowMetrics} from 'react-native-safe-area-context';
 import {
   Community,
@@ -15,6 +14,7 @@ import {
 import {Box, HStack, TabBarButton} from '~/components';
 import {Colors} from '~/styles';
 import {scale} from '~/utils/style';
+import {showSheet} from '~/utils/utils';
 
 export default function AppTabBar({
   state,
@@ -36,7 +36,7 @@ export default function AppTabBar({
         {state.routes.map((route: any, index: number) => {
           const isFocused = state.index === index;
 
-          const onPress = () => {
+          function onPress() {
             const event = navigation.emit({
               type: 'tabPress',
               target: route.key,
@@ -46,7 +46,11 @@ export default function AppTabBar({
             if (!isFocused && !event.defaultPrevented) {
               navigation.navigate({name: route.name, merge: true});
             }
-          };
+          }
+
+          function createOnPress() {
+            showSheet('create-options-action');
+          }
 
           // Return specific icons for each tab
           switch (route.name) {
@@ -64,7 +68,7 @@ export default function AppTabBar({
               );
             case 'CreateTab':
               return (
-                <TabBarButton key={route.name} onPress={onPress}>
+                <TabBarButton key={route.name} onPress={createOnPress}>
                   {isFocused ? <Plus /> : <Plus />}
                 </TabBarButton>
               );

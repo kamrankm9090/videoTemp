@@ -12,9 +12,6 @@ export {default as ResetPasswordSuccessScreen} from './Auth/ResetPasswordSuccess
 //HOME
 export {default as HomeScreen} from './Home/Home';
 
-//LIVE
-export {default as LiveScreen} from './Live/Live';
-
 //OFFERS
 export {default as OffersScreen} from './Offers/Offers';
 
@@ -25,4 +22,6 @@ export {default as CommunityScreen} from './Community/Community';
 export {default as ProfileScreen} from './Profile/Profile';
 
 //CREATE
-export {default as CreateScreen} from './Create/Create';
+export {default as CreateContentScreen} from './Create/CreateContent';
+export {default as CollaborativeScreen} from './Create/Collaborative';
+export {default as LiveScreen} from './Create/Live';

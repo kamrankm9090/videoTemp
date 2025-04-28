@@ -5,11 +5,11 @@ import {Colors} from '~/styles';
 
 type FormInputProps = {
   name: string;
-  height?:number
+  mandatory?: boolean;
 } & AppInputProps;
 
 export default React.forwardRef((props: FormInputProps, ref: any) => {
-  const {name, ...rest} = props;
+  const {name, mandatory, ...rest} = props;
 
   const {field, fieldState} = useController({name});
 
@@ -25,6 +25,7 @@ export default React.forwardRef((props: FormInputProps, ref: any) => {
             : Colors.GARY_3
         }
         ref={ref}
+        mandatory={mandatory}
         value={field.value}
         onBlur={field.onBlur}
         onChangeText={field.onChange}

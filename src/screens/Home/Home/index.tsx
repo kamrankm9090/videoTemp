@@ -109,7 +109,7 @@ export default function HomeScreen() {
     <AppContainer isLoading={isLoadingGetLives}>
       <HomeHeader />
       <AppFlatList
-        data={data}
+        data={lives}
         renderItem={renderItem}
         keyExtractor={(_, i) => String(i)}
         viewabilityConfig={viewConfigRef.current}
