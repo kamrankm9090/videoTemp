@@ -7,30 +7,25 @@ import createAgoraRtcEngine, {
   RtcStats,
   UserOfflineReasonType,
 } from 'react-native-agora';
-import {agoraStore} from '~/stores';
+import {useSnapshot} from 'valtio';
+import {agoraStore, liveStore} from '~/stores';
 import * as log from '~/utils/log';
 import {askMediaAccess} from '~/utils/permissions';
-
-// import Config from '../../../config/agora.config';
-// import {askMediaAccess} from '../../../src/utils/permissions';
 
 const useInitRtcEngine = (
   enableVideo: boolean,
   listenUserJoinOrLeave: boolean = true,
 ) => {
-  // const [appId] = useState(Config.appId);
-  const {
-    token,
-    appId,
-    channelName: channelId,
-    setChannelName: setChannelId,
-  } = agoraStore(state => state);
-  // const [channelId, setChannelId] = useState(uuid);
-  // const [token] = useState(Config.token);
+  const {appId} = agoraStore(state => state);
+  const {liveId, token} = useSnapshot(liveStore);
+
+  const channelId = String(liveId);
   const [uid, setUid] = useState(0);
   const [joinChannelSuccess, setJoinChannelSuccess] = useState(false);
   const [remoteUsers, setRemoteUsers] = useState<number[]>([]);
   const [startPreview, setStartPreview] = useState(false);
+
+  console.log({appId});
 
   const engine = useRef<IRtcEngineEx>(createAgoraRtcEngine() as IRtcEngineEx);
 
@@ -199,7 +194,6 @@ const useInitRtcEngine = (
   return {
     appId,
     channelId,
-    setChannelId,
     token,
     uid,
     setUid,

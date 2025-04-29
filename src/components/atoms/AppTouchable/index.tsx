@@ -1,12 +1,6 @@
 import React from 'react';
-import {TouchableOpacity, TouchableOpacityProps} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {generateShadowUsingNumber, globalStyles} from '~/utils/style';
-
-type AppTouchableProps = {
-  children?: TouchableOpacityProps['children'];
-  activeOpacity?: TouchableOpacityProps['activeOpacity'];
-} & TouchableOpacityProps &
-  StackProps;
 
 export default function AppTouchable({
   activeOpacity = 0.7,

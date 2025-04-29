@@ -1,6 +1,12 @@
 import React, {ReactNode} from 'react';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
-import {TextInputProps, TextStyle, ViewProps, ViewStyle} from 'react-native';
+import {
+  TextInputProps,
+  TextStyle,
+  TouchableOpacityProps,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 import {User as UserType} from '~/graphql/generated';
 
 declare global {
@@ -176,6 +182,12 @@ declare global {
 
   type CenterProps = StackProps & ViewProps;
 
+  type AppTouchableProps = {
+    children?: TouchableOpacityProps['children'];
+    activeOpacity?: TouchableOpacityProps['activeOpacity'];
+  } & TouchableOpacityProps &
+    StackProps;
+
   type FabProps = {
     onPress?: () => void;
     style?: ViewStyle;
@@ -254,7 +266,11 @@ declare global {
 
   type liveStoreType = {
     liveId: string;
+    token: string;
+    tokenCreateDate?: number;
     setLiveId: (liveId: string) => void;
+    setToken: (token: string) => void;
+    setTokenCreateDate: (tokenCreateDate: number) => void;
   };
 
   type PostOptionItemType = {
@@ -279,7 +295,8 @@ declare global {
     | 'post-options-action'
     | 'report-action'
     | 'report-reason-action'
-    | 'create-options-action';
+    | 'create-options-action'
+    | 'confirmation-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 
@@ -367,5 +384,24 @@ declare global {
         lastModifiedDate?: any | null;
       } | null> | null;
     } | null;
+  };
+
+  type ConfirmationActionPayloadType = {
+    title: string;
+    description?: string;
+    onClose?: () => void;
+    onConfirm?: () => void;
+    negativeText?: string;
+    positiveText?: string;
+    positiveColor?: string;
+    positiveBorderColor?: ViewStyle['borderColor'];
+    positiveBorderWidth?: ViewStyle['borderWidth'];
+    positiveOutline?: boolean;
+    negativeColor?: string;
+    negativeBorderColor?: ViewStyle['borderColor'];
+    negativeBorderWidth?: ViewStyle['borderWidth'];
+    negativeOutline?: boolean;
+    negativeBackgroundColor?: ViewStyle['backgroundColor'];
+    positiveBackgroundColor?: ViewStyle['backgroundColor'];
   };
 }

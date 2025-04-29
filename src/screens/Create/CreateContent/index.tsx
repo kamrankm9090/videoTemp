@@ -19,7 +19,12 @@ import {
   SectionCategory,
   VStack,
 } from '~/components';
-import {LiveInput, useLive_CreateLiveMutation} from '~/graphql/generated';
+import {
+  LiveInput,
+  useAgora_CreateTokenMutation,
+  useLive_CreateLiveMutation,
+} from '~/graphql/generated';
+import useInitAgora from '~/hooks/agora/useInitAgora';
 import {navigate} from '~/navigation/methods';
 import {createContentSchema} from '~/schemas';
 import {liveStore} from '~/stores';
@@ -38,16 +43,19 @@ const defaultValues = {
 };
 
 export default function CreateContentScreen() {
+  useInitAgora();
   const {...methods} = useForm({
     resolver: yupResolver(createContentSchema),
     defaultValues,
   });
 
   const {handleSubmit, formState, watch} = methods;
-  const {setLiveId} = useSnapshot(liveStore);
+  const {setLiveId, setToken, setTokenCreateDate} = useSnapshot(liveStore);
 
   const {mutate: mutateCreateLive, isLoading: isLoadingCreateLive} =
     useLive_CreateLiveMutation();
+  const {mutate: mutateCreateAgoraToken, isLoading: isLoadingCreateAgoraToken} =
+    useAgora_CreateTokenMutation();
 
   const onSubmit = useCallback(
     (formData: typeof defaultValues) => {
@@ -68,8 +76,21 @@ export default function CreateContentScreen() {
           onSuccess: response => {
             console.log('response-11->', response);
             if (response?.live_createLive?.status?.code === 1) {
-              setLiveId(response?.live_createLive?.result?.id);
-              navigate('Live');
+              const liveId = response?.live_createLive?.result?.id?.toString();
+              mutateCreateAgoraToken(
+                {channelName: liveId, publisher: true},
+                {
+                  onSuccess: res => {
+                    if (res?.agora_createToken?.status?.code === 1) {
+                      console.log('res===>', res);
+                      setLiveId(liveId);
+                      setToken(res?.agora_createToken?.result);
+                      setTokenCreateDate(Date.now());
+                      navigate('Live');
+                    }
+                  },
+                },
+              );
             } else {
               showErrorMessage(response?.live_createLive?.status?.description);
             }
@@ -77,11 +98,19 @@ export default function CreateContentScreen() {
         },
       );
     },
-    [mutateCreateLive, setLiveId],
+    [
+      mutateCreateLive,
+      mutateCreateAgoraToken,
+      setLiveId,
+      setTokenCreateDate,
+      setToken,
+    ],
   );
 
+  const loading = isLoadingCreateLive || isLoadingCreateAgoraToken;
+
   return (
-    <AppContainer>
+    <AppContainer safeArea>
       <ScreensHeader backAction title="Create Content" />
       <AppFormProvider methods={methods}>
         <AppKeyboardAwareScrollView
@@ -135,7 +164,7 @@ export default function CreateContentScreen() {
             <AppText color={Colors.PLACEHOLDER}>Add video preview</AppText>
           </AppTouchable>
           <AppButton
-            loading={isLoadingCreateLive}
+            loading={loading}
             title="Continue"
             onPress={handleSubmit(onSubmit)}
           />

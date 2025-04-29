@@ -33,53 +33,15 @@ query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: 
                         photoUrl
                         fullName
                         about
-                        location
-                        age
-                        dateOfBirth
                         gender
                         lastSeen
-                        userType
-                        userRole
-                        isPrivateAccount
-                        stripeConnectAccountId
-                        stripeConnectCompleted
                         isVerified
-                        verificationPhotos
-                        verificationErrors
-                        socialLinks
-                        profession
-                        yearsOfExperience
-                        height
-                        favoriteCategories
                         isDeleted
                         createdDate
                         id
                         email
                         emailConfirmed
                         phoneNumberConfirmed
-                        twoFactorEnabled
-                    }
-                    roles{
-                        liveId
-                        roleName
-                        present
-                        id
-                        isDeleted
-                        createdDate
-                        lastModifiedDate
-                    }
-                    channelRecords{
-                        sessionId
-                        resourceId
-                        sid
-                        channelName
-                        duration
-                        endDate
-                        liveId
-                        id
-                        isDeleted
-                        createdDate
-                        lastModifiedDate
                     }
                     id
                     isDeleted
