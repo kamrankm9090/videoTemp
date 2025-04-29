@@ -121,9 +121,19 @@ export const toastConfig = {
 
 export function showSuccessMessage(
   message: any = 'Success',
-  message2?: any,
-  icon?: any,
-  autoHide: boolean = true,
+  {
+    message2,
+    icon = <TickCircle />,
+    autoHide = true,
+    color = Colors.Jaguar,
+    backgroundColor = Colors.WePeep,
+  }: {
+    message2?: any;
+    icon?: any;
+    autoHide?: boolean;
+    color?: string;
+    backgroundColor?: string;
+  } = {},
 ) {
   Toast.show({
     autoHide: autoHide,
@@ -132,17 +142,28 @@ export function showSuccessMessage(
     text2: message2,
     position: 'top',
     props: {
-      icon: <TickCircle />,
-      color: Colors.BLACK,
+      icon,
+      color,
+      backgroundColor,
     },
   });
 }
 
 export function showErrorMessage(
   message: any = 'Error',
-  message2?: any,
-  icon?: any,
-  autoHide: boolean = true,
+  {
+    message2,
+    icon = <Error />,
+    autoHide = true,
+    color = Colors.Jaguar,
+    backgroundColor = Colors.WePeep,
+  }: {
+    message2?: any;
+    icon?: any;
+    autoHide?: boolean;
+    color?: string;
+    backgroundColor?: string;
+  } = {},
 ) {
   Toast.show({
     autoHide: autoHide,
@@ -151,18 +172,28 @@ export function showErrorMessage(
     text2: message2,
     position: 'top',
     props: {
-      icon: <Error />,
-      color: Colors.WHITE,
-      backgroundColor: Colors.WePeep,
+      icon,
+      color,
+      backgroundColor,
     },
   });
 }
 
 export function showInfoMessage(
   message: any = '',
-  message2?: any,
-  icon?: any,
-  autoHide: boolean = true,
+  {
+    message2,
+    icon = <InfoCircle />,
+    autoHide = true,
+    color = Colors.BACKGROUND,
+    backgroundColor = Colors.Gainsboro,
+  }: {
+    message2?: any;
+    icon?: any;
+    autoHide?: boolean;
+    color?: string;
+    backgroundColor?: string;
+  } = {},
 ) {
   Toast.show({
     autoHide: autoHide,
@@ -171,18 +202,28 @@ export function showInfoMessage(
     text2: message2,
     position: 'top',
     props: {
-      icon: <InfoCircle />,
-      color: Colors.BACKGROUND,
-      backgroundColor: Colors.Gainsboro,
+      icon,
+      color,
+      backgroundColor,
     },
   });
 }
 
 export function showWarningMessage(
   message: any = '',
-  message2?: any,
-  icon?: any,
-  autoHide: boolean = true,
+  {
+    message2,
+    icon = <Warning />,
+    autoHide = true,
+    color = Colors.Jaguar,
+    backgroundColor = Colors.BlanchedAlmond,
+  }: {
+    message2?: any;
+    icon?: any;
+    autoHide?: boolean;
+    color?: string;
+    backgroundColor?: string;
+  } = {},
 ) {
   Toast.show({
     autoHide: autoHide,
@@ -191,24 +232,31 @@ export function showWarningMessage(
     text2: message2,
     position: 'top',
     props: {
-      icon: <Warning />,
-      color: Colors.BlanchedAlmond,
-      backgroundColor: Colors.BlanchedAlmond,
+      icon,
+      color,
+      backgroundColor,
     },
   });
 }
 
 export function showSnackBar(
   message: any = 'Success',
-  icon?: any,
-  autoHide: boolean = true,
+  {
+    icon,
+    autoHide = true,
+    color = Colors.WHITE,
+  }: {
+    icon?: any;
+    autoHide?: boolean;
+    color?: string;
+  } = {},
 ) {
   Toast.show({
     autoHide: autoHide,
     type: 'baseSnackBar',
     text1: message,
     position: 'bottom',
-    props: {icon, color: Colors.WHITE},
+    props: {icon, color},
   });
 }
 

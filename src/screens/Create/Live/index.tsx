@@ -1,97 +1,65 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {Platform, StyleSheet} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {StyleSheet} from 'react-native';
 import {
-  Close2,
-  HotSpot2,
-  Note,
-  Reload,
-  ThreePointVertical,
-} from '~/assets/svgs';
+  ClientRoleType,
+  LocalVideoStreamReason,
+  LocalVideoStreamState,
+  RtcSurfaceView,
+  VideoCanvas,
+  VideoSourceType,
+  VideoViewSetupMode,
+} from 'react-native-agora';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Note, Reload} from '~/assets/svgs';
 import {
   AppButton,
   AppContainer,
   AppImage,
   AppText,
   AppTouchable,
-  HStack,
-  VStack,
   BaseComponent,
-  BaseRenderChannel,
   BaseRenderUsers,
+  CounterModal,
+  HStack,
+  LiveHeader,
+  RenderNothing,
+  VStack,
 } from '~/components';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
+import {goBack} from '~/navigation/methods';
 import {Colors} from '~/styles';
-import {fontSize} from '~/utils/style';
-import {
-  ClientRoleType,
-  LocalVideoStreamReason,
-  LocalVideoStreamState,
-  RtcSurfaceView,
-  RtcTextureView,
-  VideoCanvas,
-  VideoSourceType,
-  VideoViewSetupMode,
-} from 'react-native-agora';
 import * as log from '~/utils/log';
-import {
-  AgoraButton,
-  AgoraDivider,
-  AgoraDropdown,
-  AgoraStyle,
-  AgoraSwitch,
-} from '~/components/ui';
-import {enumToItems} from '~/utils/utils';
+import {fontSize} from '~/utils/style';
+import {hideSheet, showInfoMessage, showSheet} from '~/utils/utils';
 
 export default function LiveScreen() {
   const [enableVideo] = useState<boolean>(true);
   const {
-    channelId,
-    setChannelId,
-    token,
-    uid,
     joinChannelSuccess,
     remoteUsers,
     startPreview,
     engine,
+    uid,
+    channelId,
+    token,
   } = useInitRtcEngine(enableVideo);
 
   const [_, setSwitchCamera] = useState(false);
-  const [renderByTextureView, setRenderByTextureView] = useState(false);
-  const [setupMode, setSetupMode] = useState(
-    VideoViewSetupMode.VideoViewSetupReplace,
-  );
+  const [counterModalVisible, setCounterModalVisible] =
+    useState<boolean>(false);
 
-  const _switchCamera = () => {
+  function switchCamera() {
     engine.current.switchCamera();
     setSwitchCamera(prev => !prev);
-  };
+  }
 
-  const joinChannel = () => {
-    if (!channelId) {
-      log.error('channelId is invalid');
-      return;
-    }
-    if (uid < 0) {
-      log.error('uid is invalid');
-      return;
-    }
+  function joinChannel() {
+    setCounterModalVisible(true);
+  }
 
-    // start joining channel
-    // 1. Users can only see each other after they join the
-    // same channel successfully using the same app id.
-    // 2. If app certificate is turned on at dashboard, token is needed
-    // when joining channel. The channel name and uid used to calculate
-    // the token has to match the ones used for channel join
-    engine.current.joinChannel(token, channelId, uid, {
-      // Make myself as the broadcaster to send stream to remote
-      clientRoleType: ClientRoleType.ClientRoleBroadcaster,
-    });
-  };
-
-  const leaveChannel = () => {
+  function leaveChannel() {
     engine.current.leaveChannel();
-  };
+  }
 
   useEffect(() => {
     engine.current.addListener(
@@ -134,93 +102,64 @@ export default function LiveScreen() {
     };
   }, [engine]);
 
+  function closeHandler() {
+    showSheet('confirmation-action', {
+      payload: {
+        title: 'End Your Live',
+        description:
+          'If you end your live, it will also end for all your viewers.',
+        positiveText: 'End now',
+        onClose: () => hideSheet('confirmation-action'),
+        onConfirm: () => {
+          leaveChannel();
+          goBack();
+          hideSheet('confirmation-action');
+          showInfoMessage('Your live ended');
+        },
+      },
+    });
+  }
+
+  function closeCounterModal() {
+    setCounterModalVisible(false);
+    console.log('fff');
+    if (!channelId) {
+      log.error('channelId is invalid');
+      return;
+    }
+    if (uid < 0) {
+      log.error('uid is invalid');
+      return;
+    }
+
+    // start joining channel
+    // 1. Users can only see each other after they join the
+    // same channel successfully using the same app id.
+    // 2. If app certificate is turned on at dashboard, token is needed
+    // when joining channel. The channel name and uid used to calculate
+    // the token has to match the ones used for channel join
+    engine.current.joinChannel(token, channelId, uid, {
+      // Make myself as the broadcaster to send stream to remote
+      clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+    });
+  }
+
   function renderVideo(user: VideoCanvas): ReactElement | undefined {
-    return renderByTextureView ? (
-      <RtcTextureView
-        style={user.uid === 0 ? AgoraStyle.videoLarge : AgoraStyle.videoSmall}
-        canvas={{...user, setupMode}}
-      />
-    ) : (
+    return (
       <RtcSurfaceView
-        style={user.uid === 0 ? AgoraStyle.videoLarge : AgoraStyle.videoSmall}
+        style={styles.video}
         zOrderMediaOverlay={user.uid !== 0}
-        canvas={{...user, setupMode}}
+        canvas={{...user, setupMode: VideoViewSetupMode.VideoViewSetupReplace}}
       />
-    );
-  }
-
-  function renderConfiguration(): ReactElement | undefined {
-    return (
-      <>
-        {Platform.OS === 'android' && (
-          <AgoraSwitch
-            disabled={!startPreview && !joinChannelSuccess}
-            title={`renderByTextureView`}
-            value={renderByTextureView}
-            onValueChange={value => {
-              setRenderByTextureView(value);
-            }}
-          />
-        )}
-        <AgoraDivider />
-        <AgoraDropdown
-          title={'setupMode'}
-          items={enumToItems(VideoViewSetupMode)}
-          value={setupMode}
-          onValueChange={value => {
-            setSetupMode(value);
-          }}
-        />
-        {setupMode === VideoViewSetupMode.VideoViewSetupAdd ? (
-          <>
-            <AgoraDivider />
-            {renderByTextureView ? (
-              <RtcTextureView
-                style={AgoraStyle.videoSmall}
-                canvas={{uid: 0, setupMode}}
-              />
-            ) : (
-              <RtcSurfaceView
-                style={AgoraStyle.videoSmall}
-                canvas={{uid: 0, setupMode}}
-              />
-            )}
-          </>
-        ) : undefined}
-        <AgoraDivider />
-      </>
-    );
-  }
-
-  function renderAction(): ReactElement | undefined {
-    return (
-      <>
-        <AgoraButton
-          disabled={!startPreview && !joinChannelSuccess}
-          title={`switchCamera`}
-          onPress={_switchCamera}
-        />
-      </>
     );
   }
 
   return (
-    <AppContainer>
-      {/* <CreateLiveHeader />
-      <ExperienceCard />
-      <LiveCard /> */}
+    <AppContainer safeArea={false}>
+      <LiveHeader onClose={closeHandler} />
       <BaseComponent
         name={'JoinChannelVideo'}
-        renderConfiguration={renderConfiguration}
-        renderChannel={() => (
-          <BaseRenderChannel
-            channelId={channelId}
-            joinChannel={joinChannel}
-            leaveChannel={leaveChannel}
-            joinChannelSuccess={joinChannelSuccess}
-            onChannelIdChange={setChannelId}
-          />
-        )}
+        renderChannel={RenderNothing}
         renderUsers={() => (
           <BaseRenderUsers
             enableVideo={enableVideo}
@@ -230,52 +169,18 @@ export default function LiveScreen() {
             remoteUsers={remoteUsers}
           />
         )}
-        renderAction={renderAction}
       />
       <CreateLiveFooter
         startOnPress={joinChannel}
-        switchOnPress={_switchCamera}
+        switchOnPress={switchCamera}
       />
+      {counterModalVisible && (
+        <CounterModal
+          visible={counterModalVisible}
+          onClose={closeCounterModal}
+        />
+      )}
     </AppContainer>
-  );
-}
-
-function CreateLiveHeader() {
-  const insets = useSafeAreaInsets();
-
-  function closeHandler() {}
-
-  return (
-    <HStack
-      py={10}
-      px={56}
-      top={insets.top}
-      space={8}
-      position="absolute"
-      justifyContent="center">
-      <AppTouchable
-        p={18}
-        rounded={8}
-        onPress={closeHandler}
-        bg={Colors.Nero_2}
-        alignItems="center"
-        justifyContent="center">
-        <Close2 />
-      </AppTouchable>
-      <HStack rounded={8} bg={Colors.Nero_2} space={12} py={10} px={12}>
-        <AppImage imageSource={''} resizeMode="stretch" style={styles.avatar} />
-        <AppText numberOfLines={1} flex={1}>
-          Luna Miller
-        </AppText>
-        <HStack space={4}>
-          <AppText>0</AppText>
-          <HotSpot2 />
-        </HStack>
-        <AppTouchable>
-          <ThreePointVertical />
-        </AppTouchable>
-      </HStack>
-    </HStack>
   );
 }
 
@@ -289,7 +194,12 @@ function CreateLiveFooter({
   const insets = useSafeAreaInsets();
 
   return (
-    <VStack px={24} w="100%" bottom={insets.bottom} position="absolute">
+    <VStack
+      zIndex={700}
+      px={24}
+      w="100%"
+      bottom={insets.bottom}
+      position="absolute">
       <HStack space={16}>
         <AppButton
           onPress={startOnPress}
@@ -315,14 +225,18 @@ function ExperienceCard() {
   return (
     <VStack
       w="90%"
-      bg={Colors.BLACK_TRANSPARENT}
+      // bg={Colors.BLACK_TRANSPARENT}
       p={16}
       rounded={16}
       alignSelf="center"
       justifyContent="flex-end"
-      style={{height: 550}}
-      position="relative"
-      overflow="hidden">
+      // style={{height: 550}}
+      h={550}
+      bg="lightblue"
+      // position="absolute"
+      // position="relative"
+      // overflow="hidden"
+    >
       <AppImage
         imageSource={'https://via.placeholder.com/400x600'}
         style={StyleSheet.absoluteFill}
@@ -397,18 +311,10 @@ function ExperienceCard() {
   );
 }
 
-function LiveCard() {
-  return (
-    <>
-      <></>
-    </>
-  );
-}
-
 const styles = StyleSheet.create({
-  avatar: {
-    height: 30,
-    width: 30,
-    borderRadius: 15,
+  video: {
+    flex: 1,
+    height: '100%',
+    width: '100%',
   },
 });
