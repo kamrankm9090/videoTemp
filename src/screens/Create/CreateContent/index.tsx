@@ -1,4 +1,5 @@
 import {yupResolver} from '@hookform/resolvers/yup';
+import { useRoute } from '@react-navigation/native';
 import React, {useCallback} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
@@ -49,6 +50,9 @@ export default function CreateContentScreen() {
     defaultValues,
   });
 
+  const {params}:any = useRoute()
+  
+
   const {handleSubmit, formState, watch} = methods;
   const {setLiveId, setToken, setTokenCreateDate} = useSnapshot(liveStore);
 
@@ -68,7 +72,7 @@ export default function CreateContentScreen() {
         // price: formData?.price,
         // publishingScheduleDate: formData?.date,
         // publishingScheduleTime: formData?.time,
-        previewUrl: '',
+        previewUrl: params?.videoUrl,
       };
       mutateCreateLive(
         {input},
@@ -160,9 +164,9 @@ export default function CreateContentScreen() {
             )}
             <Divider backgroundColor={Colors.Nero_3} />
           </VStack>
-          <AppTouchable style={styles.previewBox} onPress={() => {}}>
-            <AppText color={Colors.PLACEHOLDER}>Add video preview</AppText>
-          </AppTouchable>
+            <AppTouchable style={{...styles.previewBox, borderColor:params?.videoUrl ? Colors.GREEN_BRAND :  Colors.BORDER,}} onPress={() => navigate("VideoPreview")}>
+                 <AppText numberOfLines={1} maxWidth={200} color={Colors.PLACEHOLDER}>{params?.videoUrl ? params?.videoUrl : "Add video preview"}</AppText>
+               </AppTouchable>
           <AppButton
             loading={loading}
             title="Continue"

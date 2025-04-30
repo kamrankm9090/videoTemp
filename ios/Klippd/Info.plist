@@ -44,6 +44,10 @@
 	<array>
 		<string>arm64</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>We need your camera access to record videos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need your microphone access to record audio.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
