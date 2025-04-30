@@ -1,12 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  Linking,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Alert, Linking, StyleSheet} from 'react-native';
 import Video from 'react-native-video';
 import {
   Camera,
@@ -14,11 +7,20 @@ import {
   useCameraPermission,
   useMicrophonePermission,
 } from 'react-native-vision-camera';
-import {AppButton, AppContainer, HStack, VStack} from '~/components';
+import {
+  AppButton,
+  AppContainer,
+  AppIndicator,
+  AppText,
+  Box,
+  Center,
+  HStack,
+  VStack,
+} from '~/components';
 import {navigate} from '~/navigation/methods';
 import {uploadFile} from '~/services/fileUploader';
 import {Colors} from '~/styles';
-import {height, width} from '~/utils/style';
+import {fontSize, height, width} from '~/utils/style';
 
 const MAX_DURATION = 15; // seconds
 
@@ -84,14 +86,16 @@ const VideoPreviewRecorder = () => {
 
   if (!device || !hasCameraPermission) {
     return (
-      <HStack justifyContent='center' alignItems='center' mt={200} style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.PRIMARY} />
-      </HStack>
+      <Center flex={1} mt={200} bg={Colors.BLACK}>
+        <AppIndicator size="large" />
+      </Center>
     );
   }
 
   const startRecording = async () => {
-    if (!cameraRef.current) return;
+    if (!cameraRef.current) {
+      return;
+    }
 
     setRecording(true);
     try {
@@ -120,7 +124,9 @@ const VideoPreviewRecorder = () => {
   };
 
   const uploadVideo = async () => {
-    if (!videoUri) return;
+    if (!videoUri) {
+      return;
+    }
     setUploading(true);
     setUploadProgress(0); // Reset progress
 
@@ -165,7 +171,11 @@ const VideoPreviewRecorder = () => {
             controls
             resizeMode="cover"
           />
-          <VStack style={styles.videoButtonContainer}>
+          <VStack
+            position="absolute"
+            alignSelf="center"
+            top={height - 200}
+            space={8}>
             <AppButton
               title={
                 uploading ? `Uploading... ${uploadProgress}%` : 'Upload Video'
@@ -192,12 +202,18 @@ const VideoPreviewRecorder = () => {
             audio={hasMicrophonePermission}
           />
           {recording && (
-            <HStack m={10} style={styles.recordingOverlay}>
-              <HStack style={styles.redDot} />
-              <Text style={styles.timerText}>{formatTimer(timer)}</Text>
+            <HStack space={8} m={10} position="absolute" top={40} left={20}>
+              <Box w={14} h={14} rounded={7} bg={Colors.ERROR} />
+              <AppText fontFamily="bold" fontSize={fontSize.large}>
+                {formatTimer(timer)}
+              </AppText>
             </HStack>
           )}
-          <HStack maxW={200} style={styles.buttonContainer}>
+          <HStack
+            maxW={200}
+            alignSelf="center"
+            position="absolute"
+            top={height - 100}>
             <AppButton
               title={recording ? 'Stop Recording' : `Record (${MAX_DURATION}s)`}
               onPress={recording ? stopRecording : startRecording}
@@ -226,41 +242,5 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: Colors.WHITE_TRANSPARENT_2,
-  },
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black',
-  },
-  buttonContainer: {
-    position: 'absolute',
-    alignSelf: 'center',
-    top: height - 100,
-  },
-  videoButtonContainer: {
-    position: 'absolute',
-    alignSelf: 'center',
-    top: height - 200,
-    gap: 8,
-  },
-  recordingOverlay: {
-    position: 'absolute',
-    top: 40,
-    left: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  redDot: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    backgroundColor: 'red',
-    marginRight: 8,
-  },
-  timerText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 });

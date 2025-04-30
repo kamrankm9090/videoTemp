@@ -69,7 +69,7 @@ export {default as SectionHomeNotification} from './molecules/SectionHomeNotific
 export {default as SectionHomeMessage} from './molecules/SectionHomeMessage';
 export {default as InviteFriendsCard} from './molecules/InviteFriendsCard';
 export {default as PeopleYouMayKnow} from './molecules/PeopleYouMayKnow';
-export {default as VideoProviewRecorder} from './molecules/VideoProviewRecorder';
+export {default as VideoPreviewRecorder} from './molecules/VideoPreviewRecorder';
 export {default as SectionCategory} from './molecules/SectionCategory';
 export {default as LiveHeader} from './molecules/LiveHeader';
 //#endregion ---------Molecules
