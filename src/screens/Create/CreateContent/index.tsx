@@ -1,4 +1,5 @@
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useRoute} from '@react-navigation/native';
 import React, {useCallback} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
@@ -49,8 +50,11 @@ export default function CreateContentScreen() {
     defaultValues,
   });
 
+  const {params}: any = useRoute();
+
   const {handleSubmit, formState, watch} = methods;
-  const {setLiveId, setToken, setTokenCreateDate} = useSnapshot(liveStore);
+  const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
+    useSnapshot(liveStore);
 
   const {mutate: mutateCreateLive, isLoading: isLoadingCreateLive} =
     useLive_CreateLiveMutation();
@@ -68,7 +72,7 @@ export default function CreateContentScreen() {
         // price: formData?.price,
         // publishingScheduleDate: formData?.date,
         // publishingScheduleTime: formData?.time,
-        previewUrl: '',
+        previewUrl: params?.videoUrl,
       };
       mutateCreateLive(
         {input},
@@ -83,6 +87,10 @@ export default function CreateContentScreen() {
                   onSuccess: res => {
                     if (res?.agora_createToken?.status?.code === 1) {
                       console.log('res===>', res);
+                      setLiveData({
+                        ...input,
+                        category: formData?.category,
+                      });
                       setLiveId(liveId);
                       setToken(res?.agora_createToken?.result);
                       setTokenCreateDate(Date.now());
@@ -104,6 +112,7 @@ export default function CreateContentScreen() {
       setLiveId,
       setTokenCreateDate,
       setToken,
+      params,
     ],
   );
 
@@ -160,8 +169,20 @@ export default function CreateContentScreen() {
             )}
             <Divider backgroundColor={Colors.Nero_3} />
           </VStack>
-          <AppTouchable style={styles.previewBox} onPress={() => {}}>
-            <AppText color={Colors.PLACEHOLDER}>Add video preview</AppText>
+          <AppTouchable
+            style={{
+              ...styles.previewBox,
+              borderColor: params?.videoUrl
+                ? Colors.GREEN_BRAND
+                : Colors.BORDER,
+            }}
+            onPress={() => navigate('VideoPreview')}>
+            <AppText
+              numberOfLines={1}
+              maxWidth={200}
+              color={Colors.PLACEHOLDER}>
+              {params?.videoUrl ? params?.videoUrl : 'Add video preview'}
+            </AppText>
           </AppTouchable>
           <AppButton
             loading={loading}

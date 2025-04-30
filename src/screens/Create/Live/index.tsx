@@ -10,6 +10,7 @@ import {
   VideoViewSetupMode,
 } from 'react-native-agora';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSnapshot} from 'valtio';
 import {Note, Reload} from '~/assets/svgs';
 import {
   AppButton,
@@ -27,10 +28,16 @@ import {
 } from '~/components';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {goBack} from '~/navigation/methods';
+import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import * as log from '~/utils/log';
-import {fontSize} from '~/utils/style';
-import {hideSheet, showInfoMessage, showSheet} from '~/utils/utils';
+import {fontSize, height} from '~/utils/style';
+import {
+  appFormatDate,
+  hideSheet,
+  showInfoMessage,
+  showSheet,
+} from '~/utils/utils';
 
 export default function LiveScreen() {
   const [enableVideo] = useState<boolean>(true);
@@ -157,6 +164,7 @@ export default function LiveScreen() {
   return (
     <AppContainer safeArea={false}>
       <LiveHeader onClose={closeHandler} />
+      <ExperienceCard />
       <BaseComponent
         name={'JoinChannelVideo'}
         renderChannel={RenderNothing}
@@ -220,41 +228,34 @@ function CreateLiveFooter({
 }
 
 function ExperienceCard() {
+  const {liveData} = useSnapshot(liveStore);
   const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
     <VStack
       w="90%"
-      // bg={Colors.BLACK_TRANSPARENT}
+      bg={Colors.BLACK_TRANSPARENT}
       p={16}
       rounded={16}
       alignSelf="center"
-      justifyContent="flex-end"
-      // style={{height: 550}}
-      h={550}
-      bg="lightblue"
-      // position="absolute"
-      // position="relative"
-      // overflow="hidden"
-    >
-      <AppImage
-        imageSource={'https://via.placeholder.com/400x600'}
-        style={StyleSheet.absoluteFill}
-        resizeMode="cover"
-      />
-
+      justifyContent="flex-start"
+      maxH={height * 0.5}
+      minH={height * 0.3}
+      position="absolute"
+      bottom={200}>
       <VStack space={12}>
         <AppText fontFamily="bold" fontSize={fontSize.large}>
-          Maximize You Experience:
+          {liveData?.title}
         </AppText>
 
         {!expanded ? (
           <>
             <AppText color={Colors.DarkGray} numberOfLines={2}>
-              Lorem ipsum dolor sit amet, consectetur
+              {liveData?.description}
             </AppText>
             <AppText
               right={0}
+              zIndex={800}
               bottom={-20}
               position="absolute"
               color={Colors.PRIMARY}
@@ -276,29 +277,40 @@ function ExperienceCard() {
               gap={8}
               rounded={8}
               flexDirection="row"
+              bg={Colors.Nero_3}
               alignSelf="flex-start">
               <Note />
               <AppText fontWeight="bold">See Resume</AppText>
             </AppTouchable>
 
             <HStack justifyContent="space-between">
-              <VStack space={24}>
+              <VStack space={16}>
                 <AppText color={Colors.DarkGray}>Category</AppText>
-                <AppText fontFamily="bold">Beauty</AppText>
+                <AppText fontFamily="bold">{liveData?.category?.title}</AppText>
               </VStack>
-              <VStack space={24}>
+              <VStack space={16}>
                 <AppText color={Colors.DarkGray}>Price</AppText>
-                <AppText fontFamily="bold">$45</AppText>
+                <AppText fontFamily="bold">
+                  {liveData?.isFree ? 'Free' : `$${liveData?.price}`}
+                </AppText>
               </VStack>
             </HStack>
 
-            <HStack alignItems="flex-end">
+            <HStack mt={16} alignItems="flex-end">
               <VStack flex={1} space={24}>
                 <AppText color={Colors.DarkGray}>Publishing schedule: </AppText>
-                <AppText fontFamily="bold">2024/2/10 , 3:15 AM</AppText>
+                <AppText fontFamily="bold">
+                  {liveData?.isSchedule
+                    ? `${appFormatDate(
+                        liveData?.date,
+                        'YYYY/m/dd',
+                      )}, ${appFormatDate(liveData?.time)}`
+                    : '-'}
+                </AppText>
               </VStack>
 
               <AppText
+                zIndex={800}
                 color={Colors.PRIMARY}
                 onPress={() => setExpanded(false)}>
                 show Less...

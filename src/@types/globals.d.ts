@@ -268,9 +268,11 @@ declare global {
     liveId: string;
     token: string;
     tokenCreateDate?: number;
+    liveData?: any;
     setLiveId: (liveId: string) => void;
     setToken: (token: string) => void;
     setTokenCreateDate: (tokenCreateDate: number) => void;
+    setLiveData: (liveData: any) => void;
   };
 
   type PostOptionItemType = {

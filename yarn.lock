@@ -3924,11 +3924,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 22.14.1
-  resolution: "@types/node@npm:22.14.1"
+  version: 22.15.3
+  resolution: "@types/node@npm:22.15.3"
   dependencies:
     undici-types: ~6.21.0
-  checksum: e22363f40ac8290da2bb5261c2b348241fd93b000908cefd3c56575df9d4f6b8d102fc8631275eac7ec4a9e0ac4f38f01c9d8104ebbda76c936aef96fd1e55f3
+  checksum: 26618a9fdfb84de3841e898b7c5fd372e1c0bdb9adc3ec71c12c38dd07d4e73da14681924919d27ff509ebf3714b8de941a21f51c26146cc8aaae31561ca7a5c
   languageName: node
   linkType: hard
 
@@ -4838,7 +4838,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base-64@npm:^0.1.0":
+"base-64@npm:0.1.0, base-64@npm:^0.1.0":
   version: 0.1.0
   resolution: "base-64@npm:0.1.0"
   checksum: 5a42938f82372ab5392cbacc85a5a78115cbbd9dbef9f7540fa47d78763a3a8bd7d598475f0d92341f66285afd377509851a9bb5c67bbecb89686e9255d5b3eb
@@ -5536,7 +5536,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cosmiconfig@npm:^8.1.3":
+"cosmiconfig@npm:^8.1.0, cosmiconfig@npm:^8.1.3":
   version: 8.3.6
   resolution: "cosmiconfig@npm:8.3.6"
   dependencies:
@@ -5992,9 +5992,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.73":
-  version: 1.5.139
-  resolution: "electron-to-chromium@npm:1.5.139"
-  checksum: 7a229d57ad820c4d9964867bb35a8e03014bf5c9995fbfd5e3a9402e0328e55d79123b1c801bef912ef8da18a067e443d1467c356f5a64a7b2920fe805510a83
+  version: 1.5.143
+  resolution: "electron-to-chromium@npm:1.5.143"
+  checksum: c6d737ca2a338e744f3c6c0734ec69d43c33c351292bad04757bfa6f9cada03dfc94fb216736ad89dc1de25ae1dc5629b04db6f8a3ce0d670ee2618c1b78b832
   languageName: node
   linkType: hard
 
@@ -7038,7 +7038,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.2.2":
+"glob@npm:^10.2.2, glob@npm:^10.3.10":
   version: 10.4.5
   resolution: "glob@npm:10.4.5"
   dependencies:
@@ -7142,8 +7142,8 @@ __metadata:
   linkType: hard
 
 "graphql-config@npm:^5.1.1":
-  version: 5.1.4
-  resolution: "graphql-config@npm:5.1.4"
+  version: 5.1.5
+  resolution: "graphql-config@npm:5.1.5"
   dependencies:
     "@graphql-tools/graphql-file-loader": ^8.0.0
     "@graphql-tools/json-file-loader": ^8.0.0
@@ -7151,9 +7151,9 @@ __metadata:
     "@graphql-tools/merge": ^9.0.0
     "@graphql-tools/url-loader": ^8.0.0
     "@graphql-tools/utils": ^10.0.0
-    cosmiconfig: ^9.0.0
+    cosmiconfig: ^8.1.0
     jiti: ^2.0.0
-    minimatch: ^10.0.0
+    minimatch: ^9.0.5
     string-env-interpolation: ^1.0.1
     tslib: ^2.4.0
   peerDependencies:
@@ -7162,7 +7162,7 @@ __metadata:
   peerDependenciesMeta:
     cosmiconfig-toml-loader:
       optional: true
-  checksum: 6b05e5013bc23c1b333db6a2d1f90319f5068a19d5a5cff03601da2ace705923306b3682ae023261ec29a58d015d84fa2d52c6255c967716b2422036ff66c349
+  checksum: 0ef1c51a488284e552f7fd4305854df0c73f2e14539c7bdd386bbe2bbbfc9eb1ab15546fdcd9b5c5d4880e713fd9a6996837246f09def202ef80cf9de6bdf7a3
   languageName: node
   linkType: hard
 
@@ -8807,6 +8807,7 @@ __metadata:
     react-native-actions-sheet: 0.9.7
     react-native-agora: 4.5.1
     react-native-animatable: 1.4.0
+    react-native-blob-util: 0.21.2
     react-native-bouncy-checkbox: ^4.1.2
     react-native-chart-kit: 6.12.0
     react-native-color-picker: 0.6.0
@@ -8823,6 +8824,7 @@ __metadata:
     react-native-mmkv: 3.2.0
     react-native-modal: 13.0.1
     react-native-modal-datetime-picker: 18.0.0
+    react-native-permissions: 5.3.0
     react-native-picker-select: 9.3.1
     react-native-reanimated: 3.16.6
     react-native-safe-area-context: 5.0.0
@@ -8833,7 +8835,8 @@ __metadata:
     react-native-toast-message: 2.2.1
     react-native-url-polyfill: 2.0.0
     react-native-vector-icons: 9.2.0
-    react-native-video: 6.10.0
+    react-native-video: 6.13.0
+    react-native-vision-camera: 4.6.4
     react-test-renderer: 18.3.1
     typescript: 5.0.4
     uuid: 11.1.0
@@ -9459,15 +9462,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.0.0":
-  version: 10.0.1
-  resolution: "minimatch@npm:10.0.1"
-  dependencies:
-    brace-expansion: ^2.0.1
-  checksum: f5b63c2f30606091a057c5f679b067f84a2cd0ffbd2dbc9143bda850afd353c7be81949ff11ae0c86988f07390eeca64efd7143ee05a0dab37f6c6b38a2ebb6c
-  languageName: node
-  linkType: hard
-
 "minimatch@npm:^3.0.2, minimatch@npm:^3.0.4, minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
@@ -9486,7 +9480,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^9.0.4":
+"minimatch@npm:^9.0.4, minimatch@npm:^9.0.5":
   version: 9.0.5
   resolution: "minimatch@npm:9.0.5"
   dependencies:
@@ -10600,6 +10594,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-blob-util@npm:0.21.2":
+  version: 0.21.2
+  resolution: "react-native-blob-util@npm:0.21.2"
+  dependencies:
+    base-64: 0.1.0
+    glob: ^10.3.10
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: e8558a00a7aeaf619b7661f251649ac15e28b62836fc3dad9890ae69d57dd498ef8f7de0de6bb45294ff7a6119ebe71e89f7e343f0b67dcf76e40852460adf11
+  languageName: node
+  linkType: hard
+
 "react-native-bouncy-checkbox@npm:^4.1.2":
   version: 4.1.2
   resolution: "react-native-bouncy-checkbox@npm:4.1.2"
@@ -10808,6 +10815,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-permissions@npm:5.3.0":
+  version: 5.3.0
+  resolution: "react-native-permissions@npm:5.3.0"
+  peerDependencies:
+    react: ">=18.1.0"
+    react-native: ">=0.70.0"
+    react-native-windows: ">=0.70.0"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 0896ed6919062a57b79c54d3de0d14a515ada9be87b5f65295e728ee23706430d99d45e48b8d45caad2d8f5eb42d1bd53cb213ff645ebec2117c94aadd35bfe8
+  languageName: node
+  linkType: hard
+
 "react-native-picker-select@npm:9.3.1":
   version: 9.3.1
   resolution: "react-native-picker-select@npm:9.3.1"
@@ -10959,13 +10980,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-video@npm:6.10.0":
-  version: 6.10.0
-  resolution: "react-native-video@npm:6.10.0"
+"react-native-video@npm:6.13.0":
+  version: 6.13.0
+  resolution: "react-native-video@npm:6.13.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 6752e0d30bcb7e2c36861eacd8528e286b4831d1cdc6e903390e1ff361574816bad3c6a7ff0166546fa90386d71132f1e52a7d3ec93ecdb33f9413bee668f450
+  checksum: 3b9c511d238de3991e5412fbc72e5a8ccc16416cc82f330fbcae470ed658e24448a2c5bce0b003308d8fef1f84c709de9b6143fc751345d068c9120586333b7b
+  languageName: node
+  linkType: hard
+
+"react-native-vision-camera@npm:4.6.4":
+  version: 4.6.4
+  resolution: "react-native-vision-camera@npm:4.6.4"
+  peerDependencies:
+    "@shopify/react-native-skia": "*"
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: "*"
+    react-native-worklets-core: "*"
+  peerDependenciesMeta:
+    "@shopify/react-native-skia":
+      optional: true
+    react-native-reanimated:
+      optional: true
+    react-native-worklets-core:
+      optional: true
+  checksum: abcbb23fbc0488bece5e8c4f1732728f94ca8ab4cf4b77a3f8be5eadd6c27a1bbe3b374bcd2239773e284bd548bd644658e43c1869fdb228410ba4d86aa49e8d
   languageName: node
   linkType: hard
 

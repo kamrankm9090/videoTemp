@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Close2, HotSpot2, ThreePointVertical} from '~/assets/svgs';
@@ -9,14 +9,27 @@ import {
   HStack,
   IconButton,
 } from '~/components';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 
 export default function LiveHeader({
   onClose = () => {},
+  isOwner = true,
 }: {
   onClose?: () => void;
+  isOwner?: boolean;
 }) {
   const insets = useSafeAreaInsets();
+  const {userData} = userDataStore(state => state);
+
+  const data = useMemo(() => {
+    return isOwner
+      ? {
+          photoUrl: userData?.photoUrl,
+          username: userData?.username,
+        }
+      : {};
+  }, [isOwner, userData]);
 
   return (
     <HStack
@@ -33,9 +46,13 @@ export default function LiveHeader({
       </IconButton>
 
       <HStack rounded={8} bg={Colors.Nero_2} space={12} py={10} px={12}>
-        <AppImage imageSource={''} resizeMode="stretch" style={styles.avatar} />
+        <AppImage
+          imageSource={data?.photoUrl}
+          resizeMode="stretch"
+          style={styles.avatar}
+        />
         <AppText numberOfLines={1} flex={1}>
-          Luna Miller
+          {data?.username}
         </AppText>
         <HStack space={4}>
           <AppText>0</AppText>
