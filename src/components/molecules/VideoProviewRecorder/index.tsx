@@ -14,8 +14,7 @@ import {
   useCameraPermission,
   useMicrophonePermission,
 } from 'react-native-vision-camera';
-import AppButton from '~/components/atoms/AppButton';
-import AppContainer from '~/components/atoms/AppContainer';
+import {AppButton, AppContainer, HStack, VStack} from '~/components';
 import {navigate} from '~/navigation/methods';
 import {uploadFile} from '~/services/fileUploader';
 import {Colors} from '~/styles';
@@ -85,9 +84,9 @@ const VideoPreviewRecorder = () => {
 
   if (!device || !hasCameraPermission) {
     return (
-      <View style={styles.centered}>
+      <HStack justifyContent='center' alignItems='center' mt={200} style={styles.centered}>
         <ActivityIndicator size="large" color={Colors.PRIMARY} />
-      </View>
+      </HStack>
     );
   }
 
@@ -112,7 +111,6 @@ const VideoPreviewRecorder = () => {
         stopRecording();
       }, MAX_DURATION * 1000);
     } catch (error) {
-      console.error('Recording error:', error);
       setRecording(false);
     }
   };
@@ -167,7 +165,7 @@ const VideoPreviewRecorder = () => {
             controls
             resizeMode="cover"
           />
-          <View style={styles.videoButtonContainer}>
+          <VStack style={styles.videoButtonContainer}>
             <AppButton
               title={
                 uploading ? `Uploading... ${uploadProgress}%` : 'Upload Video'
@@ -181,7 +179,7 @@ const VideoPreviewRecorder = () => {
               onPress={() => setVideoUri(null)}
               disabled={uploading}
             />
-          </View>
+          </VStack>
         </>
       ) : (
         <>
@@ -194,17 +192,17 @@ const VideoPreviewRecorder = () => {
             audio={hasMicrophonePermission}
           />
           {recording && (
-            <View style={styles.recordingOverlay}>
-              <View style={styles.redDot} />
+            <HStack m={10} style={styles.recordingOverlay}>
+              <HStack style={styles.redDot} />
               <Text style={styles.timerText}>{formatTimer(timer)}</Text>
-            </View>
+            </HStack>
           )}
-          <View style={styles.buttonContainer}>
+          <HStack maxW={200} style={styles.buttonContainer}>
             <AppButton
               title={recording ? 'Stop Recording' : `Record (${MAX_DURATION}s)`}
               onPress={recording ? stopRecording : startRecording}
             />
-          </View>
+          </HStack>
         </>
       )}
     </AppContainer>

@@ -64,7 +64,7 @@ export default function CreateContentScreen() {
         // price: formData?.price,
         // publishingScheduleDate: formData?.date,
         // publishingScheduleTime: formData?.time,
-        previewUrl: '',
+        previewUrl: params?.videoUrl,
       };
       mutateCreateLive(
         {input},
