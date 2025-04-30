@@ -16,6 +16,7 @@ import {
   useLive_AddToBookmarkMutation,
   useLive_RemoveFromBookmarkMutation,
 } from '~/graphql/generated';
+import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 import {formatNumber} from '~/utils/helper';
 import {showErrorMessage} from '~/utils/utils';
@@ -29,7 +30,9 @@ export default function HomePostItem({
   index: number;
   visibleIndex: number;
 }) {
-  function onPressHandler() {}
+  function onPressHandler() {
+    navigate('ContentViewer', {item});
+  }
 
   return (
     <AppTouchable onPress={onPressHandler} mx={16} h={335}>

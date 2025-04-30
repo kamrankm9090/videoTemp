@@ -69,6 +69,8 @@ export {default as InviteFriendsCard} from './molecules/InviteFriendsCard';
 export {default as PeopleYouMayKnow} from './molecules/PeopleYouMayKnow';
 export {default as VideoProviewRecorder} from './molecules/VideoProviewRecorder';
 export {default as SectionCategory} from './molecules/SectionCategory';
+export {default as ContentDescriptionCard} from './molecules/ContentDescriptionCard';
+export {default as LiveCommentSection} from './molecules/LiveCommentSection';
 //#endregion ---------Molecules
 
 //#region ---------Organisms

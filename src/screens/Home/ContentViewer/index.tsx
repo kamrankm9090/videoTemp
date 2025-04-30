@@ -1,0 +1,191 @@
+import {useRoute} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {StyleSheet} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import {
+  ArchiveIcon,
+  DocumentTextIcon,
+  DollarCircleIcon,
+  FullScreenIcon,
+  MinimizeScreenIcon,
+  Send2Icon,
+  VolumeSlashIcon,
+} from '~/assets/svgs';
+import {
+  AppContainer,
+  AppText,
+  AppTouchable,
+  AppVideoPlayer,
+  ContentDescriptionCard,
+  LiveCommentSection,
+  VStack,
+} from '~/components';
+import {Colors} from '~/styles';
+import {width} from '~/utils/style';
+
+const ContentViewerScreen = () => {
+  const {params} = useRoute();
+  const [fullScreen, setFullScreen] = useState(false);
+
+  const topLeftItems = [
+    {
+      key: 'resume',
+      title: 'Resume',
+
+      icon: <DocumentTextIcon />,
+      onPress: () => {},
+    },
+    {
+      key: 'tip',
+      title: 'Tip',
+      icon: <DollarCircleIcon />,
+      onPress: () => {},
+    },
+  ];
+
+  const bottomRightItems = [
+    {
+      key: 'send',
+      icon: <Send2Icon />,
+      onPress: () => {},
+    },
+    {
+      key: 'archive',
+      icon: <ArchiveIcon />,
+      onPress: () => {},
+    },
+    {
+      key: 'mute',
+      icon: <VolumeSlashIcon />,
+      onPress: () => {},
+    },
+  ];
+
+  return (
+    <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
+      <AppVideoPlayer
+        style={styles.videoPlayer}
+        fullscreen={false}
+        controls={false}
+        source={{
+          uri: 'https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4',
+        }}>
+        <AppTouchable
+          style={styles.fullScreenButton}
+          onPress={() => setFullScreen(!fullScreen)}>
+          {fullScreen ? <MinimizeScreenIcon /> : <FullScreenIcon />}
+        </AppTouchable>
+
+        <VStack style={styles.topLeftContainer}>
+          {topLeftItems.map(item => (
+            <AppTouchable
+              key={item.key}
+              bg={Colors.WHITE_TRANSPARENT_6}
+              p={6}
+              borderRadius={14}
+              gap={6}
+              justifyContent="center"
+              alignItems="center"
+              flexDirection="row"
+              zIndex={2}
+              onPress={item.onPress}>
+              {item.icon}
+              <AppText
+                fontWeight="500"
+                fontSize={13}
+                color={Colors.BLACK_TRANSPARENT_8}>
+                {item.title}
+              </AppText>
+            </AppTouchable>
+          ))}
+        </VStack>
+
+        {!fullScreen && (
+          <VStack style={styles.bottomRightContainer}>
+            {bottomRightItems.map(item => (
+              <AppTouchable
+                key={item.key}
+                bg={Colors.WHITE_TRANSPARENT_2}
+                p={6}
+                borderRadius={100}
+                justifyContent="center"
+                alignItems="center"
+                zIndex={2}
+                onPress={item.onPress}>
+                {item.icon}
+              </AppTouchable>
+            ))}
+          </VStack>
+        )}
+      </AppVideoPlayer>
+
+      {!fullScreen ? (
+        <VStack style={styles.contentArea}>
+          <ContentDescriptionCard
+            title="Maximize You Experience:"
+            description="I want to make a film in the field of cosmetics and skincare products, and I am currently looking for these skills for this project."
+            category="Beauty"
+            price="$45"
+            schedule="2024/2/10, 3:15 AM"
+          />
+        </VStack>
+      ) : (
+        <>
+          <VStack
+            w={width}
+            p={10}
+            position="absolute"
+            bottom={20}
+            zIndex={2}
+            pt={40}>
+            <LiveCommentSection />
+          </VStack>
+          <LinearGradient
+            colors={['transparent', Colors.BLACK]}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 600,
+              zIndex: 1,
+            }}
+            pointerEvents="none"
+          />
+        </>
+      )}
+    </AppContainer>
+  );
+};
+
+export default ContentViewerScreen;
+
+const styles = StyleSheet.create({
+  videoPlayer: {
+    flexGrow: 1,
+    marginBottom: 30,
+  },
+  fullScreenButton: {
+    position: 'absolute',
+    top: 24,
+    right: 24,
+    zIndex: 2,
+  },
+  topLeftContainer: {
+    position: 'absolute',
+    top: 24,
+    left: 24,
+    flexDirection: 'row',
+    gap: 8,
+  },
+  bottomRightContainer: {
+    position: 'absolute',
+    right: 24,
+    bottom: 24,
+    gap: 8,
+  },
+  contentArea: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+});
