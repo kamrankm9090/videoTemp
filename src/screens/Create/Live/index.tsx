@@ -15,11 +15,11 @@ import {Note, Reload} from '~/assets/svgs';
 import {
   AppButton,
   AppContainer,
-  AppImage,
   AppText,
   AppTouchable,
   BaseComponent,
   BaseRenderUsers,
+  Box,
   CounterModal,
   HStack,
   LiveHeader,
@@ -41,6 +41,7 @@ import {
 
 export default function LiveScreen() {
   const [enableVideo] = useState<boolean>(true);
+  const [liveStarted, setLiveStarted] = useState<boolean>(false);
   const {
     joinChannelSuccess,
     remoteUsers,
@@ -61,6 +62,7 @@ export default function LiveScreen() {
   }
 
   function joinChannel() {
+    setLiveStarted(true);
     setCounterModalVisible(true);
   }
 
@@ -122,6 +124,7 @@ export default function LiveScreen() {
           goBack();
           hideSheet('confirmation-action');
           showInfoMessage('Your live ended');
+          setLiveStarted(false);
         },
       },
     });
@@ -145,6 +148,7 @@ export default function LiveScreen() {
     // 2. If app certificate is turned on at dashboard, token is needed
     // when joining channel. The channel name and uid used to calculate
     // the token has to match the ones used for channel join
+
     engine.current.joinChannel(token, channelId, uid, {
       // Make myself as the broadcaster to send stream to remote
       clientRoleType: ClientRoleType.ClientRoleBroadcaster,
@@ -164,7 +168,17 @@ export default function LiveScreen() {
   return (
     <AppContainer safeArea={false}>
       <LiveHeader onClose={closeHandler} />
-      <ExperienceCard />
+      {!liveStarted && (
+        <Box
+          position="absolute"
+          flex={1}
+          h="100%"
+          w="100%"
+          zIndex={776}
+          bg={Colors.BLACK_TRANSPARENT}
+        />
+      )}
+      {!liveStarted && <ExperienceCard />}
       <BaseComponent
         name={'JoinChannelVideo'}
         renderChannel={RenderNothing}
@@ -203,7 +217,7 @@ function CreateLiveFooter({
 
   return (
     <VStack
-      zIndex={700}
+      zIndex={779}
       px={24}
       w="100%"
       bottom={insets.bottom}
@@ -234,9 +248,9 @@ function ExperienceCard() {
   return (
     <VStack
       w="90%"
-      bg={Colors.BLACK_TRANSPARENT}
       p={16}
       rounded={16}
+      zIndex={777}
       alignSelf="center"
       justifyContent="flex-start"
       maxH={height * 0.5}
@@ -266,9 +280,7 @@ function ExperienceCard() {
         ) : (
           <VStack space={12}>
             <AppText color={Colors.VeryLightGrey}>
-              I want to make a film in the field of cosmetics and skincare
-              products, and I am currently looking for these skills for this
-              project.
+              {liveData?.description}
             </AppText>
 
             <AppTouchable
@@ -302,9 +314,9 @@ function ExperienceCard() {
                 <AppText fontFamily="bold">
                   {liveData?.isSchedule
                     ? `${appFormatDate(
-                        liveData?.date,
+                        liveData?.publishingScheduleDate,
                         'YYYY/m/dd',
-                      )}, ${appFormatDate(liveData?.time)}`
+                      )}, ${appFormatDate(liveData?.publishingScheduleTime)}`
                     : '-'}
                 </AppText>
               </VStack>

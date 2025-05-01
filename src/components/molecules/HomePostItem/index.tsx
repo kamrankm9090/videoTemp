@@ -16,6 +16,7 @@ import {
   useLive_AddToBookmarkMutation,
   useLive_RemoveFromBookmarkMutation,
 } from '~/graphql/generated';
+import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 import {formatNumber} from '~/utils/helper';
 import {showErrorMessage} from '~/utils/utils';
@@ -29,7 +30,13 @@ export default function HomePostItem({
   index: number;
   visibleIndex: number;
 }) {
-  function onPressHandler() {}
+  function onPressHandler() {
+    if (item?.recordEnded) {
+      navigate('VideoPreview');
+    } else {
+      navigate('ContentViewer');
+    }
+  }
 
   return (
     <AppTouchable onPress={onPressHandler} mx={16} h={335}>
@@ -55,7 +62,7 @@ function SectionUserRow({data}: {data: LiveDto}) {
   const user = live?.user;
 
   return (
-    <HStack alignItems="flex-start" space={20}>
+    <HStack mt={16} alignItems="flex-start" space={20}>
       <AppImage
         resizeMode="stretch"
         imageSource={user?.photoUrl}
@@ -64,7 +71,7 @@ function SectionUserRow({data}: {data: LiveDto}) {
       <VStack space={20} flex={1}>
         <HStack alignItems="flex-start">
           <VStack space={8} flex={1}>
-            <AppText fontFamily="medium">{data?.live?.title ?? '-'}</AppText>
+            <AppText fontFamily="medium">{live?.title ?? '-'}</AppText>
             <AppText>{live?.description ?? '-'}</AppText>
           </VStack>
           <HomePostOptions data={data} />

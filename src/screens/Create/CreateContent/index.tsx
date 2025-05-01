@@ -69,9 +69,13 @@ export default function CreateContentScreen() {
         title: formData?.title,
         categoryId: formData?.category?.id,
         setSchedule: formData?.isSchedule,
-        // price: formData?.price,
-        // publishingScheduleDate: formData?.date,
-        // publishingScheduleTime: formData?.time,
+        ...(formData?.isFree && {
+          price: formData?.price,
+        }),
+        ...(formData?.isSchedule && {
+          publishingScheduleDate: formData?.date,
+          publishingScheduleTime: formData?.time,
+        }),
         previewUrl: params?.videoUrl,
       };
       mutateCreateLive(

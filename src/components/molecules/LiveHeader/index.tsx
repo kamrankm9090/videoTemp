@@ -35,7 +35,7 @@ export default function LiveHeader({
     <HStack
       py={10}
       px={56}
-      zIndex={700}
+      zIndex={780}
       top={insets.top}
       space={8}
       alignSelf="center"

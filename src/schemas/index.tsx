@@ -117,9 +117,38 @@ const createContentSchema = yup.object({
   isSchedule: yup.boolean().nullable(),
   description: yup.string().trim().nullable(),
   category: yup.object().nullable(),
-  price: yup.string().trim().nullable(),
-  date: yup.string().nullable(),
-  time: yup.string().trim().nullable(),
+  price: yup
+    .string()
+    .trim()
+    .nullable()
+    .when('isFree', {
+      is: false,
+      then: schema =>
+        schema
+          .required('Price is required')
+          .test('greater-than-zero', 'Price must be greater than 0', value => {
+            const number = parseFloat(value ?? '');
+            return !isNaN(number) && number > 0;
+          }),
+      otherwise: schema => schema.nullable(),
+    }),
+  date: yup
+    .string()
+    .nullable()
+    .when('isSchedule', {
+      is: false,
+      then: schema => schema.nullable(),
+      otherwise: schema => schema.required('Date is required'),
+    }),
+  time: yup
+    .string()
+    .trim()
+    .nullable()
+    .when('isSchedule', {
+      is: false,
+      then: schema => schema.nullable(),
+      otherwise: schema => schema.required('Time is required'),
+    }),
 });
 
 export {

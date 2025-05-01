@@ -305,6 +305,8 @@ declare global {
   type LiveDto = {
     isViewed: boolean;
     isBookmark: boolean;
+    recordStarted: boolean;
+    recordEnded: boolean;
     live?: {
       userId: number;
       liveType: LiveType;
