@@ -1,8 +1,17 @@
 import React from 'react';
-import {FlatList, Image} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Send2Icon} from '~/assets/svgs';
-import {AppInput, AppText, AppTouchable, HStack, VStack} from '~/components';
+import {
+  AppFlatList,
+  AppImage,
+  AppInput,
+  AppText,
+  AppTouchable,
+  HStack,
+  VStack,
+} from '~/components';
 import {Colors} from '~/styles';
+import {fontSize} from '~/utils/style';
 
 type Comment = {
   id: string;
@@ -32,25 +41,17 @@ const dummyComments: Comment[] = [
   },
 ];
 
-const LiveCommentSection = () => {
+export default function LiveCommentSection() {
   return (
     <VStack gap={12} pb={12}>
-      <FlatList
+      <AppFlatList
         data={dummyComments}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item?.id}
         showsVerticalScrollIndicator={false}
         renderItem={({item}) => (
-          <HStack gap={10} my={4} alignItems="flex-start">
-            <Image
-              source={{uri: item.avatar}}
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: 14,
-                marginTop: 4,
-              }}
-            />
-            <VStack gap={2} flex={1}>
+          <HStack space={10} my={4} alignItems="flex-start">
+            <AppImage imageSource={{uri: item.avatar}} style={styles.image} />
+            <VStack space={2} flex={1}>
               <AppText fontSize={13} fontWeight="600">
                 @{item.username}
               </AppText>
@@ -61,20 +62,11 @@ const LiveCommentSection = () => {
           </HStack>
         )}
       />
-
-      <HStack alignItems="center" gap={8}>
+      <HStack alignItems="center" space={8}>
         <AppInput
           placeholder="Say Something"
           placeholderTextColor={Colors.GARY_5}
-          style={{
-            flex: 1,
-            fontSize: 14,
-            paddingVertical: 8,
-            borderColor: Colors.GARY_3,
-            borderWidth: 1,
-            borderRadius: 8,
-            padding: 12,
-          }}
+          style={styles.input}
         />
         <AppTouchable
           p={4}
@@ -88,6 +80,22 @@ const LiveCommentSection = () => {
       </HStack>
     </VStack>
   );
-};
+}
 
-export default LiveCommentSection;
+const styles = StyleSheet.create({
+  image: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    marginTop: 4,
+  },
+  input: {
+    flex: 1,
+    fontSize: fontSize.normal,
+    paddingVertical: 8,
+    borderColor: Colors.GARY_3,
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 12,
+  },
+});

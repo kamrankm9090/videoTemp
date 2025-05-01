@@ -1,4 +1,3 @@
-import {useRoute} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {ActivityIndicator, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -27,8 +26,8 @@ import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
 import {height, width} from '~/utils/style';
 
-const ContentViewerScreen = () => {
-  const {params} = useRoute();
+const ContentViewerScreen = ({route}:NavigationProp) => {
+  const params:any = route?.params;
   const [fullScreen, setFullScreen] = useState(true);
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
 

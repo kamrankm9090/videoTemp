@@ -1,59 +1,50 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {Platform} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   ClientRoleType,
   LocalVideoStreamReason,
   LocalVideoStreamState,
   RtcSurfaceView,
-  RtcTextureView,
   VideoCanvas,
   VideoSourceType,
   VideoViewSetupMode,
 } from 'react-native-agora';
-
-import {
-  AgoraButton,
-  AgoraDivider,
-  AgoraDropdown,
-  AgoraStyle,
-  AgoraSwitch,
-} from '~/components/ui';
-import {enumToItems} from '~/utils/utils';
-import * as log from '~/utils/log';
+import {useSnapshot} from 'valtio';
 import {
   AppContainer,
   BaseComponent,
-  BaseRenderChannel,
   BaseRenderUsers,
+  LiveHeader,
+  RenderNothing,
 } from '~/components';
-
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
+import {goBack} from '~/navigation/methods';
+import {liveStore} from '~/stores';
+import * as log from '~/utils/log';
+import {height, width} from '~/utils/style';
+
+const setupMode = VideoViewSetupMode.VideoViewSetupReplace;
 
 export default function LiveScreen() {
   const [enableVideo] = useState<boolean>(true);
   const {
     channelId,
-    setChannelId,
     token,
     uid,
     joinChannelSuccess,
     remoteUsers,
     startPreview,
     engine,
-  } =
-    /**
-     * Step 1: initRtcEngine
-     */
-    useInitRtcEngine(enableVideo);
-  const [_, setSwitchCamera] = useState(false);
-  const [renderByTextureView, setRenderByTextureView] = useState(false);
-  const [setupMode, setSetupMode] = useState(
-    VideoViewSetupMode.VideoViewSetupReplace,
-  );
+  } = useInitRtcEngine(enableVideo);
 
-  /**
-   * Step 2: joinChannel
-   */
+  const {liveData} = useSnapshot(liveStore);
+
+  useEffect(() => {
+    setTimeout(() => {
+      joinChannel();
+    }, 5000);
+  }, []);
+
   const joinChannel = () => {
     if (!channelId) {
       log.error('channelId is invalid');
@@ -63,32 +54,15 @@ export default function LiveScreen() {
       log.error('uid is invalid');
       return;
     }
-
-    // start joining channel
-    // 1. Users can only see each other after they join the
-    // same channel successfully using the same app id.
-    // 2. If app certificate is turned on at dashboard, token is needed
-    // when joining channel. The channel name and uid used to calculate
-    // the token has to match the ones used for channel join
     engine.current.joinChannel(token, channelId, uid, {
       // Make myself as the broadcaster to send stream to remote
-      clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+      clientRoleType: ClientRoleType.ClientRoleAudience,
     });
   };
 
-  /**
-   * Step 3 (Optional): switchCamera
-   */
-  const _switchCamera = () => {
-    engine.current.switchCamera();
-    setSwitchCamera(prev => !prev);
-  };
-
-  /**
-   * Step 4: leaveChannel
-   */
   const leaveChannel = () => {
     engine.current.leaveChannel();
+    goBack();
   };
 
   useEffect(() => {
@@ -133,19 +107,18 @@ export default function LiveScreen() {
   }, [engine]);
 
   return (
-    <AppContainer>
+    <AppContainer safeArea={false}>
+      <LiveHeader
+        user={{
+          photoUrl: liveData?.user?.photoUrl,
+          username: liveData?.user?.username,
+        }}
+        isOwner={false}
+        onClose={leaveChannel}
+      />
       <BaseComponent
         name={'JoinChannelVideo'}
-        renderConfiguration={renderConfiguration}
-        renderChannel={() => (
-          <BaseRenderChannel
-            channelId={channelId}
-            joinChannel={joinChannel}
-            leaveChannel={leaveChannel}
-            joinChannelSuccess={joinChannelSuccess}
-            onChannelIdChange={setChannelId}
-          />
-        )}
+        renderChannel={RenderNothing}
         renderUsers={() => (
           <BaseRenderUsers
             enableVideo={enableVideo}
@@ -155,78 +128,26 @@ export default function LiveScreen() {
             remoteUsers={remoteUsers}
           />
         )}
-        renderAction={renderAction}
       />
     </AppContainer>
   );
 
   function renderVideo(user: VideoCanvas): ReactElement | undefined {
-    return renderByTextureView ? (
-      <RtcTextureView
-        style={user.uid === 0 ? AgoraStyle.videoLarge : AgoraStyle.videoSmall}
-        canvas={{...user, setupMode}}
-      />
-    ) : (
+    return (
       <RtcSurfaceView
-        style={user.uid === 0 ? AgoraStyle.videoLarge : AgoraStyle.videoSmall}
+        style={styles.video}
         zOrderMediaOverlay={user.uid !== 0}
         canvas={{...user, setupMode}}
       />
     );
   }
-
-  function renderConfiguration(): ReactElement | undefined {
-    return (
-      <>
-        {Platform.OS === 'android' && (
-          <AgoraSwitch
-            disabled={!startPreview && !joinChannelSuccess}
-            title={`renderByTextureView`}
-            value={renderByTextureView}
-            onValueChange={value => {
-              setRenderByTextureView(value);
-            }}
-          />
-        )}
-        <AgoraDivider />
-        <AgoraDropdown
-          title={'setupMode'}
-          items={enumToItems(VideoViewSetupMode)}
-          value={setupMode}
-          onValueChange={value => {
-            setSetupMode(value);
-          }}
-        />
-        {setupMode === VideoViewSetupMode.VideoViewSetupAdd ? (
-          <>
-            <AgoraDivider />
-            {renderByTextureView ? (
-              <RtcTextureView
-                style={AgoraStyle.videoSmall}
-                canvas={{uid: 0, setupMode}}
-              />
-            ) : (
-              <RtcSurfaceView
-                style={AgoraStyle.videoSmall}
-                canvas={{uid: 0, setupMode}}
-              />
-            )}
-          </>
-        ) : undefined}
-        <AgoraDivider />
-      </>
-    );
-  }
-
-  function renderAction(): ReactElement | undefined {
-    return (
-      <>
-        <AgoraButton
-          disabled={!startPreview && !joinChannelSuccess}
-          title={`switchCamera`}
-          onPress={_switchCamera}
-        />
-      </>
-    );
-  }
 }
+
+const styles = StyleSheet.create({
+  video: {
+    flex: 1,
+    height: height,
+    width: width,
+    alignSelf: 'center',
+  },
+});

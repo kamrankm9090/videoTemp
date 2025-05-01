@@ -7,6 +7,7 @@ import {
   VStack,
 } from '~/components';
 import {Colors} from '~/styles';
+import {fontSize} from '~/utils/style';
 
 type Props = {
   title: string;
@@ -16,58 +17,58 @@ type Props = {
   schedule?: string;
 };
 
-const ContentDescriptionCard = ({
+export default function ContentDescriptionCard({
   title,
   description,
   category,
   price,
   schedule,
-}: Props) => {
+}: Props) {
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => setExpanded(prev => !prev);
 
   return (
-    <VStack gap={8} pb={4}>
-      <AppText fontSize={18} fontWeight="600">
+    <VStack space={8} pb={4}>
+      <AppText fontSize={fontSize.large} fontFamily="bold">
         {title}
       </AppText>
 
       <AppText
-        fontSize={13}
-        fontWeight={400}
+        fontSize={fontSize.small}
+        fontFamily="medium"
         color={Colors.GARY_3}
         numberOfLines={expanded ? undefined : 2}>
         {description}
       </AppText>
 
       {expanded && (
-        <VStack gap={12} mt={4}>
+        <VStack space={12} mt={4}>
           <HStack justifyContent="space-between">
-            <VStack gap={6}>
-              <AppText fontSize={13} color={Colors.GARY_4}>
+            <VStack space={6}>
+              <AppText fontSize={fontSize.small} color={Colors.GARY_4}>
                 Category
               </AppText>
-              <AppText fontSize={13} fontWeight="bold">
+              <AppText fontSize={fontSize.small} fontFamily="bold">
                 {category}
               </AppText>
             </VStack>
 
             <VStack gap={6}>
-              <AppText fontSize={13} color={Colors.GARY_4}>
+              <AppText fontSize={fontSize.small} color={Colors.GARY_4}>
                 Price
               </AppText>
-              <AppText fontSize={13} fontWeight="bold">
+              <AppText fontSize={fontSize.small} fontFamily="bold">
                 {price}
               </AppText>
             </VStack>
           </HStack>
 
           <VStack gap={6}>
-            <AppText fontSize={13} color={Colors.GARY_4}>
+            <AppText fontSize={fontSize.small} color={Colors.GARY_4}>
               Publishing schedule
             </AppText>
-            <AppText fontSize={13} fontWeight="bold">
+            <AppText fontSize={fontSize.small} fontFamily="bold">
               {schedule}
             </AppText>
           </VStack>
@@ -75,7 +76,10 @@ const ContentDescriptionCard = ({
       )}
       {description.length > 100 && (
         <AppTouchable onPress={toggleExpanded}>
-          <AppText fontSize={13} fontWeight="500" color={Colors.PRIMARY}>
+          <AppText
+            fontSize={fontSize.small}
+            fontFamily="medium"
+            color={Colors.PRIMARY}>
             {expanded ? 'show Less...' : 'show more...'}
           </AppText>
         </AppTouchable>
@@ -83,6 +87,4 @@ const ContentDescriptionCard = ({
       {!expanded && <LiveCommentSection />}
     </VStack>
   );
-};
-
-export default ContentDescriptionCard;
+}

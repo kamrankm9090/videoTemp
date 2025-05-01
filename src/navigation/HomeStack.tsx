@@ -1,25 +1,27 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {ContentViewerScreen, HomeScreen} from '~/screens';
+import {ContentViewerLiveScreen, ContentViewerScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
 
 export type HomeStackParamList = {
-  Home: undefined;
-  ContentViewer:{
-    item: any
-  }
+  ContentViewer: {
+    item: any;
+  };
+  ContentViewerLive: {
+    liveId: number;
+  };
 };
 
 const Stack = createStackNavigator<HomeStackParamList>();
 
 const screens = [
   {
-    name: 'Home',
-    component: HomeScreen,
-  },
-  {
     name: 'ContentViewer',
     component: ContentViewerScreen,
+  },
+  {
+    name: 'ContentViewerLive',
+    component: ContentViewerLiveScreen,
   },
 ];
 

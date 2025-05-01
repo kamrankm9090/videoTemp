@@ -2393,7 +2393,7 @@ SPEC CHECKSUMS:
   amazon-ivs-react-native-player: 26b73e30380ccf132470c0829e6fd7bdf1db1f55
   AmazonIVSPlayer: 056aa543826328b578f51d5f3a1ac47b227d813d
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
-  BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
+  BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   DVAssetLoaderDelegate: 0caec20e4e08b8560b691131539e9180024d4bce
   FBLazyVector: 1bf99bb46c6af9a2712592e707347315f23947aa

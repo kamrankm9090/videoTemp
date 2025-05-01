@@ -1,10 +1,10 @@
 import React from 'react';
-import {Image} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Close2, LiveIcon, MoreIcon} from '~/assets/svgs';
-import {AppText, AppTouchable, HStack, VStack} from '~/components';
+import {AppImage, AppText, AppTouchable, Center, HStack} from '~/components';
 import { goBack } from '~/navigation/methods';
-// import { CloseIcon, MoreIcon } from '~/assets/svgs'; // assuming you have these icons
 import {Colors} from '~/styles';
+import {fontSize} from '~/utils/style';
 
 const ContentViewerHeader = () => {
   return (
@@ -19,25 +19,26 @@ const ContentViewerHeader = () => {
         <Close2  fill={Colors.WHITE} />
       </AppTouchable>
 
-      <HStack flex={1} p={8} borderRadius={12} bg={Colors.BLACK_TRANSPARENT_4}>
-        <HStack alignItems="center" gap={6} flex={1}>
-          <Image
-            source={{uri: 'https://randomuser.me/api/portraits/women/68.jpg'}}
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: 14,
+      <HStack flex={1} p={8} rounded={12} bg={Colors.BLACK_TRANSPARENT_4}>
+        <HStack alignItems="center" space={6} flex={1}>
+          <AppImage
+            imageSource={{
+              uri: 'https://randomuser.me/api/portraits/women/68.jpg',
             }}
+            style={styles.image}
           />
-          <AppText fontSize={14} color={Colors.WHITE} fontWeight="500">
+          <AppText fontSize={fontSize.small} fontFamily="medium">
             Luna Miller
           </AppText>
 
-          <AppTouchable py={4} px={10} borderRadius={4} bg={Colors.BLACK_TRANSPARENT_4} >
+          <AppTouchable
+            py={4}
+            px={10}
+            borderRadius={4}
+            bg={Colors.BLACK_TRANSPARENT_4}>
             <AppText
-              fontSize={13}
-              fontWeight="500"
-              color={Colors.WHITE}
+              fontSize={fontSize.small}
+              fontFamily="medium"
               borderRadius={8}>
               Following
             </AppText>
@@ -49,20 +50,10 @@ const ContentViewerHeader = () => {
             <AppText fontSize={13} fontWeight="600" color={Colors.WHITE}>
               96
             </AppText>
-            <VStack
-              style={{
-                width: 18,
-                height: 18,
-                borderRadius: 9,
-                backgroundColor: Colors.PRIMARY,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+            <Center w={18} h={18} rounded={9} bg={Colors.PRIMARY}>
               <LiveIcon />
-              {/* replace with your red dot live icon if available */}
-            </VStack>
+            </Center>
           </HStack>
-
           <AppTouchable>
             <MoreIcon fill={Colors.WHITE} />
           </AppTouchable>
@@ -73,3 +64,11 @@ const ContentViewerHeader = () => {
 };
 
 export default ContentViewerHeader;
+
+const styles = StyleSheet.create({
+  image: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+  },
+});

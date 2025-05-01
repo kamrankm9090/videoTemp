@@ -5624,6 +5624,8 @@ export type Live_GetLivesQuery = {
       };
       items?: Array<{
         __typename?: 'LiveDto';
+        recordStarted: boolean;
+        recordEnded: boolean;
         isViewed: boolean;
         isBookmark: boolean;
         live?: {
@@ -6809,6 +6811,8 @@ export const Live_GetLivesDocument = `
           createdDate
           lastModifiedDate
         }
+        recordStarted
+        recordEnded
         isViewed
         isBookmark
       }

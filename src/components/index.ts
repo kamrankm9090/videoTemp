@@ -53,6 +53,7 @@ export {default as AppCheckBox} from './atoms/AppCheckBox';
 export {default as FormCheckBox} from './atoms/FormCheckBox';
 export {default as IconButton} from './atoms/IconButton';
 export {default as ModalHeader} from './atoms/ModalHeader';
+export {default as AppGradientView} from './atoms/AppGradientView';
 //#endregion ---------Atoms
 
 //#region ---------Molecules

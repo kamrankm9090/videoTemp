@@ -9,55 +9,7 @@ import {
   PeopleYouMayKnow,
   VStack,
 } from '~/components';
-import {useInfiniteLive_GetLivesQuery} from '~/graphql/generated';
-
-const data = [
-  {
-    id: 0,
-    previewUrl:
-      'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[0].mp4',
-    title: 'Cs go_mc',
-    description: 'a live stream where the person',
-    viewCount: 34000,
-    purchaseCount: 34500,
-    isSave: false,
-    isLive: false,
-    user: {
-      fullName: 'Kamran km',
-      imageUrl: 'https://picsum.photos/200/300',
-    },
-  },
-  {
-    id: 1,
-    previewUrl:
-      'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[1].mp4',
-    title: 'Cs go_mc',
-    description: 'a live stream where the person',
-    viewCount: 34000,
-    purchaseCount: 34500,
-    isSave: false,
-    isLive: false,
-    user: {
-      fullName: 'David Beckham',
-      imageUrl: 'https://picsum.photos/id/237/200/300',
-    },
-  },
-  {
-    id: 2,
-    previewUrl:
-      'https://klpmedia.blob.core.windows.net/klpmedia/files/BigBuckBunny.[3].mp4',
-    title: 'Cs go_mc',
-    description: 'a live stream where the person',
-    viewCount: 34000,
-    purchaseCount: 34500,
-    isSave: false,
-    isLive: false,
-    user: {
-      fullName: 'Cristiano Ronaldo',
-      imageUrl: 'https://picsum.photos/seed/picsum/200/300',
-    },
-  },
-];
+import {SortEnumType, useInfiniteLive_GetLivesQuery} from '~/graphql/generated';
 
 export default function HomeScreen() {
   const [visibleIndex, setVisibleIndex] = useState<number | null>(null);
@@ -71,18 +23,14 @@ export default function HomeScreen() {
     refetch: refetchGetLives,
     isRefetching: isRefetchingGetLives,
   } = useInfiniteLive_GetLivesQuery({
-    order: {
-      live: {
-        createdDate: "DESC"
-      }
-    }
+    where: {recordStarted: {eq: true}},
+    order: {live: {createdDate: SortEnumType.Desc}},
   });
 
   const lives = useMemo(() => {
     return getLives?.pages?.map(a => a?.live_getLives?.result?.items).flat();
   }, [getLives]);
 
-  console.log('lives-->', lives?.[0]?.live?.user);
   const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
     if (viewableItems.length > 0) {
       setVisibleIndex(viewableItems[0]?.index ?? null);
@@ -115,7 +63,7 @@ export default function HomeScreen() {
     <AppContainer isLoading={isLoadingGetLives}>
       <HomeHeader />
       <AppFlatList
-        data={lives}
+        data={lives || []}
         renderItem={renderItem}
         keyExtractor={(_, i) => String(i)}
         viewabilityConfig={viewConfigRef.current}
