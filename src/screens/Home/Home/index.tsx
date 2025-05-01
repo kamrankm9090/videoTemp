@@ -70,7 +70,13 @@ export default function HomeScreen() {
     fetchNextPage: fetchNextPageLives,
     refetch: refetchGetLives,
     isRefetching: isRefetchingGetLives,
-  } = useInfiniteLive_GetLivesQuery();
+  } = useInfiniteLive_GetLivesQuery({
+    order: {
+      live: {
+        createdDate: "DESC"
+      }
+    }
+  });
 
   const lives = useMemo(() => {
     return getLives?.pages?.map(a => a?.live_getLives?.result?.items).flat();

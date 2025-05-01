@@ -467,8 +467,10 @@ export type Community = {
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  media?: Maybe<Scalars['String']['output']>;
   messages?: Maybe<Array<Maybe<CommunityMessage>>>;
   photoUrl?: Maybe<Scalars['String']['output']>;
+  requestCount: Scalars['Int']['output'];
   requests?: Maybe<Array<Maybe<CommunityRequest>>>;
   title?: Maybe<Scalars['String']['output']>;
   userCount: Scalars['Int']['output'];
@@ -517,9 +519,11 @@ export type CommunityFilterInput = {
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  media?: InputMaybe<StringOperationFilterInput>;
   messages?: InputMaybe<ListFilterInputTypeOfCommunityMessageFilterInput>;
   or?: InputMaybe<Array<CommunityFilterInput>>;
   photoUrl?: InputMaybe<StringOperationFilterInput>;
+  requestCount?: InputMaybe<IntOperationFilterInput>;
   requests?: InputMaybe<ListFilterInputTypeOfCommunityRequestFilterInput>;
   title?: InputMaybe<StringOperationFilterInput>;
   userCount?: InputMaybe<IntOperationFilterInput>;
@@ -530,6 +534,7 @@ export type CommunityInput = {
   communityType?: InputMaybe<CommunityType>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  media?: InputMaybe<Scalars['String']['input']>;
   photoUrl?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -601,7 +606,9 @@ export type CommunitySortInput = {
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
+  media?: InputMaybe<SortEnumType>;
   photoUrl?: InputMaybe<SortEnumType>;
+  requestCount?: InputMaybe<SortEnumType>;
   title?: InputMaybe<SortEnumType>;
   userCount?: InputMaybe<SortEnumType>;
 };
@@ -626,6 +633,7 @@ export type CommunityUser = {
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  mute: Scalars['Boolean']['output'];
   user?: Maybe<User>;
   userId: Scalars['Int']['output'];
 };
@@ -638,9 +646,15 @@ export type CommunityUserFilterInput = {
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  mute?: InputMaybe<BooleanOperationFilterInput>;
   or?: InputMaybe<Array<CommunityUserFilterInput>>;
   user?: InputMaybe<UserFilterInput>;
   userId?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type CommunityUserInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  mute: Scalars['Boolean']['input'];
 };
 
 export type ConfirmEmailInput = {
@@ -2405,6 +2419,8 @@ export type LiveDto = {
   isPurchased: Scalars['Boolean']['output'];
   isViewed: Scalars['Boolean']['output'];
   live?: Maybe<Live>;
+  recordEnded: Scalars['Boolean']['output'];
+  recordStarted: Scalars['Boolean']['output'];
 };
 
 /** A segment of a collection. */
@@ -2446,6 +2462,8 @@ export type LiveDtoFilterInput = {
   isViewed?: InputMaybe<BooleanOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
   or?: InputMaybe<Array<LiveDtoFilterInput>>;
+  recordEnded?: InputMaybe<BooleanOperationFilterInput>;
+  recordStarted?: InputMaybe<BooleanOperationFilterInput>;
 };
 
 export type LiveDtoSortInput = {
@@ -2453,6 +2471,8 @@ export type LiveDtoSortInput = {
   isPurchased?: InputMaybe<SortEnumType>;
   isViewed?: InputMaybe<SortEnumType>;
   live?: InputMaybe<LiveSortInput>;
+  recordEnded?: InputMaybe<SortEnumType>;
+  recordStarted?: InputMaybe<SortEnumType>;
 };
 
 export type LiveFilterInput = {
@@ -2829,6 +2849,7 @@ export type Mutation = {
   community_leaveCommunity?: Maybe<ResponseBaseOfCommunityUser>;
   community_rejectRequest?: Maybe<ResponseStatus>;
   community_updateCommunity?: Maybe<ResponseBaseOfCommunity>;
+  community_updateCommunityUser?: Maybe<ResponseBaseOfCommunityUser>;
   create: ResponseBaseOfViolationReport;
   defaultViolation_createDefaultViolation: ResponseBaseOfDefaultViolation;
   defaultViolation_deleteDefaultViolation: ResponseBaseOfDefaultViolation;
@@ -2969,6 +2990,10 @@ export type MutationCommunity_RejectRequestArgs = {
 
 export type MutationCommunity_UpdateCommunityArgs = {
   input?: InputMaybe<CommunityInput>;
+};
+
+export type MutationCommunity_UpdateCommunityUserArgs = {
+  input?: InputMaybe<CommunityUserInput>;
 };
 
 export type MutationCreateArgs = {
@@ -3880,6 +3905,10 @@ export type Query = {
   user_getUsers?: Maybe<ListResponseBaseOfUser>;
   violationReport_getViolationReport: SingleResponseBaseOfViolationReport;
   violationReport_getViolationReports: ListResponseBaseOfViolationReport;
+};
+
+export type QueryAgora_GetRecordFilesArgs = {
+  liveId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type QueryCategory_GetCategoryArgs = {
@@ -6394,9 +6423,9 @@ export const useInfiniteAgora_GetAppIdQuery = <
 };
 
 export const Agora_GetRecordFilesDocument = `
-    query agora_getRecordFiles($skip: Int, $take: Int, $where: RecordFileDtoFilterInput, $order: [RecordFileDtoSortInput!]) {
-  agora_getRecordFiles {
-    result(skip: $skip, take: $take, where: $where, order: $order) {
+query agora_getRecordFiles($liveId:Int, $skip: Int, $take: Int, $where: RecordFileDtoFilterInput, $order: [RecordFileDtoSortInput!]) {
+  agora_getRecordFiles(liveId: $liveId) {
+    result( skip: $skip, take: $take, where: $where, order: $order) {
       pageInfo {
         hasNextPage
         hasPreviousPage

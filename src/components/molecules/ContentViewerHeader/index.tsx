@@ -2,6 +2,7 @@ import React from 'react';
 import {Image} from 'react-native';
 import {Close2, LiveIcon, MoreIcon} from '~/assets/svgs';
 import {AppText, AppTouchable, HStack, VStack} from '~/components';
+import { goBack } from '~/navigation/methods';
 // import { CloseIcon, MoreIcon } from '~/assets/svgs'; // assuming you have these icons
 import {Colors} from '~/styles';
 
@@ -14,7 +15,7 @@ const ContentViewerHeader = () => {
       gap={8}
       mx={16}
       mt={12}>
-      <AppTouchable bg={Colors.BLACK_TRANSPARENT_4} p={16} borderRadius={12}>
+      <AppTouchable bg={Colors.BLACK_TRANSPARENT_4} p={16} borderRadius={12} onPress={() => goBack()}>
         <Close2  fill={Colors.WHITE} />
       </AppTouchable>
 

@@ -1,6 +1,6 @@
 import {useRoute} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {ActivityIndicator, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   ArchiveIcon,
@@ -17,17 +17,24 @@ import {
   AppTouchable,
   AppVideoPlayer,
   ContentDescriptionCard,
+  ContentViewerHeader,
   HStack,
   LiveCommentSection,
   VStack,
-  ContentViewerHeader
 } from '~/components';
+import {useAgora_GetRecordFilesQuery} from '~/graphql/generated';
 import {Colors} from '~/styles';
-import {width} from '~/utils/style';
+import {getFullImageUrl} from '~/utils/helper';
+import {height, width} from '~/utils/style';
 
 const ContentViewerScreen = () => {
   const {params} = useRoute();
-  const [fullScreen, setFullScreen] = useState(false);
+  const [fullScreen, setFullScreen] = useState(true);
+  const [isLoadingVideo, setIsLoadingVideo] = useState(true);
+
+  const {data} = useAgora_GetRecordFilesQuery({
+    liveId: params?.item?.live?.id,
+  });
 
   const topLeftItems = [
     {
@@ -65,101 +72,141 @@ const ContentViewerScreen = () => {
 
   return (
     <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
-      <AppVideoPlayer
-        style={styles.videoPlayer}
-        fullscreen={false}
-        controls={false}
-        source={{
-          uri: 'https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4',
-        }}>
-        <ContentViewerHeader />
-        <HStack justifyContent="space-between" m={16}>
-        
-
-          <VStack style={styles.topLeftContainer}>
-            {topLeftItems.map(item => (
-              <AppTouchable
-                key={item.key}
-                bg={Colors.WHITE_TRANSPARENT_6}
-                p={6}
-                borderRadius={14}
-                gap={6}
-                justifyContent="center"
-                alignItems="center"
-                flexDirection="row"
-                zIndex={2}
-                onPress={item.onPress}>
-                {item.icon}
-                <AppText
-                  fontWeight="500"
-                  fontSize={13}
-                  color={Colors.BLACK_TRANSPARENT_8}>
-                  {item.title}
-                </AppText>
-              </AppTouchable>
-            ))}
-          </VStack>
-          <AppTouchable
-            style={styles.fullScreenButton}
-            onPress={() => setFullScreen(!fullScreen)}>
-            {fullScreen ? <MinimizeScreenIcon /> : <FullScreenIcon />}
-          </AppTouchable>
-        </HStack>
-
-        {!fullScreen && (
-          <VStack style={styles.bottomRightContainer}>
-            {bottomRightItems.map(item => (
-              <AppTouchable
-                key={item.key}
-                bg={Colors.WHITE_TRANSPARENT_2}
-                p={6}
-                borderRadius={100}
-                justifyContent="center"
-                alignItems="center"
-                zIndex={2}
-                onPress={item.onPress}>
-                {item.icon}
-              </AppTouchable>
-            ))}
-          </VStack>
-        )}
-      </AppVideoPlayer>
-
-      {!fullScreen ? (
-        <VStack style={styles.contentArea}>
-          <ContentDescriptionCard
-            title="Maximize You Experience:"
-            description="I want to make a film in the field of cosmetics and skincare products, and I am currently looking for these skills for this project."
-            category="Beauty"
-            price="$45"
-            schedule="2024/2/10, 3:15 AM"
-          />
-        </VStack>
-      ) : (
-        <>
-          <VStack
-            w={width}
-            p={10}
-            position="absolute"
-            bottom={20}
-            zIndex={2}
-            pt={40}>
-            <LiveCommentSection />
-          </VStack>
-          <LinearGradient
-            colors={['transparent', Colors.BLACK]}
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: 600,
-              zIndex: 1,
+      <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
+        <VStack style={{flex: 1, position: 'relative'}}>
+          <AppVideoPlayer
+            style={styles.videoPlayer}
+            fullscreen={false}
+            controls={false}
+            source={{
+              uri: getFullImageUrl(
+                data?.agora_getRecordFiles?.result?.items?.[0]?.name,
+              ),
             }}
-            pointerEvents="none"
+            onLoadStart={() => setIsLoadingVideo(true)}
+            onLoad={() => setIsLoadingVideo(false)}
+            onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}
           />
-        </>
-      )}
+
+          {isLoadingVideo && (
+            <VStack
+              position="absolute"
+              top={0}
+              bottom={0}
+              left={0}
+              right={0}
+              alignItems="center"
+              justifyContent="center"
+              zIndex={10}
+              bg={Colors.BLACK_TRANSPARENT_6}>
+              <AppText fontSize={14} color={Colors.WHITE} marginBottom={8}>
+                Loading video...
+              </AppText>
+              <ActivityIndicator size="large" color={Colors.WHITE} />
+            </VStack>
+          )}
+
+          <HStack
+            justifyContent="space-between"
+            position="absolute"
+            top={10}
+            left={0}
+            right={0}>
+            <ContentViewerHeader />
+          </HStack>
+
+          <HStack
+            justifyContent="space-between"
+            m={16}
+            position="absolute"
+            top={60}
+            left={0}
+            right={0}>
+            <VStack style={styles.topLeftContainer}>
+              {topLeftItems.map(item => (
+                <AppTouchable
+                  key={item.key}
+                  bg={Colors.WHITE_TRANSPARENT_6}
+                  p={6}
+                  borderRadius={14}
+                  gap={6}
+                  justifyContent="center"
+                  alignItems="center"
+                  flexDirection="row"
+                  zIndex={2}
+                  onPress={item.onPress}>
+                  {item.icon}
+                  <AppText
+                    fontWeight="500"
+                    fontSize={13}
+                    color={Colors.BLACK_TRANSPARENT_8}>
+                    {item.title}
+                  </AppText>
+                </AppTouchable>
+              ))}
+            </VStack>
+            <AppTouchable
+              style={styles.fullScreenButton}
+              onPress={() => setFullScreen(!fullScreen)}>
+              {fullScreen ? <MinimizeScreenIcon /> : <FullScreenIcon />}
+            </AppTouchable>
+          </HStack>
+
+          {!fullScreen && (
+            <VStack style={styles.bottomRightContainer}>
+              {bottomRightItems.map(item => (
+                <AppTouchable
+                  key={item.key}
+                  bg={Colors.WHITE_TRANSPARENT_2}
+                  p={6}
+                  borderRadius={100}
+                  justifyContent="center"
+                  alignItems="center"
+                  zIndex={2}
+                  onPress={item.onPress}>
+                  {item.icon}
+                </AppTouchable>
+              ))}
+            </VStack>
+          )}
+
+          {!fullScreen ? (
+            <VStack style={styles.contentArea}>
+              <ContentDescriptionCard
+                title="Maximize You Experience:"
+                description="I want to make a film in the field of cosmetics and skincare products, and I am currently looking for these skills for this project."
+                category="Beauty"
+                price="$45"
+                schedule="2024/2/10, 3:15 AM"
+              />
+            </VStack>
+          ) : (
+            <>
+              <VStack
+                w={width}
+                p={10}
+                position="absolute"
+                bottom={20}
+                zIndex={2}
+                pt={40}>
+                <LiveCommentSection />
+              </VStack>
+              <LinearGradient
+                colors={['transparent', Colors.BLACK]}
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: 600,
+                  zIndex: 1,
+                }}
+                pointerEvents="none"
+              />
+            </>
+          )}
+        </VStack>
+      </AppContainer>
     </AppContainer>
   );
 };
@@ -172,22 +219,16 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   fullScreenButton: {
-    // position: 'absolute',
-    // top: 24,
-    // right: 24,
     zIndex: 2,
   },
   topLeftContainer: {
-    // position: 'absolute',
-    // top: 24,
-    // left: 24,
     flexDirection: 'row',
     gap: 8,
   },
   bottomRightContainer: {
     position: 'absolute',
     right: 24,
-    bottom: 24,
+    bottom: height / 2 - 20,
     gap: 8,
   },
   contentArea: {
