@@ -1,4 +1,4 @@
-import { PickerProps } from '@react-native-picker/picker/typings/Picker';
+import {PickerProps} from '@react-native-picker/picker/typings/Picker';
 import {
   Button,
   ButtonProps,
@@ -20,7 +20,7 @@ import {
   TextProps,
   lightColors,
 } from '@rneui/base';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import {
   FlatList,
   FlatListProps,
@@ -34,10 +34,10 @@ import PickerSelect, {
   PickerSelectProps,
 } from 'react-native-picker-select';
 
-export { RtcSurfaceView } from 'react-native-agora';
+export {RtcSurfaceView} from 'react-native-agora';
 
-export const AgoraView = (props: ViewProps & { horizontal?: boolean }) => {
-  const { horizontal, style, ...others } = props;
+export const AgoraView = (props: ViewProps & {horizontal?: boolean}) => {
+  const {horizontal, style, ...others} = props;
   return (
     <>
       <View
@@ -74,7 +74,7 @@ export const AgoraDivider = (props: DividerProps) => {
 };
 
 export const AgoraTextInput = (
-  props: InputProps & { numberKeyboard?: boolean }
+  props: InputProps & {numberKeyboard?: boolean},
 ) => {
   const [value, setValue] = useState(props.value);
 
@@ -82,7 +82,7 @@ export const AgoraTextInput = (
     setValue(props.value);
   }, [props.value]);
 
-  const { style, ref, numberKeyboard, ...others } = props;
+  const {style, ref, numberKeyboard, ...others} = props;
   return (
     <>
       <Input
@@ -96,7 +96,7 @@ export const AgoraTextInput = (
             : 'default'
         }
         {...others}
-        onChangeText={(text) => {
+        onChangeText={text => {
           setValue(text);
           props.onChangeText?.call(this, text);
         }}
@@ -106,14 +106,14 @@ export const AgoraTextInput = (
   );
 };
 
-export const AgoraSlider = (props: SliderProps & { title: string }) => {
+export const AgoraSlider = (props: SliderProps & {title: string}) => {
   const [value, setValue] = useState(props.value);
 
   useEffect(() => {
     setValue(props.value);
   }, [props.value]);
 
-  const { title, ...others } = props;
+  const {title, ...others} = props;
   return (
     <>
       <AgoraText children={title} />
@@ -123,7 +123,7 @@ export const AgoraSlider = (props: SliderProps & { title: string }) => {
         thumbStyle={AgoraStyle.thumb}
         {...others}
         value={value}
-        onValueChange={(v) => {
+        onValueChange={v => {
           setValue(v);
           props.onValueChange?.call(this, v);
         }}
@@ -132,21 +132,21 @@ export const AgoraSlider = (props: SliderProps & { title: string }) => {
   );
 };
 
-export const AgoraSwitch = (props: SwitchProps & { title: string }) => {
+export const AgoraSwitch = (props: SwitchProps & {title: string}) => {
   const [value, setValue] = useState(props.value);
 
   useEffect(() => {
     setValue(props.value);
   }, [props.value]);
 
-  const { title, ...others } = props;
+  const {title, ...others} = props;
   return (
     <>
       <AgoraText children={title} />
       <Switch
         {...others}
         value={value}
-        onValueChange={(v) => {
+        onValueChange={v => {
           setValue(v);
           props.onValueChange?.call(this, v);
         }}
@@ -164,15 +164,15 @@ export const AgoraImage = (props: ImageProps) => {
 };
 
 export function AgoraList<T>(props: FlatListProps<T>) {
-  const { renderItem, ...others } = props;
+  const {renderItem, ...others} = props;
   return (
     <FlatList
       numColumns={2}
       {...others}
-      renderItem={({ item, index, separators }) => {
+      renderItem={({item, index, separators}) => {
         return (
           <AgoraListItem containerStyle={AgoraStyle.listItem}>
-            {renderItem ? renderItem({ item, index, separators }) : undefined}
+            {renderItem ? renderItem({item, index, separators}) : undefined}
           </AgoraListItem>
         );
       }}
@@ -185,9 +185,9 @@ export const AgoraListItem = (props: ListItemProps) => {
 };
 
 export const AgoraCard = (
-  props: CardProps & { title: string; children?: ReactElement }
+  props: CardProps & {title: string; children?: ReactElement},
 ) => {
-  const { title, children, ...others } = props;
+  const {title, children, ...others} = props;
   return (
     <Card containerStyle={AgoraStyle.listItem} {...others}>
       <Card.Title>{title}</Card.Title>
@@ -199,7 +199,7 @@ export const AgoraCard = (
 export interface AgoraDropdownItem extends Item {}
 
 export const AgoraDropdown = (
-  props: PickerSelectProps & PickerProps & { title: string }
+  props: PickerSelectProps & PickerProps & {title: string},
 ) => {
   const [value, setValue] = useState(props.value);
 
@@ -219,7 +219,7 @@ export const AgoraDropdown = (
         }}
         value={value}
         // @ts-ignore
-        textInputProps={{ style: AgoraStyle.input, chevronUp: true }}
+        textInputProps={{style: AgoraStyle.input, chevronUp: true}}
         onValueChange={(v, index) => {
           if (v === null || v === undefined) return;
           setValue(v);

@@ -1,15 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { VideoProviewRecorder } from '~/components'
+import React from 'react';
+import {AppContainer, ScreensHeader, VideoPreviewRecorder} from '~/components';
 
-const VideoPreviewerScreen = () => {
+export default function VideoPreviewerScreen() {
   return (
-    <View>
-      <VideoProviewRecorder  />
-    </View>
-  )
+    <AppContainer>
+      <ScreensHeader backAction />
+      <VideoPreviewRecorder />
+    </AppContainer>
+  );
 }
-
-export default VideoPreviewerScreen
-
-const styles = StyleSheet.create({})

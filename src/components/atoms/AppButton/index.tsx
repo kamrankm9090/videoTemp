@@ -13,9 +13,9 @@ interface Props {
   color?: string;
   disableColor?: string;
   disableTextColor?: string;
-  borderColor?: string;
+  borderColor?: ViewStyle['borderColor'];
   textColor?: string;
-  backgroundColor?: string;
+  backgroundColor?: ViewStyle['backgroundColor'];
   spinnerColor?: string;
   spinnerSize?: IndicatorSize;
   width?: ViewStyle['width'];

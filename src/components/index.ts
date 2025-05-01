@@ -51,6 +51,8 @@ export {default as AppDropDown} from './atoms/AppDropDown';
 export {default as FormDateTimePicker} from './atoms/FormDateTimePicker';
 export {default as AppCheckBox} from './atoms/AppCheckBox';
 export {default as FormCheckBox} from './atoms/FormCheckBox';
+export {default as IconButton} from './atoms/IconButton';
+export {default as ModalHeader} from './atoms/ModalHeader';
 //#endregion ---------Atoms
 
 //#region ---------Molecules
@@ -67,11 +69,12 @@ export {default as SectionHomeNotification} from './molecules/SectionHomeNotific
 export {default as SectionHomeMessage} from './molecules/SectionHomeMessage';
 export {default as InviteFriendsCard} from './molecules/InviteFriendsCard';
 export {default as PeopleYouMayKnow} from './molecules/PeopleYouMayKnow';
-export {default as VideoProviewRecorder} from './molecules/VideoProviewRecorder';
+export {default as VideoPreviewRecorder} from './molecules/VideoPreviewRecorder';
 export {default as SectionCategory} from './molecules/SectionCategory';
 export {default as ContentDescriptionCard} from './molecules/ContentDescriptionCard';
 export {default as LiveCommentSection} from './molecules/LiveCommentSection';
 export {default as ContentViewerHeader} from './molecules/ContentViewerHeader';
+export {default as LiveHeader} from './molecules/LiveHeader';
 //#endregion ---------Molecules
 
 //#region ---------Organisms
@@ -86,4 +89,6 @@ export {default as SharingAction} from './modals/SharingAction';
 export {default as ReportAction} from './modals/ReportAction';
 export {default as ReportReasonAction} from './modals/ReportReasonAction';
 export {default as CreateOptionsAction} from './modals/CreateOptionsAction';
+export {default as CounterModal} from './modals/CounterModal';
+export {default as ConfirmationAction} from './modals/ConfirmationAction';
 //#endregion ---------Modals

@@ -1,5 +1,5 @@
 import {yupResolver} from '@hookform/resolvers/yup';
-import { useRoute } from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import React, {useCallback} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
@@ -20,7 +20,12 @@ import {
   SectionCategory,
   VStack,
 } from '~/components';
-import {LiveInput, useLive_CreateLiveMutation} from '~/graphql/generated';
+import {
+  LiveInput,
+  useAgora_CreateTokenMutation,
+  useLive_CreateLiveMutation,
+} from '~/graphql/generated';
+import useInitAgora from '~/hooks/agora/useInitAgora';
 import {navigate} from '~/navigation/methods';
 import {createContentSchema} from '~/schemas';
 import {liveStore} from '~/stores';
@@ -39,19 +44,22 @@ const defaultValues = {
 };
 
 export default function CreateContentScreen() {
+  useInitAgora();
   const {...methods} = useForm({
     resolver: yupResolver(createContentSchema),
     defaultValues,
   });
 
-  const {params}:any = useRoute()
-  
+  const {params}: any = useRoute();
 
   const {handleSubmit, formState, watch} = methods;
-  const {setLiveId} = useSnapshot(liveStore);
+  const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
+    useSnapshot(liveStore);
 
   const {mutate: mutateCreateLive, isLoading: isLoadingCreateLive} =
     useLive_CreateLiveMutation();
+  const {mutate: mutateCreateAgoraToken, isLoading: isLoadingCreateAgoraToken} =
+    useAgora_CreateTokenMutation();
 
   const onSubmit = useCallback(
     (formData: typeof defaultValues) => {
@@ -72,8 +80,25 @@ export default function CreateContentScreen() {
           onSuccess: response => {
             console.log('response-11->', response);
             if (response?.live_createLive?.status?.code === 1) {
-              setLiveId(response?.live_createLive?.result?.id);
-              navigate('Live');
+              const liveId = response?.live_createLive?.result?.id?.toString();
+              mutateCreateAgoraToken(
+                {channelName: liveId, publisher: true},
+                {
+                  onSuccess: res => {
+                    if (res?.agora_createToken?.status?.code === 1) {
+                      console.log('res===>', res);
+                      setLiveData({
+                        ...input,
+                        category: formData?.category,
+                      });
+                      setLiveId(liveId);
+                      setToken(res?.agora_createToken?.result);
+                      setTokenCreateDate(Date.now());
+                      navigate('Live');
+                    }
+                  },
+                },
+              );
             } else {
               showErrorMessage(response?.live_createLive?.status?.description);
             }
@@ -81,11 +106,20 @@ export default function CreateContentScreen() {
         },
       );
     },
-    [mutateCreateLive, setLiveId],
+    [
+      mutateCreateLive,
+      mutateCreateAgoraToken,
+      setLiveId,
+      setTokenCreateDate,
+      setToken,
+      params,
+    ],
   );
 
+  const loading = isLoadingCreateLive || isLoadingCreateAgoraToken;
+
   return (
-    <AppContainer>
+    <AppContainer safeArea>
       <ScreensHeader backAction title="Create Content" />
       <AppFormProvider methods={methods}>
         <AppKeyboardAwareScrollView
@@ -135,11 +169,23 @@ export default function CreateContentScreen() {
             )}
             <Divider backgroundColor={Colors.Nero_3} />
           </VStack>
-            <AppTouchable style={{...styles.previewBox, borderColor:params?.videoUrl ? Colors.GREEN_BRAND :  Colors.BORDER,}} onPress={() => navigate("VideoPreview")}>
-                 <AppText numberOfLines={1} maxWidth={200} color={Colors.PLACEHOLDER}>{params?.videoUrl ? params?.videoUrl : "Add video preview"}</AppText>
-               </AppTouchable>
+          <AppTouchable
+            style={{
+              ...styles.previewBox,
+              borderColor: params?.videoUrl
+                ? Colors.GREEN_BRAND
+                : Colors.BORDER,
+            }}
+            onPress={() => navigate('VideoPreview')}>
+            <AppText
+              numberOfLines={1}
+              maxWidth={200}
+              color={Colors.PLACEHOLDER}>
+              {params?.videoUrl ? params?.videoUrl : 'Add video preview'}
+            </AppText>
+          </AppTouchable>
           <AppButton
-            loading={isLoadingCreateLive}
+            loading={loading}
             title="Continue"
             onPress={handleSubmit(onSubmit)}
           />

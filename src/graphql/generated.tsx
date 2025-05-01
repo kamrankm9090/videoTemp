@@ -4787,6 +4787,7 @@ export type User = {
   accessFailedCount: Scalars['Int']['output'];
   age?: Maybe<Scalars['Int']['output']>;
   city?: Maybe<Scalars['String']['output']>;
+  communityCount: Scalars['Int']['output'];
   concurrencyStamp?: Maybe<Scalars['String']['output']>;
   config?: Maybe<Scalars['String']['output']>;
   createdDate?: Maybe<Scalars['DateTime']['output']>;
@@ -4816,6 +4817,7 @@ export type User = {
   lastSeen?: Maybe<Scalars['DateTime']['output']>;
   /** @deprecated Use LocationOfUser */
   latitude?: Maybe<Scalars['Float']['output']>;
+  liveCount: Scalars['Int']['output'];
   lives?: Maybe<Array<Maybe<Live>>>;
   location?: Maybe<Scalars['String']['output']>;
   locationOfUser?: Maybe<GeoJsonPointType>;
@@ -4837,6 +4839,7 @@ export type User = {
   ratePercent_3: Scalars['Float']['output'];
   ratePercent_4: Scalars['Float']['output'];
   ratePercent_5: Scalars['Float']['output'];
+  requestCount: Scalars['Int']['output'];
   reviewCount: Scalars['Int']['output'];
   securityStamp?: Maybe<Scalars['String']['output']>;
   skills?: Maybe<Scalars['String']['output']>;
@@ -4963,6 +4966,7 @@ export type UserFilterInput = {
   age?: InputMaybe<IntOperationFilterInput>;
   and?: InputMaybe<Array<UserFilterInput>>;
   city?: InputMaybe<StringOperationFilterInput>;
+  communityCount?: InputMaybe<IntOperationFilterInput>;
   concurrencyStamp?: InputMaybe<StringOperationFilterInput>;
   config?: InputMaybe<StringOperationFilterInput>;
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
@@ -4991,6 +4995,7 @@ export type UserFilterInput = {
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   lastSeen?: InputMaybe<DateTimeOperationFilterInput>;
   latitude?: InputMaybe<FloatOperationFilterInput>;
+  liveCount?: InputMaybe<IntOperationFilterInput>;
   lives?: InputMaybe<ListFilterInputTypeOfLiveFilterInput>;
   location?: InputMaybe<StringOperationFilterInput>;
   locationOfUser?: InputMaybe<PointFilterInput>;
@@ -5012,6 +5017,7 @@ export type UserFilterInput = {
   ratePercent_3?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_4?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_5?: InputMaybe<FloatOperationFilterInput>;
+  requestCount?: InputMaybe<IntOperationFilterInput>;
   reviewCount?: InputMaybe<IntOperationFilterInput>;
   securityStamp?: InputMaybe<StringOperationFilterInput>;
   skills?: InputMaybe<StringOperationFilterInput>;
@@ -5194,6 +5200,7 @@ export type UserSortInput = {
   accessFailedCount?: InputMaybe<SortEnumType>;
   age?: InputMaybe<SortEnumType>;
   city?: InputMaybe<SortEnumType>;
+  communityCount?: InputMaybe<SortEnumType>;
   concurrencyStamp?: InputMaybe<SortEnumType>;
   config?: InputMaybe<SortEnumType>;
   createdDate?: InputMaybe<SortEnumType>;
@@ -5220,6 +5227,7 @@ export type UserSortInput = {
   lastModifiedDate?: InputMaybe<SortEnumType>;
   lastSeen?: InputMaybe<SortEnumType>;
   latitude?: InputMaybe<SortEnumType>;
+  liveCount?: InputMaybe<SortEnumType>;
   location?: InputMaybe<SortEnumType>;
   locationOfUser?: InputMaybe<PointSortInput>;
   lockoutEnabled?: InputMaybe<SortEnumType>;
@@ -5239,6 +5247,7 @@ export type UserSortInput = {
   ratePercent_3?: InputMaybe<SortEnumType>;
   ratePercent_4?: InputMaybe<SortEnumType>;
   ratePercent_5?: InputMaybe<SortEnumType>;
+  requestCount?: InputMaybe<SortEnumType>;
   reviewCount?: InputMaybe<SortEnumType>;
   securityStamp?: InputMaybe<SortEnumType>;
   skills?: InputMaybe<SortEnumType>;
@@ -5621,56 +5630,16 @@ export type Live_GetLivesQuery = {
             photoUrl?: string | null;
             fullName?: string | null;
             about?: string | null;
-            location?: string | null;
-            age?: number | null;
-            dateOfBirth?: any | null;
             gender?: Gender | null;
             lastSeen?: any | null;
-            userType?: UserType | null;
-            userRole?: string | null;
-            isPrivateAccount: boolean;
-            stripeConnectAccountId?: string | null;
-            stripeConnectCompleted: boolean;
             isVerified: boolean;
-            verificationPhotos?: string | null;
-            verificationErrors?: string | null;
-            socialLinks?: string | null;
-            profession?: string | null;
-            yearsOfExperience?: number | null;
-            height?: number | null;
-            favoriteCategories?: string | null;
             isDeleted: boolean;
             createdDate?: any | null;
             id: number;
             email?: string | null;
             emailConfirmed: boolean;
             phoneNumberConfirmed: boolean;
-            twoFactorEnabled: boolean;
           } | null;
-          roles?: Array<{
-            __typename?: 'LiveRole';
-            liveId: number;
-            roleName?: string | null;
-            present: number;
-            id: number;
-            isDeleted: boolean;
-            createdDate: any;
-            lastModifiedDate?: any | null;
-          } | null> | null;
-          channelRecords?: Array<{
-            __typename?: 'ChannelRecord';
-            sessionId?: string | null;
-            resourceId?: string | null;
-            sid?: string | null;
-            channelName?: string | null;
-            duration: any;
-            endDate?: any | null;
-            liveId?: number | null;
-            id: number;
-            isDeleted: boolean;
-            createdDate: any;
-            lastModifiedDate?: any | null;
-          } | null> | null;
         } | null;
       } | null> | null;
     } | null;
@@ -6796,53 +6765,15 @@ export const Live_GetLivesDocument = `
             photoUrl
             fullName
             about
-            location
-            age
-            dateOfBirth
             gender
             lastSeen
-            userType
-            userRole
-            isPrivateAccount
-            stripeConnectAccountId
-            stripeConnectCompleted
             isVerified
-            verificationPhotos
-            verificationErrors
-            socialLinks
-            profession
-            yearsOfExperience
-            height
-            favoriteCategories
             isDeleted
             createdDate
             id
             email
             emailConfirmed
             phoneNumberConfirmed
-            twoFactorEnabled
-          }
-          roles {
-            liveId
-            roleName
-            present
-            id
-            isDeleted
-            createdDate
-            lastModifiedDate
-          }
-          channelRecords {
-            sessionId
-            resourceId
-            sid
-            channelName
-            duration
-            endDate
-            liveId
-            id
-            isDeleted
-            createdDate
-            lastModifiedDate
           }
           id
           isDeleted
