@@ -17,8 +17,10 @@ import {
   AppTouchable,
   AppVideoPlayer,
   ContentDescriptionCard,
+  HStack,
   LiveCommentSection,
   VStack,
+  ContentViewerHeader
 } from '~/components';
 import {Colors} from '~/styles';
 import {width} from '~/utils/style';
@@ -70,35 +72,39 @@ const ContentViewerScreen = () => {
         source={{
           uri: 'https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4',
         }}>
-        <AppTouchable
-          style={styles.fullScreenButton}
-          onPress={() => setFullScreen(!fullScreen)}>
-          {fullScreen ? <MinimizeScreenIcon /> : <FullScreenIcon />}
-        </AppTouchable>
+        <ContentViewerHeader />
+        <HStack justifyContent="space-between" m={16}>
+        
 
-        <VStack style={styles.topLeftContainer}>
-          {topLeftItems.map(item => (
-            <AppTouchable
-              key={item.key}
-              bg={Colors.WHITE_TRANSPARENT_6}
-              p={6}
-              borderRadius={14}
-              gap={6}
-              justifyContent="center"
-              alignItems="center"
-              flexDirection="row"
-              zIndex={2}
-              onPress={item.onPress}>
-              {item.icon}
-              <AppText
-                fontWeight="500"
-                fontSize={13}
-                color={Colors.BLACK_TRANSPARENT_8}>
-                {item.title}
-              </AppText>
-            </AppTouchable>
-          ))}
-        </VStack>
+          <VStack style={styles.topLeftContainer}>
+            {topLeftItems.map(item => (
+              <AppTouchable
+                key={item.key}
+                bg={Colors.WHITE_TRANSPARENT_6}
+                p={6}
+                borderRadius={14}
+                gap={6}
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="row"
+                zIndex={2}
+                onPress={item.onPress}>
+                {item.icon}
+                <AppText
+                  fontWeight="500"
+                  fontSize={13}
+                  color={Colors.BLACK_TRANSPARENT_8}>
+                  {item.title}
+                </AppText>
+              </AppTouchable>
+            ))}
+          </VStack>
+          <AppTouchable
+            style={styles.fullScreenButton}
+            onPress={() => setFullScreen(!fullScreen)}>
+            {fullScreen ? <MinimizeScreenIcon /> : <FullScreenIcon />}
+          </AppTouchable>
+        </HStack>
 
         {!fullScreen && (
           <VStack style={styles.bottomRightContainer}>
@@ -166,15 +172,15 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   fullScreenButton: {
-    position: 'absolute',
-    top: 24,
-    right: 24,
+    // position: 'absolute',
+    // top: 24,
+    // right: 24,
     zIndex: 2,
   },
   topLeftContainer: {
-    position: 'absolute',
-    top: 24,
-    left: 24,
+    // position: 'absolute',
+    // top: 24,
+    // left: 24,
     flexDirection: 'row',
     gap: 8,
   },

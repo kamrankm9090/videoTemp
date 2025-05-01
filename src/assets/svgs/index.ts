@@ -63,3 +63,5 @@ export {default as VideoCall} from './video-call.svg';
 export {default as VolumeSlashIcon} from './volume-slash.svg';
 export {default as Warning} from './warning.svg';
 export {default as Welcome} from './welcome.svg';
+export {default as LiveIcon} from './live-reqular.svg';
+export {default as MoreIcon} from './more.svg';

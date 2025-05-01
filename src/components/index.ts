@@ -71,6 +71,7 @@ export {default as VideoProviewRecorder} from './molecules/VideoProviewRecorder'
 export {default as SectionCategory} from './molecules/SectionCategory';
 export {default as ContentDescriptionCard} from './molecules/ContentDescriptionCard';
 export {default as LiveCommentSection} from './molecules/LiveCommentSection';
+export {default as ContentViewerHeader} from './molecules/ContentViewerHeader';
 //#endregion ---------Molecules
 
 //#region ---------Organisms
