@@ -32,9 +32,12 @@ export default function HomePostItem({
 }) {
   function onPressHandler() {
     if (item?.recordEnded) {
-      navigate('VideoPreview');
+      navigate('HomeStack', {screen: 'ContentViewer', item});
     } else {
-      navigate('ContentViewer', {item});
+      navigate('HomeStack', {
+        screen: 'ContentViewerLive',
+        liveId: item?.live?.id,
+      });
     }
   }
 

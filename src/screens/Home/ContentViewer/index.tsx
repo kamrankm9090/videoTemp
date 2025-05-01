@@ -63,7 +63,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   ];
 
   return (
-    <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
+    <AppContainer safeArea backgroundColor={Colors.BLACK_TRANSPARENT_8}>
       <AppVideoPlayer
         style={styles.videoPlayer}
         fullscreen={false}
