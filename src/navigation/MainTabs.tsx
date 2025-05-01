@@ -1,10 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {AppTabBar} from '~/components';
-import {publicTabScreenOption, switchActions} from '~/utils/utils';
+import {HomeScreen} from '~/screens';
+import {publicTabScreenOption} from '~/utils/utils';
 import CommunityStack from './CommunityStack';
 import CreateStack from './CreateStack';
-import HomeStack from './HomeStack';
 import OffersStack from './OffersStack';
 import ProfileStack from './ProfileStack';
 
@@ -24,19 +24,9 @@ export default function MainTabs() {
       initialRouteName={'HomeTab'}
       screenOptions={publicTabScreenOption}
       tabBar={(props: any) => <AppTabBar {...props} />}>
-      <Tab.Screen name="HomeTab" component={HomeStack} />
+      <Tab.Screen name="HomeTab" component={HomeScreen} />
       <Tab.Screen name="OffersTab" component={OffersStack} />
-      <Tab.Screen
-        name="CreateTab"
-        component={CreateStack}
-        // listeners={({navigation}) => ({
-        //   tabPress: e => {
-        //     e.preventDefault();
-        //     switchActions('create-action');
-        //   },
-        // })}
-      />
-
+      <Tab.Screen name="CreateTab" component={CreateStack} />
       <Tab.Screen name="CommunityTab" component={CommunityStack} />
       <Tab.Screen name="ProfileTab" component={ProfileStack} />
     </Tab.Navigator>

@@ -3,6 +3,7 @@ import React from 'react';
 import {publicScreenOption} from '~/utils/utils';
 import MainTabs from './MainTabs';
 import CreateStack from './CreateStack';
+import HomeStack from './HomeStack';
 
 export type MainStackParamList = {
   MainTabs: {
@@ -10,6 +11,9 @@ export type MainStackParamList = {
   };
   CreateStack?: {
     screen?: CreateStackScreensParams;
+  };
+  HomeStack?: {
+    screen?: HomeStackScreensParams;
   };
 };
 
@@ -22,6 +26,8 @@ export type MainTabScreensParams =
 
 export type CreateStackScreensParams = 'CreateContent' | 'Collaborative';
 
+export type HomeStackScreensParams = 'ContentViewer';
+
 const Stack = createStackNavigator<MainStackParamList>();
 
 const screens = [
@@ -32,6 +38,10 @@ const screens = [
   {
     name: 'CreateStack',
     component: CreateStack,
+  },
+  {
+    name: 'HomeStack',
+    component: HomeStack,
   },
 ];
 

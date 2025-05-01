@@ -53,6 +53,7 @@ export {default as AppCheckBox} from './atoms/AppCheckBox';
 export {default as FormCheckBox} from './atoms/FormCheckBox';
 export {default as IconButton} from './atoms/IconButton';
 export {default as ModalHeader} from './atoms/ModalHeader';
+export {default as AppGradientView} from './atoms/AppGradientView';
 //#endregion ---------Atoms
 
 //#region ---------Molecules
@@ -71,6 +72,9 @@ export {default as InviteFriendsCard} from './molecules/InviteFriendsCard';
 export {default as PeopleYouMayKnow} from './molecules/PeopleYouMayKnow';
 export {default as VideoPreviewRecorder} from './molecules/VideoPreviewRecorder';
 export {default as SectionCategory} from './molecules/SectionCategory';
+export {default as ContentDescriptionCard} from './molecules/ContentDescriptionCard';
+export {default as LiveCommentSection} from './molecules/LiveCommentSection';
+export {default as ContentViewerHeader} from './molecules/ContentViewerHeader';
 export {default as LiveHeader} from './molecules/LiveHeader';
 //#endregion ---------Molecules
 

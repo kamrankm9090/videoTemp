@@ -171,11 +171,7 @@ const VideoPreviewRecorder = () => {
             controls
             resizeMode="cover"
           />
-          <VStack
-            position="absolute"
-            alignSelf="center"
-            top={height - 200}
-            space={8}>
+          <VStack position="absolute" alignSelf="center" bottom={24} space={8}>
             <AppButton
               title={
                 uploading ? `Uploading... ${uploadProgress}%` : 'Upload Video'
@@ -209,11 +205,7 @@ const VideoPreviewRecorder = () => {
               </AppText>
             </HStack>
           )}
-          <HStack
-            maxW={200}
-            alignSelf="center"
-            position="absolute"
-            top={height - 100}>
+          <HStack maxW={200} alignSelf="center" position="absolute" bottom={0}>
             <AppButton
               title={recording ? 'Stop Recording' : `Record (${MAX_DURATION}s)`}
               onPress={recording ? stopRecording : startRecording}
@@ -230,7 +222,7 @@ export default VideoPreviewRecorder;
 const styles = StyleSheet.create({
   preview: {
     width: '100%',
-    height: height - 60,
+    height: height,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
