@@ -34,7 +34,7 @@ export default function HomePostItem({
     if (item?.recordEnded) {
       navigate('VideoPreview');
     } else {
-      navigate('ContentViewer');
+      navigate('ContentViewer', {item});
     }
   }
 
