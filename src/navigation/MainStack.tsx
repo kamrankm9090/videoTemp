@@ -1,32 +1,21 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {publicScreenOption} from '~/utils/utils';
-import MainTabs from './MainTabs';
-import CreateStack from './CreateStack';
-import HomeStack from './HomeStack';
+import MainTabs, {MainTabParamList} from './MainTabs';
+import CreateStack, {CreateStackParamList} from './CreateStack';
+import HomeStack, {HomeStackParamList} from './HomeStack';
 
 export type MainStackParamList = {
   MainTabs: {
-    screen?: MainTabScreensParams;
+    screen?: keyof MainTabParamList;
   };
   CreateStack?: {
-    screen?: CreateStackScreensParams;
+    screen?: keyof CreateStackParamList;
   };
   HomeStack?: {
-    screen?: HomeStackScreensParams;
+    screen?: keyof HomeStackParamList;
   };
 };
-
-export type MainTabScreensParams =
-  | 'HomeTab'
-  | 'OffersTab'
-  | 'CreateTab'
-  | 'CommunityTab'
-  | 'ProfileTab';
-
-export type CreateStackScreensParams = 'CreateContent' | 'Collaborative';
-
-export type HomeStackScreensParams = 'ContentViewer';
 
 const Stack = createStackNavigator<MainStackParamList>();
 

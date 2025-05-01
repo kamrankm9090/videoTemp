@@ -69,7 +69,7 @@ export default function CreateContentScreen() {
         title: formData?.title,
         categoryId: formData?.category?.id,
         setSchedule: formData?.isSchedule,
-        ...(formData?.isFree && {
+        ...(!formData?.isFree && {
           price: formData?.price,
         }),
         ...(formData?.isSchedule && {
@@ -78,6 +78,7 @@ export default function CreateContentScreen() {
         }),
         previewUrl: params?.videoUrl,
       };
+      console.log('free-->', formData?.isSchedule);
       mutateCreateLive(
         {input},
         {
