@@ -12,24 +12,33 @@ import {
 import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 
+type LiveHeaderUserType =
+  | {
+      photoUrl: string;
+      username: string;
+    }
+  | undefined;
+
 export default function LiveHeader({
   onClose = () => {},
   isOwner = true,
+  user,
 }: {
   onClose?: () => void;
   isOwner?: boolean;
+  user?: LiveHeaderUserType;
 }) {
   const insets = useSafeAreaInsets();
   const {userData} = userDataStore(state => state);
 
-  const data = useMemo(() => {
+  const data: LiveHeaderUserType = useMemo(() => {
     return isOwner
       ? {
           photoUrl: userData?.photoUrl,
           username: userData?.username,
         }
-      : {};
-  }, [isOwner, userData]);
+      : user;
+  }, [isOwner, userData, user]);
 
   return (
     <HStack
