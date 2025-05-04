@@ -23,7 +23,7 @@ export default function HomeScreen() {
     refetch: refetchGetLives,
     isRefetching: isRefetchingGetLives,
   } = useInfiniteLive_GetLivesQuery({
-    where: {recordStarted: {eq: true}},
+    // where: {recordStarted: {eq: true}},
     order: {live: {createdDate: SortEnumType.Desc}},
   });
 

@@ -5449,6 +5449,7 @@ export type Agora_GetAppIdQuery = {
 };
 
 export type Agora_GetRecordFilesQueryVariables = Exact<{
+  liveId?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<RecordFileDtoFilterInput>;
@@ -6425,9 +6426,9 @@ export const useInfiniteAgora_GetAppIdQuery = <
 };
 
 export const Agora_GetRecordFilesDocument = `
-query agora_getRecordFiles($liveId:Int, $skip: Int, $take: Int, $where: RecordFileDtoFilterInput, $order: [RecordFileDtoSortInput!]) {
+    query agora_getRecordFiles($liveId: Int, $skip: Int, $take: Int, $where: RecordFileDtoFilterInput, $order: [RecordFileDtoSortInput!]) {
   agora_getRecordFiles(liveId: $liveId) {
-    result( skip: $skip, take: $take, where: $where, order: $order) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
       pageInfo {
         hasNextPage
         hasPreviousPage

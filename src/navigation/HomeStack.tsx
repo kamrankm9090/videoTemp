@@ -1,6 +1,6 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {ContentViewerLiveScreen, ContentViewerScreen} from '~/screens';
+import {ContentViewerLiveScreen, ContentViewerScreen, LiveEndedScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
 
 export type HomeStackParamList = {
@@ -10,6 +10,7 @@ export type HomeStackParamList = {
   ContentViewerLive: {
     liveId: number;
   };
+  LiveEnded:undefined
 };
 
 const Stack = createStackNavigator<HomeStackParamList>();
@@ -22,6 +23,10 @@ const screens = [
   {
     name: 'ContentViewerLive',
     component: ContentViewerLiveScreen,
+  },
+  {
+    name: 'LiveEnded',
+    component: LiveEndedScreen,
   },
 ];
 

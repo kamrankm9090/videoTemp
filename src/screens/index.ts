@@ -13,6 +13,7 @@ export {default as ResetPasswordSuccessScreen} from './Auth/ResetPasswordSuccess
 export {default as HomeScreen} from './Home/Home';
 export {default as ContentViewerScreen} from './Home/ContentViewer';
 export {default as ContentViewerLiveScreen} from './Home/ContentViewerLive';
+export {default as LiveEndedScreen} from './Home/LiveEnded';
 
 //OFFERS
 export {default as OffersScreen} from './Offers/Offers';
