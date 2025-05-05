@@ -149,6 +149,7 @@ const createContentSchema = yup.object({
       then: schema => schema.nullable(),
       otherwise: schema => schema.required('Time is required'),
     }),
+  previewUrl: yup.string().trim().nullable(),
 });
 
 export {

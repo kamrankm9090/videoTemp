@@ -132,7 +132,6 @@ export default function LiveScreen() {
 
   function closeCounterModal() {
     setCounterModalVisible(false);
-    console.log('fff');
     if (!channelId) {
       log.error('channelId is invalid');
       return;
@@ -195,6 +194,7 @@ export default function LiveScreen() {
       <CreateLiveFooter
         startOnPress={joinChannel}
         switchOnPress={switchCamera}
+        liveStarted={liveStarted}
       />
       {counterModalVisible && (
         <CounterModal
@@ -209,9 +209,11 @@ export default function LiveScreen() {
 function CreateLiveFooter({
   startOnPress,
   switchOnPress,
+  liveStarted,
 }: {
   startOnPress?: () => void;
   switchOnPress?: () => void;
+  liveStarted?: boolean;
 }) {
   const insets = useSafeAreaInsets();
 
@@ -227,7 +229,7 @@ function CreateLiveFooter({
           onPress={startOnPress}
           flex={1}
           width="auto"
-          title="Start live"
+          title={liveStarted ? 'End live' : 'Start live'}
         />
         <AppTouchable
           onPress={switchOnPress}

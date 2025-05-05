@@ -47,6 +47,7 @@ function ModalContainer(props: Props, ref: ModalRef) {
   }));
 
   const openModal = useCallback(() => {
+    console.log('jjjj');
     dismissKeyboard();
     setIsModalVisible(true);
   }, []);
