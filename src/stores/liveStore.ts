@@ -1,8 +1,10 @@
 import {proxy} from 'valtio';
+import {LiveType} from '~/graphql/generated';
 
 const liveStore = proxy<liveStoreType>({
   liveId: '',
   token: '',
+  liveType: LiveType.LiveContent,
   tokenCreateDate: undefined,
   liveData: {},
   setLiveId: (liveId: string) => {
@@ -10,6 +12,9 @@ const liveStore = proxy<liveStoreType>({
   },
   setToken: (token: string) => {
     liveStore.token = token;
+  },
+  setLiveType: (liveType: LiveType) => {
+    liveStore.liveType = liveType;
   },
   setTokenCreateDate: (tokenCreateDate: number) => {
     liveStore.tokenCreateDate = tokenCreateDate;

@@ -45,6 +45,13 @@ export async function handleNewToken() {
   const refreshToken = userDataStore.getState()?.authData?.refreshToken;
   const accessToken = userDataStore.getState()?.authData?.token;
 
+  console.log(
+    'refreshToken: ',
+    refreshToken,
+    '---- accessToken-->',
+    accessToken,
+  );
+
   if (!refreshToken) {
     return null;
   }
@@ -54,7 +61,7 @@ export async function handleNewToken() {
       refreshToken,
       accessToken,
     };
-    console.log('variables-->', variables);
+    // console.log('variables-->', variables);
     const response = await graphQLClient.request<
       User_RefreshTokenMutation,
       any,

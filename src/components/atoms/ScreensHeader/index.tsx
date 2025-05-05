@@ -29,8 +29,11 @@ type Props = {
   height?: ViewStyle['height'];
   pb?: ViewStyle['paddingBottom'];
   mt?: ViewStyle['marginTop'];
+  top?: ViewStyle['top'];
+  w?: ViewStyle['width'];
   zIndex?: number;
   position?: 'absolute' | 'relative';
+  iconColor?: string;
   backActionHandler?: () => void;
   centerHeaderAlignItems?: 'center' | 'flex-end' | 'flex-start';
 };
@@ -54,10 +57,13 @@ const ScreensHeader = (props: Props) => {
     subTitleTextAlign = 'center',
     height = 55,
     backActionHandler,
+    iconColor,
     pb = 14,
     mt,
+    w,
     zIndex,
     position,
+    top,
     centerHeaderAlignItems = 'flex-end',
   } = props;
 
@@ -75,10 +81,11 @@ const ScreensHeader = (props: Props) => {
     <HStack
       zIndex={zIndex}
       position={position}
-      top={position === 'absolute' ? insets.top : undefined}
+      top={top}
       h={height}
       px={4}
       mt={mt}
+      w={w}
       alignItems="center"
       bg={backgroundColor}>
       {rightHeader && (
@@ -131,7 +138,7 @@ const ScreensHeader = (props: Props) => {
         backAction && (
           <Box position="absolute" zIndex={4} left={16}>
             <AppTouchable onPress={goBackAction}>
-              <ChevronBack />
+              <ChevronBack stroke={iconColor} />
             </AppTouchable>
           </Box>
         )

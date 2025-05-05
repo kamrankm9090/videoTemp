@@ -3,7 +3,7 @@ import config from '~/config';
 
 export const uploadFile = async (
   param: any,
-  onUploadProgress: (percent: number) => void,
+  onUploadProgress?: (percent: number) => void,
 ) => {
   const uri = param?.path;
   const mime: string = param?.mime;
