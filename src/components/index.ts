@@ -76,6 +76,9 @@ export {default as ContentDescriptionCard} from './molecules/ContentDescriptionC
 export {default as LiveCommentSection} from './molecules/LiveCommentSection';
 export {default as ContentViewerHeader} from './molecules/ContentViewerHeader';
 export {default as LiveHeader} from './molecules/LiveHeader';
+export {default as StreamItem} from './molecules/StreamItem';
+export {default as TrendingItem} from './molecules/TrendingItem';
+export {default as UserCardItem} from './molecules/UserCardItem';
 //#endregion ---------Molecules
 
 //#region ---------Organisms

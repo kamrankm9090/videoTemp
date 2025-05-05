@@ -7,7 +7,7 @@ export default function InviteFriendsCard() {
   function onPressHandler() {}
 
   return (
-    <HStack px={16} py={24} mx={16} rounded={12} bg={Colors.Nero_1}>
+    <HStack w={"100%"} px={16} py={24} mx={16} rounded={12} bg={Colors.Nero_1}>
       <VStack space={16} flex={1}>
         <AppText fontFamily="bold">Invite friends to get KLP</AppText>
         <AppText fontSize={fontSize.small} color={Colors.GreySuit}>

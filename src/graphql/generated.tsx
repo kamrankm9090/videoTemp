@@ -2594,6 +2594,7 @@ export type LiveSortInput = {
 
 export enum LiveType {
   Collaboration = 'COLLABORATION',
+  General = 'GENERAL',
   Investment = 'INVESTMENT',
   LiveContent = 'LIVE_CONTENT',
   Promotion = 'PROMOTION',
@@ -3858,6 +3859,7 @@ export type Query = {
   live_getLiveStreams?: Maybe<ListResponseBaseOfLiveDto>;
   live_getLives?: Maybe<ListResponseBaseOfLiveDto>;
   live_getRecommendedLives?: Maybe<ListResponseBaseOfLiveDto>;
+  live_getTrendingLives?: Maybe<ListResponseBaseOfLiveDto>;
   message_getAllReceivers?: Maybe<ListResponseBaseOfUser>;
   message_getContacts?: Maybe<ListResponseBaseOfContact>;
   message_getConversation?: Maybe<SingleResponseBaseOfConversation>;
@@ -5678,6 +5680,132 @@ export type Live_GetLivesQuery = {
   } | null;
 };
 
+export type Live_GetLiveStreamsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveDtoFilterInput>;
+  order?: InputMaybe<Array<LiveDtoSortInput> | LiveDtoSortInput>;
+}>;
+
+export type Live_GetLiveStreamsQuery = {
+  __typename?: 'Query';
+  live_getLiveStreams?: {
+    __typename?: 'ListResponseBaseOfLiveDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'LiveDtoCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'LiveDto';
+        isBookmark: boolean;
+        isPurchased: boolean;
+        isViewed: boolean;
+        recordEnded: boolean;
+        recordStarted: boolean;
+        live?: {
+          __typename?: 'Live';
+          category?: string | null;
+          createdDate: any;
+          description?: string | null;
+          liveType: LiveType;
+          photoUrl?: string | null;
+          title?: string | null;
+          viewCount: number;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Live_GetRecommendedLivesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveDtoFilterInput>;
+  order?: InputMaybe<Array<LiveDtoSortInput> | LiveDtoSortInput>;
+}>;
+
+export type Live_GetRecommendedLivesQuery = {
+  __typename?: 'Query';
+  live_getRecommendedLives?: {
+    __typename?: 'ListResponseBaseOfLiveDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'LiveDtoCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'LiveDto';
+        isBookmark: boolean;
+        isPurchased: boolean;
+        isViewed: boolean;
+        recordEnded: boolean;
+        recordStarted: boolean;
+        live?: {
+          __typename?: 'Live';
+          category?: string | null;
+          createdDate: any;
+          description?: string | null;
+          liveType: LiveType;
+          photoUrl?: string | null;
+          title?: string | null;
+          viewCount: number;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Live_GetTrendingLivesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveDtoFilterInput>;
+  order?: InputMaybe<Array<LiveDtoSortInput> | LiveDtoSortInput>;
+}>;
+
+export type Live_GetTrendingLivesQuery = {
+  __typename?: 'Query';
+  live_getTrendingLives?: {
+    __typename?: 'ListResponseBaseOfLiveDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'LiveDtoCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'LiveDto';
+        isBookmark: boolean;
+        isPurchased: boolean;
+        isViewed: boolean;
+        recordEnded: boolean;
+        recordStarted: boolean;
+        live?: {
+          __typename?: 'Live';
+          category?: string | null;
+          createdDate: any;
+          description?: string | null;
+          liveType: LiveType;
+          photoUrl?: string | null;
+          title?: string | null;
+          viewCount: number;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
 export type Message_CreateDirectMessageMutationVariables = Exact<{
   input?: InputMaybe<MessageInput>;
   receiverId: Scalars['Int']['input'];
@@ -6855,6 +6983,223 @@ export const useInfiniteLive_GetLivesQuery = <
     metaData =>
       fetcher<Live_GetLivesQuery, Live_GetLivesQueryVariables>(
         Live_GetLivesDocument,
+        {...variables, ...(metaData.pageParam ?? {})},
+      )(),
+    options,
+  );
+};
+
+export const Live_GetLiveStreamsDocument = `
+    query live_getLiveStreams($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]) {
+  live_getLiveStreams {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        isBookmark
+        isPurchased
+        isViewed
+        live {
+          category
+          createdDate
+          description
+          liveType
+          photoUrl
+          title
+          viewCount
+        }
+        recordEnded
+        recordStarted
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useLive_GetLiveStreamsQuery = <
+  TData = Live_GetLiveStreamsQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetLiveStreamsQueryVariables,
+  options?: UseQueryOptions<Live_GetLiveStreamsQuery, TError, TData>,
+) => {
+  return useQuery<Live_GetLiveStreamsQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getLiveStreams']
+      : ['live_getLiveStreams', variables],
+    fetcher<Live_GetLiveStreamsQuery, Live_GetLiveStreamsQueryVariables>(
+      Live_GetLiveStreamsDocument,
+      variables,
+    ),
+    options,
+  );
+};
+
+export const useInfiniteLive_GetLiveStreamsQuery = <
+  TData = Live_GetLiveStreamsQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetLiveStreamsQueryVariables,
+  options?: UseInfiniteQueryOptions<Live_GetLiveStreamsQuery, TError, TData>,
+) => {
+  return useInfiniteQuery<Live_GetLiveStreamsQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getLiveStreams.infinite']
+      : ['live_getLiveStreams.infinite', variables],
+    metaData =>
+      fetcher<Live_GetLiveStreamsQuery, Live_GetLiveStreamsQueryVariables>(
+        Live_GetLiveStreamsDocument,
+        {...variables, ...(metaData.pageParam ?? {})},
+      )(),
+    options,
+  );
+};
+
+export const Live_GetRecommendedLivesDocument = `
+    query live_getRecommendedLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]) {
+  live_getRecommendedLives {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        isBookmark
+        isPurchased
+        isViewed
+        live {
+          category
+          createdDate
+          description
+          liveType
+          photoUrl
+          title
+          viewCount
+        }
+        recordEnded
+        recordStarted
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useLive_GetRecommendedLivesQuery = <
+  TData = Live_GetRecommendedLivesQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetRecommendedLivesQueryVariables,
+  options?: UseQueryOptions<Live_GetRecommendedLivesQuery, TError, TData>,
+) => {
+  return useQuery<Live_GetRecommendedLivesQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getRecommendedLives']
+      : ['live_getRecommendedLives', variables],
+    fetcher<
+      Live_GetRecommendedLivesQuery,
+      Live_GetRecommendedLivesQueryVariables
+    >(Live_GetRecommendedLivesDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteLive_GetRecommendedLivesQuery = <
+  TData = Live_GetRecommendedLivesQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetRecommendedLivesQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Live_GetRecommendedLivesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Live_GetRecommendedLivesQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getRecommendedLives.infinite']
+      : ['live_getRecommendedLives.infinite', variables],
+    metaData =>
+      fetcher<
+        Live_GetRecommendedLivesQuery,
+        Live_GetRecommendedLivesQueryVariables
+      >(Live_GetRecommendedLivesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
+export const Live_GetTrendingLivesDocument = `
+    query live_getTrendingLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]) {
+  live_getTrendingLives {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        isBookmark
+        isPurchased
+        isViewed
+        live {
+          category
+          createdDate
+          description
+          liveType
+          photoUrl
+          title
+          viewCount
+        }
+        recordEnded
+        recordStarted
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useLive_GetTrendingLivesQuery = <
+  TData = Live_GetTrendingLivesQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetTrendingLivesQueryVariables,
+  options?: UseQueryOptions<Live_GetTrendingLivesQuery, TError, TData>,
+) => {
+  return useQuery<Live_GetTrendingLivesQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getTrendingLives']
+      : ['live_getTrendingLives', variables],
+    fetcher<Live_GetTrendingLivesQuery, Live_GetTrendingLivesQueryVariables>(
+      Live_GetTrendingLivesDocument,
+      variables,
+    ),
+    options,
+  );
+};
+
+export const useInfiniteLive_GetTrendingLivesQuery = <
+  TData = Live_GetTrendingLivesQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetTrendingLivesQueryVariables,
+  options?: UseInfiniteQueryOptions<Live_GetTrendingLivesQuery, TError, TData>,
+) => {
+  return useInfiniteQuery<Live_GetTrendingLivesQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getTrendingLives.infinite']
+      : ['live_getTrendingLives.infinite', variables],
+    metaData =>
+      fetcher<Live_GetTrendingLivesQuery, Live_GetTrendingLivesQueryVariables>(
+        Live_GetTrendingLivesDocument,
         {...variables, ...(metaData.pageParam ?? {})},
       )(),
     options,

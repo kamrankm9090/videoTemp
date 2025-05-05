@@ -58,3 +58,96 @@ query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: 
         status
     }
 }
+
+query live_getLiveStreams ($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]){
+  live_getLiveStreams {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+      items{
+        isBookmark
+        isPurchased
+        isViewed
+        live{
+          category
+          createdDate
+          description
+          liveType
+          photoUrl
+          title
+          viewCount
+        }
+        recordEnded
+        recordStarted
+        
+      }
+      totalCount
+    }
+    status
+  }
+}
+
+
+query live_getRecommendedLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]){
+  live_getRecommendedLives {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+           pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+      items{
+        isBookmark
+        isPurchased
+        isViewed
+        live{
+          category
+          createdDate
+          description
+          liveType
+          photoUrl
+          title
+          viewCount
+        }
+        recordEnded
+        recordStarted
+        
+      }
+      totalCount
+    }
+    status
+  }
+}
+
+
+
+query live_getTrendingLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]){
+  live_getTrendingLives {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+             pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+      items{
+        isBookmark
+        isPurchased
+        isViewed
+        live{
+          category
+          createdDate
+          description
+          liveType
+          photoUrl
+          title
+          viewCount
+        }
+        recordEnded
+        recordStarted
+        
+      }
+      totalCount
+    }
+    status
+    }
+}
