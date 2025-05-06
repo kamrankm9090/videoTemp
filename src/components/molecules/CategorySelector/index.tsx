@@ -27,12 +27,13 @@ const CategorySelector = ({
         return (
           <AppTouchable
             onPress={() => setSelected(item)}
-            p={10}
             bg={isActive ? Colors.PRIMARY : Colors.NIGHT_RIDER}
+            p={10}
             borderRadius={8}>
             <AppText
               fontWeight="500"
               color={isActive ? Colors.WHITE : Colors.GARY_3}
+              lineHeight={20}
               fontSize={14}>
               {item}
             </AppText>
