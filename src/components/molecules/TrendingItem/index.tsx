@@ -1,6 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {ArchiveIcon, HotSpot, LiveIcon} from '~/assets/svgs';
+import {ArchiveIcon, HotSpot} from '~/assets/svgs';
 import {AppImage, AppText, HStack, VStack} from '~/components';
 import {Colors} from '~/styles';
 
@@ -18,21 +17,50 @@ const TrendingItem: React.FC<TrendingItemProps> = ({
   imageUrl,
 }) => {
   return (
-    <VStack style={styles.card}>
-      <HStack style={styles.categoryContainer} justifyContent="space-between">
-        <VStack style={styles.categoryLabel}>
-          <AppText fontWeight={'500'} style={styles.categoryText}>
+    <VStack
+      minW={183}
+      bg={Colors.Grey}
+      mb={20}
+      borderRadius={10}
+      overflow="hidden"
+      mx={10}>
+      
+      <HStack
+        w="100%"
+        position="absolute"
+        top={10}
+        px={16}
+        justifyContent="space-between"
+        zIndex={1}>
+        <VStack
+          bg={Colors.BLUE_BRAND}
+          py={5}
+          px={15}
+          borderRadius={20}>
+          <AppText fontWeight="500" color={Colors.WHITE}>
             {category}
           </AppText>
         </VStack>
         <ArchiveIcon />
       </HStack>
 
-      <AppImage imageSource={{uri: imageUrl}} style={styles.image} />
+      <AppImage
+        imageSource={{uri: imageUrl}}
+        style={{
+          width: '100%',
+          height: 200,
+          borderRadius: 8,
+        }}
+      />
 
-      <VStack style={styles.streamerInfo}>
-        <VStack style={styles.textInfo}>
-          <AppText fontWeight={'500'} fontSize={16}>
+      <VStack
+        flexDirection="row"
+        alignItems="center"
+        py={10}
+        px={8}
+        bg={Colors.BLACK}>
+        <VStack flex={1} style={{gap: 4}}>
+          <AppText fontWeight="500" fontSize={16}>
             {title}
           </AppText>
           <HStack>
@@ -44,47 +72,5 @@ const TrendingItem: React.FC<TrendingItemProps> = ({
     </VStack>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    minWidth:183,
-    backgroundColor: Colors.Grey,
-    marginBottom: 20,
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginHorizontal: 10,
-  },
-  categoryContainer: {
-    width: '100%',
-    position: 'absolute',
-    top: 10,
-    paddingHorizontal: 16,
-  },
-  categoryLabel: {
-    backgroundColor: Colors.BLUE_BRAND, // Blue color for Trending category
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-  },
-  categoryText: {
-    color: 'white',
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    borderRadius: 8,
-  },
-  streamerInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal:8,
-    backgroundColor: Colors.BLACK,
-  },
-  textInfo: {
-    flex: 1,
-    gap:4
-  },
-});
 
 export default TrendingItem;

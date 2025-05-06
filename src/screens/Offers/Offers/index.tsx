@@ -200,14 +200,5 @@ const OffersScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    marginLeft: 10,
-    marginBottom: 10,
-  },
-});
 
 export default OffersScreen;
