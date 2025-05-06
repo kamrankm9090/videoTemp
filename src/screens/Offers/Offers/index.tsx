@@ -81,10 +81,10 @@ const OffersScreen: React.FC = () => {
       renderItem: ({item, index}) => {
         return (
           <TrendingItem
-            category={item.category}
-            title={item.title}
-            viewers={item.viewers}
-            imageUrl={item.imageUrl}
+            category={item?.live?.category}
+            title={item?.live?.title}
+            viewers={item?.live?.viewCount}
+            imageUrl={item?.live?.photoUrl}
           />
         );
       },
@@ -104,10 +104,10 @@ const OffersScreen: React.FC = () => {
       renderItem: ({item, index}) => {
         return (
           <TrendingItem
-            category={item.category}
-            title={item.title}
-            viewers={item.viewers}
-            imageUrl={item.imageUrl}
+            category={item?.live?.category}
+            title={item?.live?.title}
+            viewers={item?.live?.viewCount}
+            imageUrl={item?.live?.photoUrl}
           />
         );
       },
