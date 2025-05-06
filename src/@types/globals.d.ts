@@ -277,6 +277,14 @@ declare global {
     setLiveData: (liveData: any) => void;
   };
 
+  type OfferOptionItemType = {
+    id: number;
+    title: string;
+    onPress: () => void;
+    icon: JSX.Element;
+    color?: string;
+  };
+
   type PostOptionItemType = {
     id: number;
     title: string;
@@ -300,7 +308,8 @@ declare global {
     | 'report-action'
     | 'report-reason-action'
     | 'create-options-action'
-    | 'confirmation-action';
+    | 'confirmation-action' | 
+    'offer-select-option-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 
