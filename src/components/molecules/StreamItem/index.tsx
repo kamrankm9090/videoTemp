@@ -1,9 +1,13 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {ArchiveIcon, LiveIcon, MoreIcon} from '~/assets/svgs';
+import {useSnapshot} from 'valtio';
+import {ArchiveIcon, HotSpot, MoreHIcon} from '~/assets/svgs';
 import {AppImage, AppText, AppTouchable, HStack, VStack} from '~/components';
+import {useAgora_CreateTokenMutation} from '~/graphql/generated';
+import {navigate} from '~/navigation/methods';
+import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
-import { showSheet } from '~/utils/utils';
+import {showSheet} from '~/utils/utils';
 
 interface StreamItemProps {
   category: string;
@@ -12,6 +16,8 @@ interface StreamItemProps {
   viewers: string;
   imageUrl: string;
   profileImageUrl: string;
+  recordEnded: string;
+  live: any;
 }
 
 const StreamItem: React.FC<StreamItemProps> = ({
@@ -21,9 +27,41 @@ const StreamItem: React.FC<StreamItemProps> = ({
   viewers,
   imageUrl,
   profileImageUrl,
+  recordEnded,
+  live,
 }) => {
+  const {mutate: mutateCreateAgoraToken, isLoading: isLoadingCreateAgoraToken} =
+    useAgora_CreateTokenMutation();
+  const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
+    useSnapshot(liveStore);
+
+  function onPressHandler() {
+    if (recordEnded) {
+      navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
+    } else {
+      const liveId = live?.id?.toString();
+      mutateCreateAgoraToken(
+        {channelName: liveId, publisher: true},
+        {
+          onSuccess: res => {
+            if (res?.agora_createToken?.status?.code === 1) {
+              setLiveData({
+                ...live,
+              });
+              setLiveId(liveId);
+              setToken(res?.agora_createToken?.result || '');
+              setTokenCreateDate(Date.now());
+              navigate('HomeStack', {
+                screen: 'ContentViewerLive',
+              });
+            }
+          },
+        },
+      );
+    }
+  }
   return (
-    <VStack style={styles.card}>
+    <AppTouchable style={styles.card} onPress={onPressHandler}>
       <HStack style={styles.categoryContainer} justifyContent="space-between">
         <VStack style={styles.categoryLabel}>
           <AppText fontWeight={'500'}>{category}</AppText>
@@ -46,24 +84,22 @@ const StreamItem: React.FC<StreamItemProps> = ({
             {description}
           </AppText>
           <HStack>
-            <LiveIcon
-              color={Colors.ERROR_BACKGROUND}
-              style={{marginRight: 8}}
-            />
+            <HotSpot color={Colors.ERROR_BACKGROUND} style={{marginRight: 8}} />
             <AppText color={Colors.GARY_3}>{viewers} viewers</AppText>
           </HStack>
         </VStack>
 
         <AppTouchable onPress={() => showSheet('offer-select-option-action')}>
-          <MoreIcon />
+          <MoreHIcon />
         </AppTouchable>
       </VStack>
-    </VStack>
+    </AppTouchable>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
+    minWidth: 290,
     backgroundColor: Colors.Grey,
     marginBottom: 20,
     borderRadius: 10,
@@ -91,7 +127,7 @@ const styles = StyleSheet.create({
   streamerInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    paddingVertical: 10,
     backgroundColor: Colors.BLACK,
   },
   profileImage: {
@@ -102,6 +138,7 @@ const styles = StyleSheet.create({
   },
   textInfo: {
     flex: 1,
+    gap: 4,
   },
 });
 

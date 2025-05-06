@@ -77,6 +77,8 @@ const OffersScreen: React.FC = () => {
             viewers={item?.live?.viewCount}
             imageUrl={item?.live?.photoUrl}
             profileImageUrl={item?.live?.user?.photoUrl}
+            live={item?.live}
+            recordEnded={item?.recordEnded}
           />
         );
       },
@@ -140,6 +142,8 @@ const OffersScreen: React.FC = () => {
             viewers={item?.live?.viewCount}
             imageUrl={item?.live?.photoUrl}
             profileImageUrl={item?.live?.user?.photoUrl}
+            live={item?.live}
+            recordEnded={item?.recordEnded}
           />
         );
       },
@@ -149,7 +153,7 @@ const OffersScreen: React.FC = () => {
 
   const SectionRenderItem = ({item}: {item: SectionData}) => {
     return (
-      item?.data?.length && (
+      item?.data?.length > 0 && (
         <VStack>
           {item.title && (
             <HStack justifyContent="space-between" mb={16}>

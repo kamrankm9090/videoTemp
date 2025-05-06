@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {LiveIcon} from '~/assets/svgs';
+import {ArchiveIcon, HotSpot, LiveIcon} from '~/assets/svgs';
 import {AppImage, AppText, HStack, VStack} from '~/components';
 import {Colors} from '~/styles';
 
@@ -25,6 +25,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({
             {category}
           </AppText>
         </VStack>
+        <ArchiveIcon />
       </HStack>
 
       <AppImage imageSource={{uri: imageUrl}} style={styles.image} />
@@ -35,7 +36,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({
             {title}
           </AppText>
           <HStack>
-            <LiveIcon style={{marginRight: 8}} />
+            <HotSpot style={{marginRight: 8}} />
             <AppText color={Colors.GARY_3}>{viewers} viewers</AppText>
           </HStack>
         </VStack>
@@ -46,6 +47,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({
 
 const styles = StyleSheet.create({
   card: {
+    minWidth:183,
     backgroundColor: Colors.Grey,
     marginBottom: 20,
     borderRadius: 10,
@@ -75,11 +77,13 @@ const styles = StyleSheet.create({
   streamerInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal:8,
     backgroundColor: Colors.BLACK,
   },
   textInfo: {
     flex: 1,
+    gap:4
   },
 });
 

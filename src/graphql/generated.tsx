@@ -2872,6 +2872,7 @@ export type Mutation = {
   live_createComment?: Maybe<ResponseBaseOfLiveComment>;
   live_createLive?: Maybe<ResponseBaseOfLive>;
   live_createNotInterested?: Maybe<ResponseStatus>;
+  live_deleteComment?: Maybe<ResponseStatus>;
   live_deleteLive?: Maybe<ResponseStatus>;
   live_purchase?: Maybe<ResponseStatus>;
   live_rate?: Maybe<ResponseStatus>;
@@ -3048,6 +3049,10 @@ export type MutationLive_CreateLiveArgs = {
 
 export type MutationLive_CreateNotInterestedArgs = {
   liveId: Scalars['Int']['input'];
+};
+
+export type MutationLive_DeleteCommentArgs = {
+  commentId: Scalars['Int']['input'];
 };
 
 export type MutationLive_DeleteLiveArgs = {
@@ -3979,6 +3984,10 @@ export type QueryUser_DoesEmailExistArgs = {
 
 export type QueryUser_DoesPhoneNumberExistArgs = {
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QueryUser_GetCastersToFollowArgs = {
+  category?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type QueryUser_GetNearbyUsersArgs = {
@@ -5715,10 +5724,10 @@ export type Live_GetLiveStreamsQuery = {
         recordStarted: boolean;
         live?: {
           __typename?: 'Live';
+          id: number;
           category?: string | null;
           createdDate: any;
           description?: string | null;
-          liveType: LiveType;
           photoUrl?: string | null;
           title?: string | null;
           viewCount: number;
@@ -5757,10 +5766,10 @@ export type Live_GetRecommendedLivesQuery = {
         recordStarted: boolean;
         live?: {
           __typename?: 'Live';
+          id: number;
           category?: string | null;
           createdDate: any;
           description?: string | null;
-          liveType: LiveType;
           photoUrl?: string | null;
           title?: string | null;
           viewCount: number;
@@ -5804,6 +5813,7 @@ export type Live_GetTrendingLivesQuery = {
         recordStarted: boolean;
         live?: {
           __typename?: 'Live';
+          id: number;
           category?: string | null;
           createdDate: any;
           description?: string | null;
@@ -5846,10 +5856,10 @@ export type Live_GetNewLivesQuery = {
         recordStarted: boolean;
         live?: {
           __typename?: 'Live';
+          id: number;
           category?: string | null;
           createdDate: any;
           description?: string | null;
-          liveType: LiveType;
           photoUrl?: string | null;
           title?: string | null;
           viewCount: number;
@@ -7060,10 +7070,10 @@ export const Live_GetLiveStreamsDocument = `
         isPurchased
         isViewed
         live {
+          id
           category
           createdDate
           description
-          liveType
           photoUrl
           title
           viewCount
@@ -7130,10 +7140,10 @@ export const Live_GetRecommendedLivesDocument = `
         isPurchased
         isViewed
         live {
+          id
           category
           createdDate
           description
-          liveType
           photoUrl
           title
           viewCount
@@ -7211,6 +7221,7 @@ export const Live_GetTrendingLivesDocument = `
         isPurchased
         isViewed
         live {
+          id
           category
           createdDate
           description
@@ -7281,10 +7292,10 @@ export const Live_GetNewLivesDocument = `
         isPurchased
         isViewed
         live {
+          id
           category
           createdDate
           description
-          liveType
           photoUrl
           title
           viewCount
