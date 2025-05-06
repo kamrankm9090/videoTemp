@@ -1,6 +1,12 @@
 import React from 'react';
 import {SheetProps} from 'react-native-actions-sheet';
-import {ChevronRight, EyeOff, ReportIcon, Share, Share2Icon} from '~/assets/svgs';
+import {
+  ChevronRight,
+  EyeOff,
+  ReportIcon,
+  Share,
+  Share2Icon,
+} from '~/assets/svgs';
 import {
   ActionSheetContainer,
   AppText,
@@ -19,7 +25,6 @@ export default function SelectOptionAction(props: SheetProps) {
       icon: <EyeOff />,
       onPress: () => {
         hideSheet('offer-select-option-action');
-        
       },
     },
     {
@@ -28,7 +33,6 @@ export default function SelectOptionAction(props: SheetProps) {
       icon: <Share2Icon />,
       onPress: () => {
         hideSheet('offer-select-option-action');
-        
       },
     },
     {
@@ -37,7 +41,6 @@ export default function SelectOptionAction(props: SheetProps) {
       icon: <ReportIcon />,
       onPress: () => {
         hideSheet('offer-select-option-action');
-        
       },
     },
   ];
@@ -57,7 +60,7 @@ export default function SelectOptionAction(props: SheetProps) {
 function OptionItem({item}: {item: OfferOptionItemType}) {
   return (
     <AppTouchable onPress={item.onPress}>
-      <HStack px={16} py={20} rounded={8} bg={Colors.NightRider} space={12} alignItems="center">
+      <HStack px={16} py={20} rounded={8} bg={Colors.NightRider} space={12}>
         {item.icon}
         <AppText flex={1} fontFamily="bold">
           {item.title}

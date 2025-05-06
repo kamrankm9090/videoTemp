@@ -1,18 +1,10 @@
 import React from 'react';
-import {StyleSheet, ImageBackground} from 'react-native';
-import {
-  AppContainer,
-  AppText,
-  AppTouchable,
-  VStack,
-} from '~/components';
-import {useNavigation} from '@react-navigation/native';
+import {ImageBackground, StyleSheet} from 'react-native';
+import {AppContainer, AppText, AppTouchable, VStack} from '~/components';
+import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
-import { navigate } from '~/navigation/methods';
 
 const LiveEndedScreen = () => {
-  const navigation = useNavigation();
-
   return (
     <AppContainer backgroundColor={Colors.BLACK}>
       <ImageBackground
@@ -25,7 +17,11 @@ const LiveEndedScreen = () => {
           flex={1}
           px={32}
           bg={Colors.BLACK_TRANSPARENT_6}>
-          <AppText fontSize={20} fontWeight="bold" color={Colors.WHITE} marginBottom={8}>
+          <AppText
+            fontSize={20}
+            fontWeight="bold"
+            color={Colors.WHITE}
+            marginBottom={8}>
             Live Has Ended.
           </AppText>
           <AppText fontSize={14} color={Colors.WHITE} marginBottom={8}>

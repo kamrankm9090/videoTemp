@@ -1,4 +1,5 @@
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {useSnapshot} from 'valtio';
 import {ArchiveIcon, HotSpot, MoreHIcon} from '~/assets/svgs';
 import {AppImage, AppText, AppTouchable, HStack, VStack} from '~/components';
@@ -6,6 +7,7 @@ import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
+import {fontSize} from '~/utils/style';
 import {showSheet} from '~/utils/utils';
 
 interface StreamItemProps {
@@ -63,10 +65,9 @@ const StreamItem: React.FC<StreamItemProps> = ({
       minW={290}
       bg={Colors.GARY_1}
       mb={20}
-      borderRadius={10}
+      rounded={10}
       overflow="hidden"
       mx={10}>
-      
       <HStack
         w="100%"
         position="absolute"
@@ -80,40 +81,20 @@ const StreamItem: React.FC<StreamItemProps> = ({
         <ArchiveIcon />
       </HStack>
 
-      <AppImage
-        imageSource={{uri: imageUrl}}
-        style={{
-          width: '100%',
-          height: 200,
-          borderRadius: 8,
-        }}
-      />
+      <AppImage imageSource={{uri: imageUrl}} style={styles.image} />
 
-      <VStack
-        flexDirection="row"
-        alignItems="center"
-        py={10}
-        px={12}
-        bg={Colors.BLACK}>
-        <AppImage
-          imageSource={{uri: profileImageUrl}}
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: 25,
-            marginRight: 10,
-          }}
-        />
+      <HStack py={10} px={12} bg={Colors.BLACK}>
+        <AppImage imageSource={{uri: profileImageUrl}} style={styles.avatar} />
 
-        <VStack flex={1} style={{gap: 4}}>
-          <AppText fontWeight="500" fontSize={16}>
+        <VStack flex={1} space={4}>
+          <AppText fontWeight="500" fontSize={fontSize.medium}>
             {title}
           </AppText>
-          <AppText fontWeight="400" fontSize={13}>
+          <AppText fontWeight="400" fontSize={fontSize.small}>
             {description}
           </AppText>
-          <HStack>
-            <HotSpot color={Colors.ERROR_BACKGROUND} style={{marginRight: 8}} />
+          <HStack space={8}>
+            <HotSpot color={Colors.ERROR_BACKGROUND} />
             <AppText color={Colors.GARY_3}>{viewers} viewers</AppText>
           </HStack>
         </VStack>
@@ -121,9 +102,23 @@ const StreamItem: React.FC<StreamItemProps> = ({
         <AppTouchable onPress={() => showSheet('offer-select-option-action')}>
           <MoreHIcon />
         </AppTouchable>
-      </VStack>
+      </HStack>
     </AppTouchable>
   );
 };
 
 export default StreamItem;
+
+const styles = StyleSheet.create({
+  image: {
+    width: '100%',
+    height: 200,
+    borderRadius: 8,
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
+  },
+});

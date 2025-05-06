@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, StyleSheet} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {StyleSheet} from 'react-native';
 import {
   ArchiveIcon,
   DocumentTextIcon,
@@ -12,6 +11,8 @@ import {
 } from '~/assets/svgs';
 import {
   AppContainer,
+  AppGradientView,
+  AppIndicator,
   AppText,
   AppTouchable,
   AppVideoPlayer,
@@ -26,8 +27,8 @@ import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
 import {height, width} from '~/utils/style';
 
-const ContentViewerScreen = ({route}:NavigationProp) => {
-  const params:any = route?.params;
+const ContentViewerScreen = ({route}: NavigationProp) => {
+  const params: any = route?.params;
   const [fullScreen, setFullScreen] = useState(true);
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
 
@@ -72,7 +73,7 @@ const ContentViewerScreen = ({route}:NavigationProp) => {
   return (
     <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
       <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
-        <VStack style={{flex: 1, position: 'relative'}}>
+        <VStack flex={1} position="relative">
           <AppVideoPlayer
             style={styles.videoPlayer}
             fullscreen={false}
@@ -101,7 +102,7 @@ const ContentViewerScreen = ({route}:NavigationProp) => {
               <AppText fontSize={14} color={Colors.WHITE} marginBottom={8}>
                 Loading video...
               </AppText>
-              <ActivityIndicator size="large" color={Colors.WHITE} />
+              <AppIndicator size="large" color={Colors.WHITE} />
             </VStack>
           )}
 
@@ -190,16 +191,9 @@ const ContentViewerScreen = ({route}:NavigationProp) => {
                 pt={40}>
                 <LiveCommentSection />
               </VStack>
-              <LinearGradient
+              <AppGradientView
                 colors={['transparent', Colors.BLACK]}
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 600,
-                  zIndex: 1,
-                }}
+                style={styles.gradient}
                 pointerEvents="none"
               />
             </>
@@ -233,5 +227,13 @@ const styles = StyleSheet.create({
   contentArea: {
     flex: 1,
     paddingHorizontal: 16,
+  },
+  gradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 600,
+    zIndex: 1,
   },
 });

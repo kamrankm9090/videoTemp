@@ -1,3 +1,5 @@
+import React from 'react';
+import {StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import AppText from '~/components/atoms/AppText';
 import AppTouchable from '~/components/atoms/AppTouchable';
@@ -18,21 +20,21 @@ const CategorySelector = ({
       showsHorizontalScrollIndicator={false}
       data={categories}
       keyExtractor={item => item}
-      contentContainerStyle={{
-        gap: 8,
-      }}
+      contentContainerStyle={styles.contentContainerStyle}
       renderItem={({item}) => {
         const isActive = item === selected;
+        const bgColor = isActive ? Colors.PRIMARY : Colors.NIGHT_RIDER;
+        const textColor = isActive ? Colors.WHITE : Colors.GARY_3;
         return (
           <AppTouchable
             onPress={() => setSelected(item)}
-            bg={isActive ? Colors.PRIMARY : Colors.NIGHT_RIDER}
+            bg={bgColor}
             px={10}
             py={5}
-            borderRadius={8}>
+            rounded={8}>
             <AppText
               fontWeight="500"
-              color={isActive ? Colors.WHITE : Colors.GARY_3}
+              color={textColor}
               lineHeight={24}
               fontSize={14}>
               {item}
@@ -45,3 +47,9 @@ const CategorySelector = ({
 };
 
 export default CategorySelector;
+
+const styles = StyleSheet.create({
+  contentContainerStyle: {
+    gap: 8,
+  },
+});

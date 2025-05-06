@@ -1,7 +1,9 @@
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {ArchiveIcon, HotSpot} from '~/assets/svgs';
 import {AppImage, AppText, HStack, VStack} from '~/components';
 import {Colors} from '~/styles';
+import {fontSize} from '~/utils/style';
 
 interface TrendingItemProps {
   category: string;
@@ -21,10 +23,9 @@ const TrendingItem: React.FC<TrendingItemProps> = ({
       minW={183}
       bg={Colors.Grey}
       mb={20}
-      borderRadius={10}
+      rounded={10}
       overflow="hidden"
       mx={10}>
-      
       <HStack
         w="100%"
         position="absolute"
@@ -32,11 +33,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({
         px={16}
         justifyContent="space-between"
         zIndex={1}>
-        <VStack
-          bg={Colors.BLUE_BRAND}
-          py={5}
-          px={15}
-          borderRadius={20}>
+        <VStack bg={Colors.BLUE_BRAND} py={5} px={15} rounded={20}>
           <AppText fontWeight="500" color={Colors.WHITE}>
             {category}
           </AppText>
@@ -44,33 +41,29 @@ const TrendingItem: React.FC<TrendingItemProps> = ({
         <ArchiveIcon />
       </HStack>
 
-      <AppImage
-        imageSource={{uri: imageUrl}}
-        style={{
-          width: '100%',
-          height: 200,
-          borderRadius: 8,
-        }}
-      />
+      <AppImage imageSource={{uri: imageUrl}} style={styles.image} />
 
-      <VStack
-        flexDirection="row"
-        alignItems="center"
-        py={10}
-        px={8}
-        bg={Colors.BLACK}>
-        <VStack flex={1} style={{gap: 4}}>
-          <AppText fontWeight="500" fontSize={16}>
+      <HStack py={10} px={8} bg={Colors.BLACK}>
+        <VStack flex={1} space={4}>
+          <AppText fontFamily="medium" fontSize={fontSize.medium}>
             {title}
           </AppText>
-          <HStack>
-            <HotSpot style={{marginRight: 8}} />
+          <HStack space={8}>
+            <HotSpot />
             <AppText color={Colors.GARY_3}>{viewers} viewers</AppText>
           </HStack>
         </VStack>
-      </VStack>
+      </HStack>
     </VStack>
   );
 };
 
 export default TrendingItem;
+
+const styles = StyleSheet.create({
+  image: {
+    width: '100%',
+    height: 200,
+    borderRadius: 8,
+  },
+});
