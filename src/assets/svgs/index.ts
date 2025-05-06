@@ -65,3 +65,5 @@ export {default as Warning} from './warning.svg';
 export {default as Welcome} from './welcome.svg';
 export {default as LiveIcon} from './live-reqular.svg';
 export {default as MoreIcon} from './more.svg';
+export {default as Share2Icon} from './share2.svg';
+export {default as ReportIcon} from './report.svg';

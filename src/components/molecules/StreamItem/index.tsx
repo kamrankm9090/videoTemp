@@ -3,6 +3,7 @@ import {StyleSheet} from 'react-native';
 import {ArchiveIcon, LiveIcon, MoreIcon} from '~/assets/svgs';
 import {AppImage, AppText, AppTouchable, HStack, VStack} from '~/components';
 import {Colors} from '~/styles';
+import { showSheet } from '~/utils/utils';
 
 interface StreamItemProps {
   category: string;
@@ -53,7 +54,7 @@ const StreamItem: React.FC<StreamItemProps> = ({
           </HStack>
         </VStack>
 
-        <AppTouchable onPress={() => {}}>
+        <AppTouchable onPress={() => showSheet('offer-select-option-action')}>
           <MoreIcon />
         </AppTouchable>
       </VStack>

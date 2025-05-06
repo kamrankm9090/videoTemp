@@ -95,4 +95,5 @@ export {default as ReportReasonAction} from './modals/ReportReasonAction';
 export {default as CreateOptionsAction} from './modals/CreateOptionsAction';
 export {default as CounterModal} from './modals/CounterModal';
 export {default as ConfirmationAction} from './modals/ConfirmationAction';
+export {default as OfferSelectOptionAction} from './modals/OfferSelectOptionAction';
 //#endregion ---------Modals
