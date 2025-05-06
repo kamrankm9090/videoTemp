@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {FlatList} from 'react-native';
 import {
   AppContainer,
   AppFlatList,
@@ -105,7 +105,7 @@ const OffersScreen: React.FC = () => {
     {
       id: '3',
       title: 'People who may you know',
-      renderItem: ({item}) => {
+      renderItem: ({item, index}) => {
         return <UserCardItem user={item} />;
       },
       data: users ? users : [],
@@ -113,7 +113,7 @@ const OffersScreen: React.FC = () => {
     {
       id: '4',
       title: 'Live streams',
-      renderItem: ({item}) => {
+      renderItem: ({item, index}) => {
         return (
           <TrendingItem
             category={item?.live?.category}
@@ -128,7 +128,7 @@ const OffersScreen: React.FC = () => {
     {
       id: '5',
       title: '',
-      renderItem: () => {
+      renderItem: ({item, index}) => {
         return <InviteFriendsCard />;
       },
       data: [1],
@@ -136,7 +136,7 @@ const OffersScreen: React.FC = () => {
     {
       id: '6',
       title: 'New Live',
-      renderItem: ({item}) => {
+      renderItem: ({item, index}) => {
         return (
           <StreamItem
             category={item?.live?.category}
@@ -155,29 +155,31 @@ const OffersScreen: React.FC = () => {
   ];
 
   const SectionRenderItem = ({item}: {item: SectionData}) => {
-    if (item?.data?.length > 0) {
-      <VStack>
-        {item.title && (
-          <HStack justifyContent="space-between" mb={16}>
-            <AppText fontSize={18} fontWeight={'600'}>
-              {item.title}
-            </AppText>
-            {item.data?.length > 4 && (
-              <AppTouchable onPress={() => {}}>
-                <AppText color={Colors.GARY_3}>See more</AppText>
-              </AppTouchable>
-            )}
-          </HStack>
-        )}
-        <AppFlatList
-          keyExtractor={_i => _i?.title}
-          horizontal
-          data={item.data}
-          renderItem={item.renderItem}
-        />
-      </VStack>;
-    }
-    return null;
+    return (
+      item?.data?.length > 0 && (
+        <VStack>
+          {item.title && (
+            <HStack justifyContent="space-between" mb={16}>
+              <AppText fontSize={18} fontWeight={'600'}>
+                {item.title}
+              </AppText>
+              {item.data?.length > 4 && (
+                <AppTouchable onPress={() => {}}>
+                  <AppText color={Colors.GARY_3}>See more</AppText>
+                </AppTouchable>
+              )}
+            </HStack>
+          )}
+          <FlatList
+            keyExtractor={_i => _i?.title}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={item.data}
+            renderItem={item.renderItem}
+          />
+        </VStack>
+      )
+    );
   };
 
   return (
@@ -188,22 +190,18 @@ const OffersScreen: React.FC = () => {
         keyExtractor={_i => _i?.id}
         showsVerticalScrollIndicator={false}
         data={sections}
-        contentContainerStyle={styles.contentContainerStyle}
-        listHeaderComponent={
+        contentContainerStyle={{gap: 16, margin: 10}}
+        ListHeaderComponent={
           <CategorySelector
             selected={selectedCategory}
             setSelected={setSelectedCategory}
           />
         }
         renderItem={({item}) => <SectionRenderItem item={item} />}
-        listFooterComponent={<VStack h={60} />}
+        ListFooterComponent={<VStack style={{height: 60}} />}
       />
     </AppContainer>
   );
 };
 
 export default OffersScreen;
-
-const styles = StyleSheet.create({
-  contentContainerStyle: {gap: 16, margin: 10},
-});
