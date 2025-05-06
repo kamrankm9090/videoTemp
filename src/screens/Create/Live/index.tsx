@@ -26,6 +26,7 @@ import {
   RenderNothing,
   VStack,
 } from '~/components';
+import {LiveType} from '~/graphql/generated';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {goBack} from '~/navigation/methods';
 import {liveStore} from '~/stores';
@@ -233,6 +234,7 @@ function CreateLiveFooter({
         />
         <AppTouchable
           onPress={switchOnPress}
+          disabled={liveStarted}
           rounded={8}
           p={7}
           bg={Colors.Silver_transparent_80}>
@@ -244,7 +246,7 @@ function CreateLiveFooter({
 }
 
 function ExperienceCard() {
-  const {liveData} = useSnapshot(liveStore);
+  const {liveData, liveType} = useSnapshot(liveStore);
   const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
@@ -302,12 +304,14 @@ function ExperienceCard() {
                 <AppText color={Colors.DarkGray}>Category</AppText>
                 <AppText fontFamily="bold">{liveData?.category?.title}</AppText>
               </VStack>
-              <VStack space={16}>
-                <AppText color={Colors.DarkGray}>Price</AppText>
-                <AppText fontFamily="bold">
-                  {liveData?.isFree ? 'Free' : `$${liveData?.price}`}
-                </AppText>
-              </VStack>
+              {liveType === LiveType.LiveContent && (
+                <VStack space={16}>
+                  <AppText color={Colors.DarkGray}>Price</AppText>
+                  <AppText fontFamily="bold">
+                    {liveData?.isFree ? 'Free' : `$${liveData?.price}`}
+                  </AppText>
+                </VStack>
+              )}
             </HStack>
 
             <HStack mt={16} alignItems="flex-end">
