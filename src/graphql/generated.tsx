@@ -2383,8 +2383,10 @@ export type Live = {
   publishingScheduleTime?: Maybe<Scalars['TimeSpan']['output']>;
   purchaseCount: Scalars['Int']['output'];
   rateAverage: Scalars['Float']['output'];
+  rateAverage: Scalars['Float']['output'];
   roles?: Maybe<Array<Maybe<LiveRole>>>;
   setSchedule: Scalars['Boolean']['output'];
+  shareCount: Scalars['Int']['output'];
   shareCount: Scalars['Int']['output'];
   title?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
@@ -2483,6 +2485,7 @@ export type LiveFilterInput = {
   category?: InputMaybe<StringOperationFilterInput>;
   channelRecords?: InputMaybe<ListFilterInputTypeOfChannelRecordFilterInput>;
   commentCount?: InputMaybe<IntOperationFilterInput>;
+  commentCount?: InputMaybe<IntOperationFilterInput>;
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   description?: InputMaybe<StringOperationFilterInput>;
   funding?: InputMaybe<IntOperationFilterInput>;
@@ -2503,8 +2506,10 @@ export type LiveFilterInput = {
   publishingScheduleTime?: InputMaybe<TimeSpanOperationFilterInput>;
   purchaseCount?: InputMaybe<IntOperationFilterInput>;
   rateAverage?: InputMaybe<FloatOperationFilterInput>;
+  rateAverage?: InputMaybe<FloatOperationFilterInput>;
   roles?: InputMaybe<ListFilterInputTypeOfLiveRoleFilterInput>;
   setSchedule?: InputMaybe<BooleanOperationFilterInput>;
+  shareCount?: InputMaybe<IntOperationFilterInput>;
   shareCount?: InputMaybe<IntOperationFilterInput>;
   title?: InputMaybe<StringOperationFilterInput>;
   user?: InputMaybe<UserFilterInput>;
@@ -2515,15 +2520,18 @@ export type LiveFilterInput = {
 
 export type LiveInput = {
   category?: InputMaybe<Scalars['String']['input']>;
+  category?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   funding?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   isDraft?: InputMaybe<Scalars['Boolean']['input']>;
   isFree?: InputMaybe<Scalars['Boolean']['input']>;
   liveType?: InputMaybe<LiveType>;
+  liveType?: InputMaybe<LiveType>;
   photoUrl?: InputMaybe<Scalars['String']['input']>;
   previewUrl?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Decimal']['input']>;
+  proposalCategory?: InputMaybe<Scalars['String']['input']>;
   proposalCategory?: InputMaybe<Scalars['String']['input']>;
   proposalSummary?: InputMaybe<Scalars['String']['input']>;
   proposalTitle?: InputMaybe<Scalars['String']['input']>;
@@ -2574,6 +2582,7 @@ export type LiveRoleInput = {
 export type LiveSortInput = {
   category?: InputMaybe<SortEnumType>;
   commentCount?: InputMaybe<SortEnumType>;
+  commentCount?: InputMaybe<SortEnumType>;
   createdDate?: InputMaybe<SortEnumType>;
   description?: InputMaybe<SortEnumType>;
   funding?: InputMaybe<SortEnumType>;
@@ -2593,7 +2602,9 @@ export type LiveSortInput = {
   publishingScheduleTime?: InputMaybe<SortEnumType>;
   purchaseCount?: InputMaybe<SortEnumType>;
   rateAverage?: InputMaybe<SortEnumType>;
+  rateAverage?: InputMaybe<SortEnumType>;
   setSchedule?: InputMaybe<SortEnumType>;
+  shareCount?: InputMaybe<SortEnumType>;
   shareCount?: InputMaybe<SortEnumType>;
   title?: InputMaybe<SortEnumType>;
   user?: InputMaybe<UserSortInput>;
@@ -2604,6 +2615,7 @@ export type LiveSortInput = {
 
 export enum LiveType {
   Collaboration = 'COLLABORATION',
+  General = 'GENERAL',
   General = 'GENERAL',
   Investment = 'INVESTMENT',
   LiveContent = 'LIVE_CONTENT',
@@ -3869,7 +3881,9 @@ export type Query = {
   live_getLiveStreams?: Maybe<ListResponseBaseOfLiveDto>;
   live_getLives?: Maybe<ListResponseBaseOfLiveDto>;
   live_getNewLives?: Maybe<ListResponseBaseOfLiveDto>;
+  live_getNewLives?: Maybe<ListResponseBaseOfLiveDto>;
   live_getRecommendedLives?: Maybe<ListResponseBaseOfLiveDto>;
+  live_getTrendingLives?: Maybe<ListResponseBaseOfLiveDto>;
   live_getTrendingLives?: Maybe<ListResponseBaseOfLiveDto>;
   message_getAllReceivers?: Maybe<ListResponseBaseOfUser>;
   message_getContacts?: Maybe<ListResponseBaseOfContact>;
