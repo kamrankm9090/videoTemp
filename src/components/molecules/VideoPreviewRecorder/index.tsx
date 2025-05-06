@@ -7,10 +7,12 @@ import {
   useCameraPermission,
   useMicrophonePermission,
 } from 'react-native-vision-camera';
+import {Reload} from '~/assets/svgs';
 import {
   AppButton,
   AppIndicator,
   AppText,
+  AppTouchable,
   Box,
   Center,
   HStack,
@@ -31,13 +33,16 @@ export default function VideoPreviewRecorder({
   onSelectVideo,
 }: Props) {
   const cameraRef = useRef<Camera>(null);
-  const device = useCameraDevice('back');
 
   const [recording, setRecording] = useState(false);
   const [videoUri, setVideoUri] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [timer, setTimer] = useState(0);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [cameraPosition, setCameraPosition] = useState<'front' | 'back'>(
+    'back',
+  );
+  const device = useCameraDevice(cameraPosition);
 
   const {
     hasPermission: hasCameraPermission,
@@ -169,6 +174,10 @@ export default function VideoPreviewRecorder({
     setVideoUri(null);
   }
 
+  function switchOnPress() {
+    setCameraPosition(prev => (prev === 'back' ? 'front' : 'back'));
+  }
+
   return (
     <>
       {videoUri ? (
@@ -215,15 +224,23 @@ export default function VideoPreviewRecorder({
           )}
           <HStack
             w="100%"
+            space={24}
+            bottom={24}
             alignSelf="center"
             position="absolute"
-            justifyContent="center"
-            bottom={24}>
+            justifyContent="center">
             <AppButton
               width="auto"
               title={recording ? 'Stop Recording' : `Record (${maxDuration}s)`}
               onPress={recording ? stopRecording : startRecording}
             />
+            <AppTouchable
+              onPress={switchOnPress}
+              rounded={8}
+              p={7}
+              bg={Colors.Silver_transparent_80}>
+              <Reload />
+            </AppTouchable>
           </HStack>
         </>
       )}
@@ -234,7 +251,7 @@ export default function VideoPreviewRecorder({
 const styles = StyleSheet.create({
   preview: {
     width: '100%',
-    height: height,
+    height: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
   },

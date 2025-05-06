@@ -20,6 +20,7 @@ import {
 } from '~/components';
 import {
   LiveInput,
+  LiveType,
   useAgora_CreateTokenMutation,
   useLive_CreateLiveMutation,
 } from '~/graphql/generated';
@@ -69,6 +70,7 @@ export default function CreateContentScreen() {
   const onSubmit = useCallback(
     (formData: typeof defaultValues) => {
       const input: LiveInput = {
+        liveType: liveType || LiveType.LiveContent,
         isFree: isLiveContent ? formData?.isFree : null,
         description: formData?.description,
         title: formData?.title,
