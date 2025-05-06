@@ -264,17 +264,25 @@ declare global {
     setVerificationCode: (verificationCode: string) => void;
   };
 
+  type LiveTypeG =
+    | 'COLLABORATION'
+    | 'GENERAL'
+    | 'INVESTMENT'
+    | 'LIVE_CONTENT'
+    | 'PROMOTION';
+
   type liveStoreType = {
     liveId: string;
     token: string;
-    liveType: LiveType;
+    liveType: LiveTypeG;
     tokenCreateDate?: number;
     liveData?: any;
     setLiveId: (liveId: string) => void;
     setToken: (token: string) => void;
-    setLiveType: (liveType: LiveType) => void;
+    setLiveType: (liveType: LiveTypeG) => void;
     setTokenCreateDate: (tokenCreateDate: number) => void;
     setLiveData: (liveData: any) => void;
+    resetLiveStore: () => void;
   };
 
   type OfferOptionItemType = {
@@ -308,8 +316,8 @@ declare global {
     | 'report-action'
     | 'report-reason-action'
     | 'create-options-action'
-    | 'confirmation-action' | 
-    'offer-select-option-action';
+    | 'confirmation-action'
+    | 'offer-select-option-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 

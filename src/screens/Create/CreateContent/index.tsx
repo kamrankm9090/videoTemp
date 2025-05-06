@@ -33,12 +33,7 @@ import {showErrorMessage} from '~/utils/utils';
 
 export default function CreateContentScreen() {
   useInitAgora();
-  const {...methods} = useForm({
-    resolver: yupResolver(createContentSchema),
-    defaultValues,
-  });
 
-  const {handleSubmit, formState, watch} = methods;
   const {liveType, setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
 
@@ -61,6 +56,13 @@ export default function CreateContentScreen() {
       previewUrl: '',
     }),
   };
+
+  const {...methods} = useForm({
+    resolver: yupResolver(createContentSchema),
+    defaultValues,
+  });
+
+  const {handleSubmit, formState, watch} = methods;
 
   const {mutate: mutateCreateLive, isLoading: isLoadingCreateLive} =
     useLive_CreateLiveMutation();
@@ -126,6 +128,8 @@ export default function CreateContentScreen() {
       setTokenCreateDate,
       setToken,
       setLiveData,
+      isLiveContent,
+      liveType,
     ],
   );
 
