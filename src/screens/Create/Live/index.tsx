@@ -28,7 +28,7 @@ import {
 } from '~/components';
 import {LiveType} from '~/graphql/generated';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
-import {goBack} from '~/navigation/methods';
+import {goBack, resetRoot} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import * as log from '~/utils/log';
@@ -52,6 +52,7 @@ export default function LiveScreen() {
     channelId,
     token,
   } = useInitRtcEngine(enableVideo);
+  const {resetLiveStore} = useSnapshot(liveStore);
 
   const [_, setSwitchCamera] = useState(false);
   const [counterModalVisible, setCounterModalVisible] =
@@ -62,9 +63,12 @@ export default function LiveScreen() {
     setSwitchCamera(prev => !prev);
   }
 
-  function joinChannel() {
-    setLiveStarted(true);
-    setCounterModalVisible(true);
+  function joinChannelHandler() {
+    if (liveStarted) {
+      closeHandler();
+    } else {
+      setCounterModalVisible(true);
+    }
   }
 
   function leaveChannel() {
@@ -122,7 +126,9 @@ export default function LiveScreen() {
         onClose: () => hideSheet('confirmation-action'),
         onConfirm: () => {
           leaveChannel();
-          goBack();
+          resetLiveStore();
+          setLiveStarted(false);
+          resetRoot('MainTabs');
           hideSheet('confirmation-action');
           showInfoMessage('Your live ended');
           setLiveStarted(false);
@@ -133,6 +139,7 @@ export default function LiveScreen() {
 
   function closeCounterModal() {
     setCounterModalVisible(false);
+    setLiveStarted(true);
     if (!channelId) {
       log.error('channelId is invalid');
       return;
@@ -193,7 +200,7 @@ export default function LiveScreen() {
         )}
       />
       <CreateLiveFooter
-        startOnPress={joinChannel}
+        liveHandler={joinChannelHandler}
         switchOnPress={switchCamera}
         liveStarted={liveStarted}
       />
@@ -208,11 +215,11 @@ export default function LiveScreen() {
 }
 
 function CreateLiveFooter({
-  startOnPress,
+  liveHandler,
   switchOnPress,
   liveStarted,
 }: {
-  startOnPress?: () => void;
+  liveHandler?: () => void;
   switchOnPress?: () => void;
   liveStarted?: boolean;
 }) {
@@ -227,7 +234,7 @@ function CreateLiveFooter({
       position="absolute">
       <HStack space={16}>
         <AppButton
-          onPress={startOnPress}
+          onPress={liveHandler}
           flex={1}
           width="auto"
           title={liveStarted ? 'End live' : 'Start live'}

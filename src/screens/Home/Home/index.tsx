@@ -9,7 +9,11 @@ import {
   PeopleYouMayKnow,
   VStack,
 } from '~/components';
-import {SortEnumType, useInfiniteLive_GetLivesQuery} from '~/graphql/generated';
+import {
+  LiveType,
+  SortEnumType,
+  useInfiniteLive_GetLivesQuery,
+} from '~/graphql/generated';
 
 export default function HomeScreen() {
   const [visibleIndex, setVisibleIndex] = useState<number | null>(null);
@@ -23,7 +27,12 @@ export default function HomeScreen() {
     refetch: refetchGetLives,
     isRefetching: isRefetchingGetLives,
   } = useInfiniteLive_GetLivesQuery({
-    where: {recordStarted: {eq: true}},
+    where: {
+      and: [
+        {recordStarted: {eq: true}},
+        {live: {liveType: {eq: LiveType.LiveContent}}},
+      ],
+    },
     order: {live: {createdDate: SortEnumType.Desc}},
   });
 
