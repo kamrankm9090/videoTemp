@@ -15,6 +15,7 @@ import {
 import {
   useInfiniteUser_GetCastersToFollowQuery,
   useLive_GetLiveStreamsQuery,
+  useLive_GetNewLivesQuery,
   useLive_GetRecommendedLivesQuery,
   useLive_GetTrendingLivesQuery,
 } from '~/graphql/generated';
@@ -40,6 +41,12 @@ const OffersScreen: React.FC = () => {
   const {data: getTrendingLives, isLoading: isLoadingTrendingLives} =
     useLive_GetTrendingLivesQuery();
 
+  const {data: getNewLives, isLoading: isLoadingNewLives} =
+    useLive_GetNewLivesQuery();
+
+  const new_lives = useMemo(() => {
+    return getNewLives?.live_getNewLives?.result?.items || [];
+  }, [getNewLives]);
   const trending_lives = useMemo(() => {
     return getTrendingLives?.live_getTrendingLives?.result?.items || [];
   }, [getTrendingLives]);
@@ -64,12 +71,12 @@ const OffersScreen: React.FC = () => {
       renderItem: ({item, index}) => {
         return (
           <StreamItem
-            category={item.category}
-            title={item.title}
-            description={item.description}
-            viewers={item.viewers}
-            imageUrl={item.imageUrl}
-            profileImageUrl={item.profileImageUrl}
+            category={item?.live?.category}
+            title={item?.live?.title}
+            description={item?.live?.description}
+            viewers={item?.live?.viewCount}
+            imageUrl={item?.live?.photoUrl}
+            profileImageUrl={item?.live?.user?.photoUrl}
           />
         );
       },
@@ -127,33 +134,16 @@ const OffersScreen: React.FC = () => {
       renderItem: ({item, index}) => {
         return (
           <StreamItem
-            category={item.category}
-            title={item.title}
-            description={item.description}
-            viewers={item.viewers}
-            imageUrl={item.imageUrl}
-            profileImageUrl={item.profileImageUrl}
+            category={item?.live?.category}
+            title={item?.live?.title}
+            description={item?.live?.description}
+            viewers={item?.live?.viewCount}
+            imageUrl={item?.live?.photoUrl}
+            profileImageUrl={item?.live?.user?.photoUrl}
           />
         );
       },
-      data: [
-        {
-          category: 'Beauty',
-          title: 'Cs go_mc',
-          description: 'A live stream where the person...',
-          viewers: '34.5k',
-          imageUrl: 'https://picsum.photos/400/300',
-          profileImageUrl: 'https://picsum.photos/200/200',
-        },
-        {
-          category: 'Cooking',
-          title: 'Cooking Perfection',
-          description: 'A cooking live stream...',
-          viewers: '124k',
-          imageUrl: 'https://picsum.photos/400/200',
-          profileImageUrl: 'https://picsum.photos/200/400',
-        },
-      ],
+      data: new_lives,
     },
   ];
 
@@ -174,7 +164,7 @@ const OffersScreen: React.FC = () => {
             </HStack>
           )}
           <FlatList
-            keyExtractor={item => item.title}
+            keyExtractor={_i => _i?.title}
             horizontal
             showsHorizontalScrollIndicator={false}
             data={item.data}
@@ -189,7 +179,7 @@ const OffersScreen: React.FC = () => {
     <AppContainer>
       <HomeHeader />
       <FlatList
-        keyExtractor={item => item.id}
+        keyExtractor={_i => _i?.id}
         showsVerticalScrollIndicator={false}
         data={sections}
         contentContainerStyle={{gap: 16}}

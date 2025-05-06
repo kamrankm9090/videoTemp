@@ -2363,6 +2363,7 @@ export type Live = {
   __typename?: 'Live';
   category?: Maybe<Scalars['String']['output']>;
   channelRecords?: Maybe<Array<Maybe<ChannelRecord>>>;
+  commentCount: Scalars['Int']['output'];
   createdDate: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
   funding: Scalars['Int']['output'];
@@ -2381,8 +2382,10 @@ export type Live = {
   publishingScheduleDate?: Maybe<Scalars['DateTime']['output']>;
   publishingScheduleTime?: Maybe<Scalars['TimeSpan']['output']>;
   purchaseCount: Scalars['Int']['output'];
+  rateAverage: Scalars['Float']['output'];
   roles?: Maybe<Array<Maybe<LiveRole>>>;
   setSchedule: Scalars['Boolean']['output'];
+  shareCount: Scalars['Int']['output'];
   title?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
   userId: Scalars['Int']['output'];
@@ -2479,6 +2482,7 @@ export type LiveFilterInput = {
   and?: InputMaybe<Array<LiveFilterInput>>;
   category?: InputMaybe<StringOperationFilterInput>;
   channelRecords?: InputMaybe<ListFilterInputTypeOfChannelRecordFilterInput>;
+  commentCount?: InputMaybe<IntOperationFilterInput>;
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   description?: InputMaybe<StringOperationFilterInput>;
   funding?: InputMaybe<IntOperationFilterInput>;
@@ -2498,8 +2502,10 @@ export type LiveFilterInput = {
   publishingScheduleDate?: InputMaybe<DateTimeOperationFilterInput>;
   publishingScheduleTime?: InputMaybe<TimeSpanOperationFilterInput>;
   purchaseCount?: InputMaybe<IntOperationFilterInput>;
+  rateAverage?: InputMaybe<FloatOperationFilterInput>;
   roles?: InputMaybe<ListFilterInputTypeOfLiveRoleFilterInput>;
   setSchedule?: InputMaybe<BooleanOperationFilterInput>;
+  shareCount?: InputMaybe<IntOperationFilterInput>;
   title?: InputMaybe<StringOperationFilterInput>;
   user?: InputMaybe<UserFilterInput>;
   userId?: InputMaybe<IntOperationFilterInput>;
@@ -2508,16 +2514,17 @@ export type LiveFilterInput = {
 };
 
 export type LiveInput = {
-  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  category?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   funding?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   isDraft?: InputMaybe<Scalars['Boolean']['input']>;
   isFree?: InputMaybe<Scalars['Boolean']['input']>;
+  liveType?: InputMaybe<LiveType>;
   photoUrl?: InputMaybe<Scalars['String']['input']>;
   previewUrl?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Decimal']['input']>;
-  proposalCategoryId?: InputMaybe<Scalars['Int']['input']>;
+  proposalCategory?: InputMaybe<Scalars['String']['input']>;
   proposalSummary?: InputMaybe<Scalars['String']['input']>;
   proposalTitle?: InputMaybe<Scalars['String']['input']>;
   publishingScheduleDate?: InputMaybe<Scalars['DateTime']['input']>;
@@ -2566,6 +2573,7 @@ export type LiveRoleInput = {
 
 export type LiveSortInput = {
   category?: InputMaybe<SortEnumType>;
+  commentCount?: InputMaybe<SortEnumType>;
   createdDate?: InputMaybe<SortEnumType>;
   description?: InputMaybe<SortEnumType>;
   funding?: InputMaybe<SortEnumType>;
@@ -2584,7 +2592,9 @@ export type LiveSortInput = {
   publishingScheduleDate?: InputMaybe<SortEnumType>;
   publishingScheduleTime?: InputMaybe<SortEnumType>;
   purchaseCount?: InputMaybe<SortEnumType>;
+  rateAverage?: InputMaybe<SortEnumType>;
   setSchedule?: InputMaybe<SortEnumType>;
+  shareCount?: InputMaybe<SortEnumType>;
   title?: InputMaybe<SortEnumType>;
   user?: InputMaybe<UserSortInput>;
   userId?: InputMaybe<SortEnumType>;
@@ -2863,7 +2873,6 @@ export type Mutation = {
   live_createLive?: Maybe<ResponseBaseOfLive>;
   live_createNotInterested?: Maybe<ResponseStatus>;
   live_deleteLive?: Maybe<ResponseStatus>;
-  live_incrementPurchaseCount?: Maybe<ResponseStatus>;
   live_purchase?: Maybe<ResponseStatus>;
   live_rate?: Maybe<ResponseStatus>;
   live_removeFromBookmark?: Maybe<ResponseStatus>;
@@ -3042,10 +3051,6 @@ export type MutationLive_CreateNotInterestedArgs = {
 };
 
 export type MutationLive_DeleteLiveArgs = {
-  liveId: Scalars['Int']['input'];
-};
-
-export type MutationLive_IncrementPurchaseCountArgs = {
   liveId: Scalars['Int']['input'];
 };
 
@@ -3858,6 +3863,7 @@ export type Query = {
   defaultViolation_getDefaultViolations: ListResponseBaseOfDefaultViolation;
   live_getLiveStreams?: Maybe<ListResponseBaseOfLiveDto>;
   live_getLives?: Maybe<ListResponseBaseOfLiveDto>;
+  live_getNewLives?: Maybe<ListResponseBaseOfLiveDto>;
   live_getRecommendedLives?: Maybe<ListResponseBaseOfLiveDto>;
   live_getTrendingLives?: Maybe<ListResponseBaseOfLiveDto>;
   message_getAllReceivers?: Maybe<ListResponseBaseOfUser>;
@@ -5758,6 +5764,11 @@ export type Live_GetRecommendedLivesQuery = {
           photoUrl?: string | null;
           title?: string | null;
           viewCount: number;
+          user?: {
+            __typename?: 'User';
+            photoUrl?: string | null;
+            fullName?: string | null;
+          } | null;
         } | null;
       } | null> | null;
     } | null;
@@ -5800,6 +5811,53 @@ export type Live_GetTrendingLivesQuery = {
           photoUrl?: string | null;
           title?: string | null;
           viewCount: number;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Live_GetNewLivesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveDtoFilterInput>;
+  order?: InputMaybe<Array<LiveDtoSortInput> | LiveDtoSortInput>;
+}>;
+
+export type Live_GetNewLivesQuery = {
+  __typename?: 'Query';
+  live_getNewLives?: {
+    __typename?: 'ListResponseBaseOfLiveDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'LiveDtoCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'LiveDto';
+        isBookmark: boolean;
+        isPurchased: boolean;
+        isViewed: boolean;
+        recordEnded: boolean;
+        recordStarted: boolean;
+        live?: {
+          __typename?: 'Live';
+          category?: string | null;
+          createdDate: any;
+          description?: string | null;
+          liveType: LiveType;
+          photoUrl?: string | null;
+          title?: string | null;
+          viewCount: number;
+          user?: {
+            __typename?: 'User';
+            photoUrl?: string | null;
+            fullName?: string | null;
+          } | null;
         } | null;
       } | null> | null;
     } | null;
@@ -7079,6 +7137,10 @@ export const Live_GetRecommendedLivesDocument = `
           photoUrl
           title
           viewCount
+          user {
+            photoUrl
+            fullName
+          }
         }
         recordEnded
         recordStarted
@@ -7200,6 +7262,80 @@ export const useInfiniteLive_GetTrendingLivesQuery = <
     metaData =>
       fetcher<Live_GetTrendingLivesQuery, Live_GetTrendingLivesQueryVariables>(
         Live_GetTrendingLivesDocument,
+        {...variables, ...(metaData.pageParam ?? {})},
+      )(),
+    options,
+  );
+};
+
+export const Live_GetNewLivesDocument = `
+    query live_getNewLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]) {
+  live_getNewLives {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        isBookmark
+        isPurchased
+        isViewed
+        live {
+          category
+          createdDate
+          description
+          liveType
+          photoUrl
+          title
+          viewCount
+          user {
+            photoUrl
+            fullName
+          }
+        }
+        recordEnded
+        recordStarted
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useLive_GetNewLivesQuery = <
+  TData = Live_GetNewLivesQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetNewLivesQueryVariables,
+  options?: UseQueryOptions<Live_GetNewLivesQuery, TError, TData>,
+) => {
+  return useQuery<Live_GetNewLivesQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getNewLives']
+      : ['live_getNewLives', variables],
+    fetcher<Live_GetNewLivesQuery, Live_GetNewLivesQueryVariables>(
+      Live_GetNewLivesDocument,
+      variables,
+    ),
+    options,
+  );
+};
+
+export const useInfiniteLive_GetNewLivesQuery = <
+  TData = Live_GetNewLivesQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetNewLivesQueryVariables,
+  options?: UseInfiniteQueryOptions<Live_GetNewLivesQuery, TError, TData>,
+) => {
+  return useInfiniteQuery<Live_GetNewLivesQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getNewLives.infinite']
+      : ['live_getNewLives.infinite', variables],
+    metaData =>
+      fetcher<Live_GetNewLivesQuery, Live_GetNewLivesQueryVariables>(
+        Live_GetNewLivesDocument,
         {...variables, ...(metaData.pageParam ?? {})},
       )(),
     options,
