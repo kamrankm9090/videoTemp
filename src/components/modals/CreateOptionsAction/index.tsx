@@ -1,5 +1,6 @@
 import React from 'react';
 import {SheetProps} from 'react-native-actions-sheet';
+import {useSnapshot} from 'valtio';
 import {ChevronRight, LiveTV, VideoCall} from '~/assets/svgs';
 import {
   ActionSheetContainer,
@@ -9,16 +10,20 @@ import {
   VStack,
 } from '~/components';
 import {navigate} from '~/navigation/methods';
+import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import {hideSheet} from '~/utils/utils';
 
-export default function CreateOptionsAction(props: SheetProps) {
+export default function CreateOptionsAction() {
+  const {setLiveType} = useSnapshot(liveStore);
+
   const data: CreateOptionItemType[] = [
     {
       id: 0,
       title: 'Monetized Live',
       description: 'Create live content to earn money',
       onPress: () => {
+        setLiveType('LIVE_CONTENT');
         navigate('CreateStack', {screen: 'CreateContent'});
         hideSheet('create-options-action');
       },
@@ -29,7 +34,8 @@ export default function CreateOptionsAction(props: SheetProps) {
       title: 'Collaborative Live',
       description: 'Make live requests and inform',
       onPress: () => {
-        navigate('CreateStack', {screen: 'Collaborative'});
+        setLiveType('COLLABORATION');
+        navigate('CreateStack', {screen: 'CreateContent'});
         hideSheet('create-options-action');
       },
       icon: <VideoCall />,

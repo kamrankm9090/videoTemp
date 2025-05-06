@@ -9,7 +9,6 @@ import {
 } from 'react-native-vision-camera';
 import {
   AppButton,
-  AppContainer,
   AppIndicator,
   AppText,
   Box,
@@ -17,14 +16,20 @@ import {
   HStack,
   VStack,
 } from '~/components';
-import {navigate} from '~/navigation/methods';
 import {uploadFile} from '~/services/fileUploader';
 import {Colors} from '~/styles';
+import {formatTimer} from '~/utils/helper';
 import {fontSize, height, width} from '~/utils/style';
 
-const MAX_DURATION = 15; // seconds
+type Props = {
+  maxDuration?: number;
+  onSelectVideo?: (videoUrl: string) => void;
+};
 
-const VideoPreviewRecorder = () => {
+export default function VideoPreviewRecorder({
+  maxDuration = 15,
+  onSelectVideo,
+}: Props) {
   const cameraRef = useRef<Camera>(null);
   const device = useCameraDevice('back');
 
@@ -69,7 +74,12 @@ const VideoPreviewRecorder = () => {
         }
       }
     })();
-  }, [hasCameraPermission, hasMicrophonePermission]);
+  }, [
+    hasCameraPermission,
+    hasMicrophonePermission,
+    requestCameraPermission,
+    requestMicrophonePermission,
+  ]);
 
   useEffect(() => {
     let interval: any;
@@ -86,7 +96,7 @@ const VideoPreviewRecorder = () => {
 
   if (!device || !hasCameraPermission) {
     return (
-      <Center flex={1} mt={200} bg={Colors.BLACK}>
+      <Center flex={1} bg={Colors.BACKGROUND}>
         <AppIndicator size="large" />
       </Center>
     );
@@ -113,7 +123,7 @@ const VideoPreviewRecorder = () => {
 
       setTimeout(() => {
         stopRecording();
-      }, MAX_DURATION * 1000);
+      }, maxDuration * 1000);
     } catch (error) {
       setRecording(false);
     }
@@ -128,7 +138,7 @@ const VideoPreviewRecorder = () => {
       return;
     }
     setUploading(true);
-    setUploadProgress(0); // Reset progress
+    setUploadProgress(0);
 
     try {
       const param = {
@@ -142,7 +152,9 @@ const VideoPreviewRecorder = () => {
         setUploadProgress(progress);
       });
 
-      navigate('CreateContent', {videoUrl: response.uploadedUrl});
+      if (response.uploadedUrl) {
+        onSelectVideo?.(response?.uploadedUrl);
+      }
       setVideoUri(null);
     } catch (error) {
       console.error('Upload error:', error);
@@ -153,25 +165,21 @@ const VideoPreviewRecorder = () => {
     }
   };
 
-  const formatTimer = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-      .toString()
-      .padStart(2, '0');
-    const secs = (seconds % 60).toString().padStart(2, '0');
-    return `${mins}:${secs}`;
-  };
+  function recordAgain() {
+    setVideoUri(null);
+  }
 
   return (
-    <AppContainer>
+    <>
       {videoUri ? (
-        <>
+        <VStack flex={1} bg={Colors.BACKGROUND}>
           <Video
             source={{uri: videoUri}}
             style={styles.video}
             controls
             resizeMode="cover"
           />
-          <VStack position="absolute" alignSelf="center" bottom={24} space={8}>
+          <VStack position="absolute" alignSelf="center" bottom={24} space={12}>
             <AppButton
               title={
                 uploading ? `Uploading... ${uploadProgress}%` : 'Upload Video'
@@ -182,11 +190,11 @@ const VideoPreviewRecorder = () => {
 
             <AppButton
               title={'Record Again'}
-              onPress={() => setVideoUri(null)}
+              onPress={recordAgain}
               disabled={uploading}
             />
           </VStack>
-        </>
+        </VStack>
       ) : (
         <>
           <Camera
@@ -205,19 +213,23 @@ const VideoPreviewRecorder = () => {
               </AppText>
             </HStack>
           )}
-          <HStack maxW={200} alignSelf="center" position="absolute" bottom={0}>
+          <HStack
+            w="100%"
+            alignSelf="center"
+            position="absolute"
+            justifyContent="center"
+            bottom={24}>
             <AppButton
-              title={recording ? 'Stop Recording' : `Record (${MAX_DURATION}s)`}
+              width="auto"
+              title={recording ? 'Stop Recording' : `Record (${maxDuration}s)`}
               onPress={recording ? stopRecording : startRecording}
             />
           </HStack>
         </>
       )}
-    </AppContainer>
+    </>
   );
-};
-
-export default VideoPreviewRecorder;
+}
 
 const styles = StyleSheet.create({
   preview: {
@@ -227,10 +239,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   video: {
-    width: (width / 3) * 2,
-    height: height / 2,
+    width: width * 0.75,
+    height: height * 0.55,
     alignSelf: 'center',
-    top: 100,
+    top: 72,
     borderRadius: 16,
     borderWidth: 1,
     borderColor: Colors.WHITE_TRANSPARENT_2,

@@ -1,6 +1,5 @@
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useRoute} from '@react-navigation/native';
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import {useSnapshot} from 'valtio';
@@ -9,8 +8,6 @@ import {
   AppContainer,
   AppFormProvider,
   AppKeyboardAwareScrollView,
-  AppText,
-  AppTouchable,
   Divider,
   FormCheckBox,
   FormDateTimePicker,
@@ -18,6 +15,7 @@ import {
   HStack,
   ScreensHeader,
   SectionCategory,
+  VideoPreview,
   VStack,
 } from '~/components';
 import {
@@ -32,17 +30,6 @@ import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import {showErrorMessage} from '~/utils/utils';
 
-const defaultValues = {
-  title: '',
-  isFree: false,
-  isSchedule: false,
-  description: '',
-  category: null,
-  price: '',
-  date: '',
-  time: '',
-};
-
 export default function CreateContentScreen() {
   useInitAgora();
   const {...methods} = useForm({
@@ -50,11 +37,29 @@ export default function CreateContentScreen() {
     defaultValues,
   });
 
-  const {params}: any = useRoute();
-
   const {handleSubmit, formState, watch} = methods;
-  const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
+  const {liveType, setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
+
+  const isLiveContent = useMemo(() => {
+    return liveType === 'LIVE_CONTENT';
+  }, [liveType]);
+
+  console.log('liveType-->', liveType);
+
+  const defaultValues = {
+    title: '',
+    isFree: false,
+    isSchedule: false,
+    description: '',
+    category: null,
+    date: '',
+    time: '',
+    ...(isLiveContent && {
+      price: '',
+      previewUrl: '',
+    }),
+  };
 
   const {mutate: mutateCreateLive, isLoading: isLoadingCreateLive} =
     useLive_CreateLiveMutation();
@@ -64,26 +69,28 @@ export default function CreateContentScreen() {
   const onSubmit = useCallback(
     (formData: typeof defaultValues) => {
       const input: LiveInput = {
-        isFree: formData?.isFree,
+        isFree: isLiveContent ? formData?.isFree : null,
         description: formData?.description,
         title: formData?.title,
         categoryId: formData?.category?.id,
         setSchedule: formData?.isSchedule,
-        ...(!formData?.isFree && {
-          price: formData?.price,
-        }),
+        ...(!formData?.isFree &&
+          isLiveContent && {
+            price: formData?.price,
+          }),
         ...(formData?.isSchedule && {
           publishingScheduleDate: formData?.date,
           publishingScheduleTime: formData?.time,
         }),
-        previewUrl: params?.videoUrl,
+        ...(formData?.previewUrl &&
+          isLiveContent && {
+            previewUrl: formData?.previewUrl,
+          }),
       };
-      console.log('free-->', formData?.isSchedule);
       mutateCreateLive(
         {input},
         {
           onSuccess: response => {
-            console.log('response-11->', response);
             if (response?.live_createLive?.status?.code === 1) {
               const liveId = response?.live_createLive?.result?.id?.toString();
               mutateCreateAgoraToken(
@@ -91,7 +98,6 @@ export default function CreateContentScreen() {
                 {
                   onSuccess: res => {
                     if (res?.agora_createToken?.status?.code === 1) {
-                      console.log('res===>', res);
                       setLiveData({
                         ...input,
                         category: formData?.category,
@@ -117,7 +123,7 @@ export default function CreateContentScreen() {
       setLiveId,
       setTokenCreateDate,
       setToken,
-      params,
+      setLiveData,
     ],
   );
 
@@ -125,7 +131,10 @@ export default function CreateContentScreen() {
 
   return (
     <AppContainer safeArea>
-      <ScreensHeader backAction title="Create Content" />
+      <ScreensHeader
+        backAction
+        title={isLiveContent ? 'Create Content' : 'Collaborative'}
+      />
       <AppFormProvider methods={methods}>
         <AppKeyboardAwareScrollView
           contentContainerStyle={styles.contentContainerStyle}>
@@ -143,19 +152,27 @@ export default function CreateContentScreen() {
               {...{formState}}
             />
             <SectionCategory name="category" />
-            <FormInput
-              name="price"
-              placeholder="Price"
-              keyboardType="numeric"
-              editable={!watch('isFree')}
-              {...{formState}}
-            />
-            <FormCheckBox
-              name="isFree"
-              text=" This content is available for free"
-            />
+            {isLiveContent && (
+              <>
+                <FormInput
+                  name="price"
+                  placeholder="Price"
+                  keyboardType="numeric"
+                  editable={!watch('isFree')}
+                  {...{formState}}
+                />
+                <FormCheckBox
+                  name="isFree"
+                  text=" This content is available for free"
+                />
+              </>
+            )}
             <Divider backgroundColor={Colors.Nero_3} />
-            <FormCheckBox name="isSchedule" text="Set schedule" />
+            <FormCheckBox
+              name="isSchedule"
+              text="Set schedule"
+              description="The record is no more live and will be played as scheduled."
+            />
             {watch('isSchedule') && (
               <HStack alignItems="flex-start" space={8}>
                 <FormDateTimePicker
@@ -174,22 +191,9 @@ export default function CreateContentScreen() {
             )}
             <Divider backgroundColor={Colors.Nero_3} />
           </VStack>
-          <AppTouchable
-            style={{
-              ...styles.previewBox,
-              borderColor: params?.videoUrl
-                ? Colors.GREEN_BRAND
-                : Colors.BORDER,
-            }}
-            onPress={() => navigate('VideoPreview')}>
-            <AppText
-              numberOfLines={1}
-              maxWidth={200}
-              color={Colors.PLACEHOLDER}>
-              {params?.videoUrl ? params?.videoUrl : 'Add video preview'}
-            </AppText>
-          </AppTouchable>
+          {isLiveContent && <VideoPreview name="previewUrl" />}
           <AppButton
+            mt={24}
             loading={loading}
             title="Continue"
             onPress={handleSubmit(onSubmit)}

@@ -267,10 +267,12 @@ declare global {
   type liveStoreType = {
     liveId: string;
     token: string;
+    liveType: LiveType;
     tokenCreateDate?: number;
     liveData?: any;
     setLiveId: (liveId: string) => void;
     setToken: (token: string) => void;
+    setLiveType: (liveType: LiveType) => void;
     setTokenCreateDate: (tokenCreateDate: number) => void;
     setLiveData: (liveData: any) => void;
   };

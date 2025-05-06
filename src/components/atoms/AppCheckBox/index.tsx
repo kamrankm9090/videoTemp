@@ -5,6 +5,9 @@ import BouncyCheckbox, {
 } from 'react-native-bouncy-checkbox';
 import {Colors} from '~/styles';
 import {fontFamily, fontSize} from '~/utils/style';
+import {AppText, VStack} from '~/components';
+
+type CheckBoxProps = {description?: string} & BouncyCheckboxProps;
 
 const AppCheckBox = React.forwardRef(
   (
@@ -15,21 +18,32 @@ const AppCheckBox = React.forwardRef(
       fillColor = Colors.PRIMARY,
       textStyle = styles.textStyle,
       unFillColor,
+      description,
       ...rest
-    }: BouncyCheckboxProps,
+    }: CheckBoxProps,
     ref: any,
   ) => {
     return (
-      <BouncyCheckbox
-        ref={ref}
-        {...rest}
-        size={size}
-        fillColor={fillColor}
-        textStyle={textStyle}
-        unFillColor={unFillColor}
-        innerIconStyle={innerIconStyle}
-        iconStyle={iconStyle}
-      />
+      <VStack space={12}>
+        <BouncyCheckbox
+          ref={ref}
+          {...rest}
+          size={size}
+          fillColor={fillColor}
+          textStyle={textStyle}
+          unFillColor={unFillColor}
+          innerIconStyle={innerIconStyle}
+          iconStyle={iconStyle}
+        />
+        {description && (
+          <AppText
+            lineHeight={22}
+            fontSize={fontSize.small}
+            color={Colors.Grey}>
+            {description}
+          </AppText>
+        )}
+      </VStack>
     );
   },
 );

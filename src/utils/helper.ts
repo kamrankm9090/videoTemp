@@ -58,11 +58,20 @@ export function copyToClipBoard({
   message && showSuccessMessage(message);
 }
 
-export const formatTime = (seconds: number) => {
+export function formatTime(seconds: number) {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
   return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-};
+}
+
+export function formatTimer(seconds: number) {
+  const mins = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, '0');
+  const secs = (seconds % 60).toString().padStart(2, '0');
+  return `${mins}:${secs}`;
+}
+
 // form helper
 export {useForm} from 'react-hook-form';
 export {Yup, yupResolver};
