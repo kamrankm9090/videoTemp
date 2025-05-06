@@ -1,9 +1,10 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {
   AppContainer,
   AppText,
   AppTouchable,
+  CategorySelector,
   HomeHeader,
   HStack,
   InviteFriendsCard,
@@ -29,6 +30,7 @@ interface SectionData {
 }
 
 const OffersScreen: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const {data: getUsers, isLoading: isLoadingGetUsers} =
     useInfiniteUser_GetCastersToFollowQuery();
 
@@ -182,11 +184,15 @@ const OffersScreen: React.FC = () => {
   return (
     <AppContainer>
       <HomeHeader />
+      <CategorySelector
+        selected={selectedCategory}
+        setSelected={setSelectedCategory}
+      />
       <FlatList
         keyExtractor={_i => _i?.id}
         showsVerticalScrollIndicator={false}
         data={sections}
-        contentContainerStyle={{gap: 16}}
+        contentContainerStyle={{gap: 16, margin:10}}
         renderItem={({item}) => <SectionRenderItem item={item} />}
         ListFooterComponent={<VStack style={{height: 60}} />}
       />

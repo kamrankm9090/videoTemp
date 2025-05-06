@@ -80,6 +80,7 @@ export {default as StreamItem} from './molecules/StreamItem';
 export {default as TrendingItem} from './molecules/TrendingItem';
 export {default as UserCardItem} from './molecules/UserCardItem';
 export {default as VideoPreview} from './molecules/VideoPreview';
+export {default as CategorySelector} from './molecules/CategorySelector';
 //#endregion ---------Molecules
 
 //#region ---------Organisms
