@@ -76,7 +76,11 @@ export {default as ContentDescriptionCard} from './molecules/ContentDescriptionC
 export {default as LiveCommentSection} from './molecules/LiveCommentSection';
 export {default as ContentViewerHeader} from './molecules/ContentViewerHeader';
 export {default as LiveHeader} from './molecules/LiveHeader';
+export {default as StreamItem} from './molecules/StreamItem';
+export {default as TrendingItem} from './molecules/TrendingItem';
+export {default as UserCardItem} from './molecules/UserCardItem';
 export {default as VideoPreview} from './molecules/VideoPreview';
+export {default as CategorySelector} from './molecules/CategorySelector';
 //#endregion ---------Molecules
 
 //#region ---------Organisms
@@ -93,5 +97,6 @@ export {default as ReportReasonAction} from './modals/ReportReasonAction';
 export {default as CreateOptionsAction} from './modals/CreateOptionsAction';
 export {default as CounterModal} from './modals/CounterModal';
 export {default as ConfirmationAction} from './modals/ConfirmationAction';
+export {default as OfferSelectOptionAction} from './modals/OfferSelectOptionAction';
 export {default as VideoRecorderModal} from './modals/VideoRecorderModal';
 //#endregion ---------Modals

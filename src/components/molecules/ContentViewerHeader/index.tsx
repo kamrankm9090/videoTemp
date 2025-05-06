@@ -2,18 +2,23 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Close2, LiveIcon, MoreIcon} from '~/assets/svgs';
 import {AppImage, AppText, AppTouchable, Center, HStack} from '~/components';
+import {goBack} from '~/navigation/methods';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
 
 const ContentViewerHeader = () => {
   return (
     <HStack space={8} mx={16} mt={12}>
-      <AppTouchable bg={Colors.BLACK_TRANSPARENT_4} p={16} rounded={12}>
+      <AppTouchable
+        bg={Colors.BLACK_TRANSPARENT_4}
+        p={16}
+        borderRadius={12}
+        onPress={() => goBack()}>
         <Close2 fill={Colors.WHITE} />
       </AppTouchable>
 
       <HStack flex={1} p={8} rounded={12} bg={Colors.BLACK_TRANSPARENT_4}>
-        <HStack alignItems="center" space={6} flex={1}>
+        <HStack space={6} flex={1}>
           <AppImage
             imageSource={{
               uri: 'https://randomuser.me/api/portraits/women/68.jpg',
@@ -38,9 +43,12 @@ const ContentViewerHeader = () => {
           </AppTouchable>
         </HStack>
 
-        <HStack alignItems="center" gap={8}>
-          <HStack alignItems="center" gap={4}>
-            <AppText fontSize={13} fontWeight="600" color={Colors.WHITE}>
+        <HStack space={8}>
+          <HStack space={4}>
+            <AppText
+              fontSize={fontSize.small}
+              fontWeight="600"
+              color={Colors.WHITE}>
               96
             </AppText>
             <Center w={18} h={18} rounded={9} bg={Colors.PRIMARY}>
