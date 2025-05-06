@@ -27,9 +27,8 @@ const CategorySelector = ({
           <AppTouchable
             onPress={() => setSelected(item)}
             bg={isActive ? Colors.PRIMARY : Colors.NIGHT_RIDER}
-            pb={10}
             px={10}
-            pt={5}
+            py={5}
             borderRadius={8}>
             <AppText
               fontWeight="500"
