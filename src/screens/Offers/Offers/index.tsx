@@ -184,15 +184,16 @@ const OffersScreen: React.FC = () => {
   return (
     <AppContainer>
       <HomeHeader />
-      <CategorySelector
-        selected={selectedCategory}
-        setSelected={setSelectedCategory}
-      />
+     
       <FlatList
         keyExtractor={_i => _i?.id}
         showsVerticalScrollIndicator={false}
         data={sections}
         contentContainerStyle={{gap: 16, margin:10}}
+        ListHeaderComponent={ <CategorySelector
+          selected={selectedCategory}
+          setSelected={setSelectedCategory}
+        />}
         renderItem={({item}) => <SectionRenderItem item={item} />}
         ListFooterComponent={<VStack style={{height: 60}} />}
       />

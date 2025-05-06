@@ -19,7 +19,6 @@ const CategorySelector = ({
       data={categories}
       keyExtractor={item => item}
       contentContainerStyle={{
-        paddingHorizontal: 10,
         gap: 8,
       }}
       renderItem={({item}) => {
