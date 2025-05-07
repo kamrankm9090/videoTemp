@@ -17,8 +17,18 @@ function VideoRecorderModal({onClose, onSelectVideo}: Props, ref: any) {
   }
 
   return (
-    <ModalContainer px={0} ref={ref} onDismiss={onClose}>
-      <VStack flex={1}>
+    <ModalContainer
+      px={0}
+      ref={ref}
+      style={{flexGrow:1}}
+      onDismiss={onClose}
+      animationIn="fadeIn"
+      animationOut="fadeOut"
+      animationInTiming={300}
+      animationOutTiming={300}
+      supportedOrientations={['portrait', 'landscape']}
+    >
+      <VStack flexGrow={1}>
         <ScreensHeader
           w="100%"
           zIndex={700}

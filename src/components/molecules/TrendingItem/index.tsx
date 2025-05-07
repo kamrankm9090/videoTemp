@@ -1,23 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {ArchiveIcon, HotSpot} from '~/assets/svgs';
-import {AppImage, AppText, HStack, VStack} from '~/components';
+import {AppText, AppVideoPlayer, HStack, VStack} from '~/components';
 import {Colors} from '~/styles';
+import {getFullImageUrl} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
 
 interface TrendingItemProps {
-  category: string;
-  title: string;
-  viewers: string;
-  imageUrl: string;
+  item: any;
 }
 
 const TrendingItem: React.FC<TrendingItemProps> = ({
-  category,
-  title,
-  viewers,
-  imageUrl,
+  item
 }) => {
+  const [isLoadingVideo, setIsLoadingVideo] = useState(true);
+
   return (
     <VStack
       minW={183}
@@ -35,22 +32,34 @@ const TrendingItem: React.FC<TrendingItemProps> = ({
         zIndex={1}>
         <VStack bg={Colors.BLUE_BRAND} py={5} px={15} rounded={20}>
           <AppText fontWeight="500" color={Colors.WHITE}>
-            {category}
+            {item?.live?.category}
           </AppText>
         </VStack>
         <ArchiveIcon />
       </HStack>
 
-      <AppImage imageSource={{uri: imageUrl}} style={styles.image} />
+      <AppVideoPlayer
+        style={styles.videoPlayer}
+        fullscreen={false}
+        controls={false}
+        resizeMode="contain"
+        source={{
+          uri: getFullImageUrl(item?.live?.recordUrl),
+        }}
+        onLoadStart={() => setIsLoadingVideo(true)}
+        onLoad={() => setIsLoadingVideo(false)}
+        onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}
+      />
+      {/* <AppImage imageSource={{uri: imageUrl}} style={styles.image} /> */}
 
       <HStack py={10} px={8} bg={Colors.BLACK}>
         <VStack flex={1} space={4}>
           <AppText fontFamily="medium" fontSize={fontSize.medium}>
-            {title}
+            {item?.live?.title}
           </AppText>
           <HStack space={8}>
             <HotSpot />
-            <AppText color={Colors.GARY_3}>{viewers} viewers</AppText>
+            <AppText color={Colors.GARY_3}>{item?.live?.viewCount} viewers</AppText>
           </HStack>
         </VStack>
       </HStack>
@@ -61,7 +70,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({
 export default TrendingItem;
 
 const styles = StyleSheet.create({
-  image: {
+  videoPlayer: {
     width: '100%',
     height: 200,
     borderRadius: 8,

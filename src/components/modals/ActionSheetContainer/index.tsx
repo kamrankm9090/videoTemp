@@ -17,7 +17,7 @@ import {AppKeyboardAwareScrollView, AppLoading, Box} from '~/components';
 import {useGetStatusBarHeight} from '~/hooks';
 import {Colors} from '~/styles';
 import {isAndroid} from '~/utils/helper';
-import {width} from '~/utils/style';
+import {height, width} from '~/utils/style';
 import {toastConfig} from '~/utils/utils';
 
 type Props = {

@@ -18,6 +18,7 @@ query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: 
                     isDraft
                     category
                     price
+                    recordUrl
                     isFree
                     previewUrl
                     value
@@ -76,6 +77,7 @@ query live_getLiveStreams ($skip: Int, $take: Int, $where: LiveDtoFilterInput, $
           createdDate
           description
           photoUrl
+          recordUrl
           title
           viewCount
         }
@@ -107,6 +109,7 @@ query live_getRecommendedLives($skip: Int, $take: Int, $where: LiveDtoFilterInpu
           createdDate
           description
           photoUrl
+          recordUrl
           title
           viewCount
           user{
@@ -142,6 +145,7 @@ query live_getTrendingLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, 
           category
           createdDate
           description
+          recordUrl
           liveType
           photoUrl
           title
@@ -174,6 +178,7 @@ query live_getNewLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $orde
           createdDate
           description
           photoUrl
+          recordUrl
           title
           viewCount
           user{

@@ -2372,6 +2372,7 @@ export type Live = {
   isDraft: Scalars['Boolean']['output'];
   isFree: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  likeCount: Scalars['Int']['output'];
   liveType: LiveType;
   photoUrl?: Maybe<Scalars['String']['output']>;
   previewUrl?: Maybe<Scalars['String']['output']>;
@@ -2383,6 +2384,7 @@ export type Live = {
   publishingScheduleTime?: Maybe<Scalars['TimeSpan']['output']>;
   purchaseCount: Scalars['Int']['output'];
   rateAverage: Scalars['Float']['output'];
+  recordUrl?: Maybe<Scalars['String']['output']>;
   roles?: Maybe<Array<Maybe<LiveRole>>>;
   setSchedule: Scalars['Boolean']['output'];
   shareCount: Scalars['Int']['output'];
@@ -2491,6 +2493,7 @@ export type LiveFilterInput = {
   isDraft?: InputMaybe<BooleanOperationFilterInput>;
   isFree?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  likeCount?: InputMaybe<IntOperationFilterInput>;
   liveType?: InputMaybe<LiveTypeOperationFilterInput>;
   or?: InputMaybe<Array<LiveFilterInput>>;
   photoUrl?: InputMaybe<StringOperationFilterInput>;
@@ -2503,6 +2506,7 @@ export type LiveFilterInput = {
   publishingScheduleTime?: InputMaybe<TimeSpanOperationFilterInput>;
   purchaseCount?: InputMaybe<IntOperationFilterInput>;
   rateAverage?: InputMaybe<FloatOperationFilterInput>;
+  recordUrl?: InputMaybe<StringOperationFilterInput>;
   roles?: InputMaybe<ListFilterInputTypeOfLiveRoleFilterInput>;
   setSchedule?: InputMaybe<BooleanOperationFilterInput>;
   shareCount?: InputMaybe<IntOperationFilterInput>;
@@ -2582,6 +2586,7 @@ export type LiveSortInput = {
   isDraft?: InputMaybe<SortEnumType>;
   isFree?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
+  likeCount?: InputMaybe<SortEnumType>;
   liveType?: InputMaybe<SortEnumType>;
   photoUrl?: InputMaybe<SortEnumType>;
   previewUrl?: InputMaybe<SortEnumType>;
@@ -2593,6 +2598,7 @@ export type LiveSortInput = {
   publishingScheduleTime?: InputMaybe<SortEnumType>;
   purchaseCount?: InputMaybe<SortEnumType>;
   rateAverage?: InputMaybe<SortEnumType>;
+  recordUrl?: InputMaybe<SortEnumType>;
   setSchedule?: InputMaybe<SortEnumType>;
   shareCount?: InputMaybe<SortEnumType>;
   title?: InputMaybe<SortEnumType>;
@@ -2856,6 +2862,7 @@ export type Mutation = {
   community_createMessage?: Maybe<ResponseBaseOfCommunityMessage>;
   community_createRequest?: Maybe<ResponseBaseOfCommunityRequest>;
   community_deleteCommunity?: Maybe<ResponseStatus>;
+  community_deleteMessage?: Maybe<ResponseStatus>;
   community_joinCommunity?: Maybe<ResponseBaseOfCommunityUser>;
   community_leaveCommunity?: Maybe<ResponseBaseOfCommunityUser>;
   community_rejectRequest?: Maybe<ResponseStatus>;
@@ -2985,6 +2992,10 @@ export type MutationCommunity_CreateRequestArgs = {
 
 export type MutationCommunity_DeleteCommunityArgs = {
   communityId: Scalars['Int']['input'];
+};
+
+export type MutationCommunity_DeleteMessageArgs = {
+  messageId: Scalars['Int']['input'];
 };
 
 export type MutationCommunity_JoinCommunityArgs = {
@@ -3868,6 +3879,7 @@ export type Query = {
   defaultViolation_getDefaultViolations: ListResponseBaseOfDefaultViolation;
   live_getLiveStreams?: Maybe<ListResponseBaseOfLiveDto>;
   live_getLives?: Maybe<ListResponseBaseOfLiveDto>;
+  live_getLivesForHomePage?: Maybe<ListResponseBaseOfLiveDto>;
   live_getNewLives?: Maybe<ListResponseBaseOfLiveDto>;
   live_getRecommendedLives?: Maybe<ListResponseBaseOfLiveDto>;
   live_getTrendingLives?: Maybe<ListResponseBaseOfLiveDto>;
@@ -3926,6 +3938,10 @@ export type QueryAgora_GetRecordFilesArgs = {
 
 export type QueryCategory_GetCategoryArgs = {
   entityId: Scalars['Int']['input'];
+};
+
+export type QueryLive_GetLivesForHomePageArgs = {
+  category?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type QueryMessage_GetConversationArgs = {
@@ -5659,6 +5675,7 @@ export type Live_GetLivesQuery = {
           isDraft: boolean;
           category?: string | null;
           price: any;
+          recordUrl?: string | null;
           isFree: boolean;
           previewUrl?: string | null;
           value: any;
@@ -5729,6 +5746,7 @@ export type Live_GetLiveStreamsQuery = {
           createdDate: any;
           description?: string | null;
           photoUrl?: string | null;
+          recordUrl?: string | null;
           title?: string | null;
           viewCount: number;
         } | null;
@@ -5771,6 +5789,7 @@ export type Live_GetRecommendedLivesQuery = {
           createdDate: any;
           description?: string | null;
           photoUrl?: string | null;
+          recordUrl?: string | null;
           title?: string | null;
           viewCount: number;
           user?: {
@@ -5817,6 +5836,7 @@ export type Live_GetTrendingLivesQuery = {
           category?: string | null;
           createdDate: any;
           description?: string | null;
+          recordUrl?: string | null;
           liveType: LiveType;
           photoUrl?: string | null;
           title?: string | null;
@@ -5861,6 +5881,7 @@ export type Live_GetNewLivesQuery = {
           createdDate: any;
           description?: string | null;
           photoUrl?: string | null;
+          recordUrl?: string | null;
           title?: string | null;
           viewCount: number;
           user?: {
@@ -6978,6 +6999,7 @@ export const Live_GetLivesDocument = `
           isDraft
           category
           price
+          recordUrl
           isFree
           previewUrl
           value
@@ -7075,6 +7097,7 @@ export const Live_GetLiveStreamsDocument = `
           createdDate
           description
           photoUrl
+          recordUrl
           title
           viewCount
         }
@@ -7145,6 +7168,7 @@ export const Live_GetRecommendedLivesDocument = `
           createdDate
           description
           photoUrl
+          recordUrl
           title
           viewCount
           user {
@@ -7225,6 +7249,7 @@ export const Live_GetTrendingLivesDocument = `
           category
           createdDate
           description
+          recordUrl
           liveType
           photoUrl
           title
@@ -7297,6 +7322,7 @@ export const Live_GetNewLivesDocument = `
           createdDate
           description
           photoUrl
+          recordUrl
           title
           viewCount
           user {
