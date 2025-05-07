@@ -3,6 +3,7 @@ import {useController} from 'react-hook-form';
 import {StyleSheet, ViewStyle} from 'react-native';
 import {
   ActionSheetContainer,
+  AppContainer,
   AppFlatList,
   AppPressable,
   AppSelect,
@@ -100,7 +101,7 @@ const AppDropDown = React.forwardRef(
     );
 
     return (
-      <>
+      <AppContainer>
         <AppSelect
           name={name}
           label={label}
@@ -129,7 +130,7 @@ const AppDropDown = React.forwardRef(
             />
           </Box>
         </ActionSheetContainer>
-      </>
+      </AppContainer>
     );
   },
 );

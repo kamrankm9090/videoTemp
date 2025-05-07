@@ -72,18 +72,7 @@ const OffersScreen: React.FC = () => {
       id: '1',
       title: 'Recommended',
       renderItem: ({item, index}) => {
-        return (
-          <StreamItem
-            category={item?.live?.category}
-            title={item?.live?.title}
-            description={item?.live?.description}
-            viewers={item?.live?.viewCount}
-            imageUrl={item?.live?.photoUrl}
-            profileImageUrl={item?.live?.user?.photoUrl}
-            live={item?.live}
-            recordEnded={item?.recordEnded}
-          />
-        );
+        return <StreamItem item={item} />;
       },
       data: recommended_lives,
     },
@@ -91,14 +80,7 @@ const OffersScreen: React.FC = () => {
       id: '2',
       title: 'Trending',
       renderItem: ({item, index}) => {
-        return (
-          <TrendingItem
-            category={item?.live?.category}
-            title={item?.live?.title}
-            viewers={item?.live?.viewCount}
-            imageUrl={item?.live?.photoUrl}
-          />
-        );
+        return <TrendingItem item={item} />;
       },
       data: trending_lives,
     },
@@ -114,14 +96,7 @@ const OffersScreen: React.FC = () => {
       id: '4',
       title: 'Live streams',
       renderItem: ({item, index}) => {
-        return (
-          <TrendingItem
-            category={item?.live?.category}
-            title={item?.live?.title}
-            viewers={item?.live?.viewCount}
-            imageUrl={item?.live?.photoUrl}
-          />
-        );
+        return <TrendingItem item={item} />;
       },
       data: live_streams,
     },
@@ -137,18 +112,7 @@ const OffersScreen: React.FC = () => {
       id: '6',
       title: 'New Live',
       renderItem: ({item, index}) => {
-        return (
-          <StreamItem
-            category={item?.live?.category}
-            title={item?.live?.title}
-            description={item?.live?.description}
-            viewers={item?.live?.viewCount}
-            imageUrl={item?.live?.photoUrl}
-            profileImageUrl={item?.live?.user?.photoUrl}
-            live={item?.live}
-            recordEnded={item?.recordEnded}
-          />
-        );
+        return <StreamItem item={item} />;
       },
       data: new_lives,
     },
