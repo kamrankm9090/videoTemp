@@ -78,6 +78,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
             style={styles.videoPlayer}
             fullscreen={false}
             controls={false}
+            resizeMode='contain'
             source={{
               uri: getFullImageUrl(
                 data?.agora_getRecordFiles?.result?.items?.[0]?.name,
