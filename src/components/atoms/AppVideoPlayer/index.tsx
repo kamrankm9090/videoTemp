@@ -14,7 +14,7 @@ import Video, {
   ReactVideoProps,
   VideoRef,
 } from 'react-native-video';
-import {Center, AppText} from '~/components';
+import {AppText, Center} from '~/components';
 import {Colors} from '~/styles';
 import {formatTime} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
@@ -94,7 +94,10 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
           onLoad={handleLoad}
           onError={handleError}
           onProgress={handleProgress}
-          style={StyleSheet.absoluteFill}
+          style={[
+            StyleSheet.absoluteFill,
+            {backgroundColor: Colors.GARY_3, borderRadius: 12},
+          ]}
         />
         {showTimer && (
           <Center

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {ActivityIndicator, StyleSheet} from 'react-native';
 import {useSnapshot} from 'valtio';
 import {ArchiveIcon, HotSpot, MoreHIcon} from '~/assets/svgs';
 import {
@@ -81,17 +81,23 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         controls={false}
         resizeMode="contain"
         source={{
-          uri: getFullImageUrl(item?.live?.recordUrl),
+          uri: "",
+          // uri: getFullImageUrl(item?.live?.recordUrl),
         }}
+        showTimer
         onLoadStart={() => setIsLoadingVideo(true)}
         onLoad={() => setIsLoadingVideo(false)}
-        onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}
-      />
-
-      {/* <AppImage imageSource={{uri: imageUrl}} style={styles.image} /> */}
+        onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
+        {isLoadingVideo && (
+          <ActivityIndicator color={Colors.GARY_2}  style={StyleSheet.absoluteFill} />
+        )}
+      </AppVideoPlayer>
 
       <HStack py={10} px={12} bg={Colors.BLACK}>
-        <AppImage imageSource={{uri: item?.live?.user?.photoUrl}} style={styles.avatar} />
+        <AppImage
+          imageSource={{uri: item?.live?.user?.photoUrl}}
+          style={styles.avatar}
+        />
 
         <VStack flex={1} space={4}>
           <AppText fontWeight="500" fontSize={fontSize.medium}>
@@ -102,7 +108,9 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
           </AppText>
           <HStack space={8}>
             <HotSpot color={Colors.ERROR_BACKGROUND} />
-            <AppText color={Colors.GARY_3}>{item?.live?.viewCount} viewers</AppText>
+            <AppText color={Colors.GARY_3}>
+              {item?.live?.viewCount} viewers
+            </AppText>
           </HStack>
         </VStack>
 
@@ -120,7 +128,6 @@ const styles = StyleSheet.create({
   videoPlayer: {
     width: '100%',
     height: 200,
-    borderRadius: 8,
   },
   avatar: {
     width: 50,
