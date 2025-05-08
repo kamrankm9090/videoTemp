@@ -62,11 +62,7 @@ const OffersScreen: React.FC = () => {
     });
 
   const {data: getNewLives, isLoading: isLoadingNewLives} =
-    useLive_GetNewLivesQuery({
-      order: {
-        recordEnded: SortEnumType.Desc,
-      },
-    });
+    useLive_GetNewLivesQuery();
 
   const new_lives = useMemo(() => {
     return getNewLives?.live_getNewLives?.result?.items || [];

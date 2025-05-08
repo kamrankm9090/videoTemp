@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ActivityIndicator, StyleSheet} from 'react-native';
 import { useSnapshot } from 'valtio';
 import {ArchiveIcon, HotSpot} from '~/assets/svgs';
-import {AppText, AppVideoPlayer, HStack, VStack} from '~/components';
+import {AppIndicator, AppText, AppVideoPlayer, HStack, VStack} from '~/components';
 import { useAgora_CreateTokenMutation } from '~/graphql/generated';
 import { navigate } from '~/navigation/methods';
 import { liveStore } from '~/stores';
@@ -71,6 +71,8 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
         style={styles.videoPlayer}
         fullscreen={false}
         controls={false}
+        muted={true}
+        volume={0}
         resizeMode="contain"
         source={{
           uri: getFullImageUrl(item?.live?.recordUrl),
@@ -79,7 +81,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
         onLoad={() => setIsLoadingVideo(false)}
         onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
         {isLoadingVideo && (
-          <ActivityIndicator color={Colors.GARY_2} style={StyleSheet.absoluteFill} />
+          <AppIndicator color={Colors.GARY_2} style={StyleSheet.absoluteFill} />
         )}
       </AppVideoPlayer>
       <HStack py={10} px={8} bg={Colors.BLACK}>

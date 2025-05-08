@@ -4,6 +4,7 @@ import {useSnapshot} from 'valtio';
 import {ArchiveIcon, HotSpot, MoreHIcon} from '~/assets/svgs';
 import {
   AppImage,
+  AppIndicator,
   AppText,
   AppTouchable,
   AppVideoPlayer,
@@ -29,6 +30,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
 
+    
   function onPressHandler() {
     if (item?.recordEnded) {
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
@@ -80,6 +82,8 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         style={styles.videoPlayer}
         fullscreen={false}
         controls={false}
+        muted={true}
+        volume={0}
         resizeMode="contain"
         source={{
           uri: getFullImageUrl(item?.live?.recordUrl),
@@ -89,7 +93,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         onLoad={() => setIsLoadingVideo(false)}
         onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
         {isLoadingVideo && (
-          <ActivityIndicator color={Colors.GARY_2}  style={StyleSheet.absoluteFill} />
+          <AppIndicator color={Colors.GARY_2}  style={StyleSheet.absoluteFill} />
         )}
       </AppVideoPlayer>
 
