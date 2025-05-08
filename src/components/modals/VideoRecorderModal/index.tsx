@@ -6,6 +6,7 @@ import {
   VStack,
 } from '~/components';
 import {Colors} from '~/styles';
+import {height} from '~/utils/style';
 
 type Props = {
   onClose?: () => void;
@@ -20,15 +21,13 @@ function VideoRecorderModal({onClose, onSelectVideo}: Props, ref: any) {
     <ModalContainer
       px={0}
       ref={ref}
-      style={{flexGrow:1}}
       onDismiss={onClose}
       animationIn="fadeIn"
       animationOut="fadeOut"
       animationInTiming={300}
       animationOutTiming={300}
-      supportedOrientations={['portrait', 'landscape']}
-    >
-      <VStack flexGrow={1}>
+      supportedOrientations={['portrait', 'landscape']}>
+      <VStack w="100%" h={height} flexGrow={1}>
         <ScreensHeader
           w="100%"
           zIndex={700}

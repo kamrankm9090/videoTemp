@@ -37,7 +37,7 @@ export default function ContentViewerLiveScreen() {
     engine,
   } = useInitRtcEngine(enableVideo);
 
-  const {liveData} = useSnapshot(liveStore);
+  const {liveData, resetLiveStore} = useSnapshot(liveStore);
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,6 +62,7 @@ export default function ContentViewerLiveScreen() {
 
   const leaveChannel = () => {
     engine.current.leaveChannel();
+    resetLiveStore();
     goBack();
   };
 
@@ -133,6 +134,10 @@ export default function ContentViewerLiveScreen() {
   );
 
   function renderVideo(user: VideoCanvas): ReactElement | undefined {
+    if (user.uid === 0 && remoteUsers.length === 0) {
+      return;
+    }
+
     return (
       <RtcSurfaceView
         style={styles.video}
