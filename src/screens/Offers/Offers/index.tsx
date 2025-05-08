@@ -69,6 +69,14 @@ const OffersScreen: React.FC = () => {
 
   const sections: SectionData[] = [
     {
+      id: '4',
+      title: 'Live streams',
+      renderItem: ({item, index}) => {
+        return <TrendingItem item={item} />;
+      },
+      data: live_streams,
+    },
+    {
       id: '1',
       title: 'Recommended',
       renderItem: ({item, index}) => {
@@ -92,14 +100,7 @@ const OffersScreen: React.FC = () => {
       },
       data: users ? users : [],
     },
-    {
-      id: '4',
-      title: 'Live streams',
-      renderItem: ({item, index}) => {
-        return <TrendingItem item={item} />;
-      },
-      data: live_streams,
-    },
+    
     {
       id: '5',
       title: '',

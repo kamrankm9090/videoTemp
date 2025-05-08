@@ -12,9 +12,10 @@ import {StyleSheet, View} from 'react-native';
 import Video, {
   BufferingStrategyType,
   ReactVideoProps,
+  VideoNativeProps,
   VideoRef,
 } from 'react-native-video';
-import {Center, AppText} from '~/components';
+import {AppText, Center} from '~/components';
 import {Colors} from '~/styles';
 import {formatTime} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
@@ -22,17 +23,19 @@ import {fontSize} from '~/utils/style';
 type AppVideoPlayerProps = {
   isPlaying?: boolean;
   showTimer?: boolean;
+  videoStyle?: VideoNativeProps['style'];
 } & ReactVideoProps;
 
 const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
   function AppVideoPlayerBase(
     {
       isPlaying = true,
-      style = styles.video,
+      style = styles.container,
       resizeMode = 'cover',
       repeat = true,
       source,
       showTimer,
+      videoStyle = styles.video,
       ...rest
     },
     ref,
@@ -76,7 +79,7 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
     }, [durationState, curTime, showTimer]);
 
     return (
-      <View style={[style, styles.container]}>
+      <View style={[style, styles.contentContainer]}>
         <Video
           {...rest}
           ref={videoRef}
@@ -94,7 +97,7 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
           onLoad={handleLoad}
           onError={handleError}
           onProgress={handleProgress}
-          style={StyleSheet.absoluteFill}
+          style={[StyleSheet.absoluteFill, videoStyle]}
         />
         {showTimer && (
           <Center
@@ -118,15 +121,16 @@ const AppVideoPlayer = memo(AppVideoPlayerBase);
 export default AppVideoPlayer;
 
 const styles = StyleSheet.create({
-  video: {
+  container: {
     width: '100%',
     height: '100%',
     borderRadius: 16,
     overflow: 'hidden',
     backgroundColor: Colors.BLACK,
   },
-  container: {
+  contentContainer: {
     position: 'relative',
     backgroundColor: Colors.BLACK,
   },
+  video: {backgroundColor: Colors.GARY_3, borderRadius: 12},
 });
