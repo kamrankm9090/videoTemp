@@ -131,7 +131,6 @@ export default function LiveScreen() {
           resetRoot('MainTabs');
           hideSheet('confirmation-action');
           showInfoMessage('Your live ended');
-          setLiveStarted(false);
         },
       },
     });
@@ -227,7 +226,7 @@ function CreateLiveFooter({
 
   return (
     <VStack
-      zIndex={779}
+      zIndex={999}
       px={24}
       w="100%"
       bottom={insets.bottom}
