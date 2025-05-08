@@ -53,6 +53,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
     }
   }
 
+
   return (
     <AppTouchable
       onPress={onPressHandler}
@@ -81,8 +82,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         controls={false}
         resizeMode="contain"
         source={{
-          uri: '',
-          // uri: getFullImageUrl(item?.live?.recordUrl),
+          uri: getFullImageUrl(item?.live?.recordUrl),
         }}
         showTimer
         onLoadStart={() => setIsLoadingVideo(true)}
