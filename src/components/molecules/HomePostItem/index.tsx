@@ -80,7 +80,7 @@ export default function HomePostItem({
           uri: item?.live?.previewUrl,
         }}
       />
-      <LiveBadge isLive={item?.live?.liveType === LiveType.LiveContent} />
+      <LiveBadge isLive={!item?.recordEnded} />
       <SaveButton isSaved={item?.isBookmark} liveId={item?.live?.id} />
 
       <SectionUserRow data={item} />
