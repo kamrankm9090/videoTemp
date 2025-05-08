@@ -73,6 +73,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
         controls={false}
         muted={true}
         volume={0}
+        repeat={true}
         resizeMode="contain"
         source={{
           uri: getFullImageUrl(item?.live?.recordUrl),

@@ -84,6 +84,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         controls={false}
         muted={true}
         volume={0}
+        repeat={true}
         resizeMode="contain"
         source={{
           uri: getFullImageUrl(item?.live?.recordUrl),

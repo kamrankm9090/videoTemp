@@ -15,7 +15,6 @@ import {
   VStack,
 } from '~/components';
 import {
-  SortEnumType,
   useInfiniteUser_GetCastersToFollowQuery,
   useLive_GetLiveStreamsQuery,
   useLive_GetNewLivesQuery,
@@ -34,32 +33,16 @@ interface SectionData {
 const OffersScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const {data: getUsers, isLoading: isLoadingGetUsers} =
-    useInfiniteUser_GetCastersToFollowQuery({
-      order: {
-        createdDate: SortEnumType?.Desc,
-      },
-    });
+    useInfiniteUser_GetCastersToFollowQuery();
 
   const {data: getLiveStreams, isLoading: isLoadingLiveStreams} =
-    useLive_GetLiveStreamsQuery({
-      order: {
-        recordEnded: SortEnumType?.Desc,
-      },
-    });
+    useLive_GetLiveStreamsQuery();
 
   const {data: getRecommendedLives, isLoading: isLoadingRecommendedLives} =
-    useLive_GetRecommendedLivesQuery({
-      order: {
-        recordEnded: SortEnumType?.Desc,
-      },
-    });
+    useLive_GetRecommendedLivesQuery();
 
   const {data: getTrendingLives, isLoading: isLoadingTrendingLives} =
-    useLive_GetTrendingLivesQuery({
-      order: {
-        recordEnded: SortEnumType?.Desc,
-      },
-    });
+    useLive_GetTrendingLivesQuery();
 
   const {data: getNewLives, isLoading: isLoadingNewLives} =
     useLive_GetNewLivesQuery();
