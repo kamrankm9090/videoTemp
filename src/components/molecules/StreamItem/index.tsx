@@ -15,6 +15,7 @@ import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
+import { getFullImageUrl } from '~/utils/helper';
 import {fontSize} from '~/utils/style';
 import {showSheet} from '~/utils/utils';
 
@@ -29,6 +30,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
 
+    
   function onPressHandler() {
     if (item?.recordEnded) {
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
@@ -80,6 +82,9 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         style={styles.videoPlayer}
         fullscreen={false}
         controls={false}
+        muted={true}
+        volume={0}
+        repeat={true}
         resizeMode="contain"
         source={{
           uri: getFullImageUrl(item?.live?.recordUrl),
@@ -89,7 +94,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         onLoad={() => setIsLoadingVideo(false)}
         onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
         {isLoadingVideo && (
-          <AppIndicator color={Colors.GARY_2} style={StyleSheet.absoluteFill} />
+          <AppIndicator color={Colors.GARY_2}  style={StyleSheet.absoluteFill} />
         )}
       </AppVideoPlayer>
 

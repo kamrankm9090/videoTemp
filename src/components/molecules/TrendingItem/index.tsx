@@ -77,6 +77,9 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
         style={styles.videoPlayer}
         fullscreen={false}
         controls={false}
+        muted={true}
+        volume={0}
+        repeat={true}
         resizeMode="contain"
         source={{
           uri: getFullImageUrl(item?.live?.recordUrl),
