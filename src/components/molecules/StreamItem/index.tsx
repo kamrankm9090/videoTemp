@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useSnapshot} from 'valtio';
 import {ArchiveIcon, HotSpot, MoreHIcon} from '~/assets/svgs';
 import {
   AppImage,
+  AppIndicator,
   AppText,
   AppTouchable,
   AppVideoPlayer,
@@ -14,7 +15,6 @@ import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
-import {getFullImageUrl} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
 import {showSheet} from '~/utils/utils';
 
@@ -89,7 +89,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         onLoad={() => setIsLoadingVideo(false)}
         onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
         {isLoadingVideo && (
-          <ActivityIndicator color={Colors.GARY_2}  style={StyleSheet.absoluteFill} />
+          <AppIndicator color={Colors.GARY_2} style={StyleSheet.absoluteFill} />
         )}
       </AppVideoPlayer>
 

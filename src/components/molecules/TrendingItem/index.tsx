@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, StyleSheet} from 'react-native';
-import { useSnapshot } from 'valtio';
+import {StyleSheet} from 'react-native';
+import {useSnapshot} from 'valtio';
 import {ArchiveIcon, HotSpot} from '~/assets/svgs';
-import {AppText, AppVideoPlayer, HStack, VStack} from '~/components';
-import { useAgora_CreateTokenMutation } from '~/graphql/generated';
-import { navigate } from '~/navigation/methods';
-import { liveStore } from '~/stores';
+import {
+  AppIndicator,
+  AppText,
+  AppVideoPlayer,
+  HStack,
+  VStack,
+} from '~/components';
+import {useAgora_CreateTokenMutation} from '~/graphql/generated';
+import {navigate} from '~/navigation/methods';
+import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
@@ -20,29 +26,29 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
   const {mutate: mutateCreateAgoraToken} = useAgora_CreateTokenMutation();
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
-    function onPressHandler() {
-      if (item?.recordEnded) {
-        navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
-      } else {
-        const liveId = item?.live?.id?.toString();
-        mutateCreateAgoraToken(
-          {channelName: liveId, publisher: true},
-          {
-            onSuccess: res => {
-              if (res?.agora_createToken?.status?.code === 1) {
-                setLiveData(item);
-                setLiveId(liveId);
-                setToken(res?.agora_createToken?.result || '');
-                setTokenCreateDate(Date.now());
-                navigate('HomeStack', {
-                  screen: 'ContentViewerLive',
-                });
-              }
-            },
+  function onPressHandler() {
+    if (item?.recordEnded) {
+      navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
+    } else {
+      const liveId = item?.live?.id?.toString();
+      mutateCreateAgoraToken(
+        {channelName: liveId, publisher: true},
+        {
+          onSuccess: res => {
+            if (res?.agora_createToken?.status?.code === 1) {
+              setLiveData(item);
+              setLiveId(liveId);
+              setToken(res?.agora_createToken?.result || '');
+              setTokenCreateDate(Date.now());
+              navigate('HomeStack', {
+                screen: 'ContentViewerLive',
+              });
+            }
           },
-        );
-      }
+        },
+      );
     }
+  }
 
   return (
     <VStack
@@ -79,7 +85,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
         onLoad={() => setIsLoadingVideo(false)}
         onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
         {isLoadingVideo && (
-          <ActivityIndicator color={Colors.GARY_2} style={StyleSheet.absoluteFill} />
+          <AppIndicator color={Colors.GARY_2} style={StyleSheet.absoluteFill} />
         )}
       </AppVideoPlayer>
       <HStack py={10} px={8} bg={Colors.BLACK}>
