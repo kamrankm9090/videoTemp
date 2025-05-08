@@ -15,6 +15,7 @@ import {
   VStack,
 } from '~/components';
 import {
+  SortEnumType,
   useInfiniteUser_GetCastersToFollowQuery,
   useLive_GetLiveStreamsQuery,
   useLive_GetNewLivesQuery,
@@ -33,19 +34,39 @@ interface SectionData {
 const OffersScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const {data: getUsers, isLoading: isLoadingGetUsers} =
-    useInfiniteUser_GetCastersToFollowQuery();
+    useInfiniteUser_GetCastersToFollowQuery({
+      order: {
+        createdDate: SortEnumType?.Desc,
+      },
+    });
 
   const {data: getLiveStreams, isLoading: isLoadingLiveStreams} =
-    useLive_GetLiveStreamsQuery();
+    useLive_GetLiveStreamsQuery({
+      order: {
+        recordEnded: SortEnumType?.Desc,
+      },
+    });
 
   const {data: getRecommendedLives, isLoading: isLoadingRecommendedLives} =
-    useLive_GetRecommendedLivesQuery();
+    useLive_GetRecommendedLivesQuery({
+      order: {
+        recordEnded: SortEnumType?.Desc,
+      },
+    });
 
   const {data: getTrendingLives, isLoading: isLoadingTrendingLives} =
-    useLive_GetTrendingLivesQuery();
+    useLive_GetTrendingLivesQuery({
+      order: {
+        recordEnded: SortEnumType?.Desc,
+      },
+    });
 
   const {data: getNewLives, isLoading: isLoadingNewLives} =
-    useLive_GetNewLivesQuery();
+    useLive_GetNewLivesQuery({
+      order: {
+        recordEnded: SortEnumType.Desc,
+      },
+    });
 
   const new_lives = useMemo(() => {
     return getNewLives?.live_getNewLives?.result?.items || [];
@@ -100,7 +121,7 @@ const OffersScreen: React.FC = () => {
       },
       data: users ? users : [],
     },
-    
+
     {
       id: '5',
       title: '',
