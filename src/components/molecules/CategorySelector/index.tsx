@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import AppText from '~/components/atoms/AppText';
 import AppTouchable from '~/components/atoms/AppTouchable';
+import {useInfiniteCategory_GetCategoriesQuery} from '~/graphql/generated';
 import {Colors} from '~/styles';
 
-const categories = ['All', 'Beauty', 'Sports', 'Games', 'Home', 'Tv & Audio'];
+// const categories = ['All', 'Beauty', 'Sports', 'Games', 'Home', 'Tv & Audio'];
 
 const CategorySelector = ({
   selected,
@@ -14,14 +15,28 @@ const CategorySelector = ({
   selected: string;
   setSelected: (category: string) => void;
 }) => {
+  const {
+    data: getCategories,
+    isLoading: isLoadingGetCategories,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteCategory_GetCategoriesQuery({});
+
+  const categories = useMemo(() => {
+    const data = getCategories?.pages
+      ?.map(a => a?.category_getCategories?.result?.items)
+      .flat();
+    return data?.map((i) => i?.title)
+  }, [getCategories]);
+  
   return (
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
       data={categories}
-      keyExtractor={item => item}
+      keyExtractor={item => `key ${item}`}
       contentContainerStyle={styles.contentContainerStyle}
-      renderItem={({item}) => {
+      renderItem={({item}:any) => {
         const isActive = item === selected;
         const bgColor = isActive ? Colors.PRIMARY : Colors.NIGHT_RIDER;
         const textColor = isActive ? Colors.WHITE : Colors.GARY_3;
