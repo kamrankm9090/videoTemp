@@ -13,6 +13,7 @@ import {
   AppContainer,
   AppGradientView,
   AppIndicator,
+  AppInput,
   AppText,
   AppTouchable,
   AppVideoPlayer,
@@ -29,6 +30,8 @@ import {height, width} from '~/utils/style';
 
 const ContentViewerScreen = ({route}: NavigationProp) => {
   const params: any = route?.params;
+  console.log( params?.item?.live?.id);
+  
   const [fullScreen, setFullScreen] = useState(true);
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
 
@@ -72,13 +75,12 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
 
   return (
     <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
-      <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
         <VStack flex={1} position="relative">
           <AppVideoPlayer
             style={styles.videoPlayer}
             fullscreen={false}
             controls={false}
-            resizeMode='contain'
+            resizeMode="contain"
             source={{
               uri: getFullImageUrl(
                 data?.agora_getRecordFiles?.result?.items?.[0]?.name,
@@ -170,6 +172,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
               ))}
             </VStack>
           )}
+       
 
           {!fullScreen ? (
             <VStack style={styles.contentArea}>
@@ -190,7 +193,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
                 bottom={20}
                 zIndex={2}
                 pt={40}>
-                <LiveCommentSection />
+                <LiveCommentSection  key={1}/>
               </VStack>
               <AppGradientView
                 colors={['transparent', Colors.BLACK]}
@@ -200,7 +203,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
             </>
           )}
         </VStack>
-      </AppContainer>
+      
     </AppContainer>
   );
 };

@@ -1,93 +1,138 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import {useRoute} from '@react-navigation/native';
+import React, {useCallback, useRef, useState} from 'react';
+import {KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
+import {useSnapshot} from 'valtio';
 import {Send2Icon} from '~/assets/svgs';
 import {
   AppFlatList,
-  AppImage,
+  AppIndicator,
   AppInput,
-  AppText,
   AppTouchable,
   HStack,
   VStack,
 } from '~/components';
+import {queryClient} from '~/components/atoms/QueryClientProvider';
+import {
+  useLive_CreateCommentMutation,
+  useLive_GetLiveCommentsQuery,
+} from '~/graphql/generated';
+import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
-import {fontSize} from '~/utils/style';
-
-type Comment = {
-  id: string;
-  username: string;
-  message: string;
-  avatar?: string;
-};
-
-const dummyComments: Comment[] = [
-  {
-    id: '1',
-    username: 'Johnson joy',
-    message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    avatar: 'https://randomuser.me/api/portraits/men/10.jpg',
-  },
-  {
-    id: '2',
-    username: 'Sara902',
-    message: 'Hiii micale john',
-    avatar: 'https://randomuser.me/api/portraits/women/14.jpg',
-  },
-  {
-    id: '3',
-    username: 'Sara902',
-    message: 'Hiii micale john',
-    avatar: 'https://randomuser.me/api/portraits/women/12.jpg',
-  },
-];
+import {fontSize, height} from '~/utils/style';
+import LiveCommentItem from './LiveCommentItem';
 
 export default function LiveCommentSection() {
+  const [text, setText] = useState('');
+  const {liveData} = useSnapshot(liveStore);
+  const {params}: any = useRoute();
+  const listRef: any = useRef(null);
+  const contentHeight = useRef(0);
+
+  const liveId = liveData?.id || params?.item?.live?.id;
+  const {data} = useLive_GetLiveCommentsQuery({liveId});
+
+  const comments = data?.live_getLiveComments?.result?.items;
+
+  const {mutate, isLoading} = useLive_CreateCommentMutation();
+
+  const scrollToBottom = useCallback(() => {
+    if (listRef.current) {
+      listRef.current.scrollToOffset({
+        offset: contentHeight.current,
+        animated: true,
+      });
+    }
+  }, []);
+
+  const sendComment = (text: string) => {
+    if (text.trim() === '') return;
+    mutate(
+      {input: {liveId, text}},
+      {
+        onSuccess() {
+          setText('');
+          queryClient.invalidateQueries(['live_getLiveComments']);
+          setTimeout(scrollToBottom, 100);
+        },
+      },
+    );
+  };
+
+  const renderItem = useCallback(({item}: any) => {
+    return <LiveCommentItem item={item} />;
+  }, []);
+
+  const keyExtractor = useCallback(
+    (item: any) => `key-${item?.comment?.id}`,
+    [],
+  );
+
+  const onContentSizeChange = useCallback(
+    (_: any, contentHeightValue: number) => {
+      contentHeight.current = contentHeightValue;
+      scrollToBottom();
+    },
+    [scrollToBottom],
+  );
+
   return (
-    <VStack gap={12} pb={12}>
-      <AppFlatList
-        data={dummyComments}
-        keyExtractor={item => item?.id}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => (
-          <HStack space={10} my={4} alignItems="flex-start">
-            <AppImage imageSource={{uri: item.avatar}} style={styles.image} />
-            <VStack space={2} flex={1}>
-              <AppText fontSize={13} fontWeight="600">
-                @{item.username}
-              </AppText>
-              <AppText fontSize={12} fontWeight={400} color={Colors.GARY_2}>
-                {item.message}
-              </AppText>
-            </VStack>
+    <VStack style={{flex: 1}}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'height' : 'padding'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
+        <VStack style={styles.container} gap={12} pb={12}>
+          <AppFlatList
+            ref={listRef}
+            data={comments || []}
+            style={{maxHeight: height / 3}}
+            keyExtractor={keyExtractor}
+            showsVerticalScrollIndicator={false}
+            renderItem={renderItem}
+            initialNumToRender={10}
+            maxToRenderPerBatch={5}
+            showScrollToTop={false}
+            windowSize={5}
+            onContentSizeChange={onContentSizeChange}
+            getItemLayout={(_, index) => ({
+              length: 50,
+              offset: 50 * index,
+              index,
+            })}
+          />
+
+          <HStack alignItems="center" space={8}>
+            <AppInput
+              placeholder="Say Something"
+              placeholderTextColor={Colors.GARY_5}
+              value={text}
+              style={styles.input}
+              onChangeText={setText}
+            />
+            <AppTouchable
+              p={4}
+              borderRadius={12}
+              borderWidth={1}
+              borderColor={Colors.GARY_3}
+              px={8}
+              py={8}
+              onPress={() => sendComment(text.trim())}>
+              {isLoading ? (
+                <AppIndicator />
+              ) : (
+                <Send2Icon width={18} height={18} fill={Colors.BLACK} />
+              )}
+            </AppTouchable>
           </HStack>
-        )}
-      />
-      <HStack alignItems="center" space={8}>
-        <AppInput
-          placeholder="Say Something"
-          placeholderTextColor={Colors.GARY_5}
-          style={styles.input}
-        />
-        <AppTouchable
-          p={4}
-          borderRadius={12}
-          borderWidth={1}
-          borderColor={Colors.GARY_3}
-          px={8}
-          py={8}>
-          <Send2Icon width={18} height={18} fill={Colors.BLACK} />
-        </AppTouchable>
-      </HStack>
+        </VStack>
+      </KeyboardAvoidingView>
     </VStack>
   );
 }
 
 const styles = StyleSheet.create({
-  image: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    marginTop: 4,
+  container: {
+    flex: 1,
   },
   input: {
     flex: 1,

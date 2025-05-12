@@ -84,7 +84,7 @@ export default function ContentDescriptionCard({
           </AppText>
         </AppTouchable>
       )}
-      {!expanded && <LiveCommentSection />}
+      {!expanded && <LiveCommentSection key={2}/>}
     </VStack>
   );
 }

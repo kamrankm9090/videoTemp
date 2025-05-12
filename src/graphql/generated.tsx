@@ -733,6 +733,23 @@ export type ContactSortInput = {
   lastModifiedDate?: InputMaybe<SortEnumType>;
 };
 
+export type ContactUs = {
+  __typename?: 'ContactUs';
+  createdDate: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+};
+
+export type ContactUsInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Conversation = {
   __typename?: 'Conversation';
   createdDate: Scalars['DateTime']['output'];
@@ -1689,6 +1706,13 @@ export type ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput = {
   some?: InputMaybe<KeyValuePairOfStringAndStringFilterInput>;
 };
 
+export type ListFilterInputTypeOfLiveCommentFilterInput = {
+  all?: InputMaybe<LiveCommentFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<LiveCommentFilterInput>;
+  some?: InputMaybe<LiveCommentFilterInput>;
+};
+
 export type ListFilterInputTypeOfLiveFilterInput = {
   all?: InputMaybe<LiveFilterInput>;
   any?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2005,6 +2029,29 @@ export type ListResponseBaseOfFollowerFolloweeDtoResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<FollowerFolloweeDtoSortInput>>;
   where?: InputMaybe<FollowerFolloweeDtoFilterInput>;
+};
+
+export type ListResponseBaseOfLiveCommentDto = {
+  __typename?: 'ListResponseBaseOfLiveCommentDto';
+  result?: Maybe<LiveCommentDtoCollectionSegment>;
+  result2?: Maybe<LiveCommentDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfLiveCommentDtoResultArgs = {
+  order?: InputMaybe<Array<LiveCommentDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveCommentDtoFilterInput>;
+};
+
+export type ListResponseBaseOfLiveCommentDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<LiveCommentDtoSortInput>>;
+  where?: InputMaybe<LiveCommentDtoFilterInput>;
 };
 
 export type ListResponseBaseOfLiveDto = {
@@ -2411,11 +2458,92 @@ export type LiveComment = {
   userId: Scalars['Int']['output'];
 };
 
+export type LiveCommentDto = {
+  __typename?: 'LiveCommentDto';
+  comment?: Maybe<LiveComment>;
+  tip: Scalars['Decimal']['output'];
+};
+
+/** A segment of a collection. */
+export type LiveCommentDtoCollectionSegment = {
+  __typename?: 'LiveCommentDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<LiveCommentDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type LiveCommentDtoConnection = {
+  __typename?: 'LiveCommentDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<LiveCommentDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<LiveCommentDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type LiveCommentDtoEdge = {
+  __typename?: 'LiveCommentDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<LiveCommentDto>;
+};
+
+export type LiveCommentDtoFilterInput = {
+  and?: InputMaybe<Array<LiveCommentDtoFilterInput>>;
+  comment?: InputMaybe<LiveCommentFilterInput>;
+  or?: InputMaybe<Array<LiveCommentDtoFilterInput>>;
+  tip?: InputMaybe<DecimalOperationFilterInput>;
+};
+
+export type LiveCommentDtoSortInput = {
+  comment?: InputMaybe<LiveCommentSortInput>;
+  tip?: InputMaybe<SortEnumType>;
+};
+
+export type LiveCommentFilterInput = {
+  and?: InputMaybe<Array<LiveCommentFilterInput>>;
+  children?: InputMaybe<ListFilterInputTypeOfLiveCommentFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  live?: InputMaybe<LiveFilterInput>;
+  liveId?: InputMaybe<IntOperationFilterInput>;
+  or?: InputMaybe<Array<LiveCommentFilterInput>>;
+  parent?: InputMaybe<LiveCommentFilterInput>;
+  parentId?: InputMaybe<IntOperationFilterInput>;
+  text?: InputMaybe<StringOperationFilterInput>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
 export type LiveCommentInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   liveId?: InputMaybe<Scalars['Int']['input']>;
   parentId?: InputMaybe<Scalars['Int']['input']>;
   text?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type LiveCommentSortInput = {
+  createdDate?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  live?: InputMaybe<LiveSortInput>;
+  liveId?: InputMaybe<SortEnumType>;
+  parent?: InputMaybe<LiveCommentSortInput>;
+  parentId?: InputMaybe<SortEnumType>;
+  text?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+  userId?: InputMaybe<SortEnumType>;
 };
 
 export type LiveDto = {
@@ -2868,6 +2996,7 @@ export type Mutation = {
   community_rejectRequest?: Maybe<ResponseStatus>;
   community_updateCommunity?: Maybe<ResponseBaseOfCommunity>;
   community_updateCommunityUser?: Maybe<ResponseBaseOfCommunityUser>;
+  contactUs_setContactUs?: Maybe<ResponseBaseOfContactUs>;
   create: ResponseBaseOfViolationReport;
   defaultViolation_createDefaultViolation: ResponseBaseOfDefaultViolation;
   defaultViolation_deleteDefaultViolation: ResponseBaseOfDefaultViolation;
@@ -3016,6 +3145,10 @@ export type MutationCommunity_UpdateCommunityArgs = {
 
 export type MutationCommunity_UpdateCommunityUserArgs = {
   input?: InputMaybe<CommunityUserInput>;
+};
+
+export type MutationContactUs_SetContactUsArgs = {
+  input?: InputMaybe<ContactUsInput>;
 };
 
 export type MutationCreateArgs = {
@@ -3876,7 +4009,9 @@ export type Query = {
   category_getCategory: SingleResponseBaseOfCategory;
   community_getCommunities?: Maybe<ListResponseBaseOfCommunity>;
   community_getOtherCommunities?: Maybe<ListResponseBaseOfCommunity>;
+  contactUs_getContactUs?: Maybe<ResponseBaseOfContactUs>;
   defaultViolation_getDefaultViolations: ListResponseBaseOfDefaultViolation;
+  live_getLiveComments?: Maybe<ListResponseBaseOfLiveCommentDto>;
   live_getLiveStreams?: Maybe<ListResponseBaseOfLiveDto>;
   live_getLives?: Maybe<ListResponseBaseOfLiveDto>;
   live_getLivesForHomePage?: Maybe<ListResponseBaseOfLiveDto>;
@@ -3938,6 +4073,10 @@ export type QueryAgora_GetRecordFilesArgs = {
 
 export type QueryCategory_GetCategoryArgs = {
   entityId: Scalars['Int']['input'];
+};
+
+export type QueryLive_GetLiveCommentsArgs = {
+  liveId: Scalars['Int']['input'];
 };
 
 export type QueryLive_GetLivesForHomePageArgs = {
@@ -4310,6 +4449,12 @@ export type ResponseBaseOfCommunityUser = {
 export type ResponseBaseOfContact = {
   __typename?: 'ResponseBaseOfContact';
   result?: Maybe<Contact>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfContactUs = {
+  __typename?: 'ResponseBaseOfContactUs';
+  result?: Maybe<ContactUs>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -5636,6 +5781,52 @@ export type Live_CreateLiveMutation = {
   } | null;
 };
 
+export type Live_CreateCommentMutationVariables = Exact<{
+  input?: InputMaybe<LiveCommentInput>;
+}>;
+
+export type Live_CreateCommentMutation = {
+  __typename?: 'Mutation';
+  live_createComment?: {
+    __typename?: 'ResponseBaseOfLiveComment';
+    status?: any | null;
+    result?: {
+      __typename?: 'LiveComment';
+      liveId: number;
+      userId: number;
+      parentId?: number | null;
+      text?: string | null;
+      id: number;
+      isDeleted: boolean;
+      createdDate: any;
+      lastModifiedDate?: any | null;
+      live?: {
+        __typename?: 'Live';
+        category?: string | null;
+        commentCount: number;
+        createdDate: any;
+      } | null;
+      user?: {__typename?: 'User'; fullName?: string | null} | null;
+      parent?: {__typename?: 'LiveComment'; id: number} | null;
+      children?: Array<{__typename?: 'LiveComment'; id: number} | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Live_DeleteCommentMutationVariables = Exact<{
+  commentId: Scalars['Int']['input'];
+}>;
+
+export type Live_DeleteCommentMutation = {
+  __typename?: 'Mutation';
+  live_deleteComment?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Live_GetLivesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -5895,6 +6086,50 @@ export type Live_GetNewLivesQuery = {
   } | null;
 };
 
+export type Live_GetLiveCommentsQueryVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveCommentDtoFilterInput>;
+  order?: InputMaybe<Array<LiveCommentDtoSortInput> | LiveCommentDtoSortInput>;
+}>;
+
+export type Live_GetLiveCommentsQuery = {
+  __typename?: 'Query';
+  live_getLiveComments?: {
+    __typename?: 'ListResponseBaseOfLiveCommentDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'LiveCommentDtoCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'LiveCommentDto';
+        tip: any;
+        comment?: {
+          __typename?: 'LiveComment';
+          id: number;
+          text?: string | null;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            username?: string | null;
+            photoUrl?: string | null;
+          } | null;
+          children?: Array<{
+            __typename?: 'LiveComment';
+            text?: string | null;
+          } | null> | null;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
 export type Message_CreateDirectMessageMutationVariables = Exact<{
   input?: InputMaybe<MessageInput>;
   receiverId: Scalars['Int']['input'];
@@ -5906,6 +6141,28 @@ export type Message_CreateDirectMessageMutation = {
     __typename?: 'ResponseBaseOfMessage';
     status?: any | null;
     result?: {__typename?: 'Message'; createdAt: any; id: number} | null;
+  } | null;
+};
+
+export type NotificationAddedSubscriptionVariables = Exact<{
+  userId: Scalars['Int']['input'];
+}>;
+
+export type NotificationAddedSubscription = {
+  __typename?: 'Subscription';
+  notificationAdded?: {
+    __typename?: 'Notification';
+    id: number;
+    isRead: boolean;
+    notificationType?: string | null;
+    relatedEntity?: string | null;
+    relatedEntityId?: number | null;
+    relatedUserId?: number | null;
+    relatedUser?: {
+      __typename?: 'User';
+      fullName?: string | null;
+      photoUrl?: string | null;
+    } | null;
   } | null;
 };
 
@@ -6978,6 +7235,102 @@ export const useLive_CreateLiveMutation = <
   );
 };
 
+export const Live_CreateCommentDocument = `
+    mutation live_createComment($input: LiveCommentInput) {
+  live_createComment(input: $input) {
+    result {
+      liveId
+      userId
+      parentId
+      text
+      live {
+        category
+        commentCount
+        createdDate
+      }
+      user {
+        fullName
+      }
+      parent {
+        id
+      }
+      children {
+        id
+      }
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+    `;
+
+export const useLive_CreateCommentMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Live_CreateCommentMutation,
+    TError,
+    Live_CreateCommentMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_CreateCommentMutation,
+    TError,
+    Live_CreateCommentMutationVariables,
+    TContext
+  >(
+    ['live_createComment'],
+    (variables?: Live_CreateCommentMutationVariables) =>
+      fetcher<Live_CreateCommentMutation, Live_CreateCommentMutationVariables>(
+        Live_CreateCommentDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const Live_DeleteCommentDocument = `
+    mutation live_deleteComment($commentId: Int!) {
+  live_deleteComment(commentId: $commentId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_DeleteCommentMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Live_DeleteCommentMutation,
+    TError,
+    Live_DeleteCommentMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_DeleteCommentMutation,
+    TError,
+    Live_DeleteCommentMutationVariables,
+    TContext
+  >(
+    ['live_deleteComment'],
+    (variables?: Live_DeleteCommentMutationVariables) =>
+      fetcher<Live_DeleteCommentMutation, Live_DeleteCommentMutationVariables>(
+        Live_DeleteCommentDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
 export const Live_GetLivesDocument = `
     query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]) {
   live_getLives {
@@ -7379,6 +7732,71 @@ export const useInfiniteLive_GetNewLivesQuery = <
   );
 };
 
+export const Live_GetLiveCommentsDocument = `
+    query live_getLiveComments($liveId: Int!, $skip: Int, $take: Int, $where: LiveCommentDtoFilterInput, $order: [LiveCommentDtoSortInput!]) {
+  live_getLiveComments(liveId: $liveId) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        comment {
+          id
+          text
+          user {
+            fullName
+            username
+            photoUrl
+          }
+          children {
+            text
+          }
+        }
+        tip
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useLive_GetLiveCommentsQuery = <
+  TData = Live_GetLiveCommentsQuery,
+  TError = unknown,
+>(
+  variables: Live_GetLiveCommentsQueryVariables,
+  options?: UseQueryOptions<Live_GetLiveCommentsQuery, TError, TData>,
+) => {
+  return useQuery<Live_GetLiveCommentsQuery, TError, TData>(
+    ['live_getLiveComments', variables],
+    fetcher<Live_GetLiveCommentsQuery, Live_GetLiveCommentsQueryVariables>(
+      Live_GetLiveCommentsDocument,
+      variables,
+    ),
+    options,
+  );
+};
+
+export const useInfiniteLive_GetLiveCommentsQuery = <
+  TData = Live_GetLiveCommentsQuery,
+  TError = unknown,
+>(
+  variables: Live_GetLiveCommentsQueryVariables,
+  options?: UseInfiniteQueryOptions<Live_GetLiveCommentsQuery, TError, TData>,
+) => {
+  return useInfiniteQuery<Live_GetLiveCommentsQuery, TError, TData>(
+    ['live_getLiveComments.infinite', variables],
+    metaData =>
+      fetcher<Live_GetLiveCommentsQuery, Live_GetLiveCommentsQueryVariables>(
+        Live_GetLiveCommentsDocument,
+        {...variables, ...(metaData.pageParam ?? {})},
+      )(),
+    options,
+  );
+};
+
 export const Message_CreateDirectMessageDocument = `
     mutation message_createDirectMessage($input: MessageInput, $receiverId: Int!) {
   message_createDirectMessage(input: $input, receiverId: $receiverId) {
@@ -7418,6 +7836,22 @@ export const useMessage_CreateDirectMessageMutation = <
   );
 };
 
+export const NotificationAddedDocument = `
+    subscription notificationAdded($userId: Int!) {
+  notificationAdded(userId: $userId) {
+    id
+    isRead
+    notificationType
+    relatedEntity
+    relatedEntityId
+    relatedUser {
+      fullName
+      photoUrl
+    }
+    relatedUserId
+  }
+}
+    `;
 export const Social_FollowUserDocument = `
     mutation social_followUser($input: FollowerInput) {
   social_followUser(input: $input) {

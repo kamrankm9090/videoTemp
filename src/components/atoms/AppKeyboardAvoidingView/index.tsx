@@ -21,7 +21,7 @@ export default function AppKeyboardAvoidingView({
   ...rest
 }: Props) {
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <TouchableWithoutFeedback  onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
         {...rest}
         collapsable
