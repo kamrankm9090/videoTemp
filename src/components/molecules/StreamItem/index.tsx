@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, Image} from 'react-native';
+import {createThumbnail} from 'react-native-create-thumbnail';
 import {useSnapshot} from 'valtio';
 import {ArchiveIcon, HotSpot, MoreHIcon} from '~/assets/svgs';
 import {
@@ -15,7 +16,7 @@ import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
-import { getFullImageUrl } from '~/utils/helper';
+import {getFullImageUrl} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
 import {showSheet} from '~/utils/utils';
 
@@ -25,12 +26,23 @@ interface StreamItemProps {
 
 const StreamItem: React.FC<StreamItemProps> = ({item}) => {
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
 
   const {mutate: mutateCreateAgoraToken} = useAgora_CreateTokenMutation();
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
 
-    
+  useEffect(() => {
+    createThumbnail({
+      url: getFullImageUrl(item?.live?.recordUrl) || '',
+      timeStamp: 200,
+    })
+      .then(response => 
+        setThumbnailUrl(response.path),
+      )
+      .catch(err => console.log({err}));
+  }, [item]);
+
   function onPressHandler() {
     if (item?.recordEnded) {
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
@@ -45,16 +57,13 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
               setLiveId(liveId);
               setToken(res?.agora_createToken?.result || '');
               setTokenCreateDate(Date.now());
-              navigate('HomeStack', {
-                screen: 'ContentViewerLive',
-              });
+              navigate('HomeStack', {screen: 'ContentViewerLive'});
             }
           },
         },
       );
     }
   }
-
 
   return (
     <AppTouchable
@@ -78,32 +87,38 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         <ArchiveIcon />
       </HStack>
 
-      <AppVideoPlayer
-        style={styles.videoPlayer}
-        fullscreen={false}
-        controls={false}
-        muted={true}
-        volume={0}
-        repeat={true}
-        resizeMode="contain"
-        source={{
-          uri: getFullImageUrl(item?.live?.recordUrl),
-        }}
-        showTimer
-        onLoadStart={() => setIsLoadingVideo(true)}
-        onLoad={() => setIsLoadingVideo(false)}
-        onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
-        {isLoadingVideo && (
-          <AppIndicator color={Colors.GARY_2}  style={StyleSheet.absoluteFill} />
-        )}
-      </AppVideoPlayer>
+      {thumbnailUrl ? (
+        <Image source={{uri: thumbnailUrl}} style={styles.thumbnail} />
+      ) : (
+        <AppVideoPlayer
+          style={styles.videoPlayer}
+          fullscreen={false}
+          controls={false}
+          muted={true}
+          volume={0}
+          repeat={true}
+          resizeMode="contain"
+          source={{
+            uri: getFullImageUrl(item?.live?.recordUrl),
+          }}
+          showTimer
+          onLoadStart={() => setIsLoadingVideo(true)}
+          onLoad={() => setIsLoadingVideo(false)}
+          onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
+          {isLoadingVideo && (
+            <AppIndicator
+              color={Colors.GARY_2}
+              style={StyleSheet.absoluteFill}
+            />
+          )}
+        </AppVideoPlayer>
+      )}
 
       <HStack py={10} px={12} bg={Colors.BLACK}>
         <AppImage
           imageSource={{uri: item?.live?.user?.photoUrl}}
           style={styles.avatar}
         />
-
         <VStack flex={1} space={4}>
           <AppText fontWeight="500" fontSize={fontSize.medium}>
             {item?.live?.title}
@@ -118,7 +133,6 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
             </AppText>
           </HStack>
         </VStack>
-
         <AppTouchable onPress={() => showSheet('offer-select-option-action')}>
           <MoreHIcon />
         </AppTouchable>
@@ -139,5 +153,10 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     marginRight: 10,
+  },
+  thumbnail: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
   },
 });

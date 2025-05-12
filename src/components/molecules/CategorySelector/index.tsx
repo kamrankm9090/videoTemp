@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import AppText from '~/components/atoms/AppText';
@@ -26,9 +26,13 @@ const CategorySelector = ({
     const data = getCategories?.pages
       ?.map(a => a?.category_getCategories?.result?.items)
       .flat();
-    return data?.map((i) => i?.title)
+    return data?.map(i => i?.title);
   }, [getCategories]);
-  
+
+  useEffect(() => {
+    setSelected(categories?.[0] ?? '');
+  }, [categories]);
+
   return (
     <FlatList
       horizontal
@@ -36,7 +40,7 @@ const CategorySelector = ({
       data={categories}
       keyExtractor={item => `key ${item}`}
       contentContainerStyle={styles.contentContainerStyle}
-      renderItem={({item}:any) => {
+      renderItem={({item}: any) => {
         const isActive = item === selected;
         const bgColor = isActive ? Colors.PRIMARY : Colors.NIGHT_RIDER;
         const textColor = isActive ? Colors.WHITE : Colors.GARY_3;
