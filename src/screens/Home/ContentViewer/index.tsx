@@ -191,15 +191,10 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
                 p={10}
                 position="absolute"
                 bottom={20}
-                zIndex={2}
                 pt={40}>
                 <LiveCommentSection  key={1}/>
               </VStack>
-              <AppGradientView
-                colors={['transparent', Colors.BLACK]}
-                style={styles.gradient}
-                pointerEvents="none"
-              />
+          
             </>
           )}
         </VStack>

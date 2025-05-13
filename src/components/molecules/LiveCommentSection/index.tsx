@@ -1,12 +1,19 @@
 import {useRoute} from '@react-navigation/native';
 import React, {useCallback, useRef, useState} from 'react';
-import {KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
+import {
+  Keyboard,
+  Platform,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {useSnapshot} from 'valtio';
 import {Send2Icon} from '~/assets/svgs';
 import {
   AppFlatList,
+  AppGradientView,
   AppIndicator,
   AppInput,
+  AppKeyboardAvoidingView,
   AppTouchable,
   HStack,
   VStack,
@@ -76,56 +83,77 @@ export default function LiveCommentSection() {
   );
 
   return (
-    <VStack style={{flex: 1}}>
-      <KeyboardAvoidingView
+    <VStack
+      zIndex={1}
+      h={height - 120}
+      w={'100%'}
+      alignSelf="center"
+      justifyContent="flex-end"
+      position="absolute"
+      bottom={0}>
+      <TouchableWithoutFeedback
         style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'height' : 'padding'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
-        <VStack style={styles.container} gap={12} pb={12}>
-          <AppFlatList
-            ref={listRef}
-            data={comments || []}
-            style={{maxHeight: height / 3}}
-            keyExtractor={keyExtractor}
-            showsVerticalScrollIndicator={false}
-            renderItem={renderItem}
-            initialNumToRender={10}
-            maxToRenderPerBatch={5}
-            showScrollToTop={false}
-            windowSize={5}
-            onContentSizeChange={onContentSizeChange}
-            getItemLayout={(_, index) => ({
-              length: 50,
-              offset: 50 * index,
-              index,
-            })}
-          />
-
-          <HStack alignItems="center" space={8}>
-            <AppInput
-              placeholder="Say Something"
-              placeholderTextColor={Colors.GARY_5}
-              value={text}
-              style={styles.input}
-              onChangeText={setText}
+        onPress={Keyboard.dismiss}>
+        <AppKeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'height' : 'padding'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
+          <VStack
+            flex={1}
+            justifyContent="flex-end"
+            zIndex={10}
+            gap={12}
+            pb={12}>
+            <AppFlatList
+              ref={listRef}
+              data={comments || []}
+              style={{maxHeight: height / 3, zIndex: 10,}}
+              contentContainerStyle={{flex:1, justifyContent:"flex-end"}}
+              keyExtractor={keyExtractor}
+              renderItem={renderItem}
+              initialNumToRender={10}
+              maxToRenderPerBatch={5}
+              showScrollToTop={false}
+              windowSize={5}
+              onContentSizeChange={onContentSizeChange}
+              getItemLayout={(_, index) => ({
+                length: 50,
+                offset: 50 * index,
+                index,
+              })}
             />
-            <AppTouchable
-              p={4}
-              borderRadius={12}
-              borderWidth={1}
-              borderColor={Colors.GARY_3}
-              px={8}
-              py={8}
-              onPress={() => sendComment(text.trim())}>
-              {isLoading ? (
-                <AppIndicator />
-              ) : (
-                <Send2Icon width={18} height={18} fill={Colors.BLACK} />
-              )}
-            </AppTouchable>
-          </HStack>
-        </VStack>
-      </KeyboardAvoidingView>
+
+            <HStack alignItems="center" space={8} mb={40}>
+              <AppGradientView
+                colors={['transparent', Colors.BLACK]}
+                style={styles.gradient}
+                pointerEvents="none"
+              />
+              <AppInput
+                placeholder="Say Something"
+                placeholderTextColor={Colors.GARY_5}
+                value={text}
+                style={styles.input}
+                onChangeText={setText}
+                returnKeyLabel='Send'
+              />
+              <AppTouchable
+                p={4}
+                borderRadius={12}
+                borderWidth={1}
+                borderColor={Colors.GARY_3}
+                px={8}
+                py={8}
+                onPress={() => sendComment(text.trim())}>
+                {isLoading ? (
+                  <AppIndicator />
+                ) : (
+                  <Send2Icon width={18} height={18} fill={Colors.BLACK} />
+                )}
+              </AppTouchable>
+            </HStack>
+          </VStack>
+        </AppKeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </VStack>
   );
 }
@@ -133,6 +161,9 @@ export default function LiveCommentSection() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
+    zIndex: 10,
+    // minHeight:500,
   },
   input: {
     flex: 1,
@@ -142,5 +173,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     padding: 12,
+  },
+  gradient: {
+    width: '120%',
+    position: 'absolute',
+    bottom: -40,
+    left: -20,
+    right: 0,
+    height: 600,
+    zIndex: 0,
   },
 });

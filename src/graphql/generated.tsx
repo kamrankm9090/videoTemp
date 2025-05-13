@@ -2433,6 +2433,7 @@ export type Live = {
   rateAverage: Scalars['Float']['output'];
   recordUrl?: Maybe<Scalars['String']['output']>;
   roles?: Maybe<Array<Maybe<LiveRole>>>;
+  screenshotUrl?: Maybe<Scalars['String']['output']>;
   setSchedule: Scalars['Boolean']['output'];
   shareCount: Scalars['Int']['output'];
   title?: Maybe<Scalars['String']['output']>;
@@ -2636,6 +2637,7 @@ export type LiveFilterInput = {
   rateAverage?: InputMaybe<FloatOperationFilterInput>;
   recordUrl?: InputMaybe<StringOperationFilterInput>;
   roles?: InputMaybe<ListFilterInputTypeOfLiveRoleFilterInput>;
+  screenshotUrl?: InputMaybe<StringOperationFilterInput>;
   setSchedule?: InputMaybe<BooleanOperationFilterInput>;
   shareCount?: InputMaybe<IntOperationFilterInput>;
   title?: InputMaybe<StringOperationFilterInput>;
@@ -2727,6 +2729,7 @@ export type LiveSortInput = {
   purchaseCount?: InputMaybe<SortEnumType>;
   rateAverage?: InputMaybe<SortEnumType>;
   recordUrl?: InputMaybe<SortEnumType>;
+  screenshotUrl?: InputMaybe<SortEnumType>;
   setSchedule?: InputMaybe<SortEnumType>;
   shareCount?: InputMaybe<SortEnumType>;
   title?: InputMaybe<SortEnumType>;
