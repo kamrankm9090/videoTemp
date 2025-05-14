@@ -78,6 +78,8 @@ export default function HomePostItem({
         key={index}
         showTimer
         style={styles.player}
+        muted={true}
+        volume={0}
         isPlaying={index === visibleIndex}
         source={{
           uri: item?.live?.previewUrl,

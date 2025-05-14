@@ -38,6 +38,6 @@ export default function AppKeyboardAvoidingView({
 
 const styles = StyleSheet.create({
   flex1: {
-    flex: 1,
+    flexGrow: 1,
   },
 });

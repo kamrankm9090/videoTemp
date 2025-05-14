@@ -95,8 +95,9 @@ export default function LiveCommentSection() {
         style={styles.container}
         onPress={Keyboard.dismiss}>
         <AppKeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'height' : 'padding'}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
+          behavior={Platform.OS === 'ios' ? 'height' : 'position'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
+          >
           <VStack
             flex={1}
             justifyContent="flex-end"
@@ -143,7 +144,8 @@ export default function LiveCommentSection() {
                 borderColor={Colors.GARY_3}
                 px={8}
                 py={8}
-                onPress={() => sendComment(text.trim())}>
+                onPress={() => sendComment(text.trim())}
+                >
                 {isLoading ? (
                   <AppIndicator />
                 ) : (
