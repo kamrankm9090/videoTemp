@@ -81,6 +81,7 @@ export {default as TrendingItem} from './molecules/TrendingItem';
 export {default as UserCardItem} from './molecules/UserCardItem';
 export {default as VideoPreview} from './molecules/VideoPreview';
 export {default as CategorySelector} from './molecules/CategorySelector';
+export {default as CommunityItem} from './molecules/CommunityItem';
 //#endregion ---------Molecules
 
 //#region ---------Organisms

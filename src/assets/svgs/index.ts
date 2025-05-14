@@ -68,3 +68,5 @@ export {default as MoreIcon} from './more.svg';
 export {default as Share2Icon} from './share2.svg';
 export {default as ReportIcon} from './report.svg';
 export {default as MoreHIcon} from './moreH.svg';
+export {default as LockIcon} from './lock.svg';
+export {default as GroupUsersIcon} from './group-users.svg';
