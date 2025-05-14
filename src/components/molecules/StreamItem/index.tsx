@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, Image} from 'react-native';
-import {createThumbnail} from 'react-native-create-thumbnail';
+import React, {useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {useSnapshot} from 'valtio';
 import {ArchiveIcon, HotSpot, MoreHIcon} from '~/assets/svgs';
 import {
@@ -26,22 +25,22 @@ interface StreamItemProps {
 
 const StreamItem: React.FC<StreamItemProps> = ({item}) => {
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
-  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  // const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
 
   const {mutate: mutateCreateAgoraToken} = useAgora_CreateTokenMutation();
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
 
-  useEffect(() => {
-    createThumbnail({
-      url: getFullImageUrl(item?.live?.recordUrl) || '',
-      timeStamp: 200,
-    })
-      .then(response => 
-        setThumbnailUrl(response.path),
-      )
-      .catch(err => console.log({err}));
-  }, [item]);
+  // useEffect(() => {
+  //   createThumbnail({
+  //     url: getFullImageUrl(item?.live?.recordUrl) || '',
+  //     timeStamp: 200,
+  //   })
+  //     .then(response =>
+  //       setThumbnailUrl(response.path),
+  //     )
+  //     .catch(err => console.log({err}));
+  // }, [item]);
 
   function onPressHandler() {
     if (item?.recordEnded) {
@@ -87,32 +86,25 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         <ArchiveIcon />
       </HStack>
 
-      {thumbnailUrl ? (
-        <Image source={{uri: thumbnailUrl}} style={styles.thumbnail} />
-      ) : (
-        <AppVideoPlayer
-          style={styles.videoPlayer}
-          fullscreen={false}
-          controls={false}
-          muted={true}
-          volume={0}
-          repeat={true}
-          resizeMode="contain"
-          source={{
-            uri: getFullImageUrl(item?.live?.recordUrl),
-          }}
-          showTimer
-          onLoadStart={() => setIsLoadingVideo(true)}
-          onLoad={() => setIsLoadingVideo(false)}
-          onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
-          {isLoadingVideo && (
-            <AppIndicator
-              color={Colors.GARY_2}
-              style={StyleSheet.absoluteFill}
-            />
-          )}
-        </AppVideoPlayer>
-      )}
+      <AppVideoPlayer
+        style={styles.videoPlayer}
+        fullscreen={false}
+        controls={false}
+        muted={true}
+        volume={0}
+        repeat={true}
+        resizeMode="contain"
+        source={{
+          uri: getFullImageUrl(item?.live?.introUrl),
+        }}
+        showTimer
+        onLoadStart={() => setIsLoadingVideo(true)}
+        onLoad={() => setIsLoadingVideo(false)}
+        onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
+        {isLoadingVideo && (
+          <AppIndicator color={Colors.GARY_2} style={StyleSheet.absoluteFill} />
+        )}
+      </AppVideoPlayer>
 
       <HStack py={10} px={12} bg={Colors.BLACK}>
         <AppImage
@@ -123,7 +115,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
           <AppText fontWeight="500" fontSize={fontSize.medium}>
             {item?.live?.title}
           </AppText>
-          <AppText fontWeight="400" fontSize={fontSize.small}>
+          <AppText numberOfLines={1} maxWidth={200} fontWeight="400" fontSize={fontSize.small}>
             {item?.live?.description}
           </AppText>
           <HStack space={8}>

@@ -65,6 +65,9 @@ export default function HomePostItem({
     }
   }
 
+   console.log("=> ",item?.live?.introUrl
+  );
+
   return (
     <AppTouchable
       disabled={isLoadingCreateAgoraToken}

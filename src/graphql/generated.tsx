@@ -2415,6 +2415,7 @@ export type Live = {
   description?: Maybe<Scalars['String']['output']>;
   funding: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  introUrl?: Maybe<Scalars['String']['output']>;
   isDeleted: Scalars['Boolean']['output'];
   isDraft: Scalars['Boolean']['output'];
   isFree: Scalars['Boolean']['output'];
@@ -2618,6 +2619,7 @@ export type LiveFilterInput = {
   description?: InputMaybe<StringOperationFilterInput>;
   funding?: InputMaybe<IntOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
+  introUrl?: InputMaybe<StringOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   isDraft?: InputMaybe<BooleanOperationFilterInput>;
   isFree?: InputMaybe<BooleanOperationFilterInput>;
@@ -2712,6 +2714,7 @@ export type LiveSortInput = {
   description?: InputMaybe<SortEnumType>;
   funding?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
+  introUrl?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
   isDraft?: InputMaybe<SortEnumType>;
   isFree?: InputMaybe<SortEnumType>;
@@ -5859,6 +5862,7 @@ export type Live_GetLivesQuery = {
         live?: {
           __typename?: 'Live';
           userId: number;
+          introUrl?: string | null;
           liveType: LiveType;
           photoUrl?: string | null;
           title?: string | null;
@@ -5936,6 +5940,7 @@ export type Live_GetLiveStreamsQuery = {
         live?: {
           __typename?: 'Live';
           id: number;
+          introUrl?: string | null;
           category?: string | null;
           createdDate: any;
           description?: string | null;
@@ -5979,6 +5984,7 @@ export type Live_GetRecommendedLivesQuery = {
         live?: {
           __typename?: 'Live';
           id: number;
+          introUrl?: string | null;
           category?: string | null;
           createdDate: any;
           description?: string | null;
@@ -6027,6 +6033,7 @@ export type Live_GetTrendingLivesQuery = {
         live?: {
           __typename?: 'Live';
           id: number;
+          introUrl?: string | null;
           category?: string | null;
           createdDate: any;
           description?: string | null;
@@ -6071,6 +6078,7 @@ export type Live_GetNewLivesQuery = {
         live?: {
           __typename?: 'Live';
           id: number;
+          introUrl?: string | null;
           category?: string | null;
           createdDate: any;
           description?: string | null;
@@ -7345,6 +7353,7 @@ export const Live_GetLivesDocument = `
       items {
         live {
           userId
+          introUrl
           liveType
           photoUrl
           title
@@ -7449,6 +7458,7 @@ export const Live_GetLiveStreamsDocument = `
         isViewed
         live {
           id
+          introUrl
           category
           createdDate
           description
@@ -7520,6 +7530,7 @@ export const Live_GetRecommendedLivesDocument = `
         isViewed
         live {
           id
+          introUrl
           category
           createdDate
           description
@@ -7602,6 +7613,7 @@ export const Live_GetTrendingLivesDocument = `
         isViewed
         live {
           id
+          introUrl
           category
           createdDate
           description
@@ -7674,6 +7686,7 @@ export const Live_GetNewLivesDocument = `
         isViewed
         live {
           id
+          introUrl
           category
           createdDate
           description
