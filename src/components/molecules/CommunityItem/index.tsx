@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {ChevronBack, GroupUsersIcon, LockIcon} from '~/assets/svgs';
 import {AppImage, AppText, AppTouchable, HStack, VStack} from '~/components';
+import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 
 const CommunityItem = () => {
@@ -25,7 +26,7 @@ const CommunityItem = () => {
     {
       title: 'Requesters +2',
       color: Colors.PRIMARY,
-      onPress: () => {},
+      onPress: () => navigate('CommunityStack', {screen: 'Requesters'}),
     },
   ];
   const othersButtons = [
@@ -76,9 +77,14 @@ const CommunityItem = () => {
         })}
       </HStack>
       <HStack justifyContent="space-between">
-        {(false ? ownerButtons : othersButtons)?.map(i => {
+        {(true ? ownerButtons : othersButtons)?.map(i => {
           return (
-            <AppTouchable py={8} px={20} bg={i?.color} borderRadius={4}>
+            <AppTouchable
+              py={8}
+              px={20}
+              bg={i?.color}
+              borderRadius={4}
+              onPress={i?.onPress}>
               <AppText>{i.title}</AppText>
             </AppTouchable>
           );

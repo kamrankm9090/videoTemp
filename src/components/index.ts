@@ -82,6 +82,7 @@ export {default as UserCardItem} from './molecules/UserCardItem';
 export {default as VideoPreview} from './molecules/VideoPreview';
 export {default as CategorySelector} from './molecules/CategorySelector';
 export {default as CommunityItem} from './molecules/CommunityItem';
+export {default as RequestersItem} from './molecules/RequestersItem';
 //#endregion ---------Molecules
 
 //#region ---------Organisms
