@@ -31,21 +31,53 @@ interface SectionData {
 }
 
 const OffersScreen: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const {data: getUsers, isLoading: isLoadingGetUsers} =
-    useInfiniteUser_GetCastersToFollowQuery();
+    useInfiniteUser_GetCastersToFollowQuery({});
 
   const {data: getLiveStreams, isLoading: isLoadingLiveStreams} =
-    useLive_GetLiveStreamsQuery();
+    useLive_GetLiveStreamsQuery({
+      where: {
+        live: {
+          category: {
+            eq: selectedCategory || null,
+          },
+        },
+      },
+    });
 
   const {data: getRecommendedLives, isLoading: isLoadingRecommendedLives} =
-    useLive_GetRecommendedLivesQuery();
+    useLive_GetRecommendedLivesQuery({
+      where: {
+        live: {
+          category: {
+            eq: selectedCategory || null,
+          },
+        },
+      },
+    });
 
   const {data: getTrendingLives, isLoading: isLoadingTrendingLives} =
-    useLive_GetTrendingLivesQuery();
+    useLive_GetTrendingLivesQuery({
+      where: {
+        live: {
+          category: {
+            eq: selectedCategory || null,
+          },
+        },
+      },
+    });
 
   const {data: getNewLives, isLoading: isLoadingNewLives} =
-    useLive_GetNewLivesQuery();
+    useLive_GetNewLivesQuery({
+      where: {
+        live: {
+          category: {
+            eq: selectedCategory || null,
+          },
+        },
+      },
+    });
 
   const new_lives = useMemo(() => {
     return getNewLives?.live_getNewLives?.result?.items || [];

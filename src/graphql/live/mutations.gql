@@ -32,3 +32,43 @@ mutation live_createLive($input: LiveInput){
         status
     }
 }
+
+
+mutation live_createComment($input: LiveCommentInput){
+  live_createComment(input: $input) {
+    result {
+      liveId
+      userId
+      parentId
+      text
+      live{
+        category
+        commentCount
+        createdDate
+      }
+      user{
+        fullName
+      }
+      parent{
+        id
+      }
+      children{
+        id
+      }
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+
+mutation live_deleteComment($commentId: Int!){
+  live_deleteComment(commentId: $commentId) {
+    code
+    value
+    description
+  }
+}
+

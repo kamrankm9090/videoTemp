@@ -195,3 +195,32 @@ query live_getNewLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $orde
     status
     }
 }
+
+
+query live_getLiveComments ($liveId: Int!,$skip: Int, $take: Int, $where: LiveCommentDtoFilterInput, $order: [LiveCommentDtoSortInput!]){
+  live_getLiveComments(liveId: $liveId) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+      items{
+        comment{
+          id
+          text
+          user{
+            fullName
+            username
+            photoUrl
+          }
+          children{
+            text
+          }
+        }
+        tip
+      }
+      totalCount
+    }
+    status
+  }
+}
