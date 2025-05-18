@@ -70,3 +70,7 @@ export {default as ReportIcon} from './report.svg';
 export {default as MoreHIcon} from './moreH.svg';
 export {default as LockIcon} from './lock.svg';
 export {default as GroupUsersIcon} from './group-users.svg';
+export {default as VolumeMuteIcon} from './volume-mute.svg';
+export {default as LogOutIcon} from './logout.svg';
+export {default as SearchNormalIcon} from './search-normal.svg';
+export {default as AddCircleIcon} from './add-circle.svg';

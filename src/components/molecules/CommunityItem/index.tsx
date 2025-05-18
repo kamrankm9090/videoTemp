@@ -21,7 +21,7 @@ const CommunityItem = () => {
     {
       title: 'See more',
       color: Colors.NIGHT_RIDER,
-      onPress: () => {},
+      onPress: () => navigate('CommunityStack', {screen: 'CommunityInfo'}),
     },
     {
       title: 'Requesters +2',

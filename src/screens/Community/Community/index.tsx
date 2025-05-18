@@ -32,7 +32,7 @@ export default function CommunityScreen() {
     );
   };
   return (
-    <AppContainer>
+    <AppContainer >
       <ScreensHeader title="Community" />
       <HStack
         bg={Colors.NERO}
