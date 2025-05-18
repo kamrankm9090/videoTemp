@@ -82,7 +82,13 @@ query live_getLiveStreams ($skip: Int, $take: Int, $where: LiveDtoFilterInput, $
           recordUrl
           title
           viewCount
+          user{
+            fullName
+            photoUrl
+            id
+          }
         }
+        
         recordEnded
         recordStarted
         

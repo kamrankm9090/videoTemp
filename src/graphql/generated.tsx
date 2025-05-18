@@ -2307,6 +2307,29 @@ export type ListResponseBaseOfStripePaymentMethodResult2Args = {
   where?: InputMaybe<StripePaymentMethodFilterInput>;
 };
 
+export type ListResponseBaseOfTip = {
+  __typename?: 'ListResponseBaseOfTip';
+  result?: Maybe<TipCollectionSegment>;
+  result2?: Maybe<TipConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfTipResultArgs = {
+  order?: InputMaybe<Array<TipSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<TipFilterInput>;
+};
+
+export type ListResponseBaseOfTipResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<TipSortInput>>;
+  where?: InputMaybe<TipFilterInput>;
+};
+
 export type ListResponseBaseOfUser = {
   __typename?: 'ListResponseBaseOfUser';
   result?: Maybe<UserCollectionSegment>;
@@ -4057,6 +4080,7 @@ export type Query = {
   social_getUserFollowerFollowees?: Maybe<ListResponseBaseOfFollowerFolloweeDto>;
   social_getUsers?: Maybe<ListResponseBaseOfUserDto>;
   social_isUserFollower?: Maybe<ResponseBaseOfBoolean>;
+  tip_getTips?: Maybe<ListResponseBaseOfTip>;
   user_doesEmailExist?: Maybe<ResponseStatus>;
   user_doesPhoneNumberExist?: Maybe<ResponseStatus>;
   user_getCastersToFollow?: Maybe<ListResponseBaseOfUser>;
@@ -4961,9 +4985,67 @@ export type Tip = {
   value: Scalars['Decimal']['output'];
 };
 
+/** A segment of a collection. */
+export type TipCollectionSegment = {
+  __typename?: 'TipCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<Tip>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type TipConnection = {
+  __typename?: 'TipConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<TipEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<Tip>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type TipEdge = {
+  __typename?: 'TipEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Tip>;
+};
+
+export type TipFilterInput = {
+  and?: InputMaybe<Array<TipFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  forUser?: InputMaybe<UserFilterInput>;
+  forUserId?: InputMaybe<IntOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<TipFilterInput>>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+  value?: InputMaybe<DecimalOperationFilterInput>;
+};
+
 export type TipInput = {
   forUserId: Scalars['Int']['input'];
   value: Scalars['Int']['input'];
+};
+
+export type TipSortInput = {
+  createdDate?: InputMaybe<SortEnumType>;
+  forUser?: InputMaybe<UserSortInput>;
+  forUserId?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+  userId?: InputMaybe<SortEnumType>;
+  value?: InputMaybe<SortEnumType>;
 };
 
 export type TokenInput = {
@@ -5727,6 +5809,84 @@ export type Category_GetCategoryQuery = {
   };
 };
 
+export type Community_GetCommunitiesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityFilterInput>;
+  order?: InputMaybe<Array<CommunitySortInput> | CommunitySortInput>;
+}>;
+
+export type Community_GetCommunitiesQuery = {
+  __typename?: 'Query';
+  community_getCommunities?: {
+    __typename?: 'ListResponseBaseOfCommunity';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'Community';
+        communityType: CommunityType;
+        createdDate: any;
+        description?: string | null;
+        id: number;
+        requestCount: number;
+        title?: string | null;
+        creator?: {
+          __typename?: 'User';
+          about?: string | null;
+          fullName?: string | null;
+          photoUrl?: string | null;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Community_GetOtherCommunitiesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityFilterInput>;
+  order?: InputMaybe<Array<CommunitySortInput> | CommunitySortInput>;
+}>;
+
+export type Community_GetOtherCommunitiesQuery = {
+  __typename?: 'Query';
+  community_getOtherCommunities?: {
+    __typename?: 'ListResponseBaseOfCommunity';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'Community';
+        communityType: CommunityType;
+        createdDate: any;
+        description?: string | null;
+        id: number;
+        requestCount: number;
+        title?: string | null;
+        creator?: {
+          __typename?: 'User';
+          about?: string | null;
+          fullName?: string | null;
+          photoUrl?: string | null;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
 export type Live_AddToBookmarkMutationVariables = Exact<{
   liveId: Scalars['Int']['input'];
 }>;
@@ -5948,6 +6108,12 @@ export type Live_GetLiveStreamsQuery = {
           recordUrl?: string | null;
           title?: string | null;
           viewCount: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            id: number;
+          } | null;
         } | null;
       } | null> | null;
     } | null;
@@ -7095,6 +7261,154 @@ export const useInfiniteCategory_GetCategoryQuery = <
   );
 };
 
+export const Community_GetCommunitiesDocument = `
+    query community_getCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
+  community_getCommunities {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        communityType
+        createdDate
+        creator {
+          about
+          fullName
+          photoUrl
+        }
+        description
+        id
+        requestCount
+        title
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_GetCommunitiesQuery = <
+  TData = Community_GetCommunitiesQuery,
+  TError = unknown,
+>(
+  variables?: Community_GetCommunitiesQueryVariables,
+  options?: UseQueryOptions<Community_GetCommunitiesQuery, TError, TData>,
+) => {
+  return useQuery<Community_GetCommunitiesQuery, TError, TData>(
+    variables === undefined
+      ? ['community_getCommunities']
+      : ['community_getCommunities', variables],
+    fetcher<
+      Community_GetCommunitiesQuery,
+      Community_GetCommunitiesQueryVariables
+    >(Community_GetCommunitiesDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteCommunity_GetCommunitiesQuery = <
+  TData = Community_GetCommunitiesQuery,
+  TError = unknown,
+>(
+  variables?: Community_GetCommunitiesQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Community_GetCommunitiesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Community_GetCommunitiesQuery, TError, TData>(
+    variables === undefined
+      ? ['community_getCommunities.infinite']
+      : ['community_getCommunities.infinite', variables],
+    metaData =>
+      fetcher<
+        Community_GetCommunitiesQuery,
+        Community_GetCommunitiesQueryVariables
+      >(Community_GetCommunitiesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
+export const Community_GetOtherCommunitiesDocument = `
+    query community_getOtherCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
+  community_getOtherCommunities {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        communityType
+        createdDate
+        creator {
+          about
+          fullName
+          photoUrl
+        }
+        description
+        id
+        requestCount
+        title
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_GetOtherCommunitiesQuery = <
+  TData = Community_GetOtherCommunitiesQuery,
+  TError = unknown,
+>(
+  variables?: Community_GetOtherCommunitiesQueryVariables,
+  options?: UseQueryOptions<Community_GetOtherCommunitiesQuery, TError, TData>,
+) => {
+  return useQuery<Community_GetOtherCommunitiesQuery, TError, TData>(
+    variables === undefined
+      ? ['community_getOtherCommunities']
+      : ['community_getOtherCommunities', variables],
+    fetcher<
+      Community_GetOtherCommunitiesQuery,
+      Community_GetOtherCommunitiesQueryVariables
+    >(Community_GetOtherCommunitiesDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteCommunity_GetOtherCommunitiesQuery = <
+  TData = Community_GetOtherCommunitiesQuery,
+  TError = unknown,
+>(
+  variables?: Community_GetOtherCommunitiesQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Community_GetOtherCommunitiesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Community_GetOtherCommunitiesQuery, TError, TData>(
+    variables === undefined
+      ? ['community_getOtherCommunities.infinite']
+      : ['community_getOtherCommunities.infinite', variables],
+    metaData =>
+      fetcher<
+        Community_GetOtherCommunitiesQuery,
+        Community_GetOtherCommunitiesQueryVariables
+      >(Community_GetOtherCommunitiesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
 export const Live_AddToBookmarkDocument = `
     mutation live_addToBookmark($liveId: Int!) {
   live_addToBookmark(liveId: $liveId) {
@@ -7466,6 +7780,11 @@ export const Live_GetLiveStreamsDocument = `
           recordUrl
           title
           viewCount
+          user {
+            fullName
+            photoUrl
+            id
+          }
         }
         recordEnded
         recordStarted

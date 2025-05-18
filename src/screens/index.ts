@@ -17,6 +17,7 @@ export {default as LiveEndedScreen} from './Home/LiveEnded';
 
 //OFFERS
 export {default as OffersScreen} from './Offers/Offers';
+export {default as OfferListScreen} from './Offers/OfferList';
 
 //COMMUNITY
 export {default as CommunityScreen} from './Community/Community';

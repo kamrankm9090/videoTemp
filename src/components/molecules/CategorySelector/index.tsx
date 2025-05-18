@@ -6,8 +6,6 @@ import AppTouchable from '~/components/atoms/AppTouchable';
 import {useInfiniteCategory_GetCategoriesQuery} from '~/graphql/generated';
 import {Colors} from '~/styles';
 
-// const categories = ['All', 'Beauty', 'Sports', 'Games', 'Home', 'Tv & Audio'];
-
 const CategorySelector = ({
   selected,
   setSelected,
@@ -26,7 +24,7 @@ const CategorySelector = ({
     const data = getCategories?.pages
       ?.map(a => a?.category_getCategories?.result?.items)
       .flat();
-    return data?.map(i => i?.title);
+    return data ? ['All', ...data?.map(i => i?.title)] : [];
   }, [getCategories]);
 
   useEffect(() => {

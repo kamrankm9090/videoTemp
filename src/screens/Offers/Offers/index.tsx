@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useCallback} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {FlatList} from 'react-native';
 import {
   AppContainer,
@@ -9,6 +9,7 @@ import {
   HomeHeader,
   HStack,
   InviteFriendsCard,
+  LiveStreamItem,
   StreamItem,
   TrendingItem,
   UserCardItem,
@@ -21,17 +22,24 @@ import {
   useLive_GetRecommendedLivesQuery,
   useLive_GetTrendingLivesQuery,
 } from '~/graphql/generated';
+import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 
 interface SectionData {
   id: string;
   title: string;
-  renderItem: ({item, index}: {item: any; index: number}) => React.ReactElement | null;
+  renderItem: ({
+    item,
+    index,
+  }: {
+    item: any;
+    index: number;
+  }) => React.ReactElement | null;
   data: Array<any>;
 }
 
 const OffersScreen: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
   const {data: getUsers} = useInfiniteUser_GetCastersToFollowQuery({});
   const {data: getLiveStreams} = useLive_GetLiveStreamsQuery(
@@ -48,34 +56,27 @@ const OffersScreen: React.FC = () => {
       : {},
   );
 
+  const filterCategories =
+    selectedCategory === 'All'
+      ? {}
+      : {
+          live: {
+            category: {
+              eq: selectedCategory,
+            },
+          },
+        };
+
   const {data: getRecommendedLives} = useLive_GetRecommendedLivesQuery({
-    where: {
-      live: {
-        category: {
-          eq: selectedCategory || null,
-        },
-      },
-    },
+    where: filterCategories,
   });
 
   const {data: getTrendingLives} = useLive_GetTrendingLivesQuery({
-    where: {
-      live: {
-        category: {
-          eq: selectedCategory || null,
-        },
-      },
-    },
+    where: filterCategories,
   });
 
   const {data: getNewLives} = useLive_GetNewLivesQuery({
-    where: {
-      live: {
-        category: {
-          eq: selectedCategory || null,
-        },
-      },
-    },
+    where: filterCategories,
   });
 
   const users = useMemo(() => {
@@ -85,14 +86,28 @@ const OffersScreen: React.FC = () => {
   }, [getUsers]);
 
   const live_streams = getLiveStreams?.live_getLiveStreams?.result?.items || [];
-  const recommended_lives = getRecommendedLives?.live_getRecommendedLives?.result?.items || [];
-  const trending_lives = getTrendingLives?.live_getTrendingLives?.result?.items || [];
+  const recommended_lives =
+    getRecommendedLives?.live_getRecommendedLives?.result?.items || [];
+  const trending_lives =
+    getTrendingLives?.live_getTrendingLives?.result?.items || [];
   const new_lives = getNewLives?.live_getNewLives?.result?.items || [];
 
-  // Memoize renderItem functions once
-  const renderTrendingItem = useCallback(({item}:any) => <TrendingItem item={item} />, []);
-  const renderStreamItem = useCallback(({item}:any) => <StreamItem item={item} />, []);
-  const renderUserItem = useCallback(({item}:any) => <UserCardItem user={item} />, []);
+  const renderTrendingItem = useCallback(
+    ({item}: any) => <TrendingItem item={item} />,
+    [],
+  );
+  const renderStreamItem = useCallback(
+    ({item}: any) => <StreamItem item={item} />,
+    [],
+  );
+  const renderUserItem = useCallback(
+    ({item}: any) => <UserCardItem user={item} />,
+    [],
+  );
+  const renderLiveStreamItem = useCallback(
+    ({item}: any) => <LiveStreamItem item={item} />,
+    [],
+  );
   const renderInviteCard = useCallback(() => <InviteFriendsCard />, []);
 
   const sections: SectionData[] = useMemo(
@@ -100,7 +115,7 @@ const OffersScreen: React.FC = () => {
       {
         id: '4',
         title: 'Live streams',
-        renderItem: renderTrendingItem,
+        renderItem: renderLiveStreamItem,
         data: live_streams || [],
       },
       {
@@ -157,7 +172,10 @@ const OffersScreen: React.FC = () => {
               {item.title}
             </AppText>
             {item.data.length > 4 && (
-              <AppTouchable onPress={() => {}}>
+              <AppTouchable
+                onPress={() =>
+                  navigate('OffersStack', {screen: 'OfferList', params: {item}})
+                }>
                 <AppText color={Colors.GARY_3}>See more</AppText>
               </AppTouchable>
             )}

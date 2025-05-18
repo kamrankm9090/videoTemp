@@ -5,6 +5,7 @@ import {ArchiveIcon, HotSpot} from '~/assets/svgs';
 import {
   AppIndicator,
   AppText,
+  AppTouchable,
   AppVideoPlayer,
   HStack,
   VStack,
@@ -50,7 +51,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
   }
 
   return (
-    <VStack
+    <AppTouchable
       minW={183}
       bg={Colors.Grey}
       mb={20}
@@ -105,7 +106,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
           </HStack>
         </VStack>
       </HStack>
-    </VStack>
+    </AppTouchable>
   );
 };
 

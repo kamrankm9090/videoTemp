@@ -65,7 +65,7 @@ export default function HomePostItem({
     }
   }
 
-   console.log("=> ",item?.live?.introUrl
+   console.log("=> introUrl",item?.live?.introUrl
   );
 
   return (

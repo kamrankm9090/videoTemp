@@ -1,10 +1,13 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {OffersScreen} from '~/screens';
+import {OfferListScreen, OffersScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
 
 export type OffersStackParamList = {
   Offers: undefined;
+  OfferList: {
+    item: any
+  }
 };
 
 const Stack = createStackNavigator<OffersStackParamList>();
@@ -13,6 +16,10 @@ const screens = [
   {
     name: 'Offers',
     component: OffersScreen,
+  },
+   {
+    name: 'OfferList',
+    component: OfferListScreen,
   },
 ];
 

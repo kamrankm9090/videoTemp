@@ -88,6 +88,7 @@ export {default as GroupInfoDescription} from './molecules/GroupInfoDescription'
 export {default as GroupInfoSection} from './molecules/GroupInfoSection';
 export {default as GroupInfoMemberList} from './molecules/GroupInfoMemberList';
 export {default as GroupInfoMedia} from './molecules/GroupInfoMedia';
+export {default as LiveStreamItem} from './molecules/LiveStreamItem';
 //#endregion ---------Molecules
 
 //#region ---------Organisms
