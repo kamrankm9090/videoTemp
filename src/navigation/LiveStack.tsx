@@ -1,13 +1,13 @@
-import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {LiveScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
+import {appCreateStackNavigator} from './methods';
 
 export type LiveStackParamList = {
   Live: undefined;
 };
 
-const Stack = createStackNavigator<LiveStackParamList>();
+const Stack = appCreateStackNavigator<LiveStackParamList>();
 
 const screens = [
   {

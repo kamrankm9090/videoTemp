@@ -29,6 +29,7 @@ import {navigate} from '~/navigation/methods';
 import {createContentSchema} from '~/schemas';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
+import {isAndroid} from '~/utils/helper';
 import {showErrorMessage} from '~/utils/utils';
 
 export default function CreateContentScreen() {
@@ -71,55 +72,59 @@ export default function CreateContentScreen() {
 
   const onSubmit = useCallback(
     (formData: typeof defaultValues) => {
-      const input: LiveInput = {
-        liveType: liveType || LiveType.LiveContent,
-        isFree: isLiveContent ? formData?.isFree : null,
-        description: formData?.description,
-        title: formData?.title,
-        categoryId: formData?.category?.id,
-        setSchedule: formData?.isSchedule,
-        ...(!formData?.isFree &&
-          isLiveContent && {
-            price: formData?.price,
-          }),
-        ...(formData?.isSchedule && {
-          publishingScheduleDate: formData?.date,
-          publishingScheduleTime: formData?.time,
-        }),
-        ...(formData?.previewUrl &&
-          isLiveContent && {
-            previewUrl: formData?.previewUrl,
-          }),
-      };
-      mutateCreateLive(
-        {input},
-        {
-          onSuccess: response => {
-            if (response?.live_createLive?.status?.code === 1) {
-              const liveId = response?.live_createLive?.result?.id?.toString();
-              mutateCreateAgoraToken(
-                {channelName: liveId, publisher: true},
-                {
-                  onSuccess: res => {
-                    if (res?.agora_createToken?.status?.code === 1) {
-                      setLiveData({
-                        ...input,
-                        category: formData?.category,
-                      });
-                      setLiveId(liveId);
-                      setToken(res?.agora_createToken?.result);
-                      setTokenCreateDate(Date.now());
-                      navigate('Live');
-                    }
-                  },
-                },
-              );
-            } else {
-              showErrorMessage(response?.live_createLive?.status?.description);
-            }
-          },
-        },
-      );
+      navigate('Live');
+      // navigate(isAndroid ? 'ContentViewerLive1' : 'Live');
+      // const input: LiveInput = {
+      //   liveType: liveType || LiveType.LiveContent,
+      //   isFree: isLiveContent ? formData?.isFree : null,
+      //   description: formData?.description,
+      //   title: formData?.title,
+      //   categoryId: formData?.category?.id,
+      //   setSchedule: formData?.isSchedule,
+      //   ...(!formData?.isFree &&
+      //     isLiveContent && {
+      //       price: formData?.price,
+      //     }),
+      //   ...(formData?.isSchedule && {
+      //     publishingScheduleDate: formData?.date,
+      //     publishingScheduleTime: formData?.time,
+      //   }),
+      //   ...(formData?.previewUrl &&
+      //     isLiveContent && {
+      //       previewUrl: formData?.previewUrl,
+      //     }),
+      // };
+      // mutateCreateLive(
+      //   {input},
+      //   {
+      //     onSuccess: response => {
+      //       if (response?.live_createLive?.status?.code === 1) {
+      //         const liveId = response?.live_createLive?.result?.id?.toString();
+      //         mutateCreateAgoraToken(
+      //           {channelName: liveId, publisher: true},
+      //           {
+      //             onSuccess: res => {
+      //               if (res?.agora_createToken?.status?.code === 1) {
+      //                 setLiveData({
+      //                   ...input,
+      //                   category: formData?.category,
+      //                 });
+      //                 setLiveId(liveId);
+      //                 setToken(res?.agora_createToken?.result);
+      //                 setTokenCreateDate(Date.now());
+      //                 console.log('token: ', res?.agora_createToken?.result);
+      //                 console.log('liveId: ', liveId);
+      //                 // navigate('Live');
+      //               }
+      //             },
+      //           },
+      //         );
+      //       } else {
+      //         showErrorMessage(response?.live_createLive?.status?.description);
+      //       }
+      //     },
+      //   },
+      // );
     },
     [
       mutateCreateLive,

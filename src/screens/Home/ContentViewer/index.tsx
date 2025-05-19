@@ -78,7 +78,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
             style={styles.videoPlayer}
             fullscreen={false}
             controls={false}
-            resizeMode='contain'
+            resizeMode="contain"
             source={{
               uri: getFullImageUrl(
                 data?.agora_getRecordFiles?.result?.items?.[0]?.name,
@@ -193,7 +193,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
                 <LiveCommentSection />
               </VStack>
               <AppGradientView
-                colors={['transparent', Colors.BLACK]}
+                colors={[Colors.TRANSPARENT, Colors.BLACK]}
                 style={styles.gradient}
                 pointerEvents="none"
               />

@@ -8802,7 +8802,7 @@ __metadata:
     react-hook-form: 7.54.2
     react-native: 0.76.5
     react-native-actions-sheet: 0.9.7
-    react-native-agora: 4.5.1
+    react-native-agora: 4.5.3
     react-native-animatable: 1.4.0
     react-native-blob-util: 0.21.2
     react-native-bouncy-checkbox: ^4.1.2
@@ -10559,9 +10559,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-agora@npm:4.5.1":
-  version: 4.5.1
-  resolution: "react-native-agora@npm:4.5.1"
+"react-native-agora@npm:4.5.3":
+  version: 4.5.3
+  resolution: "react-native-agora@npm:4.5.3"
   dependencies:
     buffer: ^6.0.3
     eventemitter3: ^5.0.1
@@ -10570,7 +10570,7 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: fb83650707c20bed7b6323864735a52ee16f23ef96c7efda1c52a944fa3d51d81153d15be8d4e22bad76e68ed958fd962ed9cfdc44d693db9173a3b542d2f165
+  checksum: 93b46872622fd7eb7c998456850534353346921549f06166ef95c7e83808a00f22bb0db3b04feb155acee66fbc8d535569dc4cc7994e4716bcaa20ec0e6fa4b1
   languageName: node
   linkType: hard
 

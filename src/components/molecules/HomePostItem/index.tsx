@@ -40,29 +40,31 @@ export default function HomePostItem({
     useSnapshot(liveStore);
 
   function onPressHandler() {
-    if (item?.recordEnded) {
-      navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
-    } else {
-      const liveId = item?.live?.id?.toString();
-      mutateCreateAgoraToken(
-        {channelName: liveId, publisher: true},
-        {
-          onSuccess: res => {
-            if (res?.agora_createToken?.status?.code === 1) {
-              setLiveData({
-                ...item?.live,
-              });
-              setLiveId(liveId);
-              setToken(res?.agora_createToken?.result);
-              setTokenCreateDate(Date.now());
-              navigate('HomeStack', {
-                screen: 'ContentViewerLive',
-              });
-            }
-          },
-        },
-      );
-    }
+    navigate('CreateStack', {screen: 'Live'});
+    // navigate('HomeStack', {screen: 'ContentViewerLive'});
+    // if (item?.recordEnded) {
+    //   navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
+    // } else {
+    //   const liveId = item?.live?.id?.toString();
+    //   mutateCreateAgoraToken(
+    //     {channelName: liveId, publisher: true},
+    //     {
+    //       onSuccess: res => {
+    //         if (res?.agora_createToken?.status?.code === 1) {
+    //           setLiveData({
+    //             ...item?.live,
+    //           });
+    //           setLiveId(liveId);
+    //           setToken(res?.agora_createToken?.result);
+    //           setTokenCreateDate(Date.now());
+    //           navigate('HomeStack', {
+    //             screen: 'ContentViewerLive',
+    //           });
+    //         }
+    //       },
+    //     },
+    //   );
+    // }
   }
 
   return (

@@ -1,9 +1,9 @@
-import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {publicScreenOption} from '~/utils/utils';
-import MainTabs, {MainTabParamList} from './MainTabs';
 import CreateStack, {CreateStackParamList} from './CreateStack';
 import HomeStack, {HomeStackParamList} from './HomeStack';
+import MainTabs, {MainTabParamList} from './MainTabs';
+import {appCreateStackNavigator} from './methods';
 
 export type MainStackParamList = {
   MainTabs: {
@@ -17,7 +17,7 @@ export type MainStackParamList = {
   };
 };
 
-const Stack = createStackNavigator<MainStackParamList>();
+const Stack = appCreateStackNavigator<MainStackParamList>();
 
 const screens = [
   {
@@ -37,7 +37,10 @@ const screens = [
 export default function MainStack() {
   return (
     <>
-      <Stack.Navigator screenOptions={publicScreenOption}>
+      <Stack.Navigator
+        initialRouteName="MainTabs"
+        detachInactiveScreens={false}
+        screenOptions={publicScreenOption}>
         {screens.map(screen => (
           //@ts-ignore
           <Stack.Screen key={screen.name} {...screen} />

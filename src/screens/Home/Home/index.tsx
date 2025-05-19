@@ -9,11 +9,8 @@ import {
   PeopleYouMayKnow,
   VStack,
 } from '~/components';
-import {
-  LiveType,
-  SortEnumType,
-  useInfiniteLive_GetLivesQuery,
-} from '~/graphql/generated';
+import {LiveType, SortEnumType} from '~/graphql/generated';
+import {useGetLives} from '~/hooks/live';
 
 export default function HomeScreen() {
   const [visibleIndex, setVisibleIndex] = useState<number | null>(null);
@@ -26,7 +23,7 @@ export default function HomeScreen() {
     fetchNextPage: fetchNextPageLives,
     refetch: refetchGetLives,
     isRefetching: isRefetchingGetLives,
-  } = useInfiniteLive_GetLivesQuery({
+  } = useGetLives({
     where: {
       and: [
         {recordStarted: {eq: true}},
@@ -37,7 +34,7 @@ export default function HomeScreen() {
   });
 
   const lives = useMemo(() => {
-    return getLives?.pages?.map(a => a?.live_getLives?.result?.items).flat();
+    return getLives?.pages || [];
   }, [getLives]);
 
   const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
@@ -72,7 +69,7 @@ export default function HomeScreen() {
     <AppContainer isLoading={isLoadingGetLives}>
       <HomeHeader />
       <AppFlatList
-        data={lives || []}
+        data={lives}
         renderItem={renderItem}
         keyExtractor={(_, i) => String(i)}
         viewabilityConfig={viewConfigRef.current}

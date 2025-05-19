@@ -733,6 +733,23 @@ export type ContactSortInput = {
   lastModifiedDate?: InputMaybe<SortEnumType>;
 };
 
+export type ContactUs = {
+  __typename?: 'ContactUs';
+  createdDate: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+};
+
+export type ContactUsInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Conversation = {
   __typename?: 'Conversation';
   createdDate: Scalars['DateTime']['output'];
@@ -1689,6 +1706,13 @@ export type ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput = {
   some?: InputMaybe<KeyValuePairOfStringAndStringFilterInput>;
 };
 
+export type ListFilterInputTypeOfLiveCommentFilterInput = {
+  all?: InputMaybe<LiveCommentFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<LiveCommentFilterInput>;
+  some?: InputMaybe<LiveCommentFilterInput>;
+};
+
 export type ListFilterInputTypeOfLiveFilterInput = {
   all?: InputMaybe<LiveFilterInput>;
   any?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2005,6 +2029,29 @@ export type ListResponseBaseOfFollowerFolloweeDtoResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<FollowerFolloweeDtoSortInput>>;
   where?: InputMaybe<FollowerFolloweeDtoFilterInput>;
+};
+
+export type ListResponseBaseOfLiveCommentDto = {
+  __typename?: 'ListResponseBaseOfLiveCommentDto';
+  result?: Maybe<LiveCommentDtoCollectionSegment>;
+  result2?: Maybe<LiveCommentDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfLiveCommentDtoResultArgs = {
+  order?: InputMaybe<Array<LiveCommentDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveCommentDtoFilterInput>;
+};
+
+export type ListResponseBaseOfLiveCommentDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<LiveCommentDtoSortInput>>;
+  where?: InputMaybe<LiveCommentDtoFilterInput>;
 };
 
 export type ListResponseBaseOfLiveDto = {
@@ -2411,11 +2458,92 @@ export type LiveComment = {
   userId: Scalars['Int']['output'];
 };
 
+export type LiveCommentDto = {
+  __typename?: 'LiveCommentDto';
+  comment?: Maybe<LiveComment>;
+  tip: Scalars['Decimal']['output'];
+};
+
+/** A segment of a collection. */
+export type LiveCommentDtoCollectionSegment = {
+  __typename?: 'LiveCommentDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<LiveCommentDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type LiveCommentDtoConnection = {
+  __typename?: 'LiveCommentDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<LiveCommentDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<LiveCommentDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type LiveCommentDtoEdge = {
+  __typename?: 'LiveCommentDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<LiveCommentDto>;
+};
+
+export type LiveCommentDtoFilterInput = {
+  and?: InputMaybe<Array<LiveCommentDtoFilterInput>>;
+  comment?: InputMaybe<LiveCommentFilterInput>;
+  or?: InputMaybe<Array<LiveCommentDtoFilterInput>>;
+  tip?: InputMaybe<DecimalOperationFilterInput>;
+};
+
+export type LiveCommentDtoSortInput = {
+  comment?: InputMaybe<LiveCommentSortInput>;
+  tip?: InputMaybe<SortEnumType>;
+};
+
+export type LiveCommentFilterInput = {
+  and?: InputMaybe<Array<LiveCommentFilterInput>>;
+  children?: InputMaybe<ListFilterInputTypeOfLiveCommentFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  live?: InputMaybe<LiveFilterInput>;
+  liveId?: InputMaybe<IntOperationFilterInput>;
+  or?: InputMaybe<Array<LiveCommentFilterInput>>;
+  parent?: InputMaybe<LiveCommentFilterInput>;
+  parentId?: InputMaybe<IntOperationFilterInput>;
+  text?: InputMaybe<StringOperationFilterInput>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
 export type LiveCommentInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   liveId?: InputMaybe<Scalars['Int']['input']>;
   parentId?: InputMaybe<Scalars['Int']['input']>;
   text?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type LiveCommentSortInput = {
+  createdDate?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  live?: InputMaybe<LiveSortInput>;
+  liveId?: InputMaybe<SortEnumType>;
+  parent?: InputMaybe<LiveCommentSortInput>;
+  parentId?: InputMaybe<SortEnumType>;
+  text?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+  userId?: InputMaybe<SortEnumType>;
 };
 
 export type LiveDto = {
@@ -2868,6 +2996,7 @@ export type Mutation = {
   community_rejectRequest?: Maybe<ResponseStatus>;
   community_updateCommunity?: Maybe<ResponseBaseOfCommunity>;
   community_updateCommunityUser?: Maybe<ResponseBaseOfCommunityUser>;
+  contactUs_setContactUs?: Maybe<ResponseBaseOfContactUs>;
   create: ResponseBaseOfViolationReport;
   defaultViolation_createDefaultViolation: ResponseBaseOfDefaultViolation;
   defaultViolation_deleteDefaultViolation: ResponseBaseOfDefaultViolation;
@@ -3016,6 +3145,10 @@ export type MutationCommunity_UpdateCommunityArgs = {
 
 export type MutationCommunity_UpdateCommunityUserArgs = {
   input?: InputMaybe<CommunityUserInput>;
+};
+
+export type MutationContactUs_SetContactUsArgs = {
+  input?: InputMaybe<ContactUsInput>;
 };
 
 export type MutationCreateArgs = {
@@ -3876,7 +4009,9 @@ export type Query = {
   category_getCategory: SingleResponseBaseOfCategory;
   community_getCommunities?: Maybe<ListResponseBaseOfCommunity>;
   community_getOtherCommunities?: Maybe<ListResponseBaseOfCommunity>;
+  contactUs_getContactUs?: Maybe<ResponseBaseOfContactUs>;
   defaultViolation_getDefaultViolations: ListResponseBaseOfDefaultViolation;
+  live_getLiveComments?: Maybe<ListResponseBaseOfLiveCommentDto>;
   live_getLiveStreams?: Maybe<ListResponseBaseOfLiveDto>;
   live_getLives?: Maybe<ListResponseBaseOfLiveDto>;
   live_getLivesForHomePage?: Maybe<ListResponseBaseOfLiveDto>;
@@ -3938,6 +4073,10 @@ export type QueryAgora_GetRecordFilesArgs = {
 
 export type QueryCategory_GetCategoryArgs = {
   entityId: Scalars['Int']['input'];
+};
+
+export type QueryLive_GetLiveCommentsArgs = {
+  liveId: Scalars['Int']['input'];
 };
 
 export type QueryLive_GetLivesForHomePageArgs = {
@@ -4310,6 +4449,12 @@ export type ResponseBaseOfCommunityUser = {
 export type ResponseBaseOfContact = {
   __typename?: 'ResponseBaseOfContact';
   result?: Maybe<Contact>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfContactUs = {
+  __typename?: 'ResponseBaseOfContactUs';
+  result?: Maybe<ContactUs>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -5665,7 +5810,6 @@ export type Live_GetLivesQuery = {
         live?: {
           __typename?: 'Live';
           userId: number;
-          liveType: LiveType;
           photoUrl?: string | null;
           title?: string | null;
           description?: string | null;
@@ -6989,7 +7133,6 @@ export const Live_GetLivesDocument = `
       items {
         live {
           userId
-          liveType
           photoUrl
           title
           description

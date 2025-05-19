@@ -8,7 +8,6 @@ query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: 
             items{
                 live{
                     userId
-                    liveType
                     photoUrl
                     title
                     description

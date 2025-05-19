@@ -1,5 +1,4 @@
 import {DarkTheme, NavigationContainer, Theme} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import React, {useCallback, useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import {AppLoading} from '~/components';
@@ -8,7 +7,7 @@ import {Colors} from '~/styles';
 import {publicScreenOption} from '~/utils/utils';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
-import {navigationRef} from './methods';
+import {appCreateStackNavigator, navigationRef} from './methods';
 
 export type AppNavigatorParamList = {
   Main: undefined;
@@ -23,7 +22,7 @@ const AppTheme: Theme = {
   },
 };
 
-const Stack = createStackNavigator<AppNavigatorParamList>();
+const Stack = appCreateStackNavigator<AppNavigatorParamList>();
 
 export default function AppNavigator() {
   const {isUserLoggedIn} = userDataStore(state => state);
@@ -43,12 +42,15 @@ export default function AppNavigator() {
       theme={AppTheme}
       ref={navigationRef}
       fallback={<AppLoading />}>
-      <Stack.Navigator screenOptions={publicScreenOption}>
-        {isUserLoggedIn ? (
+      <Stack.Navigator
+        detachInactiveScreens={false}
+        screenOptions={publicScreenOption}>
+        <Stack.Screen name="Main" component={MainStack} />
+        {/* {isUserLoggedIn ? (
           <Stack.Screen name="Main" component={MainStack} />
         ) : (
           <Stack.Screen name="Auth" component={AuthStack} />
-        )}
+        )} */}
       </Stack.Navigator>
     </NavigationContainer>
   );
