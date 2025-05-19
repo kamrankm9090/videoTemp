@@ -24,6 +24,7 @@ import {
 } from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
+import { width } from '~/utils/style';
 
 interface SectionData {
   id: string;
@@ -42,19 +43,6 @@ const OffersScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const {data: getUsers} = useInfiniteUser_GetCastersToFollowQuery({});
-  const {data: getLiveStreams} = useLive_GetLiveStreamsQuery(
-    selectedCategory
-      ? {
-          where: {
-            live: {
-              category: {
-                eq: selectedCategory,
-              },
-            },
-          },
-        }
-      : {},
-  );
 
   const filterCategories =
     selectedCategory === 'All'
@@ -66,6 +54,10 @@ const OffersScreen: React.FC = () => {
             },
           },
         };
+
+  const {data: getLiveStreams} = useLive_GetLiveStreamsQuery({
+    where: filterCategories,
+  });
 
   const {data: getRecommendedLives} = useLive_GetRecommendedLivesQuery({
     where: filterCategories,
@@ -108,7 +100,14 @@ const OffersScreen: React.FC = () => {
     ({item}: any) => <LiveStreamItem item={item} />,
     [],
   );
-  const renderInviteCard = useCallback(() => <InviteFriendsCard />, []);
+  const renderInviteCard = useCallback(
+    () => (
+      <VStack w={width - 25} ml={-10}>
+        <InviteFriendsCard />
+      </VStack>
+    ),
+    [],
+  );
 
   const sections: SectionData[] = useMemo(
     () => [

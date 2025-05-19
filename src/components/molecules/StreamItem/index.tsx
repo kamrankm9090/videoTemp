@@ -25,22 +25,10 @@ interface StreamItemProps {
 
 const StreamItem: React.FC<StreamItemProps> = ({item}) => {
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
-  // const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
 
   const {mutate: mutateCreateAgoraToken} = useAgora_CreateTokenMutation();
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
-
-  // useEffect(() => {
-  //   createThumbnail({
-  //     url: getFullImageUrl(item?.live?.recordUrl) || '',
-  //     timeStamp: 200,
-  //   })
-  //     .then(response =>
-  //       setThumbnailUrl(response.path),
-  //     )
-  //     .catch(err => console.log({err}));
-  // }, [item]);
 
   function onPressHandler() {
     if (item?.recordEnded) {
@@ -93,7 +81,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         muted={true}
         volume={0}
         repeat={true}
-        resizeMode="contain"
+        resizeMode="cover"
         source={{
           uri: getFullImageUrl(item?.live?.introUrl),
         }}

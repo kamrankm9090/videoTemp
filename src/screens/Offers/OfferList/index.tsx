@@ -1,5 +1,5 @@
 import {useRoute} from '@react-navigation/native';
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   AppContainer,
@@ -32,9 +32,9 @@ const OfferList = () => {
   };
 
   const queryHook = QUERY_MAP[currentTitle];
-  const {data, hasNextPage, fetchNextPage} = queryHook
+  const {data, hasNextPage, fetchNextPage, refetch, isRefetching} = queryHook
     ? queryHook()
-    : {data: null, hasNextPage: false, fetchNextPage: () => {}};
+    : {data: null, hasNextPage: false, fetchNextPage: () => {}, refetch: () => {}, isRefetching: false};
 
   const renderTrendingItem = useCallback(
     ({item}: any) => <TrendingItem item={item} />,
@@ -52,6 +52,7 @@ const OfferList = () => {
     ({item}: any) => <LiveStreamItem item={item} />,
     [],
   );
+
   const {items, renderItem, numColumns} = useMemo(() => {
     let result: any[] = [];
 
@@ -63,8 +64,7 @@ const OfferList = () => {
         return {items: result, renderItem: renderUserItem, numColumns: 2};
 
       case 'Recommended':
-        result =
-          data?.pages?.[0]?.live_getRecommendedLives?.result?.items || [];
+        result = data?.pages?.[0]?.live_getRecommendedLives?.result?.items || [];
         return {items: result, renderItem: renderStreamItem, numColumns: 1};
 
       case 'Trending':
@@ -91,6 +91,7 @@ const OfferList = () => {
     renderUserItem,
     renderStreamItem,
     renderTrendingItem,
+    renderLiveStreamItem,
   ]);
 
   return (
@@ -111,6 +112,8 @@ const OfferList = () => {
         onEndReached={() => {
           if (hasNextPage) fetchNextPage?.();
         }}
+        refreshing={isRefetching}
+        onRefresh={refetch}
       />
     </AppContainer>
   );
