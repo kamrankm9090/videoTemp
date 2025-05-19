@@ -102,6 +102,7 @@ const OfferList = () => {
         titleColor={Colors.WHITE}
       />
       <AppFlatList
+        key={`${currentTitle}-${numColumns}`}
         numColumns={numColumns}
         data={items}
         contentContainerStyle={{marginTop: 20}}
