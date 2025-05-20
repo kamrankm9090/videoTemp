@@ -29,8 +29,6 @@ const useInitRtcEngine = (
     console.log('setChannelId-->', id);
   }
 
-  console.log({appId});
-
   const engine = useRef<IRtcEngineEx>(createAgoraRtcEngine() as IRtcEngineEx);
 
   const initRtcEngine = useCallback(async () => {

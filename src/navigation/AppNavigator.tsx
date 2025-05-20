@@ -45,12 +45,11 @@ export default function AppNavigator() {
       <Stack.Navigator
         detachInactiveScreens={false}
         screenOptions={publicScreenOption}>
-        <Stack.Screen name="Main" component={MainStack} />
-        {/* {isUserLoggedIn ? (
+        {isUserLoggedIn ? (
           <Stack.Screen name="Main" component={MainStack} />
         ) : (
           <Stack.Screen name="Auth" component={AuthStack} />
-        )} */}
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
