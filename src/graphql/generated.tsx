@@ -6046,6 +6046,34 @@ export type Live_DeleteCommentMutation = {
   } | null;
 };
 
+export type Live_ViewLiveMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_ViewLiveMutation = {
+  __typename?: 'Mutation';
+  live_viewLive?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
+export type Live_LikeMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_LikeMutation = {
+  __typename?: 'Mutation';
+  live_like?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Live_GetLivesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -7718,6 +7746,74 @@ export const useLive_DeleteCommentMutation = <
     (variables?: Live_DeleteCommentMutationVariables) =>
       fetcher<Live_DeleteCommentMutation, Live_DeleteCommentMutationVariables>(
         Live_DeleteCommentDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const Live_ViewLiveDocument = `
+    mutation live_viewLive($liveId: Int!) {
+  live_viewLive(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_ViewLiveMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    Live_ViewLiveMutation,
+    TError,
+    Live_ViewLiveMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_ViewLiveMutation,
+    TError,
+    Live_ViewLiveMutationVariables,
+    TContext
+  >(
+    ['live_viewLive'],
+    (variables?: Live_ViewLiveMutationVariables) =>
+      fetcher<Live_ViewLiveMutation, Live_ViewLiveMutationVariables>(
+        Live_ViewLiveDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const Live_LikeDocument = `
+    mutation live_like($liveId: Int!) {
+  live_like(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_LikeMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    Live_LikeMutation,
+    TError,
+    Live_LikeMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_LikeMutation,
+    TError,
+    Live_LikeMutationVariables,
+    TContext
+  >(
+    ['live_like'],
+    (variables?: Live_LikeMutationVariables) =>
+      fetcher<Live_LikeMutation, Live_LikeMutationVariables>(
+        Live_LikeDocument,
         variables,
       )(),
     options,

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ArchiveIcon,
@@ -25,6 +25,8 @@ import {
 import {
   useAgora_GetRecordFilesQuery,
   useLive_GetLivesQuery,
+  useLive_LikeMutation,
+  useLive_ViewLiveMutation,
 } from '~/graphql/generated';
 import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
@@ -46,6 +48,30 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
     },
   });
 
+  const {mutate} = useLive_LikeMutation();
+  const {mutate: viewLiveMutate} = useLive_ViewLiveMutation();
+
+  useEffect(() => {
+    viewLiveMutate(
+      {liveId: params?.item?.live?.id},
+      {
+        onSuccess(data, variables, context) {
+          console.log(data);
+        },
+      },
+    );
+  }, []);
+
+  const likeHanddler = () => {
+    mutate(
+      {liveId: params?.item?.live?.id},
+      {
+        onSuccess(data, variables, context) {
+          console.log(data);
+        },
+      },
+    );
+  };
 
   const {data} = useAgora_GetRecordFilesQuery({
     liveId: params?.item?.live?.id,
@@ -68,10 +94,11 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   ];
 
   const bottomRightItems = [
-      {
+    {
       key: 'like',
       icon: <LikeIcon />,
-      onPress: () => {},
+      number: 0,
+      onPress: () => likeHanddler(),
     },
     {
       key: 'send',
@@ -138,7 +165,10 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
               params?.item?.isFollowed ||
               followData?.live_getLives?.result?.items?.[0]?.isFollowed
             }
-            viewCount={followData?.live_getLives?.result?.items?.[0]?.live?.viewCount || 0}
+            viewCount={
+              followData?.live_getLives?.result?.items?.[0]?.live?.viewCount ||
+              0
+            }
           />
         </HStack>
 
@@ -182,17 +212,28 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
         {!fullScreen && (
           <VStack style={styles.bottomRightContainer}>
             {bottomRightItems.map(item => (
-              <AppTouchable
-                key={item.key}
-                bg={Colors.WHITE_TRANSPARENT_2}
-                p={6}
-                borderRadius={100}
-                justifyContent="center"
-                alignItems="center"
-                zIndex={2}
-                onPress={item.onPress}>
-                {item.icon}
-              </AppTouchable>
+              <VStack key={item?.key}>
+                <AppTouchable
+                  key={item.key}
+                  bg={Colors.WHITE_TRANSPARENT_2}
+                  p={6}
+                  borderRadius={100}
+                  justifyContent="center"
+                  alignItems="center"
+                  zIndex={2}
+                  onPress={item.onPress}>
+                  {item.icon}
+                </AppTouchable>
+                {item?.number && (
+                  <AppText
+                    fontSize={12}
+                    fontWeight={'400'}
+                    marginTop={4}
+                    alignSelf="center">
+                    {item?.number}
+                  </AppText>
+                )}
+              </VStack>
             ))}
           </VStack>
         )}
@@ -236,7 +277,7 @@ const styles = StyleSheet.create({
   bottomRightContainer: {
     position: 'absolute',
     right: 24,
-    bottom: height / 2 - 20,
+    bottom: height / 2,
     gap: 8,
   },
   contentArea: {

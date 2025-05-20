@@ -72,3 +72,22 @@ mutation live_deleteComment($commentId: Int!){
   }
 }
 
+
+
+mutation live_viewLive ($liveId: Int!){
+  live_viewLive(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+
+
+
+mutation live_like($liveId: Int!) {
+  live_like(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
