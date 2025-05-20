@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { StyleSheet } from 'react-native';
 import {ChevronBack} from '~/assets/svgs';
 import {
   AppContainer,
@@ -26,7 +27,7 @@ export default function CommunityScreen() {
           <AppText fontSize={14} fontWeight={'500'} textAlign="center">
             See more
           </AppText>
-          <ChevronBack style={{transform: [{rotate: '270deg'}]}} />
+          <ChevronBack style={styles.chvron} />
         </HStack>
       </AppTouchable>
     );
@@ -61,3 +62,7 @@ export default function CommunityScreen() {
     </AppContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  chvron:{transform: [{rotate: '270deg'}]}
+})

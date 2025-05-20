@@ -180,7 +180,7 @@ const OffersScreen: React.FC = () => {
             )}
           </HStack>
         )}
-        <FlatList
+        <AppFlatList
           keyExtractor={(_, index) => index.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}

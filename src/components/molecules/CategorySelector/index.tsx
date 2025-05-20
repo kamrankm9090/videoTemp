@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
+import AppFlatList from '~/components/atoms/AppFlatList';
 import AppText from '~/components/atoms/AppText';
 import AppTouchable from '~/components/atoms/AppTouchable';
 import {useInfiniteCategory_GetCategoriesQuery} from '~/graphql/generated';
@@ -32,12 +33,11 @@ const CategorySelector = ({
   }, [categories]);
 
   return (
-    <FlatList
+    <AppFlatList
       horizontal
       showsHorizontalScrollIndicator={false}
       data={categories}
       keyExtractor={item => `key ${item}`}
-      contentContainerStyle={styles.contentContainerStyle}
       renderItem={({item}: any) => {
         const isActive = item === selected;
         const bgColor = isActive ? Colors.PRIMARY : Colors.NIGHT_RIDER;
@@ -66,7 +66,5 @@ const CategorySelector = ({
 export default CategorySelector;
 
 const styles = StyleSheet.create({
-  contentContainerStyle: {
-    gap: 8,
-  },
+  
 });
