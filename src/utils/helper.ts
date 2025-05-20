@@ -72,6 +72,12 @@ export function formatTimer(seconds: number) {
   return `${mins}:${secs}`;
 }
 
+export const getRandomColorFromName = (name: string): string => {
+  const colors = ['#FF4C94', '#F9C74F', '#577590', '#D946EF', '#222222'];
+  const charCode = name?.charCodeAt(0) || 0;
+  return colors[charCode % colors.length];
+};
+
 // form helper
 export {useForm} from 'react-hook-form';
 export {Yup, yupResolver};

@@ -8,6 +8,7 @@ query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: 
             items{
                 live{
                     userId
+                    introUrl
                     liveType
                     photoUrl
                     title
@@ -73,6 +74,7 @@ query live_getLiveStreams ($skip: Int, $take: Int, $where: LiveDtoFilterInput, $
         isViewed
         live{
           id
+          introUrl
           category
           createdDate
           description
@@ -80,7 +82,13 @@ query live_getLiveStreams ($skip: Int, $take: Int, $where: LiveDtoFilterInput, $
           recordUrl
           title
           viewCount
+          user{
+            fullName
+            photoUrl
+            id
+          }
         }
+        
         recordEnded
         recordStarted
         
@@ -105,6 +113,7 @@ query live_getRecommendedLives($skip: Int, $take: Int, $where: LiveDtoFilterInpu
         isViewed
         live{
           id
+          introUrl
           category
           createdDate
           description
@@ -142,6 +151,7 @@ query live_getTrendingLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, 
         isViewed
         live{
           id
+          introUrl
           category
           createdDate
           description
@@ -174,6 +184,7 @@ query live_getNewLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $orde
         isViewed
         live{
           id
+          introUrl
           category
           createdDate
           description

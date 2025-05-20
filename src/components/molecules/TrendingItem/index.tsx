@@ -5,6 +5,7 @@ import {ArchiveIcon, HotSpot} from '~/assets/svgs';
 import {
   AppIndicator,
   AppText,
+  AppTouchable,
   AppVideoPlayer,
   HStack,
   VStack,
@@ -26,6 +27,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
   const {mutate: mutateCreateAgoraToken} = useAgora_CreateTokenMutation();
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
+
   function onPressHandler() {
     if (item?.recordEnded) {
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
@@ -40,9 +42,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
               setLiveId(liveId);
               setToken(res?.agora_createToken?.result || '');
               setTokenCreateDate(Date.now());
-              navigate('HomeStack', {
-                screen: 'ContentViewerLive',
-              });
+              navigate('HomeStack', {screen: 'ContentViewerLive'});
             }
           },
         },
@@ -51,13 +51,14 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
   }
 
   return (
-    <VStack
+    <AppTouchable
       minW={183}
       bg={Colors.Grey}
       mb={20}
       rounded={10}
       overflow="hidden"
-      mx={10}>
+      mx={10}
+      onPress={onPressHandler}>
       <HStack
         w="100%"
         position="absolute"
@@ -80,9 +81,9 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
         muted={true}
         volume={0}
         repeat={true}
-        resizeMode="contain"
+        resizeMode="cover"
         source={{
-          uri: getFullImageUrl(item?.live?.recordUrl),
+          uri: getFullImageUrl(item?.live?.introUrl),
         }}
         onLoadStart={() => setIsLoadingVideo(true)}
         onLoad={() => setIsLoadingVideo(false)}
@@ -91,6 +92,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
           <AppIndicator color={Colors.GARY_2} style={StyleSheet.absoluteFill} />
         )}
       </AppVideoPlayer>
+
       <HStack py={10} px={8} bg={Colors.BLACK}>
         <VStack flex={1} space={4}>
           <AppText fontFamily="medium" fontSize={fontSize.medium}>
@@ -104,7 +106,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
           </HStack>
         </VStack>
       </HStack>
-    </VStack>
+    </AppTouchable>
   );
 };
 
@@ -114,5 +116,10 @@ const styles = StyleSheet.create({
   videoPlayer: {
     width: '100%',
     height: 200,
+  },
+  thumbnail: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
   },
 });

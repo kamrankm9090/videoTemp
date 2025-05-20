@@ -15,7 +15,7 @@ import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
-import { getFullImageUrl } from '~/utils/helper';
+import {getFullImageUrl} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
 import {showSheet} from '~/utils/utils';
 
@@ -30,7 +30,6 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
 
-    
   function onPressHandler() {
     if (item?.recordEnded) {
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
@@ -45,16 +44,13 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
               setLiveId(liveId);
               setToken(res?.agora_createToken?.result || '');
               setTokenCreateDate(Date.now());
-              navigate('HomeStack', {
-                screen: 'ContentViewerLive',
-              });
+              navigate('HomeStack', {screen: 'ContentViewerLive'});
             }
           },
         },
       );
     }
   }
-
 
   return (
     <AppTouchable
@@ -85,16 +81,16 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         muted={true}
         volume={0}
         repeat={true}
-        resizeMode="contain"
+        resizeMode="cover"
         source={{
-          uri: getFullImageUrl(item?.live?.recordUrl),
+          uri: getFullImageUrl(item?.live?.introUrl),
         }}
         showTimer
         onLoadStart={() => setIsLoadingVideo(true)}
         onLoad={() => setIsLoadingVideo(false)}
         onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}>
         {isLoadingVideo && (
-          <AppIndicator color={Colors.GARY_2}  style={StyleSheet.absoluteFill} />
+          <AppIndicator color={Colors.GARY_2} style={StyleSheet.absoluteFill} />
         )}
       </AppVideoPlayer>
 
@@ -103,12 +99,11 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
           imageSource={{uri: item?.live?.user?.photoUrl}}
           style={styles.avatar}
         />
-
         <VStack flex={1} space={4}>
           <AppText fontWeight="500" fontSize={fontSize.medium}>
             {item?.live?.title}
           </AppText>
-          <AppText fontWeight="400" fontSize={fontSize.small}>
+          <AppText numberOfLines={1} maxWidth={200} fontWeight="400" fontSize={fontSize.small}>
             {item?.live?.description}
           </AppText>
           <HStack space={8}>
@@ -118,7 +113,6 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
             </AppText>
           </HStack>
         </VStack>
-
         <AppTouchable onPress={() => showSheet('offer-select-option-action')}>
           <MoreHIcon />
         </AppTouchable>
@@ -139,5 +133,10 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     marginRight: 10,
+  },
+  thumbnail: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
   },
 });

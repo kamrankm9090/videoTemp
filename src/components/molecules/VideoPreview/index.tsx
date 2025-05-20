@@ -51,8 +51,8 @@ export default function VideoPreview({
           </AppText>
         </AppTouchable>
         <AppHelperText error={fieldState.error} />
-      </VStack>
       <VideoRecorderModal ref={modalRef} onSelectVideo={onSelectVideo} />
+      </VStack>
     </>
   );
 }

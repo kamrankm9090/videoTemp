@@ -44,6 +44,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         placeholder={placeholder}
         value={query}
         onChangeText={handleChangeText}
+        placeholderTextColor={Colors.Grey}
         autoCorrect={false}
         clearButtonMode="while-editing"
         {...inputProps} // Pass down additional props to TextInput
@@ -56,11 +57,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.WHITE,
+    backgroundColor:Colors.NERO,
     borderWidth: 1,
-    borderColor: Colors.GARY_5,
-    borderRadius: 100,
+    borderColor: Colors.Mortar,
+    borderRadius: 8,
     padding: scale(10),
+    marginVertical:16
   },
   input: {
     flex: 1,

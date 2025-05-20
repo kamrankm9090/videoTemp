@@ -29,7 +29,7 @@ const Stack = createStackNavigator<AppNavigatorParamList>();
 export default function AppNavigator() {
   const {isUserLoggedIn} = userDataStore(state => state);
 
-  const {userData} = userDataStore();
+  const userData = userDataStore(state => state?.userData);
   useNotificationAddedSubscription({
     userId: userData?.id,
     callback() {
