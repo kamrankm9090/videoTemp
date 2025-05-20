@@ -11,9 +11,7 @@ import {
 } from '~/assets/svgs';
 import {
   AppContainer,
-  AppGradientView,
   AppIndicator,
-  AppInput,
   AppText,
   AppTouchable,
   AppVideoPlayer,
@@ -23,17 +21,30 @@ import {
   LiveCommentSection,
   VStack,
 } from '~/components';
-import {useAgora_GetRecordFilesQuery} from '~/graphql/generated';
+import {
+  useAgora_GetRecordFilesQuery,
+  useLive_GetLivesQuery,
+} from '~/graphql/generated';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
 import {height, width} from '~/utils/style';
 
 const ContentViewerScreen = ({route}: NavigationProp) => {
   const params: any = route?.params;
-  console.log( params?.item?.live?.id);
-  
+
   const [fullScreen, setFullScreen] = useState(true);
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
+  const userData = userDataStore(state => state?.userData);
+
+  const {data: followData} = useLive_GetLivesQuery({
+    where: {
+      live: {
+        id: {eq: params?.item?.live?.id},
+      },
+    },
+  });
+
 
   const {data} = useAgora_GetRecordFilesQuery({
     liveId: params?.item?.live?.id,
@@ -75,130 +86,129 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
 
   return (
     <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
-        <VStack flex={1} position="relative">
-          <AppVideoPlayer
-            style={styles.videoPlayer}
-            fullscreen={false}
-            controls={false}
-            resizeMode="contain"
-            source={{
-              uri: getFullImageUrl(
-                data?.agora_getRecordFiles?.result?.items?.[0]?.name,
-              ),
-            }}
-            onLoadStart={() => setIsLoadingVideo(true)}
-            onLoad={() => setIsLoadingVideo(false)}
-            onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}
+      <VStack flex={1} position="relative">
+        <AppVideoPlayer
+          style={styles.videoPlayer}
+          fullscreen={false}
+          controls={false}
+          resizeMode="contain"
+          source={{
+            uri: getFullImageUrl(
+              data?.agora_getRecordFiles?.result?.items?.[0]?.name,
+            ),
+          }}
+          onLoadStart={() => setIsLoadingVideo(true)}
+          onLoad={() => setIsLoadingVideo(false)}
+          onBuffer={({isBuffering}) => setIsLoadingVideo(isBuffering)}
+        />
+
+        {isLoadingVideo && (
+          <VStack
+            position="absolute"
+            top={0}
+            bottom={0}
+            left={0}
+            right={0}
+            alignItems="center"
+            justifyContent="center"
+            zIndex={10}
+            bg={Colors.BLACK_TRANSPARENT_6}>
+            <AppText fontSize={14} color={Colors.WHITE} marginBottom={8}>
+              Loading video...
+            </AppText>
+            <AppIndicator size="large" color={Colors.WHITE} />
+          </VStack>
+        )}
+
+        <HStack
+          justifyContent="space-between"
+          position="absolute"
+          top={10}
+          left={0}
+          right={0}>
+          <ContentViewerHeader
+            user={params?.item?.live?.user}
+            isFollowed={
+              params?.item?.isFollowed ||
+              followData?.live_getLives?.result?.items?.[0]?.isFollowed
+            }
+            viewCount={followData?.live_getLives?.result?.items?.[0]?.live?.viewCount || 0}
           />
+        </HStack>
 
-          {isLoadingVideo && (
-            <VStack
-              position="absolute"
-              top={0}
-              bottom={0}
-              left={0}
-              right={0}
-              alignItems="center"
-              justifyContent="center"
-              zIndex={10}
-              bg={Colors.BLACK_TRANSPARENT_6}>
-              <AppText fontSize={14} color={Colors.WHITE} marginBottom={8}>
-                Loading video...
-              </AppText>
-              <AppIndicator size="large" color={Colors.WHITE} />
+        <HStack
+          justifyContent="space-between"
+          m={16}
+          position="absolute"
+          top={60}
+          left={0}
+          right={0}>
+          <VStack style={styles.topLeftContainer}>
+            {topLeftItems.map(item => (
+              <AppTouchable
+                key={item.key}
+                bg={Colors.WHITE_TRANSPARENT_6}
+                p={6}
+                borderRadius={14}
+                gap={6}
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="row"
+                zIndex={2}
+                onPress={item.onPress}>
+                {item.icon}
+                <AppText
+                  fontWeight="500"
+                  fontSize={13}
+                  color={Colors.BLACK_TRANSPARENT_8}>
+                  {item.title}
+                </AppText>
+              </AppTouchable>
+            ))}
+          </VStack>
+          <AppTouchable
+            style={styles.fullScreenButton}
+            onPress={() => setFullScreen(!fullScreen)}>
+            {fullScreen ? <MinimizeScreenIcon /> : <FullScreenIcon />}
+          </AppTouchable>
+        </HStack>
+
+        {!fullScreen && (
+          <VStack style={styles.bottomRightContainer}>
+            {bottomRightItems.map(item => (
+              <AppTouchable
+                key={item.key}
+                bg={Colors.WHITE_TRANSPARENT_2}
+                p={6}
+                borderRadius={100}
+                justifyContent="center"
+                alignItems="center"
+                zIndex={2}
+                onPress={item.onPress}>
+                {item.icon}
+              </AppTouchable>
+            ))}
+          </VStack>
+        )}
+
+        {!fullScreen ? (
+          <VStack style={styles.contentArea}>
+            <ContentDescriptionCard
+              title="Maximize You Experience:"
+              description="I want to make a film in the field of cosmetics and skincare products, and I am currently looking for these skills for this project."
+              category="Beauty"
+              price="$45"
+              schedule="2024/2/10, 3:15 AM"
+            />
+          </VStack>
+        ) : (
+          <>
+            <VStack w={width} p={10} position="absolute" bottom={20} pt={40}>
+              <LiveCommentSection key={1} />
             </VStack>
-          )}
-
-          <HStack
-            justifyContent="space-between"
-            position="absolute"
-            top={10}
-            left={0}
-            right={0}>
-            <ContentViewerHeader />
-          </HStack>
-
-          <HStack
-            justifyContent="space-between"
-            m={16}
-            position="absolute"
-            top={60}
-            left={0}
-            right={0}>
-            <VStack style={styles.topLeftContainer}>
-              {topLeftItems.map(item => (
-                <AppTouchable
-                  key={item.key}
-                  bg={Colors.WHITE_TRANSPARENT_6}
-                  p={6}
-                  borderRadius={14}
-                  gap={6}
-                  justifyContent="center"
-                  alignItems="center"
-                  flexDirection="row"
-                  zIndex={2}
-                  onPress={item.onPress}>
-                  {item.icon}
-                  <AppText
-                    fontWeight="500"
-                    fontSize={13}
-                    color={Colors.BLACK_TRANSPARENT_8}>
-                    {item.title}
-                  </AppText>
-                </AppTouchable>
-              ))}
-            </VStack>
-            <AppTouchable
-              style={styles.fullScreenButton}
-              onPress={() => setFullScreen(!fullScreen)}>
-              {fullScreen ? <MinimizeScreenIcon /> : <FullScreenIcon />}
-            </AppTouchable>
-          </HStack>
-
-          {!fullScreen && (
-            <VStack style={styles.bottomRightContainer}>
-              {bottomRightItems.map(item => (
-                <AppTouchable
-                  key={item.key}
-                  bg={Colors.WHITE_TRANSPARENT_2}
-                  p={6}
-                  borderRadius={100}
-                  justifyContent="center"
-                  alignItems="center"
-                  zIndex={2}
-                  onPress={item.onPress}>
-                  {item.icon}
-                </AppTouchable>
-              ))}
-            </VStack>
-          )}
-       
-
-          {!fullScreen ? (
-            <VStack style={styles.contentArea}>
-              <ContentDescriptionCard
-                title="Maximize You Experience:"
-                description="I want to make a film in the field of cosmetics and skincare products, and I am currently looking for these skills for this project."
-                category="Beauty"
-                price="$45"
-                schedule="2024/2/10, 3:15 AM"
-              />
-            </VStack>
-          ) : (
-            <>
-              <VStack
-                w={width}
-                p={10}
-                position="absolute"
-                bottom={20}
-                pt={40}>
-                <LiveCommentSection  key={1}/>
-              </VStack>
-          
-            </>
-          )}
-        </VStack>
-      
+          </>
+        )}
+      </VStack>
     </AppContainer>
   );
 };

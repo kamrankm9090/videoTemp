@@ -468,6 +468,7 @@ export type Community = {
   isDeleted: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   media?: Maybe<Scalars['String']['output']>;
+  messageCount: Scalars['Int']['output'];
   messages?: Maybe<Array<Maybe<CommunityMessage>>>;
   photoUrl?: Maybe<Scalars['String']['output']>;
   requestCount: Scalars['Int']['output'];
@@ -520,6 +521,7 @@ export type CommunityFilterInput = {
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   media?: InputMaybe<StringOperationFilterInput>;
+  messageCount?: InputMaybe<IntOperationFilterInput>;
   messages?: InputMaybe<ListFilterInputTypeOfCommunityMessageFilterInput>;
   or?: InputMaybe<Array<CommunityFilterInput>>;
   photoUrl?: InputMaybe<StringOperationFilterInput>;
@@ -607,6 +609,7 @@ export type CommunitySortInput = {
   isDeleted?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   media?: InputMaybe<SortEnumType>;
+  messageCount?: InputMaybe<SortEnumType>;
   photoUrl?: InputMaybe<SortEnumType>;
   requestCount?: InputMaybe<SortEnumType>;
   title?: InputMaybe<SortEnumType>;
@@ -960,6 +963,25 @@ export type CustomerDtoSortInput = {
   livemode?: InputMaybe<SortEnumType>;
   name?: InputMaybe<SortEnumType>;
   object?: InputMaybe<SortEnumType>;
+};
+
+export type DashboardCollaborativeDto = {
+  __typename?: 'DashboardCollaborativeDto';
+  collaborate: Scalars['Int']['output'];
+  investment: Scalars['Int']['output'];
+  promotion: Scalars['Int']['output'];
+};
+
+export type DashboardSummaryDto = {
+  __typename?: 'DashboardSummaryDto';
+  communityCount: Scalars['Int']['output'];
+  communityPercent: Scalars['Int']['output'];
+  contentCount: Scalars['Int']['output'];
+  contentPercent: Scalars['Int']['output'];
+  monetizedAmount: Scalars['Decimal']['output'];
+  monetizedPercent: Scalars['Decimal']['output'];
+  userCount: Scalars['Int']['output'];
+  userPercent: Scalars['Int']['output'];
 };
 
 export type DateTimeOperationFilterInput = {
@@ -2462,6 +2484,7 @@ export type Live = {
   shareCount: Scalars['Int']['output'];
   title?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
+  userCount: Scalars['Int']['output'];
   userId: Scalars['Int']['output'];
   value: Scalars['Decimal']['output'];
   viewCount: Scalars['Int']['output'];
@@ -2574,6 +2597,7 @@ export type LiveCommentSortInput = {
 export type LiveDto = {
   __typename?: 'LiveDto';
   isBookmark: Scalars['Boolean']['output'];
+  isFollowed: Scalars['Boolean']['output'];
   isPurchased: Scalars['Boolean']['output'];
   isViewed: Scalars['Boolean']['output'];
   live?: Maybe<Live>;
@@ -2616,6 +2640,7 @@ export type LiveDtoEdge = {
 export type LiveDtoFilterInput = {
   and?: InputMaybe<Array<LiveDtoFilterInput>>;
   isBookmark?: InputMaybe<BooleanOperationFilterInput>;
+  isFollowed?: InputMaybe<BooleanOperationFilterInput>;
   isPurchased?: InputMaybe<BooleanOperationFilterInput>;
   isViewed?: InputMaybe<BooleanOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
@@ -2626,6 +2651,7 @@ export type LiveDtoFilterInput = {
 
 export type LiveDtoSortInput = {
   isBookmark?: InputMaybe<SortEnumType>;
+  isFollowed?: InputMaybe<SortEnumType>;
   isPurchased?: InputMaybe<SortEnumType>;
   isViewed?: InputMaybe<SortEnumType>;
   live?: InputMaybe<LiveSortInput>;
@@ -2667,6 +2693,7 @@ export type LiveFilterInput = {
   shareCount?: InputMaybe<IntOperationFilterInput>;
   title?: InputMaybe<StringOperationFilterInput>;
   user?: InputMaybe<UserFilterInput>;
+  userCount?: InputMaybe<IntOperationFilterInput>;
   userId?: InputMaybe<IntOperationFilterInput>;
   value?: InputMaybe<DecimalOperationFilterInput>;
   viewCount?: InputMaybe<IntOperationFilterInput>;
@@ -2760,6 +2787,7 @@ export type LiveSortInput = {
   shareCount?: InputMaybe<SortEnumType>;
   title?: InputMaybe<SortEnumType>;
   user?: InputMaybe<UserSortInput>;
+  userCount?: InputMaybe<SortEnumType>;
   userId?: InputMaybe<SortEnumType>;
   value?: InputMaybe<SortEnumType>;
   viewCount?: InputMaybe<SortEnumType>;
@@ -3039,6 +3067,7 @@ export type Mutation = {
   live_createNotInterested?: Maybe<ResponseStatus>;
   live_deleteComment?: Maybe<ResponseStatus>;
   live_deleteLive?: Maybe<ResponseStatus>;
+  live_like?: Maybe<ResponseStatus>;
   live_purchase?: Maybe<ResponseStatus>;
   live_rate?: Maybe<ResponseStatus>;
   live_removeFromBookmark?: Maybe<ResponseStatus>;
@@ -3229,6 +3258,10 @@ export type MutationLive_DeleteCommentArgs = {
 };
 
 export type MutationLive_DeleteLiveArgs = {
+  liveId: Scalars['Int']['input'];
+};
+
+export type MutationLive_LikeArgs = {
   liveId: Scalars['Int']['input'];
 };
 
@@ -4039,6 +4072,8 @@ export type Query = {
   community_getCommunities?: Maybe<ListResponseBaseOfCommunity>;
   community_getOtherCommunities?: Maybe<ListResponseBaseOfCommunity>;
   contactUs_getContactUs?: Maybe<ResponseBaseOfContactUs>;
+  dashboard_getCollaborative?: Maybe<ResponseBaseOfDashboardCollaborativeDto>;
+  dashboard_getSummary?: Maybe<ResponseBaseOfDashboardSummaryDto>;
   defaultViolation_getDefaultViolations: ListResponseBaseOfDefaultViolation;
   live_getLiveComments?: Maybe<ListResponseBaseOfLiveCommentDto>;
   live_getLiveStreams?: Maybe<ListResponseBaseOfLiveDto>;
@@ -4497,6 +4532,18 @@ export type ResponseBaseOfConversation = {
 export type ResponseBaseOfCustomerDto = {
   __typename?: 'ResponseBaseOfCustomerDto';
   result?: Maybe<CustomerDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfDashboardCollaborativeDto = {
+  __typename?: 'ResponseBaseOfDashboardCollaborativeDto';
+  result?: Maybe<DashboardCollaborativeDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfDashboardSummaryDto = {
+  __typename?: 'ResponseBaseOfDashboardSummaryDto';
+  result?: Maybe<DashboardSummaryDto>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -5120,6 +5167,7 @@ export type User = {
   lockoutEnd?: Maybe<Scalars['DateTime']['output']>;
   /** @deprecated Use LocationOfUser */
   longitude?: Maybe<Scalars['Float']['output']>;
+  moneySpent: Scalars['Decimal']['output'];
   normalizedEmail?: Maybe<Scalars['String']['output']>;
   normalizedUserName?: Maybe<Scalars['String']['output']>;
   passwordHash?: Maybe<Scalars['String']['output']>;
@@ -5143,6 +5191,7 @@ export type User = {
   streetAddress?: Maybe<Scalars['String']['output']>;
   stripeConnectAccountId?: Maybe<Scalars['String']['output']>;
   stripeConnectCompleted: Scalars['Boolean']['output'];
+  timeSpent: Scalars['Float']['output'];
   twoFactorAuthenticationCode?: Maybe<Scalars['String']['output']>;
   twoFactorAuthenticationEnabled?: Maybe<Scalars['Boolean']['output']>;
   twoFactorEnabled: Scalars['Boolean']['output'];
@@ -5297,6 +5346,7 @@ export type UserFilterInput = {
   lockoutEnabled?: InputMaybe<BooleanOperationFilterInput>;
   lockoutEnd?: InputMaybe<DateTimeOperationFilterInput>;
   longitude?: InputMaybe<FloatOperationFilterInput>;
+  moneySpent?: InputMaybe<DecimalOperationFilterInput>;
   normalizedEmail?: InputMaybe<StringOperationFilterInput>;
   normalizedUserName?: InputMaybe<StringOperationFilterInput>;
   or?: InputMaybe<Array<UserFilterInput>>;
@@ -5321,6 +5371,7 @@ export type UserFilterInput = {
   streetAddress?: InputMaybe<StringOperationFilterInput>;
   stripeConnectAccountId?: InputMaybe<StringOperationFilterInput>;
   stripeConnectCompleted?: InputMaybe<BooleanOperationFilterInput>;
+  timeSpent?: InputMaybe<FloatOperationFilterInput>;
   twoFactorAuthenticationCode?: InputMaybe<StringOperationFilterInput>;
   twoFactorAuthenticationEnabled?: InputMaybe<BooleanOperationFilterInput>;
   twoFactorEnabled?: InputMaybe<BooleanOperationFilterInput>;
@@ -5528,6 +5579,7 @@ export type UserSortInput = {
   lockoutEnabled?: InputMaybe<SortEnumType>;
   lockoutEnd?: InputMaybe<SortEnumType>;
   longitude?: InputMaybe<SortEnumType>;
+  moneySpent?: InputMaybe<SortEnumType>;
   normalizedEmail?: InputMaybe<SortEnumType>;
   normalizedUserName?: InputMaybe<SortEnumType>;
   passwordHash?: InputMaybe<SortEnumType>;
@@ -5551,6 +5603,7 @@ export type UserSortInput = {
   streetAddress?: InputMaybe<SortEnumType>;
   stripeConnectAccountId?: InputMaybe<SortEnumType>;
   stripeConnectCompleted?: InputMaybe<SortEnumType>;
+  timeSpent?: InputMaybe<SortEnumType>;
   twoFactorAuthenticationCode?: InputMaybe<SortEnumType>;
   twoFactorAuthenticationEnabled?: InputMaybe<SortEnumType>;
   twoFactorEnabled?: InputMaybe<SortEnumType>;
@@ -6019,6 +6072,7 @@ export type Live_GetLivesQuery = {
         recordEnded: boolean;
         isViewed: boolean;
         isBookmark: boolean;
+        isFollowed: boolean;
         live?: {
           __typename?: 'Live';
           userId: number;
@@ -6095,6 +6149,7 @@ export type Live_GetLiveStreamsQuery = {
         isBookmark: boolean;
         isPurchased: boolean;
         isViewed: boolean;
+        isFollowed: boolean;
         recordEnded: boolean;
         recordStarted: boolean;
         live?: {
@@ -6112,6 +6167,7 @@ export type Live_GetLiveStreamsQuery = {
             __typename?: 'User';
             fullName?: string | null;
             photoUrl?: string | null;
+            username?: string | null;
             id: number;
           } | null;
         } | null;
@@ -6162,6 +6218,8 @@ export type Live_GetRecommendedLivesQuery = {
             __typename?: 'User';
             photoUrl?: string | null;
             fullName?: string | null;
+            username?: string | null;
+            id: number;
           } | null;
         } | null;
       } | null> | null;
@@ -6208,6 +6266,13 @@ export type Live_GetTrendingLivesQuery = {
           photoUrl?: string | null;
           title?: string | null;
           viewCount: number;
+          user?: {
+            __typename?: 'User';
+            photoUrl?: string | null;
+            fullName?: string | null;
+            username?: string | null;
+            id: number;
+          } | null;
         } | null;
       } | null> | null;
     } | null;
@@ -6256,6 +6321,8 @@ export type Live_GetNewLivesQuery = {
             __typename?: 'User';
             photoUrl?: string | null;
             fullName?: string | null;
+            username?: string | null;
+            id: number;
           } | null;
         } | null;
       } | null> | null;
@@ -6293,9 +6360,10 @@ export type Live_GetLiveCommentsQuery = {
           text?: string | null;
           user?: {
             __typename?: 'User';
+            photoUrl?: string | null;
             fullName?: string | null;
             username?: string | null;
-            photoUrl?: string | null;
+            id: number;
           } | null;
           children?: Array<{
             __typename?: 'LiveComment';
@@ -7713,6 +7781,7 @@ export const Live_GetLivesDocument = `
         recordEnded
         isViewed
         isBookmark
+        isFollowed
       }
       totalCount
     }
@@ -7770,6 +7839,7 @@ export const Live_GetLiveStreamsDocument = `
         isBookmark
         isPurchased
         isViewed
+        isFollowed
         live {
           id
           introUrl
@@ -7783,6 +7853,7 @@ export const Live_GetLiveStreamsDocument = `
           user {
             fullName
             photoUrl
+            username
             id
           }
         }
@@ -7860,6 +7931,8 @@ export const Live_GetRecommendedLivesDocument = `
           user {
             photoUrl
             fullName
+            username
+            id
           }
         }
         recordEnded
@@ -7941,6 +8014,12 @@ export const Live_GetTrendingLivesDocument = `
           photoUrl
           title
           viewCount
+          user {
+            photoUrl
+            fullName
+            username
+            id
+          }
         }
         recordEnded
         recordStarted
@@ -8016,6 +8095,8 @@ export const Live_GetNewLivesDocument = `
           user {
             photoUrl
             fullName
+            username
+            id
           }
         }
         recordEnded
@@ -8080,9 +8161,10 @@ export const Live_GetLiveCommentsDocument = `
           id
           text
           user {
+            photoUrl
             fullName
             username
-            photoUrl
+            id
           }
           children {
             text

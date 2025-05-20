@@ -96,7 +96,7 @@ const LiveStreamItem: React.FC<LiveStreamItemProps> = ({item}) => {
             fontSize={fontSize.small}
             color={Colors.GARY_3}
             marginLeft={6}>
-            {item?.live?.viewCount || '124k'} viewers
+            {item?.live?.viewCount} viewers
           </AppText>
         </HStack>
       </VStack>

@@ -54,6 +54,7 @@ query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: 
                 recordEnded
                 isViewed
                 isBookmark
+                isFollowed
             }
             totalCount
         }
@@ -72,6 +73,7 @@ query live_getLiveStreams ($skip: Int, $take: Int, $where: LiveDtoFilterInput, $
         isBookmark
         isPurchased
         isViewed
+        isFollowed
         live{
           id
           introUrl
@@ -85,6 +87,7 @@ query live_getLiveStreams ($skip: Int, $take: Int, $where: LiveDtoFilterInput, $
           user{
             fullName
             photoUrl
+            username
             id
           }
         }
@@ -124,6 +127,8 @@ query live_getRecommendedLives($skip: Int, $take: Int, $where: LiveDtoFilterInpu
           user{
             photoUrl
             fullName
+            username
+            id
           }
         }
         recordEnded
@@ -160,6 +165,12 @@ query live_getTrendingLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, 
           photoUrl
           title
           viewCount
+            user{
+            photoUrl
+            fullName
+            username
+            id
+          }
         }
         recordEnded
         recordStarted
@@ -192,9 +203,11 @@ query live_getNewLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $orde
           recordUrl
           title
           viewCount
-          user{
+         user{
             photoUrl
             fullName
+            username
+            id
           }
         }
         recordEnded
@@ -220,9 +233,10 @@ query live_getLiveComments ($liveId: Int!,$skip: Int, $take: Int, $where: LiveCo
           id
           text
           user{
+            photoUrl
             fullName
             username
-            photoUrl
+            id
           }
           children{
             text
