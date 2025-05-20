@@ -1,69 +1,139 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import Video, {
-  VideoRef,
-  ReactVideoProps,
-  BufferingStrategyType,
-} from 'react-native-video';
-import {VideoImageViewer} from '~/components';
 import {useIsFocused} from '@react-navigation/native';
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {StyleSheet, View} from 'react-native';
+import Video, {
+  BufferingStrategyType,
+  ReactVideoProps,
+  VideoNativeProps,
+  VideoRef,
+} from 'react-native-video';
+import {AppText, Center} from '~/components';
+import {Colors} from '~/styles';
+import {formatTime} from '~/utils/helper';
+import {fontSize} from '~/utils/style';
 
-const videoPlayerControlsStyles: ReactVideoProps['controlsStyles'] = {
-  hideDuration: true,
-  hideForward: true,
-  hideSeekBar: true,
-  hidePrevious: true,
-  hideNext: true,
-  hideRewind: true,
-  hideSettingButton: true,
-  hidePosition: true,
-};
+type AppVideoPlayerProps = {
+  isPlaying?: boolean;
+  showTimer?: boolean;
+  videoStyle?: VideoNativeProps['style'];
+} & ReactVideoProps;
 
-export default function AppVideoPlayer({
-  isPlaying,
-  style = styles.video,
-  resizeMode = 'cover',
-  repeat = true,
-  source,
-  ...rest
-}: {isPlaying?: boolean} & ReactVideoProps) {
-  const videoRef = useRef<VideoRef>(null);
+const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
+  function AppVideoPlayerBase(
+    {
+      isPlaying = true,
+      style = styles.container,
+      resizeMode = 'cover',
+      repeat = true,
+      source,
+      showTimer,
+      videoStyle = styles.video,
+      ...rest
+    },
+    ref,
+  ) {
+    const videoRef = useRef<VideoRef>(null);
+    const isFocused = useIsFocused();
+    const [durationState, setDurationState] = useState(0);
+    const [curTime, setCurTime] = useState(0);
+    const currentTimeRef = useRef(0);
 
-  const [play, setPlay] = useState<boolean>(false);
-  const isFocused = useIsFocused();
+    const paused = useMemo(
+      () => !(isPlaying && isFocused),
+      [isPlaying, isFocused],
+    );
 
-  useEffect(() => {
-    if (isPlaying && isFocused) {
-      setPlay(true);
-    } else {
-      setPlay(false);
-    }
-  }, [isPlaying, isFocused]);
+    useImperativeHandle(ref, () => videoRef.current!, []);
 
-  // if (!isPlaying) {
-  //   return <VideoImageViewer url={source?.uri} />;
-  // }
+    const handleProgress = useCallback(
+      ({currentTime}: {currentTime: number}) => {
+        if (showTimer) {
+          currentTimeRef.current = currentTime;
+          setCurTime(currentTime);
+        }
+      },
+      [showTimer],
+    );
 
-  return (
-    <Video
-      {...rest}
-      source={source}
-      repeat={repeat}
-      controls={true}
-      paused={!play}
-      ref={videoRef}
-      resizeMode={resizeMode}
-      playInBackground={false}
-      controlsStyles={videoPlayerControlsStyles}
-      style={style}
-      muted={false}
-      disableFocus={true}
-      minLoadRetryCount={3}
-      bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}
-    />
-  );
-}
+    const handleLoad = useCallback(({duration}: {duration: number}) => {
+      setDurationState(duration);
+    }, []);
+
+    const handleError = useCallback((error: any) => {
+      console.error('Video error:', error);
+    }, []);
+
+    const remainingTime = useMemo(() => {
+      if (!showTimer) {
+        return '';
+      }
+      return formatTime(Math.max(durationState - curTime, 0));
+    }, [durationState, curTime, showTimer]);
+
+    return (
+      <View style={[style, styles.contentContainer]}>
+        <Video
+          ref={videoRef}
+          source={source}
+          repeat={repeat}
+          paused={paused}
+          resizeMode={resizeMode}
+          playInBackground={false}
+          playWhenInactive={false}
+          muted={false}
+          ignoreSilentSwitch="ignore"
+          useTextureView={false}
+          minLoadRetryCount={3}
+          bufferingStrategy={BufferingStrategyType.DEPENDING_ON_MEMORY}
+          onLoad={handleLoad}
+          onError={handleError}
+          onProgress={handleProgress}
+          style={[
+            StyleSheet.absoluteFill,
+            videoStyle,
+          ]}
+          {...rest}
+        />
+        {showTimer && (
+          <Center
+            py={4}
+            px={10}
+            right={12}
+            bottom={12}
+            rounded={16}
+            position="absolute"
+            bg={Colors.BLACK_TRANSPARENT_7}>
+            <AppText fontSize={fontSize.tiny}>{remainingTime}</AppText>
+          </Center>
+        )}
+      </View>
+    );
+  },
+);
+
+const AppVideoPlayer = memo(AppVideoPlayerBase);
+
+export default AppVideoPlayer;
 
 const styles = StyleSheet.create({
-  video: {width: '100%', height: '100%', borderRadius: 16},
+  container: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 16,
+    overflow: 'hidden',
+    backgroundColor: Colors.BLACK,
+  },
+  contentContainer: {
+    position: 'relative',
+    backgroundColor: Colors.BLACK,
+  },
+  video: {backgroundColor: Colors.GARY_3, borderRadius: 12},
 });

@@ -13,9 +13,9 @@ interface Props {
   color?: string;
   disableColor?: string;
   disableTextColor?: string;
-  borderColor?: string;
+  borderColor?: ViewStyle['borderColor'];
   textColor?: string;
-  backgroundColor?: string;
+  backgroundColor?: ViewStyle['backgroundColor'];
   spinnerColor?: string;
   spinnerSize?: IndicatorSize;
   width?: ViewStyle['width'];
@@ -27,6 +27,7 @@ interface Props {
   mb?: ViewStyle['marginBottom'];
   mx?: ViewStyle['marginHorizontal'];
   px?: ViewStyle['paddingHorizontal'];
+  py?: ViewStyle['paddingVertical'];
   numberOfLines?: number;
   shadow?: number;
   leftIcon?: JSX.Element;
@@ -36,6 +37,7 @@ interface Props {
   borderWidth?: ViewStyle['borderWidth'];
   leftIconPosition?: ViewStyle['position'];
   space?: number;
+  minW?: ViewStyle['minWidth'];
 }
 
 export default function AppButton({
@@ -48,28 +50,30 @@ export default function AppButton({
   disableColor = Colors.DISABLE,
   disableTextColor = Colors.GARY_5,
   borderColor,
-  textColor,
+  textColor = Colors.WHITE,
   backgroundColor = Colors.TRANSPARENT,
   spinnerColor = Colors.WHITE,
   spinnerSize = 'small',
   width = '100%',
-  height = 52,
-  borderRadius = 30,
+  height = 48,
+  borderRadius = 8,
   fontSize = fs.small,
   font_family = fontFamily.bold,
   mt,
   mb,
   mx,
   px,
+  py,
   numberOfLines,
-  shadow = 1,
+  shadow,
   leftIcon,
   flex,
   underline,
   hasWidth = true,
-  borderWidth = 1,
+  borderWidth,
   leftIconPosition = 'absolute',
   space = 16,
+  minW,
 }: Props) {
   function onPressHandler() {
     onPress?.();
@@ -90,6 +94,8 @@ export default function AppButton({
       mb={mb}
       mx={mx}
       px={px}
+      py={py}
+      minW={minW}
       w={hasWidth ? width : undefined}
       flex={flex}
       h={height}
@@ -98,7 +104,7 @@ export default function AppButton({
       shadow={outline ? undefined : shadow}
       bg={outline ? backgroundColor : disabled ? disableColor : color}
       borderWidth={outline ? borderWidth : borderWidth ? borderWidth : 0}
-      borderColor={outline ? color : borderColor ? borderColor : undefined}>
+      borderColor={outline ? borderColor : color ? color : undefined}>
       <TouchableOpacity
         style={[{...(hasWidth && {width}), height, flex}]}
         onPress={onPressHandler}

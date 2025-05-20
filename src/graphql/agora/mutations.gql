@@ -1,0 +1,6 @@
+mutation agora_createToken($channelName: String, $publisher: Boolean!){
+    agora_createToken(channelName: $channelName, publisher: $publisher){
+        result
+        status
+    }
+}

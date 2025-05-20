@@ -1,0 +1,74 @@
+mutation live_addToBookmark($liveId: Int!){
+    live_addToBookmark(liveId: $liveId){
+        code
+        value
+        description
+    }
+}
+
+mutation live_removeFromBookmark($liveId: Int!){
+    live_removeFromBookmark(liveId: $liveId){
+        code
+        value
+        description
+    }
+}
+
+mutation live_createNotInterested($liveId: Int!){
+    live_createNotInterested(liveId: $liveId){
+        code
+        value
+        description
+    }
+}
+
+mutation live_createLive($input: LiveInput){
+    live_createLive(input: $input){
+        result{
+            userId
+            liveType
+            id
+        }
+        status
+    }
+}
+
+
+mutation live_createComment($input: LiveCommentInput){
+  live_createComment(input: $input) {
+    result {
+      liveId
+      userId
+      parentId
+      text
+      live{
+        category
+        commentCount
+        createdDate
+      }
+      user{
+        fullName
+      }
+      parent{
+        id
+      }
+      children{
+        id
+      }
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+
+mutation live_deleteComment($commentId: Int!){
+  live_deleteComment(commentId: $commentId) {
+    code
+    value
+    description
+  }
+}
+

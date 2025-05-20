@@ -21,7 +21,7 @@ export default function AppKeyboardAvoidingView({
   ...rest
 }: Props) {
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <TouchableWithoutFeedback  onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
         {...rest}
         collapsable
@@ -38,6 +38,6 @@ export default function AppKeyboardAvoidingView({
 
 const styles = StyleSheet.create({
   flex1: {
-    flex: 1,
+    flexGrow: 1,
   },
 });

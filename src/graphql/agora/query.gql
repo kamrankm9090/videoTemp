@@ -1,0 +1,22 @@
+query agora_getAppId{
+    agora_getAppId{
+        result
+        status
+    }
+}
+
+query agora_getRecordFiles($liveId:Int, $skip: Int, $take: Int, $where: RecordFileDtoFilterInput, $order: [RecordFileDtoSortInput!]) {
+  agora_getRecordFiles(liveId: $liveId) {
+    result( skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        name
+      }
+      totalCount
+    }
+    status
+  }
+}
