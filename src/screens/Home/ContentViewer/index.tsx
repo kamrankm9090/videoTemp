@@ -5,6 +5,7 @@ import {
   DocumentTextIcon,
   DollarCircleIcon,
   FullScreenIcon,
+  LikeIcon,
   MinimizeScreenIcon,
   Send2Icon,
   VolumeSlashIcon,
@@ -67,6 +68,11 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   ];
 
   const bottomRightItems = [
+      {
+      key: 'like',
+      icon: <LikeIcon />,
+      onPress: () => {},
+    },
     {
       key: 'send',
       icon: <Send2Icon />,

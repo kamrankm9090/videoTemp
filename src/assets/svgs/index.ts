@@ -74,3 +74,4 @@ export {default as VolumeMuteIcon} from './volume-mute.svg';
 export {default as LogOutIcon} from './logout.svg';
 export {default as SearchNormalIcon} from './search-normal.svg';
 export {default as AddCircleIcon} from './add-circle.svg';
+export {default as LikeIcon} from './like.svg';
