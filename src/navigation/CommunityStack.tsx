@@ -1,7 +1,7 @@
-import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {CommunityInfoScreen, CommunityScreen, RequestersScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
+import {appCreateStackNavigator} from './methods';
 
 export type CommunityStackParamList = {
   Community: undefined;
@@ -9,7 +9,7 @@ export type CommunityStackParamList = {
   CommunityInfo:undefined
 };
 
-const Stack = createStackNavigator<CommunityStackParamList>();
+const Stack = appCreateStackNavigator<CommunityStackParamList>();
 
 const screens = [
   {

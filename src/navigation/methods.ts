@@ -1,14 +1,16 @@
 import {
   CommonActions,
   createNavigationContainerRef,
+  ParamListBase,
   StackActions,
 } from '@react-navigation/native';
-import {RootStackParamList} from './types';
-import {Platform} from 'react-native';
 import {
-  TransitionPresets,
+  createStackNavigator,
   StackNavigationOptions,
+  TransitionPresets,
 } from '@react-navigation/stack';
+import {Platform} from 'react-native';
+import {RootStackParamList} from './types';
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -114,6 +116,11 @@ export function pop(numberOfPages: number) {
   navigationMethod(() => {
     navigationRef?.current?.dispatch(StackActions.pop(numberOfPages));
   });
+}
+
+export function appCreateStackNavigator<ParamList extends ParamListBase>() {
+  // return createNativeStackNavigator<ParamList>();
+  return createStackNavigator<ParamList>();
 }
 
 //
@@ -263,5 +270,5 @@ const screenTransitionConfigSmooth: StackNavigationOptions =
 export {
   screenTransitionConfig, // Platform-based default transition
   screenTransitionConfigFade, // Fade only (no scale, no gesture)
-  screenTransitionConfigSmooth, // Recommended smooth fade + scale
+  screenTransitionConfigSmooth,
 };

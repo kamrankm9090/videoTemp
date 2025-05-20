@@ -41,8 +41,6 @@ export default function CreateContentScreen() {
     return liveType === 'LIVE_CONTENT';
   }, [liveType]);
 
-  console.log('liveType-->', liveType);
-
   const defaultValues = {
     title: '',
     isFree: true,
