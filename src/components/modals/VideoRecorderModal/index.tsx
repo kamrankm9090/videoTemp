@@ -19,6 +19,7 @@ function VideoRecorderModal({onClose, onSelectVideo}: Props, ref: any) {
 
   return (
     <ModalContainer
+      style={{flexGrow: 1}}
       px={0}
       ref={ref}
       onDismiss={onClose}
@@ -26,7 +27,12 @@ function VideoRecorderModal({onClose, onSelectVideo}: Props, ref: any) {
       animationOut="fadeOut"
       animationInTiming={300}
       animationOutTiming={300}
-      supportedOrientations={['portrait', 'landscape']}>
+      supportedOrientations={['portrait', 'landscape']}
+      avoidKeyboard={true}
+      coverScreen={true}
+      hasBackdrop={true}
+      backdropColor={Colors.BLACK_TRANSPARENT_3}
+      useNativeDriver={true}>
       <VStack w="100%" h={height} flexGrow={1}>
         <ScreensHeader
           w="100%"

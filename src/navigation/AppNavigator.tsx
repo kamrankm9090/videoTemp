@@ -2,6 +2,7 @@ import {DarkTheme, NavigationContainer, Theme} from '@react-navigation/native';
 import React, {useCallback, useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import {AppLoading} from '~/components';
+import {useNotificationAddedSubscription} from '~/hooks/live/useNotificationAddedSubscription';
 import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {publicScreenOption} from '~/utils/utils';
@@ -26,6 +27,14 @@ const Stack = appCreateStackNavigator<AppNavigatorParamList>();
 
 export default function AppNavigator() {
   const {isUserLoggedIn} = userDataStore(state => state);
+
+  const userData = userDataStore(state => state?.userData);
+  useNotificationAddedSubscription({
+    userId: userData?.id,
+    callback() {
+      console.log('new notif');
+    },
+  });
 
   const hideSplash = useCallback(() => {
     setTimeout(() => {

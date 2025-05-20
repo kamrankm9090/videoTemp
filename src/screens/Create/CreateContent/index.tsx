@@ -43,7 +43,7 @@ export default function CreateContentScreen() {
 
   const defaultValues = {
     title: '',
-    isFree: false,
+    isFree: true,
     isSchedule: false,
     description: '',
     category: null,
@@ -69,6 +69,14 @@ export default function CreateContentScreen() {
 
   const onSubmit = useCallback(
     (formData: typeof defaultValues) => {
+      const date = new Date(formData?.time);
+
+      const hours = date.getUTCHours();
+      const minutes = date.getUTCMinutes();
+      const seconds = date.getUTCSeconds();
+
+      const publishingScheduleTime = `PT${hours}H${minutes}M${seconds}S`;
+
       const input: LiveInput = {
         liveType: liveType || LiveType.LiveContent,
         isFree: isLiveContent ? formData?.isFree : null,
@@ -81,8 +89,8 @@ export default function CreateContentScreen() {
             price: formData?.price,
           }),
         ...(formData?.isSchedule && {
-          publishingScheduleDate: formData?.date,
-          publishingScheduleTime: formData?.time,
+          publishingScheduleDate: new Date(formData?.date),
+          publishingScheduleTime: publishingScheduleTime,
         }),
         ...(formData?.previewUrl &&
           isLiveContent && {

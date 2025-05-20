@@ -1,0 +1,14 @@
+  subscription notificationAdded($userId: Int!) {
+    notificationAdded(userId: $userId) {
+      id
+      isRead
+      notificationType
+      relatedEntity
+      relatedEntityId
+      relatedUser {
+        fullName
+        photoUrl
+      }
+      relatedUserId
+    }
+  }

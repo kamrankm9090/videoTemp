@@ -29,7 +29,7 @@ export default function ContentDescriptionCard({
   const toggleExpanded = () => setExpanded(prev => !prev);
 
   return (
-    <VStack space={8} pb={4}>
+    <VStack flex={1} space={8} pb={4}>
       <AppText fontSize={fontSize.large} fontFamily="bold">
         {title}
       </AppText>
@@ -84,7 +84,7 @@ export default function ContentDescriptionCard({
           </AppText>
         </AppTouchable>
       )}
-      {!expanded && <LiveCommentSection />}
+      {!expanded && <LiveCommentSection key={2}/>}
     </VStack>
   );
 }

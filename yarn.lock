@@ -8810,7 +8810,7 @@ __metadata:
     react-native-color-picker: 0.6.0
     react-native-config: 1.5.3
     react-native-confirmation-code-field: 7.4.0
-    react-native-create-thumbnail: 2.0.1
+    react-native-create-thumbnail: ^2.1.1
     react-native-fast-image: 8.6.3
     react-native-fs: 2.20.0
     react-native-gesture-handler: ^2.25.0
@@ -10664,12 +10664,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-create-thumbnail@npm:2.0.1":
-  version: 2.0.1
-  resolution: "react-native-create-thumbnail@npm:2.0.1"
+"react-native-create-thumbnail@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "react-native-create-thumbnail@npm:2.1.1"
   peerDependencies:
     react-native: ">=0.59.0"
-  checksum: 2feb7d36fa02620b0e3f8a4d2275ddface6126f4788d62637fcac9d285caedcb1e967f769d4daf901f4085282e5afee75176d35209870842ea941efea5c77377
+  checksum: 430a3b19b1d69fa8fa9089d8b5684cbf5098756fffb1489a44e3d89ad4aff796be2c556d6f50046d2b1a58fea0f5b0e7f94c82e8d99fbf8fe73efde471a08f34
   languageName: node
   linkType: hard
 

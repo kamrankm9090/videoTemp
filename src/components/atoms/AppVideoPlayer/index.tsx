@@ -81,7 +81,6 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
     return (
       <View style={[style, styles.contentContainer]}>
         <Video
-          {...rest}
           ref={videoRef}
           source={source}
           repeat={repeat}
@@ -97,7 +96,11 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
           onLoad={handleLoad}
           onError={handleError}
           onProgress={handleProgress}
-          style={[StyleSheet.absoluteFill, videoStyle]}
+          style={[
+            StyleSheet.absoluteFill,
+            videoStyle,
+          ]}
+          {...rest}
         />
         {showTimer && (
           <Center

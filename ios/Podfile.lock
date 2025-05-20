@@ -1351,7 +1351,7 @@ PODS:
     - react-native-config/App (= 1.5.3)
   - react-native-config/App (1.5.3):
     - React-Core
-  - react-native-create-thumbnail (2.0.1):
+  - react-native-create-thumbnail (2.1.1):
     - React-Core
   - react-native-get-random-values (1.11.0):
     - React-Core
@@ -2433,7 +2433,7 @@ SPEC CHECKSUMS:
   react-native-agora: 209ade7f91d8b95a5f3bda9fd8fde15d07e2f1cf
   react-native-blob-util: caa7203c370bbf76ae63b67300d1b489b1a62511
   react-native-config: 8f7283449bbb048902f4e764affbbf24504454af
-  react-native-create-thumbnail: 4ffd51a6c02a9313edc74e2460cd07264221f554
+  react-native-create-thumbnail: daaa5d465360c5015b02026bd0978abf16b36ea9
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-mmkv: 21d0f6ed2d9532f2370cef81eca4ccbef7350441
   react-native-safe-area-context: d6406c2adbd41b2e09ab1c386781dc1c81a90919

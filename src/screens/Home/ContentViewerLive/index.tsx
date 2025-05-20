@@ -14,8 +14,10 @@ import {
   AppContainer,
   BaseComponent,
   BaseRenderUsers,
+  LiveCommentSection,
   LiveHeader,
   RenderNothing,
+  VStack,
 } from '~/components';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {goBack} from '~/navigation/methods';
@@ -109,7 +111,7 @@ export default function ContentViewerLiveScreen() {
   }, [engine]);
 
   return (
-    <AppContainer safeArea={false}>
+    <AppContainer>
       <LiveHeader
         user={{
           photoUrl: liveData?.user?.photoUrl,
@@ -131,6 +133,10 @@ export default function ContentViewerLiveScreen() {
           />
         )}
       />
+
+      <VStack p={10} mb={30}>
+        <LiveCommentSection />
+      </VStack>
     </AppContainer>
   );
 
