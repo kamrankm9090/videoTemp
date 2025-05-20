@@ -14,7 +14,6 @@ import {
   VStack,
 } from '~/components';
 import {
-  LiveType,
   useAgora_CreateTokenMutation,
   useLive_AddToBookmarkMutation,
   useLive_RemoveFromBookmarkMutation,

@@ -25,7 +25,9 @@ const useInitRtcEngine = (
   const [remoteUsers, setRemoteUsers] = useState<number[]>([]);
   const [startPreview, setStartPreview] = useState(false);
 
-  console.log({appId});
+  function setChannelId(id: string) {
+    console.log('setChannelId-->', id);
+  }
 
   const engine = useRef<IRtcEngineEx>(createAgoraRtcEngine() as IRtcEngineEx);
 
@@ -203,6 +205,7 @@ const useInitRtcEngine = (
     setRemoteUsers,
     startPreview,
     engine,
+    setChannelId,
   };
 };
 export default useInitRtcEngine;

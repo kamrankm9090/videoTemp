@@ -28,7 +28,7 @@ import {
 } from '~/components';
 import {LiveType} from '~/graphql/generated';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
-import {goBack, resetRoot} from '~/navigation/methods';
+import {resetRoot} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import * as log from '~/utils/log';
@@ -43,6 +43,7 @@ import {
 export default function LiveScreen() {
   const [enableVideo] = useState<boolean>(true);
   const [liveStarted, setLiveStarted] = useState<boolean>(false);
+
   const {
     joinChannelSuccess,
     remoteUsers,
@@ -52,7 +53,7 @@ export default function LiveScreen() {
     channelId,
     token,
   } = useInitRtcEngine(enableVideo);
-  const {resetLiveStore} = useSnapshot(liveStore);
+  const {resetLiveStore, liveData, liveId} = useSnapshot(liveStore);
 
   const [_, setSwitchCamera] = useState(false);
   const [counterModalVisible, setCounterModalVisible] =
@@ -73,6 +74,7 @@ export default function LiveScreen() {
 
   function leaveChannel() {
     engine.current.leaveChannel();
+    engine.current.removeAllListeners();
   }
 
   useEffect(() => {
@@ -154,7 +156,8 @@ export default function LiveScreen() {
     // 2. If app certificate is turned on at dashboard, token is needed
     // when joining channel. The channel name and uid used to calculate
     // the token has to match the ones used for channel join
-
+    leaveChannel();
+    engine.current.enableAudio();
     engine.current.joinChannel(token, channelId, uid, {
       // Make myself as the broadcaster to send stream to remote
       clientRoleType: ClientRoleType.ClientRoleBroadcaster,

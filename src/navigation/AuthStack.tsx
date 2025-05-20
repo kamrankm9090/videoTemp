@@ -1,4 +1,3 @@
-import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {
   ForgotPasswordScreen,
@@ -12,6 +11,7 @@ import {
   VerificationCodeScreen,
 } from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
+import {appCreateStackNavigator} from './methods';
 
 export type AuthStackParamList = {
   SignupSignin: undefined;
@@ -25,7 +25,7 @@ export type AuthStackParamList = {
   ResetPasswordSuccess: undefined;
 };
 
-const Stack = createStackNavigator<AuthStackParamList>();
+const Stack = appCreateStackNavigator<AuthStackParamList>();
 
 const screens = [
   {

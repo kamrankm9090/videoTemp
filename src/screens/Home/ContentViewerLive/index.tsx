@@ -59,6 +59,7 @@ export default function ContentViewerLiveScreen() {
     engine.current.joinChannel(token, channelId, uid, {
       // Make myself as the broadcaster to send stream to remote
       clientRoleType: ClientRoleType.ClientRoleAudience,
+      // clientRoleType: ClientRoleType.ClientRoleBroadcaster,
     });
   };
 
