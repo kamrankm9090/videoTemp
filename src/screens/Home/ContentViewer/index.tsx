@@ -53,8 +53,6 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   const [likeNumber, setLikeNumber] = useState(liveData?.live?.likeCount || 0);
   const [isLiked, setIsLiked] = useState(liveData?.isLiked || false);
 
-  console.log(liveData?.live?.likeCount);
-
   const {mutate: likeMutate} = useLive_LikeMutation();
   const {mutate: deleteLikeMutate} = useLive_DeleteLiveMutation();
   const {mutate: viewLiveMutate} = useLive_ViewLiveMutation();
@@ -137,11 +135,6 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
       onPress: () => {},
     },
   ];
-
-  console.log(
-    params?.item?.live?.id,
-    getFullImageUrl(data?.agora_getRecordFiles?.result?.items?.[0]?.name),
-  );
 
   return (
     <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
