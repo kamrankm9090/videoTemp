@@ -105,6 +105,6 @@ const styles = StyleSheet.create({
   avatar: {
     width: 76,
     height: 76,
-    borderRadius: 35,
+    borderRadius: 100,
   },
 });
