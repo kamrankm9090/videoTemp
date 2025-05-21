@@ -96,7 +96,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         )}
       </AppVideoPlayer>
 
-      <HStack py={10} px={12} bg={Colors.BLACK}>
+      <HStack py={10} px={12} gap={10} bg={Colors.BLACK}>
         <AppImage
           imageSource={{uri: item?.live?.user?.photoUrl}}
           style={styles.avatar}
@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    marginRight: 10,
   },
   thumbnail: {
     width: '100%',
