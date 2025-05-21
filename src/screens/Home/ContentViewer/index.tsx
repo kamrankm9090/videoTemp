@@ -24,6 +24,7 @@ import {
 } from '~/components';
 import {
   useAgora_GetRecordFilesQuery,
+  useLive_DeleteLiveMutation,
   useLive_GetLivesQuery,
   useLive_LikeMutation,
   useLive_ViewLiveMutation,
@@ -47,30 +48,49 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
       },
     },
   });
+  const liveData = followData?.live_getLives?.result?.items?.[0];
+  const [likeNumber, setLikeNumber] = useState(liveData?.live?.likeCount || 0);
+  const [isLiked, setIsLiked] = useState(liveData?.isLiked || false);
 
-  const {mutate} = useLive_LikeMutation();
+  console.log(liveData?.live?.likeCount);
+
+  const {mutate: likeMutate} = useLive_LikeMutation();
+  const {mutate: deleteLikeMutate} = useLive_DeleteLiveMutation();
   const {mutate: viewLiveMutate} = useLive_ViewLiveMutation();
 
   useEffect(() => {
     viewLiveMutate(
       {liveId: params?.item?.live?.id},
       {
-        onSuccess(data, variables, context) {
-          console.log(data);
-        },
+        onSuccess(data, variables, context) {},
       },
     );
   }, []);
 
   const likeHanddler = () => {
-    mutate(
-      {liveId: params?.item?.live?.id},
-      {
-        onSuccess(data, variables, context) {
-          console.log(data);
+    if (isLiked) {
+      deleteLikeMutate(
+        {liveId: params?.item?.live?.id},
+        {
+          onSuccess(data, variables, context) {
+            setIsLiked(false);
+            setLikeNumber(likeNumber - 1);
+            console.log(data);
+          },
         },
-      },
-    );
+      );
+    } else {
+      likeMutate(
+        {liveId: params?.item?.live?.id},
+        {
+          onSuccess(data, variables, context) {
+            setIsLiked(true);
+            setLikeNumber(likeNumber + 1);
+            console.log(data);
+          },
+        },
+      );
+    }
   };
 
   const {data} = useAgora_GetRecordFilesQuery({
@@ -96,8 +116,8 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   const bottomRightItems = [
     {
       key: 'like',
-      icon: <LikeIcon />,
-      number: 0,
+      icon: isLiked ? <LikeIcon fill={Colors.PRIMARY} /> : <LikeIcon  />,
+      number: likeNumber,
       onPress: () => likeHanddler(),
     },
     {
@@ -117,6 +137,11 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
     },
   ];
 
+  console.log(
+    params?.item?.live?.id,
+    getFullImageUrl(data?.agora_getRecordFiles?.result?.items?.[0]?.name),
+  );
+
   return (
     <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
       <VStack flex={1} position="relative">
@@ -124,7 +149,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
           style={styles.videoPlayer}
           fullscreen={false}
           controls={false}
-          resizeMode="contain"
+          resizeMode="cover"
           source={{
             uri: getFullImageUrl(
               data?.agora_getRecordFiles?.result?.items?.[0]?.name,
@@ -161,14 +186,8 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
           right={0}>
           <ContentViewerHeader
             user={params?.item?.live?.user}
-            isFollowed={
-              params?.item?.isFollowed ||
-              followData?.live_getLives?.result?.items?.[0]?.isFollowed
-            }
-            viewCount={
-              followData?.live_getLives?.result?.items?.[0]?.live?.viewCount ||
-              0
-            }
+            isFollowed={params?.item?.isFollowed || liveData?.isFollowed}
+            viewCount={liveData?.live?.viewCount || 0}
           />
         </HStack>
 
@@ -250,7 +269,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
           </VStack>
         ) : (
           <>
-            <VStack w={width} p={10} position="absolute" bottom={20} pt={40}>
+            <VStack w={width} p={10} position="absolute" bottom={15} pt={40}>
               <LiveCommentSection key={1} />
             </VStack>
           </>

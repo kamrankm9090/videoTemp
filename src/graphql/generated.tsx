@@ -972,6 +972,61 @@ export type DashboardCollaborativeDto = {
   promotion: Scalars['Int']['output'];
 };
 
+export type DashboardContentChartDto = {
+  __typename?: 'DashboardContentChartDto';
+  x?: Maybe<Scalars['String']['output']>;
+  y: Scalars['Int']['output'];
+};
+
+/** A segment of a collection. */
+export type DashboardContentChartDtoCollectionSegment = {
+  __typename?: 'DashboardContentChartDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<DashboardContentChartDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type DashboardContentChartDtoConnection = {
+  __typename?: 'DashboardContentChartDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<DashboardContentChartDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<DashboardContentChartDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type DashboardContentChartDtoEdge = {
+  __typename?: 'DashboardContentChartDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<DashboardContentChartDto>;
+};
+
+export type DashboardContentChartDtoFilterInput = {
+  and?: InputMaybe<Array<DashboardContentChartDtoFilterInput>>;
+  or?: InputMaybe<Array<DashboardContentChartDtoFilterInput>>;
+  x?: InputMaybe<StringOperationFilterInput>;
+  y?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type DashboardContentChartDtoSortInput = {
+  x?: InputMaybe<SortEnumType>;
+  y?: InputMaybe<SortEnumType>;
+};
+
+export enum DashboardPeriod {
+  Daily = 'DAILY',
+  Monthly = 'MONTHLY',
+}
+
 export type DashboardSummaryDto = {
   __typename?: 'DashboardSummaryDto';
   communityCount: Scalars['Int']['output'];
@@ -1938,6 +1993,29 @@ export type ListResponseBaseOfCustomerDtoResult2Args = {
   where?: InputMaybe<CustomerDtoFilterInput>;
 };
 
+export type ListResponseBaseOfDashboardContentChartDto = {
+  __typename?: 'ListResponseBaseOfDashboardContentChartDto';
+  result?: Maybe<DashboardContentChartDtoCollectionSegment>;
+  result2?: Maybe<DashboardContentChartDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfDashboardContentChartDtoResultArgs = {
+  order?: InputMaybe<Array<DashboardContentChartDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<DashboardContentChartDtoFilterInput>;
+};
+
+export type ListResponseBaseOfDashboardContentChartDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<DashboardContentChartDtoSortInput>>;
+  where?: InputMaybe<DashboardContentChartDtoFilterInput>;
+};
+
 export type ListResponseBaseOfDefaultViolation = {
   __typename?: 'ListResponseBaseOfDefaultViolation';
   result?: Maybe<DefaultViolationCollectionSegment>;
@@ -2598,6 +2676,7 @@ export type LiveDto = {
   __typename?: 'LiveDto';
   isBookmark: Scalars['Boolean']['output'];
   isFollowed: Scalars['Boolean']['output'];
+  isLiked: Scalars['Boolean']['output'];
   isPurchased: Scalars['Boolean']['output'];
   isViewed: Scalars['Boolean']['output'];
   live?: Maybe<Live>;
@@ -2641,6 +2720,7 @@ export type LiveDtoFilterInput = {
   and?: InputMaybe<Array<LiveDtoFilterInput>>;
   isBookmark?: InputMaybe<BooleanOperationFilterInput>;
   isFollowed?: InputMaybe<BooleanOperationFilterInput>;
+  isLiked?: InputMaybe<BooleanOperationFilterInput>;
   isPurchased?: InputMaybe<BooleanOperationFilterInput>;
   isViewed?: InputMaybe<BooleanOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
@@ -2652,6 +2732,7 @@ export type LiveDtoFilterInput = {
 export type LiveDtoSortInput = {
   isBookmark?: InputMaybe<SortEnumType>;
   isFollowed?: InputMaybe<SortEnumType>;
+  isLiked?: InputMaybe<SortEnumType>;
   isPurchased?: InputMaybe<SortEnumType>;
   isViewed?: InputMaybe<SortEnumType>;
   live?: InputMaybe<LiveSortInput>;
@@ -3039,6 +3120,7 @@ export type MessageSummaryDto = {
 export type Mutation = {
   __typename?: 'Mutation';
   agora_createToken?: Maybe<ResponseBaseOfString>;
+  agora_stopRecord?: Maybe<ResponseStatus>;
   category_createCategory: ResponseBaseOfCategory;
   category_deleteCategory: ResponseStatus;
   category_updateCategory: ResponseBaseOfCategory;
@@ -3147,6 +3229,10 @@ export type Mutation = {
 export type MutationAgora_CreateTokenArgs = {
   channelName?: InputMaybe<Scalars['String']['input']>;
   publisher: Scalars['Boolean']['input'];
+};
+
+export type MutationAgora_StopRecordArgs = {
+  channelName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type MutationCategory_CreateCategoryArgs = {
@@ -3590,6 +3676,7 @@ export type Notification = {
    *             NewTip,
    *             NewLive,
    *             CreateComment,
+   *             Like,
    *
    */
   notificationType?: Maybe<Scalars['String']['output']>;
@@ -3645,6 +3732,7 @@ export type NotificationFilterInput = {
    *             NewTip,
    *             NewLive,
    *             CreateComment,
+   *             Like,
    *
    */
   notificationType?: InputMaybe<StringOperationFilterInput>;
@@ -3748,6 +3836,7 @@ export type NotificationSortInput = {
    *             NewTip,
    *             NewLive,
    *             CreateComment,
+   *             Like,
    *
    */
   notificationType?: InputMaybe<SortEnumType>;
@@ -4073,6 +4162,7 @@ export type Query = {
   community_getOtherCommunities?: Maybe<ListResponseBaseOfCommunity>;
   contactUs_getContactUs?: Maybe<ResponseBaseOfContactUs>;
   dashboard_getCollaborative?: Maybe<ResponseBaseOfDashboardCollaborativeDto>;
+  dashboard_getContentChart?: Maybe<ListResponseBaseOfDashboardContentChartDto>;
   dashboard_getSummary?: Maybe<ResponseBaseOfDashboardSummaryDto>;
   defaultViolation_getDefaultViolations: ListResponseBaseOfDefaultViolation;
   live_getLiveComments?: Maybe<ListResponseBaseOfLiveCommentDto>;
@@ -4138,6 +4228,10 @@ export type QueryAgora_GetRecordFilesArgs = {
 
 export type QueryCategory_GetCategoryArgs = {
   entityId: Scalars['Int']['input'];
+};
+
+export type QueryDashboard_GetContentChartArgs = {
+  period: DashboardPeriod;
 };
 
 export type QueryLive_GetLiveCommentsArgs = {
@@ -5756,6 +5850,20 @@ export type Agora_CreateTokenMutation = {
   } | null;
 };
 
+export type Agora_StopRecordMutationVariables = Exact<{
+  channelName?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+export type Agora_StopRecordMutation = {
+  __typename?: 'Mutation';
+  agora_stopRecord?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Agora_GetAppIdQueryVariables = Exact<{[key: string]: never}>;
 
 export type Agora_GetAppIdQuery = {
@@ -6074,6 +6182,20 @@ export type Live_LikeMutation = {
   } | null;
 };
 
+export type Live_DeleteLiveMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_DeleteLiveMutation = {
+  __typename?: 'Mutation';
+  live_deleteLive?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Live_GetLivesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -6096,6 +6218,7 @@ export type Live_GetLivesQuery = {
       };
       items?: Array<{
         __typename?: 'LiveDto';
+        isLiked: boolean;
         recordStarted: boolean;
         recordEnded: boolean;
         isViewed: boolean;
@@ -6103,6 +6226,7 @@ export type Live_GetLivesQuery = {
         isFollowed: boolean;
         live?: {
           __typename?: 'Live';
+          likeCount: number;
           userId: number;
           introUrl?: string | null;
           liveType: LiveType;
@@ -7124,6 +7248,43 @@ export const useAgora_CreateTokenMutation = <
   );
 };
 
+export const Agora_StopRecordDocument = `
+    mutation agora_stopRecord($channelName: String) {
+  agora_stopRecord(channelName: $channelName) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useAgora_StopRecordMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Agora_StopRecordMutation,
+    TError,
+    Agora_StopRecordMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Agora_StopRecordMutation,
+    TError,
+    Agora_StopRecordMutationVariables,
+    TContext
+  >(
+    ['agora_stopRecord'],
+    (variables?: Agora_StopRecordMutationVariables) =>
+      fetcher<Agora_StopRecordMutation, Agora_StopRecordMutationVariables>(
+        Agora_StopRecordDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
 export const Agora_GetAppIdDocument = `
     query agora_getAppId {
   agora_getAppId {
@@ -7820,6 +7981,43 @@ export const useLive_LikeMutation = <TError = unknown, TContext = unknown>(
   );
 };
 
+export const Live_DeleteLiveDocument = `
+    mutation live_deleteLive($liveId: Int!) {
+  live_deleteLive(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_DeleteLiveMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Live_DeleteLiveMutation,
+    TError,
+    Live_DeleteLiveMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_DeleteLiveMutation,
+    TError,
+    Live_DeleteLiveMutationVariables,
+    TContext
+  >(
+    ['live_deleteLive'],
+    (variables?: Live_DeleteLiveMutationVariables) =>
+      fetcher<Live_DeleteLiveMutation, Live_DeleteLiveMutationVariables>(
+        Live_DeleteLiveDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
 export const Live_GetLivesDocument = `
     query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]) {
   live_getLives {
@@ -7829,7 +8027,9 @@ export const Live_GetLivesDocument = `
         hasPreviousPage
       }
       items {
+        isLiked
         live {
+          likeCount
           userId
           introUrl
           liveType

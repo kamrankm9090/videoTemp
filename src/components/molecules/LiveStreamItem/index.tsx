@@ -20,8 +20,8 @@ const LiveStreamItem: React.FC<LiveStreamItemProps> = ({item}) => {
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
 
-  const getInitial = (name: string) => name?.charAt(0)?.toUpperCase() || 'J';
-  const bgColor = getRandomColorFromName(item?.user?.fullName || '');
+  const getInitial = (name: string) => name?.charAt(0)?.toUpperCase() || '';
+  const bgColor = getRandomColorFromName(item?.live?.user?.fullName || item?.live?.user?.username || '');
 
   const onPressHandler = () => {
     if (item?.recordEnded) {
@@ -62,24 +62,24 @@ const LiveStreamItem: React.FC<LiveStreamItemProps> = ({item}) => {
           </AppText>
         </VStack>
 
-        {!item?.user?.photoUrl ? (
+        {!item?.live?.user?.photoUrl ? (
           <VStack style={[styles.initialCircle, {backgroundColor: bgColor}]}>
             <AppText
               fontSize={fontSize.large}
               color={Colors.WHITE}
               fontWeight="600">
-              {getInitial(item?.user?.fullName)}
+              {getInitial(item?.live?.user?.fullName || item?.live?.user?.username )}
             </AppText>
           </VStack>
         ) : (
           <Image
             style={styles.initialCircle}
-            source={{uri: item?.user?.photoUrl}}
+            source={{uri: item?.live?.user?.photoUrl}}
           />
         )}
 
         <AppText style={styles.userName} fontWeight="600" color={Colors.BLACK}>
-          {item?.user?.fullName}
+          {item?.live?.user?.fullName || item?.live?.user?.username}
         </AppText>
       </LinearGradient>
 

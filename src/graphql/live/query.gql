@@ -1,80 +1,92 @@
-query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!] ){
-    live_getLives{
-        result(skip: $skip, take: $take, where: $where, order: $order){
-            pageInfo{
-                hasNextPage
-                hasPreviousPage
-            }
-            items{
-                live{
-                    userId
-                    introUrl
-                    liveType
-                    photoUrl
-                    title
-                    description
-                    proposalTitle
-                    proposalCategory
-                    proposalSummary
-                    isDraft
-                    category
-                    price
-                    recordUrl
-                    isFree
-                    previewUrl
-                    value
-                    funding
-                    setSchedule
-                    publishingScheduleDate
-                    publishingScheduleTime
-                    viewCount
-                    purchaseCount
-                    user{
-                        username
-                        phoneNumber
-                        photoUrl
-                        fullName
-                        about
-                        gender
-                        lastSeen
-                        isVerified
-                        isDeleted
-                        createdDate
-                        id
-                        email
-                        emailConfirmed
-                        phoneNumberConfirmed
-                    }
-                    id
-                    isDeleted
-                    createdDate
-                    lastModifiedDate
-                }
-                recordStarted
-                recordEnded
-                isViewed
-                isBookmark
-                isFollowed
-            }
-            totalCount
-        }
-        status
-    }
-}
-
-query live_getLiveStreams ($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]){
-  live_getLiveStreams {
+query live_getLives(
+  $skip: Int
+  $take: Int
+  $where: LiveDtoFilterInput
+  $order: [LiveDtoSortInput!]
+) {
+  live_getLives {
     result(skip: $skip, take: $take, where: $where, order: $order) {
-      pageInfo{
+      pageInfo {
         hasNextPage
         hasPreviousPage
       }
-      items{
+      items {
+        isLiked
+        live {
+          likeCount
+          userId
+          introUrl
+          liveType
+          photoUrl
+          title
+          description
+          proposalTitle
+          proposalCategory
+          proposalSummary
+          isDraft
+          category
+          price
+          recordUrl
+          isFree
+          previewUrl
+          value
+          funding
+          setSchedule
+          publishingScheduleDate
+          publishingScheduleTime
+          viewCount
+          purchaseCount
+          user {
+            username
+            phoneNumber
+            photoUrl
+            fullName
+            about
+            gender
+            lastSeen
+            isVerified
+            isDeleted
+            createdDate
+            id
+            email
+            emailConfirmed
+            phoneNumberConfirmed
+          }
+          id
+          isDeleted
+          createdDate
+          lastModifiedDate
+        }
+        recordStarted
+        recordEnded
+        isViewed
+        isBookmark
+        isFollowed
+      }
+      totalCount
+    }
+    status
+  }
+}
+
+query live_getLiveStreams(
+  $skip: Int
+  $take: Int
+  $where: LiveDtoFilterInput
+  $order: [LiveDtoSortInput!]
+) {
+  live_getLiveStreams {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
         isBookmark
         isPurchased
         isViewed
         isFollowed
-        live{
+        live {
           id
           introUrl
           category
@@ -84,17 +96,16 @@ query live_getLiveStreams ($skip: Int, $take: Int, $where: LiveDtoFilterInput, $
           recordUrl
           title
           viewCount
-          user{
+          user {
             fullName
             photoUrl
             username
             id
           }
         }
-        
+
         recordEnded
         recordStarted
-        
       }
       totalCount
     }
@@ -102,19 +113,23 @@ query live_getLiveStreams ($skip: Int, $take: Int, $where: LiveDtoFilterInput, $
   }
 }
 
-
-query live_getRecommendedLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]){
+query live_getRecommendedLives(
+  $skip: Int
+  $take: Int
+  $where: LiveDtoFilterInput
+  $order: [LiveDtoSortInput!]
+) {
   live_getRecommendedLives {
     result(skip: $skip, take: $take, where: $where, order: $order) {
-           pageInfo{
+      pageInfo {
         hasNextPage
         hasPreviousPage
       }
-      items{
+      items {
         isBookmark
         isPurchased
         isViewed
-        live{
+        live {
           id
           introUrl
           category
@@ -124,7 +139,7 @@ query live_getRecommendedLives($skip: Int, $take: Int, $where: LiveDtoFilterInpu
           recordUrl
           title
           viewCount
-          user{
+          user {
             photoUrl
             fullName
             username
@@ -133,7 +148,6 @@ query live_getRecommendedLives($skip: Int, $take: Int, $where: LiveDtoFilterInpu
         }
         recordEnded
         recordStarted
-        
       }
       totalCount
     }
@@ -141,20 +155,23 @@ query live_getRecommendedLives($skip: Int, $take: Int, $where: LiveDtoFilterInpu
   }
 }
 
-
-
-query live_getTrendingLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]){
+query live_getTrendingLives(
+  $skip: Int
+  $take: Int
+  $where: LiveDtoFilterInput
+  $order: [LiveDtoSortInput!]
+) {
   live_getTrendingLives {
     result(skip: $skip, take: $take, where: $where, order: $order) {
-             pageInfo{
+      pageInfo {
         hasNextPage
         hasPreviousPage
       }
-      items{
+      items {
         isBookmark
         isPurchased
         isViewed
-        live{
+        live {
           id
           introUrl
           category
@@ -165,7 +182,7 @@ query live_getTrendingLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, 
           photoUrl
           title
           viewCount
-            user{
+          user {
             photoUrl
             fullName
             username
@@ -174,26 +191,30 @@ query live_getTrendingLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, 
         }
         recordEnded
         recordStarted
-        
       }
       totalCount
     }
     status
-    }
+  }
 }
 
-query live_getNewLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]){
+query live_getNewLives(
+  $skip: Int
+  $take: Int
+  $where: LiveDtoFilterInput
+  $order: [LiveDtoSortInput!]
+) {
   live_getNewLives {
     result(skip: $skip, take: $take, where: $where, order: $order) {
-             pageInfo{
+      pageInfo {
         hasNextPage
         hasPreviousPage
       }
-      items{
+      items {
         isBookmark
         isPurchased
         isViewed
-        live{
+        live {
           id
           introUrl
           category
@@ -203,7 +224,7 @@ query live_getNewLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $orde
           recordUrl
           title
           viewCount
-         user{
+          user {
             photoUrl
             fullName
             username
@@ -212,33 +233,37 @@ query live_getNewLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $orde
         }
         recordEnded
         recordStarted
-        
       }
       totalCount
     }
     status
-    }
+  }
 }
 
-
-query live_getLiveComments ($liveId: Int!,$skip: Int, $take: Int, $where: LiveCommentDtoFilterInput, $order: [LiveCommentDtoSortInput!]){
+query live_getLiveComments(
+  $liveId: Int!
+  $skip: Int
+  $take: Int
+  $where: LiveCommentDtoFilterInput
+  $order: [LiveCommentDtoSortInput!]
+) {
   live_getLiveComments(liveId: $liveId) {
     result(skip: $skip, take: $take, where: $where, order: $order) {
-      pageInfo{
+      pageInfo {
         hasNextPage
         hasPreviousPage
       }
-      items{
-        comment{
+      items {
+        comment {
           id
           text
-          user{
+          user {
             photoUrl
             fullName
             username
             id
           }
-          children{
+          children {
             text
           }
         }
@@ -249,5 +274,3 @@ query live_getLiveComments ($liveId: Int!,$skip: Int, $take: Int, $where: LiveCo
     status
   }
 }
-
-

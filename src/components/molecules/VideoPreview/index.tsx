@@ -35,8 +35,7 @@ export default function VideoPreview({
   }
 
   return (
-    <>
-      <VStack space={4}>
+      <VStack flex={1} space={4}>
         <AppTouchable
           borderWidth={1}
           borderStyle="dashed"
@@ -53,6 +52,5 @@ export default function VideoPreview({
         <AppHelperText error={fieldState.error} />
       <VideoRecorderModal ref={modalRef} onSelectVideo={onSelectVideo} />
       </VStack>
-    </>
   );
 }

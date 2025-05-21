@@ -15,7 +15,8 @@ import Video, {
   VideoNativeProps,
   VideoRef,
 } from 'react-native-video';
-import {AppText, Center} from '~/components';
+import {VolumeHighIcon, VolumeSlashIcon} from '~/assets/svgs';
+import {AppText, AppTouchable, Center} from '~/components';
 import {Colors} from '~/styles';
 import {formatTime} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
@@ -24,6 +25,7 @@ type AppVideoPlayerProps = {
   isPlaying?: boolean;
   showTimer?: boolean;
   videoStyle?: VideoNativeProps['style'];
+  showMute?: boolean;
 } & ReactVideoProps;
 
 const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
@@ -35,15 +37,19 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
       repeat = true,
       source,
       showTimer,
+      showMute = false,
       videoStyle = styles.video,
       ...rest
     },
     ref,
   ) {
+    console.log(rest?.muted);
+
     const videoRef = useRef<VideoRef>(null);
     const isFocused = useIsFocused();
     const [durationState, setDurationState] = useState(0);
     const [curTime, setCurTime] = useState(0);
+    const [isMuted, setIsMuted] = useState(rest?.muted || false);
     const currentTimeRef = useRef(0);
 
     const paused = useMemo(
@@ -88,7 +94,7 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
           resizeMode={resizeMode}
           playInBackground={false}
           playWhenInactive={false}
-          muted={false}
+          muted={isMuted}
           ignoreSilentSwitch="ignore"
           useTextureView={false}
           minLoadRetryCount={3}
@@ -96,12 +102,19 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
           onLoad={handleLoad}
           onError={handleError}
           onProgress={handleProgress}
-          style={[
-            StyleSheet.absoluteFill,
-            videoStyle,
-          ]}
+          style={[StyleSheet.absoluteFill, videoStyle]}
           {...rest}
         />
+        {showMute && (
+          <AppTouchable
+            right={12}
+            top={55}
+            rounded={16}
+            position="absolute"
+            onPress={() => setIsMuted(!isMuted)}>
+            {isMuted ? <VolumeSlashIcon /> : <VolumeHighIcon />}
+          </AppTouchable>
+        )}
         {showTimer && (
           <Center
             py={4}

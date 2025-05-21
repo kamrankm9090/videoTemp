@@ -91,3 +91,12 @@ mutation live_like($liveId: Int!) {
     description
   }
 }
+
+
+mutation live_deleteLive($liveId: Int!){
+  live_deleteLive(liveId: $liveId)  {
+    code
+    value
+    description
+  }
+}

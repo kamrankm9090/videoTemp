@@ -19,6 +19,7 @@ import {
   RenderNothing,
   VStack,
 } from '~/components';
+import { useAgora_StopRecordMutation } from '~/graphql/generated';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {goBack} from '~/navigation/methods';
 import {liveStore} from '~/stores';
@@ -40,6 +41,8 @@ export default function ContentViewerLiveScreen() {
   } = useInitRtcEngine(enableVideo);
 
   const {liveData, resetLiveStore} = useSnapshot(liveStore);
+
+  const {mutate} = useAgora_StopRecordMutation()
 
   useEffect(() => {
     setTimeout(() => {
@@ -63,10 +66,21 @@ export default function ContentViewerLiveScreen() {
     });
   };
 
-  const leaveChannel = () => {
-    engine.current.leaveChannel();
-    resetLiveStore();
-    goBack();
+  const leaveChannel = async () => {
+    try {
+      await engine.current.leaveChannel();
+      await engine.current.stopChannelMediaRelay();
+      mutate({channelName: channelId}, {
+        onSuccess(data, variables, context) {
+          console.log(data);
+          
+        },
+      })
+      resetLiveStore();
+      goBack();
+    } catch (err) {
+      log.error('leaveChannel error', err);
+    }
   };
 
   useEffect(() => {
