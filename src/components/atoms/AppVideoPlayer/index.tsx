@@ -43,8 +43,6 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
     },
     ref,
   ) {
-    console.log(rest?.muted);
-
     const videoRef = useRef<VideoRef>(null);
     const isFocused = useIsFocused();
     const [durationState, setDurationState] = useState(0);

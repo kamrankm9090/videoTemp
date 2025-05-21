@@ -5,6 +5,7 @@ import {
   DocumentTextIcon,
   DollarCircleIcon,
   FullScreenIcon,
+  LikeFillIcon,
   LikeIcon,
   MinimizeScreenIcon,
   Send2Icon,
@@ -116,7 +117,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   const bottomRightItems = [
     {
       key: 'like',
-      icon: isLiked ? <LikeIcon fill={Colors.PRIMARY} /> : <LikeIcon  />,
+      icon: isLiked ? <LikeFillIcon /> : <LikeIcon  />,
       number: likeNumber,
       onPress: () => likeHanddler(),
     },

@@ -76,3 +76,4 @@ export {default as SearchNormalIcon} from './search-normal.svg';
 export {default as AddCircleIcon} from './add-circle.svg';
 export {default as LikeIcon} from './like.svg';
 export {default as VolumeHighIcon} from './volume-high.svg';
+export {default as LikeFillIcon} from './like-fill.svg';
