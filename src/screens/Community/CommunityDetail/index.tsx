@@ -1,14 +1,11 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {SettingIcon} from '~/assets/svgs';
-import {AppContainer, AppFlatList, AppHeader} from '~/components';
-import BottomInputBar from '~/components/molecules/CommunityDetailBottomInputBar';
-import CommunityDetailItem from '~/components/molecules/CommunityDetailItem';
+import {AppContainer, AppFlatList, AppHeader, CommunityDetailBottomInputBar, CommunityDetailItem} from '~/components';
 import { navigate } from '~/navigation/methods';
 import {Colors} from '~/styles';
 
 const CommunityDetail = () => {
-  const myUserId = 1;
   const renderItem = () => {
     return <CommunityDetailItem />;
   };
@@ -33,7 +30,7 @@ const CommunityDetail = () => {
         contentContainerStyle={{padding: 16, paddingBottom: 80}}
         renderItem={renderItem}
       />
-      <BottomInputBar />
+      <CommunityDetailBottomInputBar />
     </AppContainer>
   );
 };

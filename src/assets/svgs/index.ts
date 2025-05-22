@@ -80,3 +80,4 @@ export {default as LikeFillIcon} from './like-fill.svg';
 export {default as SettingIcon} from './setting.svg';
 export {default as MicIcon} from './microphone.svg';
 export {default as CameraIcon} from './camera.svg';
+export {default as SearchStatusIcon} from './search-status.svg';
