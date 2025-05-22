@@ -79,3 +79,4 @@ export const GARY_3 = '#828282';
 export const GARY_4 = '#AEAFB4';
 export const GARY_5 = '#DEE0E5';
 export const GRAY_6 = '#E4E4E4';
+export const BLUE_MESSAGE = '#1766C3';

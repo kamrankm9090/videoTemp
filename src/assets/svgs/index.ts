@@ -77,3 +77,6 @@ export {default as AddCircleIcon} from './add-circle.svg';
 export {default as LikeIcon} from './like.svg';
 export {default as VolumeHighIcon} from './volume-high.svg';
 export {default as LikeFillIcon} from './like-fill.svg';
+export {default as SettingIcon} from './setting.svg';
+export {default as MicIcon} from './microphone.svg';
+export {default as CameraIcon} from './camera.svg';
