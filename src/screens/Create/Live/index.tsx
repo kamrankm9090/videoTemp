@@ -327,7 +327,7 @@ function ExperienceCard() {
               <VStack flex={1} space={24}>
                 <AppText color={Colors.DarkGray}>Publishing schedule: </AppText>
                 <AppText fontFamily="bold">
-                  {liveData?.isSchedule
+                  {liveData?.setSchedule
                     ? `${appFormatDate(
                         liveData?.publishingScheduleDate,
                         'YYYY/m/dd',
