@@ -1,10 +1,20 @@
 import React from 'react';
+import {Share} from 'react-native';
 import {AppButton, AppText, HStack, VStack} from '~/components';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
 
 export default function InviteFriendsCard() {
-  function onPressHandler() {}
+  async function onPressHandler() {
+    try {
+      await Share.share({
+        message:
+          'Join me on this awesome app and earn KLP! Download it here: https://testflight.apple.com/join/fges3KxD',
+      });
+    } catch (error) {
+      console.warn('Error sharing link:', error);
+    }
+  }
 
   return (
     <HStack w="100%" px={16} py={24} mx={16} rounded={12} bg={Colors.Nero_1}>

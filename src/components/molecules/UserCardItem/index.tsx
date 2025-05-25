@@ -88,6 +88,9 @@ function FollowButton({userId}: {userId: number}) {
       height={32}
       minW={100}
       title={isFollow ? 'Unfollow' : 'Follow'}
+      outline={isFollow}
+      borderWidth={1}
+      borderColor={Colors?.PRIMARY}
       font_family={fontFamily.medium}
       onPress={followHandler}
     />
@@ -102,6 +105,6 @@ const styles = StyleSheet.create({
   avatar: {
     width: 76,
     height: 76,
-    borderRadius: 35,
+    borderRadius: 100,
   },
 });

@@ -80,6 +80,7 @@ export default function HomePostItem({
         source={{
           uri: item?.live?.previewUrl,
         }}
+        showMute={true}
       />
       <LiveBadge isLive={!item?.recordEnded} />
       <SaveButton isSaved={item?.isBookmark} liveId={item?.live?.id} />

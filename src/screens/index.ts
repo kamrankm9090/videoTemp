@@ -23,6 +23,8 @@ export {default as OfferListScreen} from './Offers/OfferList';
 export {default as CommunityScreen} from './Community/Community';
 export {default as RequestersScreen} from './Community/Requesters';
 export {default as CommunityInfoScreen} from './Community/CommunityInfo';
+export {default as CommunityDetailScreen} from './Community/CommunityDetail';
+export {default as CommunitySearchScreen} from './Community/CommunitySearch';
 
 //PROFILE
 export {default as ProfileScreen} from './Profile/Profile';

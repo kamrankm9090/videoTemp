@@ -37,7 +37,12 @@ const CommunityItem = () => {
     },
   ];
   return (
-    <VStack bg={Colors.Nero} p={16} gap={16} borderRadius={8}>
+    <AppTouchable
+      bg={Colors.Nero}
+      p={16}
+      gap={16}
+      borderRadius={8}
+      onPress={() => navigate('CommunityStack', {screen: 'CommunityDetail'})}>
       <HStack gap={8}>
         <AppImage style={{width: 32, height: 32}} imageSource={{uri: ''}} />
         <HStack alignItems="center">
@@ -90,7 +95,7 @@ const CommunityItem = () => {
           );
         })}
       </HStack>
-    </VStack>
+    </AppTouchable>
   );
 };
 
