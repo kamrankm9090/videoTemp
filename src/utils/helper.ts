@@ -5,6 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 import * as Yup from 'yup';
 import config from '~/config';
 import {showSuccessMessage} from './utils';
+import dayjs from 'dayjs';
 
 export function generateUuid() {
   return uuidv4().replace(/-/g, '');
@@ -77,6 +78,21 @@ export const getRandomColorFromName = (name: string): string => {
   const charCode = name?.charCodeAt(0) || 0;
   return colors[charCode % colors.length];
 };
+
+export function parseISODuration(duration: string) {
+  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  const [, h, m, s] = match || [];
+
+  const hours = parseInt(h || '0', 10);
+  const minutes = parseInt(m || '0', 10);
+  // const seconds = parseInt(s || '0', 10);
+
+  const time = dayjs().hour(hours).minute(minutes);
+
+  const formattedTime = time.format('h:mm A');
+
+  return formattedTime;
+}
 
 // form helper
 export {useForm} from 'react-hook-form';

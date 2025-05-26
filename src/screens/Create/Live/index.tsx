@@ -1,9 +1,10 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {
   ClientRoleType,
   LocalVideoStreamReason,
   LocalVideoStreamState,
+  RtcConnection,
   RtcSurfaceView,
   VideoCanvas,
   VideoSourceType,
@@ -15,6 +16,7 @@ import {Note, Reload} from '~/assets/svgs';
 import {
   AppButton,
   AppContainer,
+  AppScrollView,
   AppText,
   AppTouchable,
   BaseComponent,
@@ -31,6 +33,7 @@ import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {resetRoot} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
+import {parseISODuration} from '~/utils/helper';
 import * as log from '~/utils/log';
 import {fontSize, height} from '~/utils/style';
 import {
@@ -75,6 +78,7 @@ export default function LiveScreen() {
   function leaveChannel() {
     engine.current.leaveChannel();
     engine.current.removeAllListeners();
+    engine.current.release();
   }
 
   useEffect(() => {
@@ -90,6 +94,13 @@ export default function LiveScreen() {
           'deviceState',
           deviceState,
         );
+      },
+    );
+
+    engine.current.addListener(
+      'onActiveSpeaker',
+      (connection: RtcConnection, uid: number) => {
+        console.log('onActiveSpeaker-->', connection, {uid});
       },
     );
 
@@ -187,7 +198,6 @@ export default function LiveScreen() {
           bg={Colors.BLACK_TRANSPARENT}
         />
       )}
-      {!liveStarted && <ExperienceCard />}
       <BaseComponent
         name={'JoinChannelVideo'}
         renderChannel={RenderNothing}
@@ -201,6 +211,7 @@ export default function LiveScreen() {
           />
         )}
       />
+      <ExperienceCard />
       <CreateLiveFooter
         liveHandler={joinChannelHandler}
         switchOnPress={switchCamera}
@@ -257,6 +268,7 @@ function CreateLiveFooter({
 function ExperienceCard() {
   const {liveData, liveType} = useSnapshot(liveStore);
   const [expanded, setExpanded] = useState<boolean>(false);
+  console.log(liveData?.publishingScheduleTime);
 
   return (
     <VStack
@@ -269,83 +281,91 @@ function ExperienceCard() {
       maxH={height * 0.5}
       minH={height * 0.3}
       position="absolute"
-      bottom={200}>
-      <VStack space={12}>
-        <AppText fontFamily="bold" fontSize={fontSize.large}>
-          {liveData?.title}
-        </AppText>
+      bottom={expanded ? 150 : 0}>
+      <AppScrollView contentContainerStyle={styles.scrollView}>
+        <VStack space={12}>
+          <AppText fontFamily="bold" fontSize={fontSize.large}>
+            {liveData?.title}
+          </AppText>
 
-        {!expanded ? (
-          <>
-            <AppText color={Colors.DarkGray} numberOfLines={2}>
-              {liveData?.description}
-            </AppText>
-            <AppText
-              right={0}
-              zIndex={800}
-              bottom={-20}
-              position="absolute"
-              color={Colors.PRIMARY}
-              onPress={() => setExpanded(true)}>
-              show more...
-            </AppText>
-          </>
-        ) : (
-          <VStack space={12}>
-            <AppText color={Colors.VeryLightGrey}>
-              {liveData?.description}
-            </AppText>
+          {!expanded ? (
+            <>
+              <AppText color={Colors.DarkGray} numberOfLines={2}>
+                {liveData?.description}
+              </AppText>
+              <AppText
+                right={0}
+                zIndex={800}
+                bottom={-20}
+                position="absolute"
+                color={Colors.PRIMARY}
+                onPress={() => setExpanded(true)}>
+                Show more...
+              </AppText>
+            </>
+          ) : (
+            <VStack space={12}>
+              <AppText color={Colors.VeryLightGrey}>
+                {liveData?.description}
+              </AppText>
 
-            <AppTouchable
-              py={6}
-              px={12}
-              gap={8}
-              rounded={8}
-              flexDirection="row"
-              bg={Colors.Nero_3}
-              alignSelf="flex-start">
-              <Note />
-              <AppText fontWeight="bold">See Resume</AppText>
-            </AppTouchable>
+              <AppTouchable
+                py={6}
+                px={12}
+                gap={8}
+                rounded={8}
+                flexDirection="row"
+                bg={Colors.Nero_3}
+                alignSelf="flex-start">
+                <Note />
+                <AppText fontWeight="bold">See Resume</AppText>
+              </AppTouchable>
 
-            <HStack justifyContent="space-between">
-              <VStack space={16}>
-                <AppText color={Colors.DarkGray}>Category</AppText>
-                <AppText fontFamily="bold">{liveData?.category?.title}</AppText>
-              </VStack>
-              {liveType === LiveType.LiveContent && (
+              <HStack justifyContent="space-between">
                 <VStack space={16}>
-                  <AppText color={Colors.DarkGray}>Price</AppText>
+                  <AppText color={Colors.DarkGray}>Category</AppText>
                   <AppText fontFamily="bold">
-                    {liveData?.isFree ? 'Free' : `$${liveData?.price}`}
+                    {liveData?.category?.title}
                   </AppText>
                 </VStack>
-              )}
-            </HStack>
+                {liveType === LiveType.LiveContent && (
+                  <VStack space={16}>
+                    <AppText color={Colors.DarkGray}>Price</AppText>
+                    <AppText fontFamily="bold">
+                      {liveData?.isFree ? 'Free' : `$${liveData?.price}`}
+                    </AppText>
+                  </VStack>
+                )}
+              </HStack>
 
-            <HStack mt={16} alignItems="flex-end">
-              <VStack flex={1} space={24}>
-                <AppText color={Colors.DarkGray}>Publishing schedule: </AppText>
-                <AppText fontFamily="bold">
-                  {liveData?.setSchedule
-                    ? `${appFormatDate(
-                        liveData?.publishingScheduleDate,
-                        'YYYY/m/dd',
-                      )}, ${appFormatDate(liveData?.publishingScheduleTime)}`
-                    : '-'}
+              <HStack mt={16} alignItems="flex-end">
+                <VStack flex={1} space={24}>
+                  <AppText color={Colors.DarkGray}>
+                    Publishing schedule:{' '}
+                  </AppText>
+                  <AppText fontFamily="bold">
+                    {liveData?.setSchedule
+                      ? `${appFormatDate(
+                          liveData?.publishingScheduleDate,
+                          'YYYY/m/dd',
+                        )}, ${parseISODuration(
+                          liveData?.publishingScheduleTime,
+                        )}`
+                      : '-'}
+                  </AppText>
+                </VStack>
+
+                <AppText
+                  zIndex={800}
+                  color={Colors.PRIMARY}
+                  onPress={() => setExpanded(false)}>
+                  Show less...
                 </AppText>
-              </VStack>
-
-              <AppText
-                zIndex={800}
-                color={Colors.PRIMARY}
-                onPress={() => setExpanded(false)}>
-                show Less...
-              </AppText>
-            </HStack>
-          </VStack>
-        )}
-      </VStack>
+              </HStack>
+            </VStack>
+          )}
+        </VStack>
+      </AppScrollView>
     </VStack>
   );
 }
@@ -355,5 +375,8 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     width: '100%',
+  },
+  scrollView: {
+    flexGrow: 1,
   },
 });
