@@ -36,7 +36,11 @@ import {getFullImageUrl} from '~/utils/helper';
 import {height, width} from '~/utils/style';
 
 const ContentViewerScreen = ({route}: NavigationProp) => {
-  const params: any = route?.params;
+  const liveId = route?.params?.item?.live?.id;
+  const user = route?.params?.item?.live?.user;
+  const isFollowed = route?.params?.item?.isFollowed;
+
+  console.log({isFollowed, liveId});
 
   const [fullScreen, setFullScreen] = useState(true);
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
@@ -45,7 +49,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   const {data: followData} = useLive_GetLivesQuery({
     where: {
       live: {
-        id: {eq: params?.item?.live?.id},
+        id: {eq: liveId},
       },
     },
   });
@@ -59,17 +63,17 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
 
   useEffect(() => {
     viewLiveMutate(
-      {liveId: params?.item?.live?.id},
+      {liveId},
       {
         onSuccess(data, variables, context) {},
       },
     );
   }, []);
 
-  const likeHanddler = () => {
+  const likeHandler = () => {
     if (isLiked) {
       deleteLikeMutate(
-        {liveId: params?.item?.live?.id},
+        {liveId},
         {
           onSuccess(data, variables, context) {
             setIsLiked(false);
@@ -80,7 +84,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
       );
     } else {
       likeMutate(
-        {liveId: params?.item?.live?.id},
+        {liveId},
         {
           onSuccess(data, variables, context) {
             setIsLiked(true);
@@ -93,7 +97,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   };
 
   const {data} = useAgora_GetRecordFilesQuery({
-    liveId: params?.item?.live?.id,
+    liveId,
   });
 
   const topLeftItems = [
@@ -115,9 +119,9 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   const bottomRightItems = [
     {
       key: 'like',
-      icon: isLiked ? <LikeFillIcon /> : <LikeIcon  />,
+      icon: isLiked ? <LikeFillIcon /> : <LikeIcon />,
       number: likeNumber,
-      onPress: () => likeHanddler(),
+      onPress: () => likeHandler(),
     },
     {
       key: 'send',
@@ -179,8 +183,8 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
           left={0}
           right={0}>
           <ContentViewerHeader
-            user={params?.item?.live?.user}
-            isFollowed={params?.item?.isFollowed || liveData?.isFollowed}
+            user={user}
+            isFollowed={isFollowed || liveData?.isFollowed}
             viewCount={liveData?.live?.viewCount || 0}
           />
         </HStack>

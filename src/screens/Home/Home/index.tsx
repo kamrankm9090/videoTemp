@@ -58,9 +58,9 @@ export default function HomeScreen() {
 
   const listFooterComponent = useCallback(() => {
     return (
-      <VStack>
+      <VStack space={24}>
         <PeopleYouMayKnow />
-        <InviteFriendsCard />
+        <InviteFriendsCard w="auto" />
       </VStack>
     );
   }, []);
