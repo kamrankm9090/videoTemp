@@ -1,10 +1,9 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   ClientRoleType,
   LocalVideoStreamReason,
   LocalVideoStreamState,
-  RtcConnection,
   RtcSurfaceView,
   VideoCanvas,
   VideoSourceType,
@@ -98,13 +97,6 @@ export default function LiveScreen() {
     );
 
     engine.current.addListener(
-      'onActiveSpeaker',
-      (connection: RtcConnection, uid: number) => {
-        console.log('onActiveSpeaker-->', connection, {uid});
-      },
-    );
-
-    engine.current.addListener(
       'onLocalVideoStateChanged',
       (
         source: VideoSourceType,
@@ -167,7 +159,6 @@ export default function LiveScreen() {
     // 2. If app certificate is turned on at dashboard, token is needed
     // when joining channel. The channel name and uid used to calculate
     // the token has to match the ones used for channel join
-    leaveChannel();
     engine.current.enableAudio();
     engine.current.joinChannel(token, channelId, uid, {
       // Make myself as the broadcaster to send stream to remote
@@ -268,7 +259,6 @@ function CreateLiveFooter({
 function ExperienceCard() {
   const {liveData, liveType} = useSnapshot(liveStore);
   const [expanded, setExpanded] = useState<boolean>(false);
-  console.log(liveData?.publishingScheduleTime);
 
   return (
     <VStack
