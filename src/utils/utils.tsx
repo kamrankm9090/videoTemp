@@ -2,7 +2,7 @@ import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import {CommonActions} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
-import {Keyboard, Linking} from 'react-native';
+import {Keyboard, Linking, Platform} from 'react-native';
 import {createThumbnail} from 'react-native-create-thumbnail';
 import {
   ExternalCachesDirectoryPath,
@@ -17,7 +17,7 @@ import Toast, {
 } from 'react-native-toast-message';
 import {AppToast, OptionalToast} from '~/components';
 import {Colors} from '~/styles';
-import {isAndroid, isIos} from './helper';
+import {isAndroid, isIos, reportError} from './helper';
 import {StackNavigationOptions} from '@react-navigation/stack';
 import {SheetManager} from 'react-native-actions-sheet';
 import {Error, InfoCircle, TickCircle, Warning} from '~/assets/svgs';
@@ -27,6 +27,7 @@ import {screenTransitionConfig} from '~/navigation/methods';
 import {userDataStore} from '~/stores';
 import jwtDecode, {JwtPayload} from 'jwt-decode';
 import {graphQLClient} from '~/graphql/fetcher';
+import Share from 'react-native-share';
 
 export const toastConfig = {
   success: (props: ToastProps) => <BaseToast {...props} />,
@@ -430,4 +431,23 @@ export async function logout() {
   userDataStore.getState()?.resetAuthData();
   userDataStore.getState()?.resetUserData();
   userDataStore?.setState({isUserLoggedIn: false});
+}
+
+export async function appSharing(text: string) {
+  try {
+    const options = Platform.select({
+      ios: {
+        message: text,
+        type: 'text',
+      },
+      default: {
+        title: 'Share',
+        url: text,
+        failOnCancel: false,
+      },
+    });
+    await Share.open(options);
+  } catch (err) {
+    reportError(err, 'share error');
+  }
 }

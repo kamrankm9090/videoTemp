@@ -15,7 +15,7 @@ import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
-import {getFullImageUrl} from '~/utils/helper';
+import {getFullImageUrl, getRandomColorFromName} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
 import {showSheet} from '~/utils/utils';
 
@@ -30,6 +30,8 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
 
+  const bgColor = getRandomColorFromName(item?.live?.user?.fullName || item?.live?.user?.username || '');
+    
   function onPressHandler() {
     if (item?.recordEnded) {
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
@@ -68,7 +70,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         zIndex={1}
         px={16}
         justifyContent="space-between">
-        <VStack bg={Colors.ERROR} py={5} px={15} borderRadius={20}>
+        <VStack bg={bgColor} py={5} px={15} borderRadius={20}>
           <AppText fontWeight="500">{item?.live?.category}</AppText>
         </VStack>
         <ArchiveIcon />
@@ -94,7 +96,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         )}
       </AppVideoPlayer>
 
-      <HStack py={10} px={12} bg={Colors.BLACK}>
+      <HStack py={10} px={12} gap={10} bg={Colors.BLACK}>
         <AppImage
           imageSource={{uri: item?.live?.user?.photoUrl}}
           style={styles.avatar}
@@ -132,7 +134,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    marginRight: 10,
   },
   thumbnail: {
     width: '100%',

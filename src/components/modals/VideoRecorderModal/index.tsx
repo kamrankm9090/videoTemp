@@ -19,7 +19,7 @@ function VideoRecorderModal({onClose, onSelectVideo}: Props, ref: any) {
 
   return (
     <ModalContainer
-      style={{flexGrow: 1}}
+      style={{flex: 1}}
       px={0}
       ref={ref}
       onDismiss={onClose}

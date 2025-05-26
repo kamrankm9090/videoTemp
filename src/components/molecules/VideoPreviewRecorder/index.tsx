@@ -179,16 +179,15 @@ export default function VideoPreviewRecorder({
   }
 
   return (
-    <>
-      {videoUri ? (
-        <VStack flex={1} bg={Colors.BACKGROUND}>
+      videoUri ? (
+        <VStack flexGrow={1} bg={Colors.BACKGROUND}>
           <Video
             source={{uri: videoUri}}
             style={styles.video}
             controls
             resizeMode="cover"
           />
-          <VStack position="absolute" alignSelf="center" bottom={24} space={12}>
+          <VStack position="absolute" alignSelf="center" bottom={100} space={12}>
             <AppButton
               title={
                 uploading ? `Uploading... ${uploadProgress}%` : 'Upload Video'
@@ -225,7 +224,7 @@ export default function VideoPreviewRecorder({
           <HStack
             w="100%"
             space={24}
-            bottom={24}
+            bottom={100}
             alignSelf="center"
             position="absolute"
             justifyContent="center">
@@ -243,8 +242,7 @@ export default function VideoPreviewRecorder({
             </AppTouchable>
           </HStack>
         </>
-      )}
-    </>
+      )
   );
 }
 

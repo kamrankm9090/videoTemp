@@ -7,10 +7,10 @@ import React, {
 import {StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
 import FastImage, {FastImageProps} from 'react-native-fast-image';
 import {createImageProgress} from 'react-native-image-progress';
-import {getFullImageUrl} from '~/utils/helper';
 import images from '~/assets/images';
 import {AppIndicator, ZoomViewerModal} from '~/components';
 import {Colors} from '~/styles';
+import {getFullImageUrl} from '~/utils/helper';
 
 const Image = createImageProgress(FastImage);
 
@@ -42,7 +42,7 @@ const AppImage = forwardRef(
       local = false,
       children,
       imageSourceArray,
-      errorImage = images.noImage,
+      errorImage = style?.width < 100 ? images.avatarNoImage : images.noImage,
       isLoading,
       imageStyle = {},
       isCropped = true,

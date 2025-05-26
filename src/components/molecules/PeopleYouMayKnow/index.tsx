@@ -137,6 +137,7 @@ function FollowButton({userId}: {userId: number}) {
       height={32}
       minW={100}
       title={isFollow ? 'Unfollow' : 'Follow'}
+      outline={isFollow ? true : false}
       font_family={fontFamily.medium}
       onPress={followHandler}
     />

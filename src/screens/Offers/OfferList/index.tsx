@@ -11,12 +11,12 @@ import {
   UserCardItem,
 } from '~/components';
 import {
-  useInfiniteLive_GetLiveStreamsQuery,
-  useInfiniteLive_GetNewLivesQuery,
-  useInfiniteLive_GetRecommendedLivesQuery,
-  useInfiniteLive_GetTrendingLivesQuery,
   useInfiniteUser_GetCastersToFollowQuery,
 } from '~/graphql/generated';
+import { useInfiniteLive_GetLiveStreamsQuery } from '~/hooks/offer/useGetLiveStreams';
+import { useInfiniteLive_GetNewLivesQuery } from '~/hooks/offer/useGetNewLives';
+import { useInfiniteLive_GetRecommendedLivesQuery } from '~/hooks/offer/useGetRecommendedLives';
+import { useInfiniteLive_GetTrendingLivesQuery } from '~/hooks/offer/useGetTrendingLives';
 import {Colors} from '~/styles';
 
 const OfferList = () => {

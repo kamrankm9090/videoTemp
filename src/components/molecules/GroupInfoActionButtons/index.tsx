@@ -2,10 +2,11 @@ import React from 'react';
 import {AppTouchable, AppText, HStack} from '~/components';
 import { LogOutIcon, SearchIcon, SearchNormalIcon, VolumeMuteIcon} from '~/assets/svgs';
 import {Colors} from '~/styles';
+import { navigate } from '~/navigation/methods';
 
 const actions = [
   {label: 'Mute', icon: VolumeMuteIcon, onPress: () => console.log('Muted')},
-  {label: 'Search', icon: SearchNormalIcon, onPress: () => console.log('Search')},
+  {label: 'Search', icon: SearchNormalIcon, onPress: () => navigate("CommunityStack", {screen:"CommunitySearch"})},
   {label: 'Leave', icon: LogOutIcon, onPress: () => console.log('Leave')},
 ];
 

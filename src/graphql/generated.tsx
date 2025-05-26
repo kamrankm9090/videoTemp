@@ -468,6 +468,7 @@ export type Community = {
   isDeleted: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   media?: Maybe<Scalars['String']['output']>;
+  messageCount: Scalars['Int']['output'];
   messages?: Maybe<Array<Maybe<CommunityMessage>>>;
   photoUrl?: Maybe<Scalars['String']['output']>;
   requestCount: Scalars['Int']['output'];
@@ -520,6 +521,7 @@ export type CommunityFilterInput = {
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   media?: InputMaybe<StringOperationFilterInput>;
+  messageCount?: InputMaybe<IntOperationFilterInput>;
   messages?: InputMaybe<ListFilterInputTypeOfCommunityMessageFilterInput>;
   or?: InputMaybe<Array<CommunityFilterInput>>;
   photoUrl?: InputMaybe<StringOperationFilterInput>;
@@ -607,6 +609,7 @@ export type CommunitySortInput = {
   isDeleted?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   media?: InputMaybe<SortEnumType>;
+  messageCount?: InputMaybe<SortEnumType>;
   photoUrl?: InputMaybe<SortEnumType>;
   requestCount?: InputMaybe<SortEnumType>;
   title?: InputMaybe<SortEnumType>;
@@ -960,6 +963,80 @@ export type CustomerDtoSortInput = {
   livemode?: InputMaybe<SortEnumType>;
   name?: InputMaybe<SortEnumType>;
   object?: InputMaybe<SortEnumType>;
+};
+
+export type DashboardCollaborativeDto = {
+  __typename?: 'DashboardCollaborativeDto';
+  collaborate: Scalars['Int']['output'];
+  investment: Scalars['Int']['output'];
+  promotion: Scalars['Int']['output'];
+};
+
+export type DashboardContentChartDto = {
+  __typename?: 'DashboardContentChartDto';
+  x?: Maybe<Scalars['String']['output']>;
+  y: Scalars['Int']['output'];
+};
+
+/** A segment of a collection. */
+export type DashboardContentChartDtoCollectionSegment = {
+  __typename?: 'DashboardContentChartDtoCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<DashboardContentChartDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type DashboardContentChartDtoConnection = {
+  __typename?: 'DashboardContentChartDtoConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<DashboardContentChartDtoEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<DashboardContentChartDto>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type DashboardContentChartDtoEdge = {
+  __typename?: 'DashboardContentChartDtoEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<DashboardContentChartDto>;
+};
+
+export type DashboardContentChartDtoFilterInput = {
+  and?: InputMaybe<Array<DashboardContentChartDtoFilterInput>>;
+  or?: InputMaybe<Array<DashboardContentChartDtoFilterInput>>;
+  x?: InputMaybe<StringOperationFilterInput>;
+  y?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type DashboardContentChartDtoSortInput = {
+  x?: InputMaybe<SortEnumType>;
+  y?: InputMaybe<SortEnumType>;
+};
+
+export enum DashboardPeriod {
+  Daily = 'DAILY',
+  Monthly = 'MONTHLY',
+}
+
+export type DashboardSummaryDto = {
+  __typename?: 'DashboardSummaryDto';
+  communityCount: Scalars['Int']['output'];
+  communityPercent: Scalars['Int']['output'];
+  contentCount: Scalars['Int']['output'];
+  contentPercent: Scalars['Int']['output'];
+  monetizedAmount: Scalars['Decimal']['output'];
+  monetizedPercent: Scalars['Decimal']['output'];
+  userCount: Scalars['Int']['output'];
+  userPercent: Scalars['Int']['output'];
 };
 
 export type DateTimeOperationFilterInput = {
@@ -1916,6 +1993,29 @@ export type ListResponseBaseOfCustomerDtoResult2Args = {
   where?: InputMaybe<CustomerDtoFilterInput>;
 };
 
+export type ListResponseBaseOfDashboardContentChartDto = {
+  __typename?: 'ListResponseBaseOfDashboardContentChartDto';
+  result?: Maybe<DashboardContentChartDtoCollectionSegment>;
+  result2?: Maybe<DashboardContentChartDtoConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfDashboardContentChartDtoResultArgs = {
+  order?: InputMaybe<Array<DashboardContentChartDtoSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<DashboardContentChartDtoFilterInput>;
+};
+
+export type ListResponseBaseOfDashboardContentChartDtoResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<DashboardContentChartDtoSortInput>>;
+  where?: InputMaybe<DashboardContentChartDtoFilterInput>;
+};
+
 export type ListResponseBaseOfDefaultViolation = {
   __typename?: 'ListResponseBaseOfDefaultViolation';
   result?: Maybe<DefaultViolationCollectionSegment>;
@@ -2462,6 +2562,7 @@ export type Live = {
   shareCount: Scalars['Int']['output'];
   title?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
+  userCount: Scalars['Int']['output'];
   userId: Scalars['Int']['output'];
   value: Scalars['Decimal']['output'];
   viewCount: Scalars['Int']['output'];
@@ -2574,6 +2675,8 @@ export type LiveCommentSortInput = {
 export type LiveDto = {
   __typename?: 'LiveDto';
   isBookmark: Scalars['Boolean']['output'];
+  isFollowed: Scalars['Boolean']['output'];
+  isLiked: Scalars['Boolean']['output'];
   isPurchased: Scalars['Boolean']['output'];
   isViewed: Scalars['Boolean']['output'];
   live?: Maybe<Live>;
@@ -2616,6 +2719,8 @@ export type LiveDtoEdge = {
 export type LiveDtoFilterInput = {
   and?: InputMaybe<Array<LiveDtoFilterInput>>;
   isBookmark?: InputMaybe<BooleanOperationFilterInput>;
+  isFollowed?: InputMaybe<BooleanOperationFilterInput>;
+  isLiked?: InputMaybe<BooleanOperationFilterInput>;
   isPurchased?: InputMaybe<BooleanOperationFilterInput>;
   isViewed?: InputMaybe<BooleanOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
@@ -2626,6 +2731,8 @@ export type LiveDtoFilterInput = {
 
 export type LiveDtoSortInput = {
   isBookmark?: InputMaybe<SortEnumType>;
+  isFollowed?: InputMaybe<SortEnumType>;
+  isLiked?: InputMaybe<SortEnumType>;
   isPurchased?: InputMaybe<SortEnumType>;
   isViewed?: InputMaybe<SortEnumType>;
   live?: InputMaybe<LiveSortInput>;
@@ -2667,6 +2774,7 @@ export type LiveFilterInput = {
   shareCount?: InputMaybe<IntOperationFilterInput>;
   title?: InputMaybe<StringOperationFilterInput>;
   user?: InputMaybe<UserFilterInput>;
+  userCount?: InputMaybe<IntOperationFilterInput>;
   userId?: InputMaybe<IntOperationFilterInput>;
   value?: InputMaybe<DecimalOperationFilterInput>;
   viewCount?: InputMaybe<IntOperationFilterInput>;
@@ -2760,6 +2868,7 @@ export type LiveSortInput = {
   shareCount?: InputMaybe<SortEnumType>;
   title?: InputMaybe<SortEnumType>;
   user?: InputMaybe<UserSortInput>;
+  userCount?: InputMaybe<SortEnumType>;
   userId?: InputMaybe<SortEnumType>;
   value?: InputMaybe<SortEnumType>;
   viewCount?: InputMaybe<SortEnumType>;
@@ -3011,6 +3120,7 @@ export type MessageSummaryDto = {
 export type Mutation = {
   __typename?: 'Mutation';
   agora_createToken?: Maybe<ResponseBaseOfString>;
+  agora_stopRecord?: Maybe<ResponseStatus>;
   category_createCategory: ResponseBaseOfCategory;
   category_deleteCategory: ResponseStatus;
   category_updateCategory: ResponseBaseOfCategory;
@@ -3039,6 +3149,7 @@ export type Mutation = {
   live_createNotInterested?: Maybe<ResponseStatus>;
   live_deleteComment?: Maybe<ResponseStatus>;
   live_deleteLive?: Maybe<ResponseStatus>;
+  live_like?: Maybe<ResponseStatus>;
   live_purchase?: Maybe<ResponseStatus>;
   live_rate?: Maybe<ResponseStatus>;
   live_removeFromBookmark?: Maybe<ResponseStatus>;
@@ -3118,6 +3229,10 @@ export type Mutation = {
 export type MutationAgora_CreateTokenArgs = {
   channelName?: InputMaybe<Scalars['String']['input']>;
   publisher: Scalars['Boolean']['input'];
+};
+
+export type MutationAgora_StopRecordArgs = {
+  channelName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type MutationCategory_CreateCategoryArgs = {
@@ -3229,6 +3344,10 @@ export type MutationLive_DeleteCommentArgs = {
 };
 
 export type MutationLive_DeleteLiveArgs = {
+  liveId: Scalars['Int']['input'];
+};
+
+export type MutationLive_LikeArgs = {
   liveId: Scalars['Int']['input'];
 };
 
@@ -3557,6 +3676,7 @@ export type Notification = {
    *             NewTip,
    *             NewLive,
    *             CreateComment,
+   *             Like,
    *
    */
   notificationType?: Maybe<Scalars['String']['output']>;
@@ -3612,6 +3732,7 @@ export type NotificationFilterInput = {
    *             NewTip,
    *             NewLive,
    *             CreateComment,
+   *             Like,
    *
    */
   notificationType?: InputMaybe<StringOperationFilterInput>;
@@ -3715,6 +3836,7 @@ export type NotificationSortInput = {
    *             NewTip,
    *             NewLive,
    *             CreateComment,
+   *             Like,
    *
    */
   notificationType?: InputMaybe<SortEnumType>;
@@ -4039,6 +4161,9 @@ export type Query = {
   community_getCommunities?: Maybe<ListResponseBaseOfCommunity>;
   community_getOtherCommunities?: Maybe<ListResponseBaseOfCommunity>;
   contactUs_getContactUs?: Maybe<ResponseBaseOfContactUs>;
+  dashboard_getCollaborative?: Maybe<ResponseBaseOfDashboardCollaborativeDto>;
+  dashboard_getContentChart?: Maybe<ListResponseBaseOfDashboardContentChartDto>;
+  dashboard_getSummary?: Maybe<ResponseBaseOfDashboardSummaryDto>;
   defaultViolation_getDefaultViolations: ListResponseBaseOfDefaultViolation;
   live_getLiveComments?: Maybe<ListResponseBaseOfLiveCommentDto>;
   live_getLiveStreams?: Maybe<ListResponseBaseOfLiveDto>;
@@ -4103,6 +4228,10 @@ export type QueryAgora_GetRecordFilesArgs = {
 
 export type QueryCategory_GetCategoryArgs = {
   entityId: Scalars['Int']['input'];
+};
+
+export type QueryDashboard_GetContentChartArgs = {
+  period: DashboardPeriod;
 };
 
 export type QueryLive_GetLiveCommentsArgs = {
@@ -4497,6 +4626,18 @@ export type ResponseBaseOfConversation = {
 export type ResponseBaseOfCustomerDto = {
   __typename?: 'ResponseBaseOfCustomerDto';
   result?: Maybe<CustomerDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfDashboardCollaborativeDto = {
+  __typename?: 'ResponseBaseOfDashboardCollaborativeDto';
+  result?: Maybe<DashboardCollaborativeDto>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfDashboardSummaryDto = {
+  __typename?: 'ResponseBaseOfDashboardSummaryDto';
+  result?: Maybe<DashboardSummaryDto>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -5120,6 +5261,7 @@ export type User = {
   lockoutEnd?: Maybe<Scalars['DateTime']['output']>;
   /** @deprecated Use LocationOfUser */
   longitude?: Maybe<Scalars['Float']['output']>;
+  moneySpent: Scalars['Decimal']['output'];
   normalizedEmail?: Maybe<Scalars['String']['output']>;
   normalizedUserName?: Maybe<Scalars['String']['output']>;
   passwordHash?: Maybe<Scalars['String']['output']>;
@@ -5143,6 +5285,7 @@ export type User = {
   streetAddress?: Maybe<Scalars['String']['output']>;
   stripeConnectAccountId?: Maybe<Scalars['String']['output']>;
   stripeConnectCompleted: Scalars['Boolean']['output'];
+  timeSpent: Scalars['Float']['output'];
   twoFactorAuthenticationCode?: Maybe<Scalars['String']['output']>;
   twoFactorAuthenticationEnabled?: Maybe<Scalars['Boolean']['output']>;
   twoFactorEnabled: Scalars['Boolean']['output'];
@@ -5297,6 +5440,7 @@ export type UserFilterInput = {
   lockoutEnabled?: InputMaybe<BooleanOperationFilterInput>;
   lockoutEnd?: InputMaybe<DateTimeOperationFilterInput>;
   longitude?: InputMaybe<FloatOperationFilterInput>;
+  moneySpent?: InputMaybe<DecimalOperationFilterInput>;
   normalizedEmail?: InputMaybe<StringOperationFilterInput>;
   normalizedUserName?: InputMaybe<StringOperationFilterInput>;
   or?: InputMaybe<Array<UserFilterInput>>;
@@ -5321,6 +5465,7 @@ export type UserFilterInput = {
   streetAddress?: InputMaybe<StringOperationFilterInput>;
   stripeConnectAccountId?: InputMaybe<StringOperationFilterInput>;
   stripeConnectCompleted?: InputMaybe<BooleanOperationFilterInput>;
+  timeSpent?: InputMaybe<FloatOperationFilterInput>;
   twoFactorAuthenticationCode?: InputMaybe<StringOperationFilterInput>;
   twoFactorAuthenticationEnabled?: InputMaybe<BooleanOperationFilterInput>;
   twoFactorEnabled?: InputMaybe<BooleanOperationFilterInput>;
@@ -5528,6 +5673,7 @@ export type UserSortInput = {
   lockoutEnabled?: InputMaybe<SortEnumType>;
   lockoutEnd?: InputMaybe<SortEnumType>;
   longitude?: InputMaybe<SortEnumType>;
+  moneySpent?: InputMaybe<SortEnumType>;
   normalizedEmail?: InputMaybe<SortEnumType>;
   normalizedUserName?: InputMaybe<SortEnumType>;
   passwordHash?: InputMaybe<SortEnumType>;
@@ -5551,6 +5697,7 @@ export type UserSortInput = {
   streetAddress?: InputMaybe<SortEnumType>;
   stripeConnectAccountId?: InputMaybe<SortEnumType>;
   stripeConnectCompleted?: InputMaybe<SortEnumType>;
+  timeSpent?: InputMaybe<SortEnumType>;
   twoFactorAuthenticationCode?: InputMaybe<SortEnumType>;
   twoFactorAuthenticationEnabled?: InputMaybe<SortEnumType>;
   twoFactorEnabled?: InputMaybe<SortEnumType>;
@@ -5700,6 +5847,20 @@ export type Agora_CreateTokenMutation = {
     __typename?: 'ResponseBaseOfString';
     result?: string | null;
     status?: any | null;
+  } | null;
+};
+
+export type Agora_StopRecordMutationVariables = Exact<{
+  channelName?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+export type Agora_StopRecordMutation = {
+  __typename?: 'Mutation';
+  agora_stopRecord?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
   } | null;
 };
 
@@ -5993,6 +6154,48 @@ export type Live_DeleteCommentMutation = {
   } | null;
 };
 
+export type Live_ViewLiveMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_ViewLiveMutation = {
+  __typename?: 'Mutation';
+  live_viewLive?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
+export type Live_LikeMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_LikeMutation = {
+  __typename?: 'Mutation';
+  live_like?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
+export type Live_DeleteLiveMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_DeleteLiveMutation = {
+  __typename?: 'Mutation';
+  live_deleteLive?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Live_GetLivesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -6015,12 +6218,15 @@ export type Live_GetLivesQuery = {
       };
       items?: Array<{
         __typename?: 'LiveDto';
+        isLiked: boolean;
         recordStarted: boolean;
         recordEnded: boolean;
         isViewed: boolean;
         isBookmark: boolean;
+        isFollowed: boolean;
         live?: {
           __typename?: 'Live';
+          likeCount: number;
           userId: number;
           introUrl?: string | null;
           liveType: LiveType;
@@ -6095,6 +6301,7 @@ export type Live_GetLiveStreamsQuery = {
         isBookmark: boolean;
         isPurchased: boolean;
         isViewed: boolean;
+        isFollowed: boolean;
         recordEnded: boolean;
         recordStarted: boolean;
         live?: {
@@ -6112,6 +6319,7 @@ export type Live_GetLiveStreamsQuery = {
             __typename?: 'User';
             fullName?: string | null;
             photoUrl?: string | null;
+            username?: string | null;
             id: number;
           } | null;
         } | null;
@@ -6162,6 +6370,8 @@ export type Live_GetRecommendedLivesQuery = {
             __typename?: 'User';
             photoUrl?: string | null;
             fullName?: string | null;
+            username?: string | null;
+            id: number;
           } | null;
         } | null;
       } | null> | null;
@@ -6208,6 +6418,13 @@ export type Live_GetTrendingLivesQuery = {
           photoUrl?: string | null;
           title?: string | null;
           viewCount: number;
+          user?: {
+            __typename?: 'User';
+            photoUrl?: string | null;
+            fullName?: string | null;
+            username?: string | null;
+            id: number;
+          } | null;
         } | null;
       } | null> | null;
     } | null;
@@ -6256,6 +6473,8 @@ export type Live_GetNewLivesQuery = {
             __typename?: 'User';
             photoUrl?: string | null;
             fullName?: string | null;
+            username?: string | null;
+            id: number;
           } | null;
         } | null;
       } | null> | null;
@@ -6293,9 +6512,10 @@ export type Live_GetLiveCommentsQuery = {
           text?: string | null;
           user?: {
             __typename?: 'User';
+            photoUrl?: string | null;
             fullName?: string | null;
             username?: string | null;
-            photoUrl?: string | null;
+            id: number;
           } | null;
           children?: Array<{
             __typename?: 'LiveComment';
@@ -7028,6 +7248,43 @@ export const useAgora_CreateTokenMutation = <
   );
 };
 
+export const Agora_StopRecordDocument = `
+    mutation agora_stopRecord($channelName: String) {
+  agora_stopRecord(channelName: $channelName) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useAgora_StopRecordMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Agora_StopRecordMutation,
+    TError,
+    Agora_StopRecordMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Agora_StopRecordMutation,
+    TError,
+    Agora_StopRecordMutationVariables,
+    TContext
+  >(
+    ['agora_stopRecord'],
+    (variables?: Agora_StopRecordMutationVariables) =>
+      fetcher<Agora_StopRecordMutation, Agora_StopRecordMutationVariables>(
+        Agora_StopRecordDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
 export const Agora_GetAppIdDocument = `
     query agora_getAppId {
   agora_getAppId {
@@ -7656,6 +7913,111 @@ export const useLive_DeleteCommentMutation = <
   );
 };
 
+export const Live_ViewLiveDocument = `
+    mutation live_viewLive($liveId: Int!) {
+  live_viewLive(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_ViewLiveMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    Live_ViewLiveMutation,
+    TError,
+    Live_ViewLiveMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_ViewLiveMutation,
+    TError,
+    Live_ViewLiveMutationVariables,
+    TContext
+  >(
+    ['live_viewLive'],
+    (variables?: Live_ViewLiveMutationVariables) =>
+      fetcher<Live_ViewLiveMutation, Live_ViewLiveMutationVariables>(
+        Live_ViewLiveDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const Live_LikeDocument = `
+    mutation live_like($liveId: Int!) {
+  live_like(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_LikeMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    Live_LikeMutation,
+    TError,
+    Live_LikeMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_LikeMutation,
+    TError,
+    Live_LikeMutationVariables,
+    TContext
+  >(
+    ['live_like'],
+    (variables?: Live_LikeMutationVariables) =>
+      fetcher<Live_LikeMutation, Live_LikeMutationVariables>(
+        Live_LikeDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const Live_DeleteLiveDocument = `
+    mutation live_deleteLive($liveId: Int!) {
+  live_deleteLive(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_DeleteLiveMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Live_DeleteLiveMutation,
+    TError,
+    Live_DeleteLiveMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_DeleteLiveMutation,
+    TError,
+    Live_DeleteLiveMutationVariables,
+    TContext
+  >(
+    ['live_deleteLive'],
+    (variables?: Live_DeleteLiveMutationVariables) =>
+      fetcher<Live_DeleteLiveMutation, Live_DeleteLiveMutationVariables>(
+        Live_DeleteLiveDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
 export const Live_GetLivesDocument = `
     query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]) {
   live_getLives {
@@ -7665,7 +8027,9 @@ export const Live_GetLivesDocument = `
         hasPreviousPage
       }
       items {
+        isLiked
         live {
+          likeCount
           userId
           introUrl
           liveType
@@ -7713,6 +8077,7 @@ export const Live_GetLivesDocument = `
         recordEnded
         isViewed
         isBookmark
+        isFollowed
       }
       totalCount
     }
@@ -7770,6 +8135,7 @@ export const Live_GetLiveStreamsDocument = `
         isBookmark
         isPurchased
         isViewed
+        isFollowed
         live {
           id
           introUrl
@@ -7783,6 +8149,7 @@ export const Live_GetLiveStreamsDocument = `
           user {
             fullName
             photoUrl
+            username
             id
           }
         }
@@ -7860,6 +8227,8 @@ export const Live_GetRecommendedLivesDocument = `
           user {
             photoUrl
             fullName
+            username
+            id
           }
         }
         recordEnded
@@ -7941,6 +8310,12 @@ export const Live_GetTrendingLivesDocument = `
           photoUrl
           title
           viewCount
+          user {
+            photoUrl
+            fullName
+            username
+            id
+          }
         }
         recordEnded
         recordStarted
@@ -8016,6 +8391,8 @@ export const Live_GetNewLivesDocument = `
           user {
             photoUrl
             fullName
+            username
+            id
           }
         }
         recordEnded
@@ -8080,9 +8457,10 @@ export const Live_GetLiveCommentsDocument = `
           id
           text
           user {
+            photoUrl
             fullName
             username
-            photoUrl
+            id
           }
           children {
             text

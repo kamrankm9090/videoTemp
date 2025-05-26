@@ -166,7 +166,7 @@ const OffersScreen: React.FC = () => {
     return (
       <VStack>
         {item.title && (
-          <HStack justifyContent="space-between" mb={16}>
+          <HStack justifyContent="space-between" mb={12}>
             <AppText fontSize={18} fontWeight={'600'}>
               {item.title}
             </AppText>

@@ -56,7 +56,7 @@ export default function AppHeader(props: ScreensHeaderProps) {
     titleFontSize = fontSize.medium,
     titleFontFamily = 'semiBold',
     titleTextAlign = 'center',
-    subTitleColor = Colors.BLACK,
+    subTitleColor = Colors.WHITE,
     subTitleFontSize = fontSize.xTiny,
     subTitleFontFamily = 'regular',
     subTitleTextAlign = 'center',

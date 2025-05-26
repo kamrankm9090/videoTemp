@@ -3,6 +3,7 @@ import {ViewStyle} from 'react-native';
 import {AppButton, AppText, HStack, VStack} from '~/components';
 import {Colors} from '~/styles';
 import {fontSize} from '~/utils/style';
+import {appSharing} from '~/utils/utils';
 
 export default function InviteFriendsCard({
   w = '100%',
@@ -19,7 +20,11 @@ export default function InviteFriendsCard({
   bg?: ViewStyle['backgroundColor'];
   rounded?: ViewStyle['borderRadius'];
 }) {
-  function onPressHandler() {}
+  async function onPressHandler() {
+    await appSharing(
+      'Join me on this awesome app and earn KLP! Download it here: https://testflight.apple.com/join/fges3KxD',
+    );
+  }
 
   return (
     <HStack {...{w, px, py, mx, rounded, bg}}>
