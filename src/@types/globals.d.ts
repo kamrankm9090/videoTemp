@@ -318,7 +318,8 @@ declare global {
     | 'create-options-action'
     | 'confirmation-action'
     | 'more-option-action'
-    | 'offer-select-option-action';
+    | 'offer-select-option-action'
+    | 'create-community-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 

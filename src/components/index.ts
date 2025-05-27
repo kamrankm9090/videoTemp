@@ -113,4 +113,5 @@ export {default as ConfirmationAction} from './modals/ConfirmationAction';
 export {default as OfferSelectOptionAction} from './modals/OfferSelectOptionAction';
 export {default as VideoRecorderModal} from './modals/VideoRecorderModal';
 export {default as MoreOptionAction} from './modals/MoreOptionAction';
+export {default as CreateCommunityAction} from './modals/CreateCommunityAction';
 //#endregion ---------Modals

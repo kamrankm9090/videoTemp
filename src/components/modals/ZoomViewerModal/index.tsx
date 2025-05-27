@@ -1,15 +1,19 @@
 import React, {useRef} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {ModalProps} from 'react-native-modal';
 import images from '~/assets/images';
-import {CloseCircle} from '~/assets/svgs';
-import {AppLoading, ModalContainer, RenderNothing} from '~/components';
+import {
+  AppHeader,
+  AppLoading,
+  ModalContainer,
+  RenderNothing,
+} from '~/components';
 import {useGetStatusBarHeight} from '~/hooks';
 import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
-import {verticalScale} from '~/utils/style';
+import {width} from '~/utils/style';
 
 interface Props {
   imageZoom: boolean;
@@ -30,6 +34,8 @@ export default function ZoomViewerModal({
   local,
   errorImage = images.noImage,
 }: Props) {
+  console.log(imageZoom, imageSource, 'hir ir');
+
   const {statusBarHeight} = useGetStatusBarHeight();
 
   const imageViewerRef = useRef<ImageViewer>();
@@ -47,6 +53,14 @@ export default function ZoomViewerModal({
       style={styles.main}
       isVisible={imageZoom}
       onDismiss={oncloseZoomModal}>
+      <AppHeader
+        title={'Image'}
+        titleColor={Colors.WHITE}
+        backgroundColor={Colors.BACKGROUND}
+        backAction
+        backActionHandler={oncloseZoomModal}
+        position="absolute"
+      />
       <View
         style={[
           styles.modalHeader,
@@ -54,7 +68,7 @@ export default function ZoomViewerModal({
             paddingTop: statusBarHeight,
           },
         ]}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={oncloseZoomModal}
           activeOpacity={0.7}
           style={styles.closeIcon}>
@@ -63,7 +77,7 @@ export default function ZoomViewerModal({
             width={verticalScale(24)}
             height={verticalScale(24)}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <ImageViewer
@@ -118,8 +132,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BLACK,
   },
   main: {
-    width: '100%',
-    flex: 1,
+    flexGrow: 1,
+    width: width,
+    zIndex: 12,
   },
   indicator: {
     position: 'absolute',
