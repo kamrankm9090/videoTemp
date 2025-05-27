@@ -35,8 +35,6 @@ export default function PeopleYouMayKnow() {
       .flat();
   }, [getUsers]);
 
-  console.log('users-->', users);
-
   function seeMoreOnPress() {}
 
   if (!isLoadingGetUsers) {
@@ -57,7 +55,7 @@ export default function PeopleYouMayKnow() {
         <AppFlatList
           horizontal
           data={users || []}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item?.id}
           renderItem={({item}) => <UserCard user={item} />}
           spaceX={16}
           contentContainerStyle={styles.contentContainerStyle}
@@ -89,7 +87,7 @@ const UserCard = memo(({user}: {user: UserType}) => {
         color={Colors.WHITE_TRANSPARENT_4}>
         {user?.bio}
       </AppText>
-      <FollowButton userId={user.id} />
+      <FollowButton userId={user?.id} />
     </VStack>
   );
 });

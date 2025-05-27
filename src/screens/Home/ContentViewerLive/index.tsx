@@ -19,7 +19,7 @@ import {
   RenderNothing,
   VStack,
 } from '~/components';
-import { useAgora_StopRecordMutation } from '~/graphql/generated';
+import {useAgora_StopRecordMutation} from '~/graphql/generated';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {goBack} from '~/navigation/methods';
 import {liveStore} from '~/stores';
@@ -42,7 +42,7 @@ export default function ContentViewerLiveScreen() {
 
   const {liveData, resetLiveStore} = useSnapshot(liveStore);
 
-  const {mutate} = useAgora_StopRecordMutation()
+  const {mutate} = useAgora_StopRecordMutation();
 
   useEffect(() => {
     setTimeout(() => {
@@ -70,12 +70,12 @@ export default function ContentViewerLiveScreen() {
     try {
       await engine.current.leaveChannel();
       await engine.current.stopChannelMediaRelay();
-      mutate({channelName: channelId}, {
-        onSuccess(data, variables, context) {
-          console.log(data);
-          
+      mutate(
+        {channelName: channelId},
+        {
+          onSuccess(data, variables, context) {},
         },
-      })
+      );
       resetLiveStore();
       goBack();
     } catch (err) {

@@ -50,7 +50,7 @@ export default function SelectOptionAction(props: SheetProps) {
       <AppText>Select an Option</AppText>
       <VStack mt={20} space={12}>
         {data.map(item => (
-          <OptionItem key={item.id} item={item} />
+          <OptionItem key={item?.id} item={item} />
         ))}
       </VStack>
     </ActionSheetContainer>

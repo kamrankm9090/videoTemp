@@ -1,13 +1,17 @@
 import React from 'react';
-import {AppTouchable, AppText, HStack} from '~/components';
-import { LogOutIcon, SearchIcon, SearchNormalIcon, VolumeMuteIcon} from '~/assets/svgs';
+import {LogOutIcon, SearchNormalIcon, VolumeMuteIcon} from '~/assets/svgs';
+import {AppText, AppTouchable, HStack} from '~/components';
+import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
-import { navigate } from '~/navigation/methods';
 
 const actions = [
-  {label: 'Mute', icon: VolumeMuteIcon, onPress: () => console.log('Muted')},
-  {label: 'Search', icon: SearchNormalIcon, onPress: () => navigate("CommunityStack", {screen:"CommunitySearch"})},
-  {label: 'Leave', icon: LogOutIcon, onPress: () => console.log('Leave')},
+  {label: 'Mute', icon: VolumeMuteIcon, onPress: () => {}},
+  {
+    label: 'Search',
+    icon: SearchNormalIcon,
+    onPress: () => navigate('CommunityStack', {screen: 'CommunitySearch'}),
+  },
+  {label: 'Leave', icon: LogOutIcon, onPress: () => {}},
 ];
 
 export default function GroupInfoActionButtons() {
@@ -39,4 +43,3 @@ export default function GroupInfoActionButtons() {
     </HStack>
   );
 }
-

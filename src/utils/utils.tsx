@@ -411,9 +411,7 @@ export const isTokenExpired = (token?: string | null): boolean => {
   }
   try {
     const decoded = jwtDecode<JwtPayload>(token);
-    const tt = (decoded.exp ?? 0) < Date.now() / 1000;
-    console.log('tt===>', tt);
-    return tt;
+    return (decoded.exp ?? 0) < Date.now() / 1000;
   } catch (err) {
     console.error('Invalid token:', err);
     return true;

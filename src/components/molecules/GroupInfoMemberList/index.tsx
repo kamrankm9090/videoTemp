@@ -10,21 +10,21 @@ const members = [
     id: '1',
     name: 'Liam Clarke',
     role: 'Portrait photographer',
-    avatar: {uri:""}, // replace as needed
+    avatar: {uri: ''}, // replace as needed
     isOwner: true,
   },
   {
     id: '2',
     name: 'John Smith',
     role: 'Videographer',
-    avatar: {uri:""},
+    avatar: {uri: ''},
     isOwner: false,
   },
 ];
 
 export default function GroupInfoMemberList() {
   return (
-    <VStack mt={20} p={16} gap={16}  bg={Colors.NERO} borderRadius={8}>
+    <VStack mt={20} p={16} gap={16} bg={Colors.NERO} borderRadius={8}>
       {members.map(member => (
         <HStack
           key={member.id}
@@ -32,7 +32,7 @@ export default function GroupInfoMemberList() {
           alignItems="center">
           {/* Left section: Avatar + Info */}
           <HStack alignItems="center" gap={12}>
-            <AppTouchable onPress={() => console.log('Remove', member.id)}>
+            <AppTouchable onPress={() => {}}>
               <AddCircleIcon width={20} height={20} stroke={Colors.DELETE} />
             </AppTouchable>
             <Image
@@ -43,7 +43,7 @@ export default function GroupInfoMemberList() {
               <AppText fontSize={14} fontWeight="600" color={Colors.WHITE}>
                 {member.name}
               </AppText>
-              <AppText fontSize={14} fontWeight={"400"} color={Colors.Silver}>
+              <AppText fontSize={14} fontWeight={'400'} color={Colors.Silver}>
                 {member.role}
               </AppText>
             </VStack>
@@ -59,7 +59,7 @@ export default function GroupInfoMemberList() {
               paddingVertical={4}
               paddingTop={4}
               borderRadius={3}
-              textAlign='center'>
+              textAlign="center">
               Owner
             </AppText>
           )}

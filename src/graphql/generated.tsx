@@ -3677,6 +3677,7 @@ export type Notification = {
    *             NewLive,
    *             CreateComment,
    *             Like,
+   *             JoinToLive,
    *
    */
   notificationType?: Maybe<Scalars['String']['output']>;
@@ -3733,6 +3734,7 @@ export type NotificationFilterInput = {
    *             NewLive,
    *             CreateComment,
    *             Like,
+   *             JoinToLive,
    *
    */
   notificationType?: InputMaybe<StringOperationFilterInput>;
@@ -3837,6 +3839,7 @@ export type NotificationSortInput = {
    *             NewLive,
    *             CreateComment,
    *             Like,
+   *             JoinToLive,
    *
    */
   notificationType?: InputMaybe<SortEnumType>;
@@ -4228,6 +4231,10 @@ export type QueryAgora_GetRecordFilesArgs = {
 
 export type QueryCategory_GetCategoryArgs = {
   entityId: Scalars['Int']['input'];
+};
+
+export type QueryDashboard_GetCollaborativeArgs = {
+  period: DashboardPeriod;
 };
 
 export type QueryDashboard_GetContentChartArgs = {
@@ -6527,6 +6534,41 @@ export type Live_GetLiveCommentsQuery = {
   } | null;
 };
 
+export type Live_GetLivesForHomePageQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveDtoFilterInput>;
+  order?: InputMaybe<Array<LiveDtoSortInput> | LiveDtoSortInput>;
+  category?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+export type Live_GetLivesForHomePageQuery = {
+  __typename?: 'Query';
+  live_getLivesForHomePage?: {
+    __typename?: 'ListResponseBaseOfLiveDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'LiveDtoCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'LiveDto';
+        isViewed: boolean;
+        isBookmark: boolean;
+        isPurchased: boolean;
+        isFollowed: boolean;
+        isLiked: boolean;
+        recordStarted: boolean;
+        recordEnded: boolean;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
 export type Message_CreateDirectMessageMutationVariables = Exact<{
   input?: InputMaybe<MessageInput>;
   receiverId: Scalars['Int']['input'];
@@ -8506,6 +8548,76 @@ export const useInfiniteLive_GetLiveCommentsQuery = <
         Live_GetLiveCommentsDocument,
         {...variables, ...(metaData.pageParam ?? {})},
       )(),
+    options,
+  );
+};
+
+export const Live_GetLivesForHomePageDocument = `
+    query live_getLivesForHomePage($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!], $category: String) {
+  live_getLivesForHomePage(category: $category) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        isViewed
+        isBookmark
+        isPurchased
+        isFollowed
+        isLiked
+        recordStarted
+        recordEnded
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useLive_GetLivesForHomePageQuery = <
+  TData = Live_GetLivesForHomePageQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetLivesForHomePageQueryVariables,
+  options?: UseQueryOptions<Live_GetLivesForHomePageQuery, TError, TData>,
+) => {
+  return useQuery<Live_GetLivesForHomePageQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getLivesForHomePage']
+      : ['live_getLivesForHomePage', variables],
+    fetcher<
+      Live_GetLivesForHomePageQuery,
+      Live_GetLivesForHomePageQueryVariables
+    >(Live_GetLivesForHomePageDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteLive_GetLivesForHomePageQuery = <
+  TData = Live_GetLivesForHomePageQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetLivesForHomePageQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Live_GetLivesForHomePageQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Live_GetLivesForHomePageQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getLivesForHomePage.infinite']
+      : ['live_getLivesForHomePage.infinite', variables],
+    metaData =>
+      fetcher<
+        Live_GetLivesForHomePageQuery,
+        Live_GetLivesForHomePageQueryVariables
+      >(Live_GetLivesForHomePageDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
     options,
   );
 };

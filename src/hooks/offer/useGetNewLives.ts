@@ -1,5 +1,5 @@
-import { useInfiniteQuery, UseInfiniteQueryOptions } from '@tanstack/react-query';
-import { fetcher } from '~/graphql/fetcher';
+import {useInfiniteQuery, UseInfiniteQueryOptions} from '@tanstack/react-query';
+import {fetcher} from '~/graphql/fetcher';
 import {
   Live_GetNewLivesDocument,
   type Live_GetNewLivesQuery,
@@ -19,7 +19,7 @@ export const useInfiniteLive_GetNewLivesQuery = <
     queryKey: variables
       ? ['live_getNewLives.infinite', variables]
       : ['live_getNewLives.infinite'],
-    queryFn: ({ pageParam = 0 }) =>
+    queryFn: ({pageParam = 0}) =>
       fetcher<Live_GetNewLivesQuery, Live_GetNewLivesQueryVariables>(
         Live_GetNewLivesDocument,
         {
@@ -35,8 +35,6 @@ export const useInfiniteLive_GetNewLivesQuery = <
         const items = page.live_getNewLives?.result?.items;
         return sum + (items?.length ?? 0);
       }, 0);
-
-      console.log('New Lives:', { totalCount, fetchedCount });
 
       return fetchedCount < totalCount ? fetchedCount : undefined;
     },

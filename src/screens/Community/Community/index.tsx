@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 import {ChevronBack} from '~/assets/svgs';
 import {
   AppContainer,
@@ -33,7 +33,7 @@ export default function CommunityScreen() {
     );
   };
   return (
-    <AppContainer >
+    <AppContainer>
       <ScreensHeader title="Community" />
       <HStack
         bg={Colors.NERO}
@@ -53,7 +53,7 @@ export default function CommunityScreen() {
           );
         })}
       </HStack>
-      <SearchBar onSearch={t => console.log(t)} />
+      <SearchBar onSearch={t => {}} />
       <AppFlatList
         data={[1, 2]}
         renderItem={renderItem}
@@ -64,5 +64,5 @@ export default function CommunityScreen() {
 }
 
 const styles = StyleSheet.create({
-  chvron:{transform: [{rotate: '270deg'}]}
-})
+  chvron: {transform: [{rotate: '270deg'}]},
+});

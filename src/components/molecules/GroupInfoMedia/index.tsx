@@ -38,11 +38,9 @@ export default function GroupInfoMedia() {
         ))}
       </HStack>
 
-      <AppTouchable
-        alignSelf="center"
-        onPress={() => console.log('See more')}>
+      <AppTouchable alignSelf="center" onPress={() => {}}>
         <HStack alignItems="center" gap={4} mt={4}>
-          <AppText fontSize={14} fontWeight="500" >
+          <AppText fontSize={14} fontWeight="500">
             See more
           </AppText>
           <ChevronBack

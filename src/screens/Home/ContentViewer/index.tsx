@@ -40,8 +40,6 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   const user = route?.params?.item?.live?.user;
   const isFollowed = route?.params?.item?.isFollowed;
 
-  console.log({isFollowed, liveId});
-
   const [fullScreen, setFullScreen] = useState(true);
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
   const userData = userDataStore(state => state?.userData);
@@ -78,7 +76,6 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
           onSuccess(data, variables, context) {
             setIsLiked(false);
             setLikeNumber(likeNumber - 1);
-            console.log(data);
           },
         },
       );
@@ -89,7 +86,6 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
           onSuccess(data, variables, context) {
             setIsLiked(true);
             setLikeNumber(likeNumber + 1);
-            console.log(data);
           },
         },
       );

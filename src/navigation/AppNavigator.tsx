@@ -32,7 +32,7 @@ export default function AppNavigator() {
   useNotificationAddedSubscription({
     userId: userData?.id,
     callback() {
-      console.log('new notif');
+      // console.log('new notif');
     },
   });
 
