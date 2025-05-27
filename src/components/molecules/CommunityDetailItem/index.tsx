@@ -1,9 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import AppImage from '~/components/atoms/AppImage';
-import AppText from '~/components/atoms/AppText';
-import HStack from '~/components/common/HStack';
-import VStack from '~/components/common/VStack';
+import {AppImage, AppText, HStack, VStack} from '~/components';
 import {Colors} from '~/styles';
 import {formatTimeAgo} from '~/utils/helper';
 
