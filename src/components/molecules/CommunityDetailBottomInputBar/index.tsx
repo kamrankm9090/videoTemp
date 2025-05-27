@@ -25,7 +25,7 @@ const BottomInputBar = ({onSendMessage, onAttach, onVoice}: any) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
       style={styles.wrapper}>
-      <HStack alignItems="center" px={12} py={8}>
+      <HStack px={12} py={8}>
         <View style={styles.inputContainer}>
           <AppInput
             value={message}

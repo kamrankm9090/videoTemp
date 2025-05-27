@@ -100,6 +100,8 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
     liveId,
   });
 
+  console.log( "=> ",params?.item?.live?.id,data?.agora_getRecordFiles?.result?.items);
+  
   const topLeftItems = [
     {
       key: 'resume',
