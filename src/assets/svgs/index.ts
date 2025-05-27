@@ -81,3 +81,8 @@ export {default as SettingIcon} from './setting.svg';
 export {default as MicIcon} from './microphone.svg';
 export {default as CameraIcon} from './camera.svg';
 export {default as SearchStatusIcon} from './search-status.svg';
+export {default as EmailIcon} from './email.svg';
+export {default as Message1Icon} from './message-commu.svg';
+export {default as CopyLinkIcon} from './copy-link.svg';
+export {default as More1Icon} from './more-commu.svg';
+export {default as Plus1Icon} from './plus1.svg';

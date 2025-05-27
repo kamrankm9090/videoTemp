@@ -1,8 +1,9 @@
 import React from 'react';
 import {LogOutIcon, SearchNormalIcon, VolumeMuteIcon} from '~/assets/svgs';
 import {AppText, AppTouchable, HStack} from '~/components';
-import {navigate} from '~/navigation/methods';
+import {navigate, resetRoot} from '~/navigation/methods';
 import {Colors} from '~/styles';
+import {hideSheet, showSheet} from '~/utils/utils';
 
 const actions = [
   {label: 'Mute', icon: VolumeMuteIcon, onPress: () => {}},
@@ -11,7 +12,27 @@ const actions = [
     icon: SearchNormalIcon,
     onPress: () => navigate('CommunityStack', {screen: 'CommunitySearch'}),
   },
-  {label: 'Leave', icon: LogOutIcon, onPress: () => {}},
+  {
+    label: 'Leave',
+    icon: LogOutIcon,
+    onPress: () =>
+      showSheet('confirmation-action', {
+        payload: {
+          title: 'Leave Community',
+          description: 'Do you want to leave This community?',
+          positiveText: 'Leave',
+          positiveBackgroundColor: 'red',
+          positiveColor: '#fff',
+          onClose: () => hideSheet('confirmation-action'),
+          onConfirm: () => {
+            // setLiveStarted(false);
+            resetRoot('MainTabs');
+            hideSheet('confirmation-action');
+            // showInfoMessage('Your live ended');
+          },
+        },
+      }),
+  },
 ];
 
 export default function GroupInfoActionButtons() {

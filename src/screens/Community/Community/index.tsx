@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {ChevronBack} from '~/assets/svgs';
+import {ChevronBack, Plus1Icon} from '~/assets/svgs';
 import {
   AppContainer,
   AppFlatList,
@@ -12,6 +12,7 @@ import {
   SearchBar,
 } from '~/components';
 import {Colors} from '~/styles';
+import {showSheet} from '~/utils/utils';
 
 export default function CommunityScreen() {
   const [tab, setTab] = useState('Your communities');
@@ -34,7 +35,14 @@ export default function CommunityScreen() {
   };
   return (
     <AppContainer>
-      <ScreensHeader title="Community" />
+      <ScreensHeader
+        title="Community"
+        rightHeader={
+          <AppTouchable onPress={() => showSheet('create-community-action')}>
+            <Plus1Icon />
+          </AppTouchable>
+        }
+      />
       <HStack
         bg={Colors.NERO}
         p={8}
