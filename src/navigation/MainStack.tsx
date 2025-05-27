@@ -1,11 +1,12 @@
 import React from 'react';
+import useInitAgora from '~/hooks/agora/useInitAgora';
 import {publicScreenOption} from '~/utils/utils';
+import CommunityStack, {CommunityStackParamList} from './CommunityStack';
 import CreateStack, {CreateStackParamList} from './CreateStack';
 import HomeStack, {HomeStackParamList} from './HomeStack';
 import MainTabs, {MainTabParamList} from './MainTabs';
 import {appCreateStackNavigator} from './methods';
 import OffersStack, {OffersStackParamList} from './OffersStack';
-import CommunityStack, {CommunityStackParamList} from './CommunityStack';
 
 export type MainStackParamList = {
   MainTabs: {
@@ -51,6 +52,7 @@ const screens = [
 ];
 
 export default function MainStack() {
+  useInitAgora();
   return (
     <>
       <Stack.Navigator

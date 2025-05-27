@@ -274,3 +274,25 @@ query live_getLiveComments(
     status
   }
 }
+
+query live_getLivesForHomePage($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!], $category: String){
+    live_getLivesForHomePage(category: $category){
+        result(skip: $skip, take: $take, where: $where, order: $order){
+            pageInfo{
+                hasNextPage
+                hasPreviousPage
+            }
+            items{
+                isViewed
+                isBookmark
+                isPurchased
+                isFollowed
+                isLiked
+                recordStarted
+                recordEnded
+            }
+            totalCount
+        }
+        status
+    }
+}

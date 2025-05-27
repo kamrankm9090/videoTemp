@@ -91,7 +91,7 @@ const AppDropDown = React.forwardRef(
               fontFamily="regular"
               fontSize={fontSize.medium}
               flex={1}>
-              {isObject ? item[titleKey] : item}{' '}
+              {isObject ? item?.[titleKey] : item}{' '}
               {nestedTitleKey && `(${item?.[nestedTitleKey]})`}
             </AppText>
           </AppPressable>

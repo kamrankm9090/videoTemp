@@ -20,7 +20,6 @@ export const uploadFile = async (
       const assetPath = `${sasContainerUri}/${container}/${customBlobName}${name}`;
 
       const localUri = uri;
-      console.log(uri);
 
       // Platform.OS === 'ios' ? uri.replace('file://', '/') : uri;
       const res = await RNFetchBlob.fetch(
@@ -34,12 +33,9 @@ export const uploadFile = async (
         RNFetchBlob.wrap(localUri),
       )
         .uploadProgress({interval: 250}, (written, total) => {
-          console.log('uploaded', written / total);
           onUploadProgress?.(Math.round((written / total) * 100));
         })
-        .progress({count: 10}, (received, total) => {
-          console.log('progress', received / total);
-        });
+        .progress({count: 10}, (received, total) => {});
       if (res.respInfo.status === 201) {
         resolve({
           ...res,
@@ -50,8 +46,6 @@ export const uploadFile = async (
         });
       }
     } catch (error) {
-      console.log(error, 'error');
-
       reject(error);
     }
   });

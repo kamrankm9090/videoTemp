@@ -40,7 +40,7 @@ const UserCardItem = memo(({user}: {user: UserType}) => {
         color={Colors.WHITE_TRANSPARENT_4}>
         {user?.bio}
       </AppText>
-      <FollowButton userId={user.id} />
+      <FollowButton userId={user?.id} />
     </VStack>
   );
 });

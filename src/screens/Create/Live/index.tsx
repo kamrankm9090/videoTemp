@@ -27,7 +27,7 @@ import {
   RenderNothing,
   VStack,
 } from '~/components';
-import {LiveType} from '~/graphql/generated';
+import {LiveType, useAgora_StopRecordMutation} from '~/graphql/generated';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {resetRoot} from '~/navigation/methods';
 import {liveStore} from '~/stores';
@@ -55,7 +55,9 @@ export default function LiveScreen() {
     channelId,
     token,
   } = useInitRtcEngine(enableVideo);
-  const {resetLiveStore, liveData, liveId} = useSnapshot(liveStore);
+  const {resetLiveStore} = useSnapshot(liveStore);
+
+  const {mutate} = useAgora_StopRecordMutation();
 
   const [_, setSwitchCamera] = useState(false);
   const [counterModalVisible, setCounterModalVisible] =
@@ -76,8 +78,15 @@ export default function LiveScreen() {
 
   function leaveChannel() {
     engine.current.leaveChannel();
+    engine.current.stopChannelMediaRelay();
     engine.current.removeAllListeners();
     engine.current.release();
+    mutate(
+      {channelName: channelId},
+      {
+        onSuccess() {},
+      },
+    );
   }
 
   useEffect(() => {

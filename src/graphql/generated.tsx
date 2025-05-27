@@ -1716,6 +1716,80 @@ export type IntOperationFilterInput = {
   nlte?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type Invite = {
+  __typename?: 'Invite';
+  code?: Maybe<Scalars['String']['output']>;
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  invited?: Maybe<User>;
+  invitedId?: Maybe<Scalars['Int']['output']>;
+  inviter?: Maybe<User>;
+  inviterId: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  link?: Maybe<Scalars['String']['output']>;
+};
+
+/** A segment of a collection. */
+export type InviteCollectionSegment = {
+  __typename?: 'InviteCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<Invite>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type InviteConnection = {
+  __typename?: 'InviteConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<InviteEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<Invite>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type InviteEdge = {
+  __typename?: 'InviteEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Invite>;
+};
+
+export type InviteFilterInput = {
+  and?: InputMaybe<Array<InviteFilterInput>>;
+  code?: InputMaybe<StringOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  invited?: InputMaybe<UserFilterInput>;
+  invitedId?: InputMaybe<IntOperationFilterInput>;
+  inviter?: InputMaybe<UserFilterInput>;
+  inviterId?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  link?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<InviteFilterInput>>;
+};
+
+export type InviteSortInput = {
+  code?: InputMaybe<SortEnumType>;
+  createdDate?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  invited?: InputMaybe<UserSortInput>;
+  invitedId?: InputMaybe<SortEnumType>;
+  inviter?: InputMaybe<UserSortInput>;
+  inviterId?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  link?: InputMaybe<SortEnumType>;
+};
+
 export type KeyValuePairOfStringAndString = {
   __typename?: 'KeyValuePairOfStringAndString';
   key: Scalars['String']['output'];
@@ -2129,6 +2203,29 @@ export type ListResponseBaseOfFollowerFolloweeDtoResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<FollowerFolloweeDtoSortInput>>;
   where?: InputMaybe<FollowerFolloweeDtoFilterInput>;
+};
+
+export type ListResponseBaseOfInvite = {
+  __typename?: 'ListResponseBaseOfInvite';
+  result?: Maybe<InviteCollectionSegment>;
+  result2?: Maybe<InviteConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfInviteResultArgs = {
+  order?: InputMaybe<Array<InviteSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<InviteFilterInput>;
+};
+
+export type ListResponseBaseOfInviteResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<InviteSortInput>>;
+  where?: InputMaybe<InviteFilterInput>;
 };
 
 export type ListResponseBaseOfLiveCommentDto = {
@@ -3197,11 +3294,12 @@ export type Mutation = {
   user_addPhoto?: Maybe<ResponseBaseOfUserPhotoGallery>;
   user_addPhotos?: Maybe<ListResponseBaseOfUserPhotoGallery>;
   user_changeUserPassowrd?: Maybe<ResponseStatus>;
-  user_chargeWallet?: Maybe<ResponseBaseOfUser>;
   user_checkVerificationCodeOfEmail?: Maybe<ResponseBaseOfUserTokenDtoOfUser>;
   user_confirmPhoneNumber?: Maybe<ResponseStatus>;
+  user_createInvite?: Maybe<ResponseBaseOfInvite>;
   user_createLoginActivity?: Maybe<ResponseBaseOfLoginActivity>;
   user_createRequestForVerification?: Maybe<ResponseBaseOfRequestForVerification>;
+  user_createWalletHistory?: Maybe<ResponseBaseOfWalletHistory>;
   user_deleteLoginActivity?: Maybe<ResponseStatus>;
   user_generateTokenViaEmail?: Maybe<ResponseBaseOfUserTokenDtoOfUser>;
   user_generateTwoFactorAuthenticationCode?: Maybe<ResponseBaseOfUser>;
@@ -3559,10 +3657,6 @@ export type MutationUser_ChangeUserPassowrdArgs = {
   input?: InputMaybe<ChangePassowrdInput>;
 };
 
-export type MutationUser_ChargeWalletArgs = {
-  value: Scalars['Decimal']['input'];
-};
-
 export type MutationUser_CheckVerificationCodeOfEmailArgs = {
   email?: InputMaybe<Scalars['String']['input']>;
   isForResetPassword: Scalars['Boolean']['input'];
@@ -3573,8 +3667,16 @@ export type MutationUser_ConfirmPhoneNumberArgs = {
   input?: InputMaybe<ConfirmPhoneNumberInput>;
 };
 
+export type MutationUser_CreateInviteArgs = {
+  link?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type MutationUser_CreateLoginActivityArgs = {
   input?: InputMaybe<LoginActivityInput>;
+};
+
+export type MutationUser_CreateWalletHistoryArgs = {
+  input?: InputMaybe<WalletHistoryInput>;
 };
 
 export type MutationUser_DeleteLoginActivityArgs = {
@@ -3677,6 +3779,7 @@ export type Notification = {
    *             NewLive,
    *             CreateComment,
    *             Like,
+   *             JoinToLive,
    *
    */
   notificationType?: Maybe<Scalars['String']['output']>;
@@ -3733,6 +3836,7 @@ export type NotificationFilterInput = {
    *             NewLive,
    *             CreateComment,
    *             Like,
+   *             JoinToLive,
    *
    */
   notificationType?: InputMaybe<StringOperationFilterInput>;
@@ -3837,6 +3941,7 @@ export type NotificationSortInput = {
    *             NewLive,
    *             CreateComment,
    *             Like,
+   *             JoinToLive,
    *
    */
   notificationType?: InputMaybe<SortEnumType>;
@@ -4210,6 +4315,7 @@ export type Query = {
   user_doesPhoneNumberExist?: Maybe<ResponseStatus>;
   user_getCastersToFollow?: Maybe<ListResponseBaseOfUser>;
   user_getCurrentUser?: Maybe<SingleResponseBaseOfUser>;
+  user_getInvites?: Maybe<ListResponseBaseOfInvite>;
   user_getLoginActivities?: Maybe<ListResponseBaseOfLoginActivity>;
   user_getNearbyUsers?: Maybe<ListResponseBaseOfUser>;
   user_getPhoto?: Maybe<SingleResponseBaseOfUserPhotoGallery>;
@@ -4228,6 +4334,10 @@ export type QueryAgora_GetRecordFilesArgs = {
 
 export type QueryCategory_GetCategoryArgs = {
   entityId: Scalars['Int']['input'];
+};
+
+export type QueryDashboard_GetCollaborativeArgs = {
+  period: DashboardPeriod;
 };
 
 export type QueryDashboard_GetContentChartArgs = {
@@ -4671,6 +4781,12 @@ export type ResponseBaseOfInt64 = {
   status?: Maybe<Scalars['Any']['output']>;
 };
 
+export type ResponseBaseOfInvite = {
+  __typename?: 'ResponseBaseOfInvite';
+  result?: Maybe<Invite>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type ResponseBaseOfLive = {
   __typename?: 'ResponseBaseOfLive';
   result?: Maybe<Live>;
@@ -4788,6 +4904,12 @@ export type ResponseBaseOfUserTokenDtoOfUser = {
 export type ResponseBaseOfViolationReport = {
   __typename?: 'ResponseBaseOfViolationReport';
   result?: Maybe<ViolationReport>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfWalletHistory = {
+  __typename?: 'ResponseBaseOfWalletHistory';
+  result?: Maybe<WalletHistory>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -5836,6 +5958,28 @@ export type ViolationReportSortInput = {
   userId?: InputMaybe<SortEnumType>;
 };
 
+export type WalletHistory = {
+  __typename?: 'WalletHistory';
+  createdDate: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  photoUrl?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+  value: Scalars['Decimal']['output'];
+};
+
+export type WalletHistoryInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  photoUrl?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  userId: Scalars['Int']['input'];
+  value: Scalars['Decimal']['input'];
+};
+
 export type Agora_CreateTokenMutationVariables = Exact<{
   channelName?: InputMaybe<Scalars['String']['input']>;
   publisher: Scalars['Boolean']['input'];
@@ -6522,6 +6666,41 @@ export type Live_GetLiveCommentsQuery = {
             text?: string | null;
           } | null> | null;
         } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Live_GetLivesForHomePageQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LiveDtoFilterInput>;
+  order?: InputMaybe<Array<LiveDtoSortInput> | LiveDtoSortInput>;
+  category?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+export type Live_GetLivesForHomePageQuery = {
+  __typename?: 'Query';
+  live_getLivesForHomePage?: {
+    __typename?: 'ListResponseBaseOfLiveDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'LiveDtoCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'LiveDto';
+        isViewed: boolean;
+        isBookmark: boolean;
+        isPurchased: boolean;
+        isFollowed: boolean;
+        isLiked: boolean;
+        recordStarted: boolean;
+        recordEnded: boolean;
       } | null> | null;
     } | null;
   } | null;
@@ -8506,6 +8685,76 @@ export const useInfiniteLive_GetLiveCommentsQuery = <
         Live_GetLiveCommentsDocument,
         {...variables, ...(metaData.pageParam ?? {})},
       )(),
+    options,
+  );
+};
+
+export const Live_GetLivesForHomePageDocument = `
+    query live_getLivesForHomePage($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!], $category: String) {
+  live_getLivesForHomePage(category: $category) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        isViewed
+        isBookmark
+        isPurchased
+        isFollowed
+        isLiked
+        recordStarted
+        recordEnded
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useLive_GetLivesForHomePageQuery = <
+  TData = Live_GetLivesForHomePageQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetLivesForHomePageQueryVariables,
+  options?: UseQueryOptions<Live_GetLivesForHomePageQuery, TError, TData>,
+) => {
+  return useQuery<Live_GetLivesForHomePageQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getLivesForHomePage']
+      : ['live_getLivesForHomePage', variables],
+    fetcher<
+      Live_GetLivesForHomePageQuery,
+      Live_GetLivesForHomePageQueryVariables
+    >(Live_GetLivesForHomePageDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteLive_GetLivesForHomePageQuery = <
+  TData = Live_GetLivesForHomePageQuery,
+  TError = unknown,
+>(
+  variables?: Live_GetLivesForHomePageQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Live_GetLivesForHomePageQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Live_GetLivesForHomePageQuery, TError, TData>(
+    variables === undefined
+      ? ['live_getLivesForHomePage.infinite']
+      : ['live_getLivesForHomePage.infinite', variables],
+    metaData =>
+      fetcher<
+        Live_GetLivesForHomePageQuery,
+        Live_GetLivesForHomePageQueryVariables
+      >(Live_GetLivesForHomePageDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
     options,
   );
 };

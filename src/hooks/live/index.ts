@@ -11,19 +11,17 @@ import {
 } from '~/graphql/generated';
 
 export const useGetLives = ({
-  projectFilter,
-  location,
   where,
   take = PAGE_SIZE,
   order,
   options = {},
+  category,
 }: {
-  projectFilter?: any;
-  location?: any;
   where?: LiveDtoFilterInput;
   order?: Array<LiveDtoSortInput> | LiveDtoSortInput;
   options?: any;
   take?: number;
+  category?: string;
 }) => {
   return useInfiniteQuery<
     Live_GetLivesQuery,
@@ -31,15 +29,14 @@ export const useGetLives = ({
     Live_GetLivesQueryVariables,
     any
   >(
-    [queryKeys.getLives, projectFilter, location, where, take, order],
+    [queryKeys.getLives, where, take, order, category],
     async ({pageParam = 0}) => {
       return fetcher(Live_GetLivesDocument, {
         skip: pageParam * PAGE_SIZE,
         take,
-        projectFilter,
-        location,
         where,
         order,
+        category,
       })();
     },
     {
