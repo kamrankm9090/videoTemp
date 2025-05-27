@@ -24,7 +24,8 @@ export default function CreateOptionsAction() {
       description: 'Create live content to earn money',
       onPress: () => {
         setLiveType('LIVE_CONTENT');
-        navigate('CreateStack', {screen: 'CreateContent'});
+        // navigate('CreateStack', {screen: 'CreateContent'});
+        navigate('CreateContent');
         hideSheet('create-options-action');
       },
       icon: <LiveTV />,

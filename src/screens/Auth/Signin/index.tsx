@@ -48,6 +48,7 @@ export default function SigninScreen() {
     };
     mutateSignIn(variables, {
       onSuccess: response => {
+        console.log('res--->', response);
         if (response?.user_signIn?.status?.code === 1) {
           const res = response?.user_signIn?.result;
           setHeader(res?.token || '');
