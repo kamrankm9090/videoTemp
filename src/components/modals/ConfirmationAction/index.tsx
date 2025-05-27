@@ -10,6 +10,7 @@ import {
   VStack,
 } from '~/components';
 import {Colors} from '~/styles';
+import { fontWeight } from '~/utils/style';
 
 export default function ConfirmationAction(
   props: SheetProps<'confirmation-action'>,
@@ -52,6 +53,7 @@ export default function ConfirmationAction(
             flex={1}
             title={negativeText}
             backgroundColor={negativeBackgroundColor}
+            font_weight={fontWeight.bold}
           />
           <AppButton
             onPress={onConfirm}
@@ -62,6 +64,7 @@ export default function ConfirmationAction(
             flex={1}
             title={positiveText}
             backgroundColor={positiveBackgroundColor}
+            font_weight={fontWeight.bold}
           />
         </HStack>
       </VStack>

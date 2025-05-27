@@ -31,6 +31,7 @@ function ModalContainer(props: Props, ref: ModalRef) {
     pt,
     px = 24,
     m = 0,
+    isVisible,
     ...rest
   } = props;
 
@@ -82,7 +83,7 @@ function ModalContainer(props: Props, ref: ModalRef) {
           margin: m,
         },
       ]}
-      isVisible={isModalVisible}>
+      isVisible={isModalVisible || isVisible}>
       {loading && <AppLoading />}
       {children}
     </Modal>

@@ -37,7 +37,6 @@ export {default as TabBarButton} from './atoms/TabBarButton';
 export {default as AppTabBar} from './atoms/AppTabBar';
 export {default as ButtonIcon} from './atoms/ButtonIcon';
 export {default as AppHeader} from './atoms/AppHeader';
-export {default as CommonBackDrop} from './atoms/CommonBackDrop';
 export {default as VideoImageViewer} from './atoms/VideoImageViewer';
 export {default as SearchBar} from './atoms/SearchBar';
 export {default as AppVideoPlayer} from './atoms/AppVideoPlayer';
@@ -89,6 +88,11 @@ export {default as GroupInfoSection} from './molecules/GroupInfoSection';
 export {default as GroupInfoMemberList} from './molecules/GroupInfoMemberList';
 export {default as GroupInfoMedia} from './molecules/GroupInfoMedia';
 export {default as LiveStreamItem} from './molecules/LiveStreamItem';
+export {default as SearchNavControls} from './molecules/SearchNavControls';
+export {default as CommunityDetailBottomInputBar} from './molecules/CommunityDetailBottomInputBar';
+export {default as CommunityDetailItem} from './molecules/CommunityDetailItem';
+export {default as CommunitySearchHeader} from './molecules/CommunitySearchHeader';
+export {default as SearchFooterStatus} from './molecules/SearchFooterStatus';
 //#endregion ---------Molecules
 
 //#region ---------Organisms
@@ -107,4 +111,6 @@ export {default as CounterModal} from './modals/CounterModal';
 export {default as ConfirmationAction} from './modals/ConfirmationAction';
 export {default as OfferSelectOptionAction} from './modals/OfferSelectOptionAction';
 export {default as VideoRecorderModal} from './modals/VideoRecorderModal';
+export {default as MoreOptionAction} from './modals/MoreOptionAction';
+export {default as CreateCommunityAction} from './modals/CreateCommunityAction';
 //#endregion ---------Modals

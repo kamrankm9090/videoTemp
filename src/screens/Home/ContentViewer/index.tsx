@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ArchiveIcon,
   DocumentTextIcon,
   DollarCircleIcon,
   FullScreenIcon,
+  LikeFillIcon,
+  LikeIcon,
   MinimizeScreenIcon,
   Send2Icon,
   VolumeSlashIcon,
@@ -21,22 +23,85 @@ import {
   LiveCommentSection,
   VStack,
 } from '~/components';
-import {useAgora_GetRecordFilesQuery} from '~/graphql/generated';
+import {
+  useAgora_GetRecordFilesQuery,
+  useLive_DeleteLiveMutation,
+  useLive_GetLivesQuery,
+  useLive_LikeMutation,
+  useLive_ViewLiveMutation,
+} from '~/graphql/generated';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
 import {height, width} from '~/utils/style';
 
 const ContentViewerScreen = ({route}: NavigationProp) => {
-  const params: any = route?.params;
-  console.log(params?.item?.live?.id);
+  const liveId = route?.params?.item?.live?.id;
+  const user = route?.params?.item?.live?.user;
+  const isFollowed = route?.params?.item?.isFollowed;
+
+  console.log({isFollowed, liveId});
 
   const [fullScreen, setFullScreen] = useState(true);
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
+  const userData = userDataStore(state => state?.userData);
+
+  const {data: followData} = useLive_GetLivesQuery({
+    where: {
+      live: {
+        id: {eq: liveId},
+      },
+    },
+  });
+  const liveData = followData?.live_getLives?.result?.items?.[0];
+  const [likeNumber, setLikeNumber] = useState(liveData?.live?.likeCount || 0);
+  const [isLiked, setIsLiked] = useState(liveData?.isLiked || false);
+
+  const {mutate: likeMutate} = useLive_LikeMutation();
+  const {mutate: deleteLikeMutate} = useLive_DeleteLiveMutation();
+  const {mutate: viewLiveMutate} = useLive_ViewLiveMutation();
+
+  useEffect(() => {
+    viewLiveMutate(
+      {liveId},
+      {
+        onSuccess(data, variables, context) {},
+      },
+    );
+  }, []);
+
+  const likeHandler = () => {
+    if (isLiked) {
+      deleteLikeMutate(
+        {liveId},
+        {
+          onSuccess(data, variables, context) {
+            setIsLiked(false);
+            setLikeNumber(likeNumber - 1);
+            console.log(data);
+          },
+        },
+      );
+    } else {
+      likeMutate(
+        {liveId},
+        {
+          onSuccess(data, variables, context) {
+            setIsLiked(true);
+            setLikeNumber(likeNumber + 1);
+            console.log(data);
+          },
+        },
+      );
+    }
+  };
 
   const {data} = useAgora_GetRecordFilesQuery({
-    liveId: params?.item?.live?.id,
+    liveId,
   });
 
+  console.log( "=> ",params?.item?.live?.id,data?.agora_getRecordFiles?.result?.items);
+  
   const topLeftItems = [
     {
       key: 'resume',
@@ -54,6 +119,12 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
   ];
 
   const bottomRightItems = [
+    {
+      key: 'like',
+      icon: isLiked ? <LikeFillIcon /> : <LikeIcon />,
+      number: likeNumber,
+      onPress: () => likeHandler(),
+    },
     {
       key: 'send',
       icon: <Send2Icon />,
@@ -78,7 +149,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
           style={styles.videoPlayer}
           fullscreen={false}
           controls={false}
-          resizeMode="contain"
+          resizeMode="cover"
           source={{
             uri: getFullImageUrl(
               data?.agora_getRecordFiles?.result?.items?.[0]?.name,
@@ -113,7 +184,11 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
           top={10}
           left={0}
           right={0}>
-          <ContentViewerHeader />
+          <ContentViewerHeader
+            user={user}
+            isFollowed={isFollowed || liveData?.isFollowed}
+            viewCount={liveData?.live?.viewCount || 0}
+          />
         </HStack>
 
         <HStack
@@ -156,17 +231,28 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
         {!fullScreen && (
           <VStack style={styles.bottomRightContainer}>
             {bottomRightItems.map(item => (
-              <AppTouchable
-                key={item.key}
-                bg={Colors.WHITE_TRANSPARENT_2}
-                p={6}
-                borderRadius={100}
-                justifyContent="center"
-                alignItems="center"
-                zIndex={2}
-                onPress={item.onPress}>
-                {item.icon}
-              </AppTouchable>
+              <VStack key={item?.key}>
+                <AppTouchable
+                  key={item.key}
+                  bg={Colors.WHITE_TRANSPARENT_2}
+                  p={6}
+                  borderRadius={100}
+                  justifyContent="center"
+                  alignItems="center"
+                  zIndex={2}
+                  onPress={item.onPress}>
+                  {item.icon}
+                </AppTouchable>
+                {item?.number && (
+                  <AppText
+                    fontSize={12}
+                    fontWeight={'400'}
+                    marginTop={4}
+                    alignSelf="center">
+                    {item?.number}
+                  </AppText>
+                )}
+              </VStack>
             ))}
           </VStack>
         )}
@@ -183,7 +269,7 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
           </VStack>
         ) : (
           <>
-            <VStack w={width} p={10} position="absolute" bottom={20} pt={40}>
+            <VStack w={width} p={10} position="absolute" bottom={15} pt={40}>
               <LiveCommentSection key={1} />
             </VStack>
           </>
@@ -210,7 +296,7 @@ const styles = StyleSheet.create({
   bottomRightContainer: {
     position: 'absolute',
     right: 24,
-    bottom: height / 2 - 20,
+    bottom: height / 2,
     gap: 8,
   },
   contentArea: {

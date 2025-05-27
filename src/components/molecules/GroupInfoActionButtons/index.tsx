@@ -2,11 +2,29 @@ import React from 'react';
 import {AppTouchable, AppText, HStack} from '~/components';
 import { LogOutIcon, SearchIcon, SearchNormalIcon, VolumeMuteIcon} from '~/assets/svgs';
 import {Colors} from '~/styles';
+import { navigate, resetRoot } from '~/navigation/methods';
+import { hideSheet, showSheet } from '~/utils/utils';
 
 const actions = [
   {label: 'Mute', icon: VolumeMuteIcon, onPress: () => console.log('Muted')},
-  {label: 'Search', icon: SearchNormalIcon, onPress: () => console.log('Search')},
-  {label: 'Leave', icon: LogOutIcon, onPress: () => console.log('Leave')},
+  {label: 'Search', icon: SearchNormalIcon, onPress: () => navigate("CommunityStack", {screen:"CommunitySearch"})},
+  {label: 'Leave', icon: LogOutIcon, onPress: () =>     showSheet('confirmation-action', {
+        payload: {
+          title: 'Leave Community',
+          description:
+            'Do you want to leave This community?',
+          positiveText: 'Leave',
+          positiveBackgroundColor:"red",
+          positiveColor:"#fff",
+          onClose: () => hideSheet('confirmation-action'),
+          onConfirm: () => {
+            // setLiveStarted(false);
+            resetRoot('MainTabs');
+            hideSheet('confirmation-action');
+            // showInfoMessage('Your live ended');
+          },
+        },
+      })},
 ];
 
 export default function GroupInfoActionButtons() {

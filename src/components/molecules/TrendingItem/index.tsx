@@ -14,7 +14,7 @@ import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
-import {getFullImageUrl} from '~/utils/helper';
+import {getFullImageUrl, getRandomColorFromName} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
 
 interface TrendingItemProps {
@@ -28,6 +28,8 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
 
+  const bgColor = getRandomColorFromName(item?.live?.user?.fullName || item?.live?.user?.username || '');
+    
   function onPressHandler() {
     if (item?.recordEnded) {
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
@@ -66,7 +68,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
         px={16}
         justifyContent="space-between"
         zIndex={1}>
-        <VStack bg={Colors.BLUE_BRAND} py={5} px={15} rounded={20}>
+        <VStack bg={bgColor} py={5} px={15} rounded={20}>
           <AppText fontWeight="500" color={Colors.WHITE}>
             {item?.live?.category}
           </AppText>

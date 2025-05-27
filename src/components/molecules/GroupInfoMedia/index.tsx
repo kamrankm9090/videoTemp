@@ -1,8 +1,8 @@
 import React from 'react';
-import {Image} from 'react-native';
-import {AppText, AppTouchable, HStack, VStack} from '~/components';
-import {Colors} from '~/styles';
+import { Image } from 'react-native';
 import {ChevronBack} from '~/assets/svgs';
+import {AppImage, AppText, AppTouchable, HStack, VStack} from '~/components';
+import {Colors} from '~/styles';
 
 const mediaItems = [
   {uri: ''},
@@ -24,25 +24,26 @@ export default function GroupInfoMedia() {
 
       <HStack flexWrap="wrap" gap={8}>
         {displayedItems.map((src, index) => (
-          <Image
+          <AppImage
             key={index}
-            source={src}
+            imageSource={'https://picsum.photos/200/300'}
+            
             style={{
-              width: '30%',
+              width: 100,
+              height: 100,
               aspectRatio: 1,
               borderRadius: 8,
               backgroundColor: Colors.NIGHT_RIDER,
             }}
             resizeMode="cover"
+            zoomable={true}
           />
         ))}
       </HStack>
 
-      <AppTouchable
-        alignSelf="center"
-        onPress={() => console.log('See more')}>
+      <AppTouchable alignSelf="center" onPress={() => console.log('See more')}>
         <HStack alignItems="center" gap={4} mt={4}>
-          <AppText fontSize={14} fontWeight="500" >
+          <AppText fontSize={14} fontWeight="500">
             See more
           </AppText>
           <ChevronBack

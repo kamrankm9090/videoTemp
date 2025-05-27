@@ -37,10 +37,15 @@ const CommunityItem = () => {
     },
   ];
   return (
-    <VStack bg={Colors.Nero} p={16} gap={16} borderRadius={8}>
+    <AppTouchable
+      bg={Colors.Nero}
+      p={16}
+      gap={16}
+      borderRadius={8}
+      onPress={() => navigate('CommunityStack', {screen: 'CommunityDetail'})}>
       <HStack gap={8}>
-        <AppImage style={{width: 32, height: 32}} imageSource={{uri: ''}} />
-        <HStack alignItems="center">
+        <AppImage style={styles.imageStyle} imageSource={{uri: ''}} />
+        <HStack>
           <AppText fontSize={16} fontWeight={'500'}>
             Beauty Documentary
           </AppText>
@@ -90,10 +95,12 @@ const CommunityItem = () => {
           );
         })}
       </HStack>
-    </VStack>
+    </AppTouchable>
   );
 };
 
 export default CommunityItem;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  imageStyle:{width: 32, height: 32}
+});

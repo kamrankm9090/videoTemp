@@ -83,10 +83,11 @@ export default function CreateContentScreen() {
         description: formData?.description,
         title: formData?.title,
         categoryId: formData?.category?.id,
+        category: formData?.category?.title,
         setSchedule: formData?.isSchedule,
         ...(!formData?.isFree &&
           isLiveContent && {
-            price: formData?.price,
+            price: Number(formData?.price),
           }),
         ...(formData?.isSchedule && {
           publishingScheduleDate: new Date(formData?.date),
