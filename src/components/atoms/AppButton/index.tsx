@@ -2,7 +2,7 @@ import React from 'react';
 import {TouchableOpacity, ViewStyle} from 'react-native';
 import {AppIndicator, AppText, Box, HStack, Center} from '~/components';
 import {Colors} from '~/styles';
-import {fontFamily, fontSize as fs} from '~/utils/style';
+import {fontFamily, fontWeight, fontSize as fs} from '~/utils/style';
 
 interface Props {
   title: string | null;
@@ -23,6 +23,7 @@ interface Props {
   borderRadius?: ViewStyle['borderRadius'];
   fontSize?: number;
   font_family?: any;
+  font_weight?:any;
   mt?: ViewStyle['marginTop'];
   mb?: ViewStyle['marginBottom'];
   mx?: ViewStyle['marginHorizontal'];
@@ -59,6 +60,7 @@ export default function AppButton({
   borderRadius = 8,
   fontSize = fs.small,
   font_family = fontFamily.bold,
+  font_weight = fontWeight.medium,
   mt,
   mb,
   mx,
@@ -132,6 +134,7 @@ export default function AppButton({
                 numberOfLines={numberOfLines}
                 fontSize={fontSize}
                 fontFamily={font_family}
+                fontWeight={font_weight}
                 color={AppTextColor}>
                 {title}
               </AppText>

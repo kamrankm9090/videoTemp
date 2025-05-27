@@ -1,9 +1,11 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
+import {MoreIcon} from '~/assets/svgs';
 import {
   AppContainer,
   AppHeader,
   AppScrollView,
+  AppTouchable,
   GroupInfoActionButtons,
   GroupInfoDescription,
   GroupInfoMedia,
@@ -11,6 +13,7 @@ import {
   GroupInfoSection,
 } from '~/components';
 import {Colors} from '~/styles';
+import {showSheet} from '~/utils/utils';
 
 const CommunityInfoScreen = () => {
   return (
@@ -20,6 +23,11 @@ const CommunityInfoScreen = () => {
         backAction
         backgroundColor={Colors.BACKGROUND}
         titleColor={Colors.WHITE}
+        rightHeader={
+          <AppTouchable onPress={() => showSheet('more-option-action')}>
+            <MoreIcon />
+          </AppTouchable>
+        }
       />
       <AppScrollView style={{padding: 20}}>
         <GroupInfoSection />

@@ -1,5 +1,5 @@
 import React from 'react';
-import {CommunityDetailScreen, CommunityInfoScreen, CommunityScreen, CommunitySearchScreen, RequestersScreen} from '~/screens';
+import {CommunityDetailScreen, CommunityInfoScreen, CommunityScreen, CommunitySearchScreen, InviteLinkScreen, RequestersScreen} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
 import {appCreateStackNavigator} from './methods';
 
@@ -9,6 +9,7 @@ export type CommunityStackParamList = {
   CommunityInfo:undefined
   CommunityDetail: undefined
   CommunitySearch: undefined
+  InviteLink: undefined
 };
 
 const Stack = appCreateStackNavigator<CommunityStackParamList>();
@@ -33,6 +34,10 @@ const screens = [
    {
     name: 'CommunitySearch',
     component: CommunitySearchScreen,
+  },
+   {
+    name: 'InviteLink',
+    component: InviteLinkScreen,
   },
 ];
 

@@ -2,6 +2,7 @@ import {registerSheet, SheetDefinition} from 'react-native-actions-sheet';
 import {
   ConfirmationAction,
   CreateOptionsAction,
+  MoreOptionAction,
   OfferSelectOptionAction,
   PostOptionsAction,
   ReportAction,
@@ -16,6 +17,7 @@ registerSheet('report-reason-action', ReportReasonAction);
 registerSheet('create-options-action', CreateOptionsAction);
 registerSheet('confirmation-action', ConfirmationAction);
 registerSheet('offer-select-option-action', OfferSelectOptionAction);
+registerSheet('more-option-action', MoreOptionAction);
 
 declare module 'react-native-actions-sheet' {
   interface Sheets {

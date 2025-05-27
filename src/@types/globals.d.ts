@@ -317,6 +317,7 @@ declare global {
     | 'report-reason-action'
     | 'create-options-action'
     | 'confirmation-action'
+    | 'more-option-action'
     | 'offer-select-option-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
