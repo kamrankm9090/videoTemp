@@ -3127,6 +3127,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-masked-view/masked-view@npm:0.3.2":
+  version: 0.3.2
+  resolution: "@react-native-masked-view/masked-view@npm:0.3.2"
+  peerDependencies:
+    react: ">=16"
+    react-native: ">=0.57"
+  checksum: e35ab882148df3f9b71f04355d2fb1b24d6f2aaf29043f80758f398bdf905eed67734b36b072fa8b934923ff4e3d80ccb5e37d8376cb1825272078b96a21dadc
+  languageName: node
+  linkType: hard
+
 "@react-native-picker/picker@npm:2.11.0":
   version: 2.11.0
   resolution: "@react-native-picker/picker@npm:2.11.0"
@@ -8726,6 +8736,7 @@ __metadata:
     "@react-native-community/cli-platform-android": 15.0.1
     "@react-native-community/cli-platform-ios": 15.0.1
     "@react-native-community/datetimepicker": 8.3.0
+    "@react-native-masked-view/masked-view": 0.3.2
     "@react-native-picker/picker": 2.11.0
     "@react-native/babel-preset": 0.76.5
     "@react-native/eslint-config": 0.76.5
@@ -8779,15 +8790,18 @@ __metadata:
     react-native-mmkv: 3.2.0
     react-native-modal: 13.0.1
     react-native-modal-datetime-picker: 18.0.0
+    react-native-pager-view: 6.8.0
     react-native-permissions: 5.3.0
     react-native-picker-select: 9.3.1
     react-native-reanimated: 3.16.6
     react-native-safe-area-context: 5.0.0
     react-native-screens: 4.4.0
     react-native-share: 12.0.11
+    react-native-skeleton-placeholder: 5.2.4
     react-native-splash-screen: 3.3.0
     react-native-svg: 15.10.1
     react-native-svg-transformer: 1.5.0
+    react-native-tab-view: 4.1.0
     react-native-toast-message: 2.2.1
     react-native-url-polyfill: 2.0.0
     react-native-vector-icons: 9.2.0
@@ -10779,6 +10793,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-pager-view@npm:6.8.0":
+  version: 6.8.0
+  resolution: "react-native-pager-view@npm:6.8.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 1580bcd803c4f9a3ecdacc69992dc2f1dcf0fcc4442657990fa279c0cbcc03a9cf7eef203e1eca25f294ef8b63a413ebe403c7345dd813626c9d7106f55e7dc7
+  languageName: node
+  linkType: hard
+
 "react-native-permissions@npm:5.3.0":
   version: 5.3.0
   resolution: "react-native-permissions@npm:5.3.0"
@@ -10879,6 +10903,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-skeleton-placeholder@npm:5.2.4":
+  version: 5.2.4
+  resolution: "react-native-skeleton-placeholder@npm:5.2.4"
+  peerDependencies:
+    "@react-native-masked-view/masked-view": ^0.2.8
+    react: ">=0.14.8"
+    react-native: ">=0.50.1"
+    react-native-linear-gradient: ^2.5.6
+  checksum: c90176c55d0a8342724c38ed5af8baff8ed879b04feeff027574c3c405f3d1be193614bd65e30ddf46407cb951d412f6cc5e2aa4a8e179c589c865f83bdae39e
+  languageName: node
+  linkType: hard
+
 "react-native-splash-screen@npm:3.3.0":
   version: 3.3.0
   resolution: "react-native-splash-screen@npm:3.3.0"
@@ -10914,6 +10950,19 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: c210426b424e99730ba35d6bbf18335a99f04f2f234cb5bb578ac685c31cfca5e39d48ebf05f9189edd61c028405f4ff242b5edc98ee3e3f41c8bfa960f5bff4
+  languageName: node
+  linkType: hard
+
+"react-native-tab-view@npm:4.1.0":
+  version: 4.1.0
+  resolution: "react-native-tab-view@npm:4.1.0"
+  dependencies:
+    use-latest-callback: ^0.2.3
+  peerDependencies:
+    react: ">= 18.2.0"
+    react-native: "*"
+    react-native-pager-view: ">= 6.0.0"
+  checksum: 4170dfe9a15fdb04126c8833f582615d7f51bf2f1a5d95f250391030cba7d5eddfeaa31d47e9980ccdac363fb4769317e659887d8e1a8734e5045141f1efa8c4
   languageName: node
   linkType: hard
 

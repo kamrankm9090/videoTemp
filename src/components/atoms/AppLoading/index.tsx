@@ -4,6 +4,7 @@ import {AppIndicator} from '~/components';
 import {useGetStatusBarHeight} from '~/hooks';
 import {Colors} from '~/styles';
 import {isAndroid} from '~/utils/helper';
+import {height as deviceHeight} from '~/utils/style';
 
 interface Props {
   style?: ViewStyle | ViewStyle[];
@@ -29,7 +30,7 @@ export default function AppLoading({
   color = Colors.PRIMARY,
   backgroundColor = Colors.WHITE_TRANSPARENT_1,
   width = '100%',
-  height = '100%',
+  height = deviceHeight,
   top,
   bottom,
   safeArea = true,

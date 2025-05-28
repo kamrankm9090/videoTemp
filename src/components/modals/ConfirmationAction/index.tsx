@@ -10,7 +10,7 @@ import {
   VStack,
 } from '~/components';
 import {Colors} from '~/styles';
-import { fontWeight } from '~/utils/style';
+import {fontWeight} from '~/utils/style';
 
 export default function ConfirmationAction(
   props: SheetProps<'confirmation-action'>,
