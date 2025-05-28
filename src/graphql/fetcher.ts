@@ -6,7 +6,7 @@ import {
   User_RefreshTokenMutationVariables,
 } from '~/graphql/generated';
 import {userDataStore} from '~/stores';
-import {isTokenExpired} from '~/utils/utils';
+import {isTokenExpired, setHeader} from '~/utils/utils';
 
 export const graphQLClient = new GraphQLClient(config.apiURL);
 
@@ -29,6 +29,8 @@ export function fetcher<TData, TVariables>(
 export async function handleToken() {
   const token = userDataStore.getState()?.authData?.token;
   const isUserLoggedIn = userDataStore.getState()?.isUserLoggedIn;
+
+  console.log({token});
 
   if (isUserLoggedIn && isTokenExpired(token)) {
     await handleNewToken();
@@ -60,6 +62,7 @@ export async function handleNewToken() {
     const result = response?.user_refreshToken?.result;
 
     if (result?.token && result?.refreshToken) {
+      setHeader(result?.token);
       userDataStore.setState({
         authData: {
           token: result?.token,

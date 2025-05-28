@@ -1,10 +1,13 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {
   ClientRoleType,
   LocalVideoStreamReason,
   LocalVideoStreamState,
+  RtcConnection,
+  RtcStats,
   RtcSurfaceView,
+  UserOfflineReasonType,
   VideoCanvas,
   VideoSourceType,
   VideoViewSetupMode,
@@ -20,8 +23,9 @@ import {
   VStack,
 } from '~/components';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
-import {goBack} from '~/navigation/methods';
+import {goBack, replace} from '~/navigation/methods';
 import {liveStore} from '~/stores';
+import {isAndroid} from '~/utils/helper';
 import * as log from '~/utils/log';
 import {height, width} from '~/utils/style';
 
@@ -37,7 +41,7 @@ export default function ContentViewerLiveScreen() {
     remoteUsers,
     startPreview,
     engine,
-  } = useInitRtcEngine(enableVideo);
+  } = useInitRtcEngine({enableVideo: true, isBroadcaster: false});
 
   const {liveData, resetLiveStore} = useSnapshot(liveStore);
 
@@ -73,6 +77,8 @@ export default function ContentViewerLiveScreen() {
     }
   };
 
+  console.log(liveData?.agoraUserId);
+
   useEffect(() => {
     engine.current.addListener(
       'onVideoDeviceStateChanged',
@@ -104,6 +110,69 @@ export default function ContentViewerLiveScreen() {
           state,
           'error',
           error,
+        );
+      },
+    );
+
+    engine.current.addListener(
+      'onUserOffline',
+      (
+        connection: RtcConnection,
+        remoteUid: number,
+        reason: UserOfflineReasonType,
+      ) => {
+        console.log('liveData?.agoraUserId', liveData?.agoraUserId, {
+          remoteUid,
+          isAndroid,
+        });
+        if (liveData?.agoraUserId === remoteUid) {
+          engine.current.leaveChannel();
+          resetLiveStore();
+          replace('LiveEnded');
+          console.log('yes broadcaster is left', {reason});
+        }
+        // log.info(
+        //   'platform1:',
+        //   Platform.OS,
+        //   'onLeaveChannel--->',
+        //   'connection',
+        //   connection,
+        //   'remoteUid',
+        //   remoteUid,
+        //   'reason',
+        //   reason,
+        // );
+      },
+    );
+
+    engine.current.addListener(
+      'onUserStateChanged',
+      (connection: RtcConnection, remoteUid: number, state: number) => {
+        log.info(
+          'platform1:',
+          Platform.OS,
+          'onUserStateChanged--->',
+          'remoteUid',
+          remoteUid,
+          'connection',
+          connection,
+          'state',
+          state,
+        );
+      },
+    );
+
+    engine.current.addListener(
+      'onLeaveChannel',
+      (connection: RtcConnection, stats: RtcStats) => {
+        log.info(
+          'platform1:',
+          Platform.OS,
+          'onLeaveChannel--555->',
+          'connection',
+          connection,
+          'stats',
+          stats,
         );
       },
     );

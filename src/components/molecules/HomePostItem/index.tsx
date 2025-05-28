@@ -43,10 +43,12 @@ export default function HomePostItem({
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
     } else {
       const liveId = item?.live?.id?.toString();
+      console.log('45454', item);
       mutateCreateAgoraToken(
-        {channelName: liveId, publisher: true},
+        {channelName: liveId, publisher: false},
         {
           onSuccess: res => {
+            console.log('res-->', res);
             if (res?.agora_createToken?.status?.code === 1) {
               setLiveData({
                 ...item?.live,
@@ -63,6 +65,8 @@ export default function HomePostItem({
       );
     }
   }
+
+  console.log(item?.live?.publishingScheduleDate);
 
   return (
     <AppTouchable

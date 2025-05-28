@@ -1,9 +1,10 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {ReactElement, useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ClientRoleType,
   LocalVideoStreamReason,
   LocalVideoStreamState,
+  RtcConnection,
   RtcSurfaceView,
   VideoCanvas,
   VideoSourceType,
@@ -27,7 +28,11 @@ import {
   RenderNothing,
   VStack,
 } from '~/components';
-import {LiveType, useAgora_StopRecordMutation} from '~/graphql/generated';
+import {
+  LiveType,
+  useAgora_StopRecordMutation,
+  useLive_UpdateLiveMutation,
+} from '~/graphql/generated';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {resetRoot} from '~/navigation/methods';
 import {liveStore} from '~/stores';
@@ -54,10 +59,16 @@ export default function LiveScreen() {
     uid,
     channelId,
     token,
-  } = useInitRtcEngine(enableVideo);
+  } = useInitRtcEngine({
+    enableVideo: true,
+    isBroadcaster: true,
+    onJoinSuccess: (connection: RtcConnection, elapsed: number) =>
+      onJoinChannelSuccess(connection, elapsed),
+  });
   const {resetLiveStore} = useSnapshot(liveStore);
 
-  const {mutate} = useAgora_StopRecordMutation();
+  const {mutate: mutateStopRecord} = useAgora_StopRecordMutation();
+  const {mutate: mutateUpdateLive} = useLive_UpdateLiveMutation();
 
   const [_, setSwitchCamera] = useState(false);
   const [counterModalVisible, setCounterModalVisible] =
@@ -67,6 +78,26 @@ export default function LiveScreen() {
     engine.current.switchCamera();
     setSwitchCamera(prev => !prev);
   }
+
+  const onJoinChannelSuccess = useCallback(
+    (connection: RtcConnection, elapsed: number) => {
+      mutateUpdateLive(
+        {input: {agoraUserId: connection.localUid}},
+        {
+          onSuccess: response => {
+            console.log('response-->', response);
+          },
+        },
+      );
+      if (
+        connection.channelId === channelId &&
+        (connection.localUid === uid || uid === 0)
+      ) {
+        console.log('uuuy');
+      }
+    },
+    [channelId, uid],
+  );
 
   function joinChannelHandler() {
     if (liveStarted) {
@@ -81,7 +112,7 @@ export default function LiveScreen() {
     engine.current.stopChannelMediaRelay();
     engine.current.removeAllListeners();
     engine.current.release();
-    mutate(
+    mutateStopRecord(
       {channelName: channelId},
       {
         onSuccess() {},
@@ -89,46 +120,33 @@ export default function LiveScreen() {
     );
   }
 
-  useEffect(() => {
-    engine.current.addListener(
-      'onVideoDeviceStateChanged',
-      (deviceId: string, deviceType: number, deviceState: number) => {
-        log.info(
-          'onVideoDeviceStateChanged',
-          'deviceId',
-          deviceId,
-          'deviceType',
-          deviceType,
-          'deviceState',
-          deviceState,
-        );
-      },
-    );
+  // useEffect(() => {
+  //   engine.current.addListener(
+  //     'onVideoDeviceStateChanged',
+  //     (deviceId: string, deviceType: number, deviceState: number) => {},
+  //   );
 
-    engine.current.addListener(
-      'onLocalVideoStateChanged',
-      (
-        source: VideoSourceType,
-        state: LocalVideoStreamState,
-        error: LocalVideoStreamReason,
-      ) => {
-        log.info(
-          'onLocalVideoStateChanged',
-          'source',
-          source,
-          'state',
-          state,
-          'error',
-          error,
-        );
-      },
-    );
+  //   engine.current.addListener(
+  //     'onLocalVideoStateChanged',
+  //     (
+  //       source: VideoSourceType,
+  //       state: LocalVideoStreamState,
+  //       error: LocalVideoStreamReason,
+  //     ) => {},
+  //   );
 
-    const engineCopy = engine.current;
-    return () => {
-      engineCopy.removeAllListeners();
-    };
-  }, [engine]);
+  //   engine.current.addListener(
+  //     'onUserJoined',
+  //     (connection: RtcConnection, remoteUid: number, elapsed: number) => {
+  //       console.log('remoteUID===>', remoteUid);
+  //     },
+  //   );
+
+  //   const engineCopy = engine.current;
+  //   return () => {
+  //     engineCopy.removeAllListeners();
+  //   };
+  // }, [engine]);
 
   function closeHandler() {
     showSheet('confirmation-action', {
@@ -173,6 +191,7 @@ export default function LiveScreen() {
       // Make myself as the broadcaster to send stream to remote
       clientRoleType: ClientRoleType.ClientRoleBroadcaster,
     });
+    console.log('uid-->', uid);
   }
 
   function renderVideo(user: VideoCanvas): ReactElement | undefined {
