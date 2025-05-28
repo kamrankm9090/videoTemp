@@ -23,7 +23,7 @@ interface Props {
   borderRadius?: ViewStyle['borderRadius'];
   fontSize?: number;
   font_family?: any;
-  font_weight?:any;
+  font_weight?: any;
   mt?: ViewStyle['marginTop'];
   mb?: ViewStyle['marginBottom'];
   mx?: ViewStyle['marginHorizontal'];

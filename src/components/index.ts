@@ -53,6 +53,9 @@ export {default as FormCheckBox} from './atoms/FormCheckBox';
 export {default as IconButton} from './atoms/IconButton';
 export {default as ModalHeader} from './atoms/ModalHeader';
 export {default as AppGradientView} from './atoms/AppGradientView';
+export {default as HeaderProfile} from './atoms/HeaderProfile';
+export {default as ContentItem} from './atoms/ContentItem';
+
 //#endregion ---------Atoms
 
 //#region ---------Molecules
@@ -93,6 +96,15 @@ export {default as CommunityDetailBottomInputBar} from './molecules/CommunityDet
 export {default as CommunityDetailItem} from './molecules/CommunityDetailItem';
 export {default as CommunitySearchHeader} from './molecules/CommunitySearchHeader';
 export {default as SearchFooterStatus} from './molecules/SearchFooterStatus';
+export {default as ScrollPager} from './molecules/ScrollPager';
+export {default as UserIdentityHeader} from './molecules/UserIdentityHeader';
+export {
+  Tabs,
+  TAB_BAR_HEIGHT,
+  TabsFlatList,
+  TabsFlashList,
+} from './molecules/CollapsibleTabView';
+
 //#endregion ---------Molecules
 
 //#region ---------Organisms
@@ -114,3 +126,7 @@ export {default as VideoRecorderModal} from './modals/VideoRecorderModal';
 export {default as MoreOptionAction} from './modals/MoreOptionAction';
 export {default as CreateCommunityAction} from './modals/CreateCommunityAction';
 //#endregion ---------Modals
+
+//#region ---------Placeholders
+export {default as ProfilePlaceholder} from './placeholders/ProfilePlaceholder';
+//#endregion ---------Placeholders
