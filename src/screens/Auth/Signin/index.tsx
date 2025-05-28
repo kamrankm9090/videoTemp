@@ -14,7 +14,10 @@ import {
   SectionSocialMedia,
   VStack,
 } from '~/components';
-import {useUser_SignInMutation} from '~/graphql/generated';
+import {
+  User_SignInMutationVariables,
+  useUser_SignInMutation,
+} from '~/graphql/generated';
 import {navigate, replace} from '~/navigation/methods';
 import {loginSchema} from '~/schemas';
 import {userDataStore} from '~/stores';
@@ -40,7 +43,7 @@ export default function SigninScreen() {
     useUser_SignInMutation();
 
   async function onSubmit(formData: typeof defaultValues) {
-    const variables = {
+    const variables: User_SignInMutationVariables = {
       input: {
         email: formData?.email,
         password: formData?.password,
