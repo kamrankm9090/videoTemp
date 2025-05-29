@@ -93,10 +93,11 @@ const styles = StyleSheet.create({
   },
   activeBackground: {
     position: 'absolute',
-    height: '100%',
+    height: '80%',
+    top: '10%',
     backgroundColor: Colors.NIGHT_RIDER,
     borderRadius: scale(8),
-    top: 0,
+
     left: 0,
   },
 });

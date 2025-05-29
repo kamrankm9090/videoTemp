@@ -19,6 +19,7 @@ interface CustomTabViewProps {
   components: {
     [key: string]: React.ComponentType<any>;
   };
+  initialIndex?: number;
 }
 
 // Lazy Loading Placeholder Component
@@ -31,8 +32,9 @@ const LazyLoadingPlaceholder = () => (
 export default function CustomTabView({
   routes,
   components,
+  initialIndex,
 }: CustomTabViewProps) {
-  const [index, setIndex] = React.useState<number>(0);
+  const [index, setIndex] = React.useState<number>(initialIndex ?? 0);
 
   // Memoize renderScene to avoid recalculating on every re-render
   const renderScene = useMemo(
