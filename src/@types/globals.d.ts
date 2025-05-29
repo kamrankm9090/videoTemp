@@ -320,7 +320,7 @@ declare global {
     | 'more-option-action'
     | 'offer-select-option-action'
     | 'create-community-action'
-    | 'offer-select-option-action';
+    | 'drop-down-action-sheet'
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 
