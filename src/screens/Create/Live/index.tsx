@@ -82,7 +82,12 @@ export default function LiveScreen() {
   const onJoinChannelSuccess = useCallback(
     (connection: RtcConnection, elapsed: number) => {
       mutateUpdateLive(
-        {input: {agoraUserId: connection.localUid, id: Number(channelId)}},
+        {
+          input: {
+            agoraUserId: connection.localUid?.toString(),
+            id: Number(channelId),
+          },
+        },
         {
           onSuccess: response => {
             if (response?.live_updateLive?.status?.code === 1) {
