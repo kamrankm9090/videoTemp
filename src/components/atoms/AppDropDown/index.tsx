@@ -1,18 +1,9 @@
-import React, {useCallback, useRef} from 'react';
-import {useController} from 'react-hook-form';
-import {StyleSheet, ViewStyle} from 'react-native';
-import {
-  ActionSheetContainer,
-  AppContainer,
-  AppFlatList,
-  AppPressable,
-  AppSelect,
-  AppText,
-  Box,
-  SearchInput,
-} from '~/components';
+import React from 'react';
+import {useFormContext} from 'react-hook-form';
+import {ViewStyle} from 'react-native';
+import {AppContainer, AppSelect} from '~/components';
 import {Colors} from '~/styles';
-import {fontSize, height} from '~/utils/style';
+import {hideSheet, showSheet} from '~/utils/utils';
 
 type Props = {
   name: string;
@@ -31,6 +22,8 @@ type Props = {
   searchable?: boolean;
   onLoadMore?: () => void;
   mb?: ViewStyle['marginBottom'];
+  backgroundColor?: ViewStyle['backgroundColor'];
+  mandetory?:boolean
 };
 
 const AppDropDown = React.forwardRef(
@@ -49,87 +42,53 @@ const AppDropDown = React.forwardRef(
     searchable = true,
     onLoadMore,
     mb,
+    backgroundColor,
+    mandetory
   }: Props) => {
-    const {field} = useController({name});
-    const modalRef = useRef<ModalRef>(null);
+    const {control} = useFormContext();
 
     function onPressHandler() {
-      modalRef.current?.open();
+      showSheet('drop-down-action-sheet', {
+        payload: {
+          name,
+          control,
+          data,
+          label,
+          loading,
+          titleKey,
+          nestedTitleKey,
+          valueKey,
+          onSubmitSearch,
+          onChange,
+          disabled,
+          isObject,
+          searchable,
+          onLoadMore,
+          mb,
+          backgroundColor,
+        },
+      });
     }
 
     function closeModal() {
-      modalRef.current?.close();
+      hideSheet('drop-down-action-sheet');
     }
 
-    const renderItem = useCallback(
-      ({item}: {item: any}) => {
-        const isActive = isObject
-          ? item?.[valueKey] === field.value?.[valueKey]
-          : item === field.value;
-        const color = isActive ? Colors.PRIMARY : Colors.WHITE;
-
-        function itemOnPress() {
-          if (isActive) {
-            field.onChange(undefined);
-            onChange?.(undefined);
-          } else {
-            field.onChange?.(item);
-            onChange?.(item);
-          }
-          closeModal();
-        }
-
-        return (
-          <AppPressable
-            style={({pressed}) => [
-              styles.option,
-              pressed && styles.optionPressed,
-            ]}
-            onPress={itemOnPress}>
-            <AppText
-              color={color}
-              fontFamily="regular"
-              fontSize={fontSize.medium}
-              flex={1}>
-              {isObject ? item?.[titleKey] : item}{' '}
-              {nestedTitleKey && `(${item?.[nestedTitleKey]})`}
-            </AppText>
-          </AppPressable>
-        );
-      },
-      [field, titleKey, isObject, nestedTitleKey, valueKey, onChange],
-    );
-
     return (
-      <AppContainer>
+      <AppContainer
+        backgroundColor={
+          (backgroundColor as string) || (Colors.BACKGROUND as string)
+        }>
         <AppSelect
           name={name}
           label={label}
+          mandatory={mandetory}
           onPress={onPressHandler}
           titleKey={titleKey}
           disabled={disabled}
           mb={mb}
+          backgroundColor={backgroundColor}
         />
-        <ActionSheetContainer
-          isLoading={loading}
-          minHeight={height * 0.8}
-          scrollable={false}
-          ref={modalRef}>
-          <Box flexGrow={1}>
-            {searchable && <SearchInput onChange={onSubmitSearch} />}
-            <AppFlatList
-              data={data ?? []}
-              keyboardDismissMode="on-drag"
-              keyboardShouldPersistTaps="handled"
-              contentContainerStyle={styles.contentContainerStyle}
-              renderItem={renderItem}
-              hasItemSeparatorComponent={false}
-              keyValue={valueKey}
-              isLoading={loading}
-              onEndReached={onLoadMore}
-            />
-          </Box>
-        </ActionSheetContainer>
       </AppContainer>
     );
   },
@@ -138,19 +97,3 @@ const AppDropDown = React.forwardRef(
 AppDropDown.displayName = 'AppDropDown';
 
 export default AppDropDown;
-
-const styles = StyleSheet.create({
-  contentContainerStyle: {
-    flexGrow: 1,
-    paddingBottom: 54,
-    paddingTop: 16,
-  },
-  option: {
-    borderRadius: 8,
-    paddingVertical: 16,
-    paddingHorizontal: 8,
-  },
-  optionPressed: {
-    backgroundColor: Colors.WHITE_TRANSPARENT_1,
-  },
-});
