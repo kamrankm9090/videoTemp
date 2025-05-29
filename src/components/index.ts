@@ -55,6 +55,7 @@ export {default as ModalHeader} from './atoms/ModalHeader';
 export {default as AppGradientView} from './atoms/AppGradientView';
 export {default as HeaderProfile} from './atoms/HeaderProfile';
 export {default as ContentItem} from './atoms/ContentItem';
+export {default as CustomTabView} from './atoms/CustomTabView';
 
 //#endregion ---------Atoms
 
@@ -97,7 +98,10 @@ export {default as CommunityDetailItem} from './molecules/CommunityDetailItem';
 export {default as CommunitySearchHeader} from './molecules/CommunitySearchHeader';
 export {default as SearchFooterStatus} from './molecules/SearchFooterStatus';
 export {default as ScrollPager} from './molecules/ScrollPager';
+export {default as FollowersList} from './molecules/FollowersList';
+export {default as FollowingsList} from './molecules/FollowingsList';
 export {default as UserIdentityHeader} from './molecules/UserIdentityHeader';
+
 export {
   Tabs,
   TAB_BAR_HEIGHT,
