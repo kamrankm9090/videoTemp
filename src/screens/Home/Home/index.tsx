@@ -85,9 +85,9 @@ export default function HomeScreen() {
         viewabilityConfig={viewConfigRef.current}
         onViewableItemsChanged={onViewRef.current}
         removeClippedSubviews
+        contentContainerStyle={styles.contentContainerStyle}
         listFooterComponent={listFooterComponent}
         onEndReached={onLoadMore}
-        contentContainerStyle={styles.contentContainerStyle}
         refreshing={isRefetchingGetLives}
         onRefresh={refetchGetLives}
       />

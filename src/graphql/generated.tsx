@@ -1873,6 +1873,13 @@ export type ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput = {
   some?: InputMaybe<KeyValuePairOfStringAndStringFilterInput>;
 };
 
+export type ListFilterInputTypeOfLiveBookmarkFilterInput = {
+  all?: InputMaybe<LiveBookmarkFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<LiveBookmarkFilterInput>;
+  some?: InputMaybe<LiveBookmarkFilterInput>;
+};
+
 export type ListFilterInputTypeOfLiveCommentFilterInput = {
   all?: InputMaybe<LiveCommentFilterInput>;
   any?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1885,6 +1892,13 @@ export type ListFilterInputTypeOfLiveFilterInput = {
   any?: InputMaybe<Scalars['Boolean']['input']>;
   none?: InputMaybe<LiveFilterInput>;
   some?: InputMaybe<LiveFilterInput>;
+};
+
+export type ListFilterInputTypeOfLiveLikeFilterInput = {
+  all?: InputMaybe<LiveLikeFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<LiveLikeFilterInput>;
+  some?: InputMaybe<LiveLikeFilterInput>;
 };
 
 export type ListFilterInputTypeOfLiveRoleFilterInput = {
@@ -1901,6 +1915,13 @@ export type ListFilterInputTypeOfMessageFilterInput = {
   some?: InputMaybe<MessageFilterInput>;
 };
 
+export type ListFilterInputTypeOfPurchasedLiveFilterInput = {
+  all?: InputMaybe<PurchasedLiveFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<PurchasedLiveFilterInput>;
+  some?: InputMaybe<PurchasedLiveFilterInput>;
+};
+
 export type ListFilterInputTypeOfUserFilterInput = {
   all?: InputMaybe<UserFilterInput>;
   any?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1913,6 +1934,13 @@ export type ListFilterInputTypeOfUserGroupFilterInput = {
   any?: InputMaybe<Scalars['Boolean']['input']>;
   none?: InputMaybe<UserGroupFilterInput>;
   some?: InputMaybe<UserGroupFilterInput>;
+};
+
+export type ListFilterInputTypeOfViewedLiveFilterInput = {
+  all?: InputMaybe<ViewedLiveFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<ViewedLiveFilterInput>;
+  some?: InputMaybe<ViewedLiveFilterInput>;
 };
 
 export type ListFilterInputTypeOfViolationReportFilterInput = {
@@ -2644,7 +2672,7 @@ export type ListStringOperationFilterInput = {
 
 export type Live = {
   __typename?: 'Live';
-  agoraUserId?: Maybe<Scalars['Int']['output']>;
+  agoraUserId?: Maybe<Scalars['String']['output']>;
   category?: Maybe<Scalars['String']['output']>;
   channelRecords?: Maybe<Array<Maybe<ChannelRecord>>>;
   commentCount: Scalars['Int']['output'];
@@ -2653,11 +2681,14 @@ export type Live = {
   funding: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   introUrl?: Maybe<Scalars['String']['output']>;
+  isBlocked: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
   isDraft: Scalars['Boolean']['output'];
   isFree: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   likeCount: Scalars['Int']['output'];
+  liveBookmarks?: Maybe<Array<Maybe<LiveBookmark>>>;
+  liveLikes?: Maybe<Array<Maybe<LiveLike>>>;
   liveType: LiveType;
   photoUrl?: Maybe<Scalars['String']['output']>;
   previewUrl?: Maybe<Scalars['String']['output']>;
@@ -2668,6 +2699,7 @@ export type Live = {
   publishingScheduleDate?: Maybe<Scalars['DateTime']['output']>;
   publishingScheduleTime?: Maybe<Scalars['TimeSpan']['output']>;
   purchaseCount: Scalars['Int']['output'];
+  purchasedLives?: Maybe<Array<Maybe<PurchasedLive>>>;
   rateAverage: Scalars['Float']['output'];
   recordUrl?: Maybe<Scalars['String']['output']>;
   roles?: Maybe<Array<Maybe<LiveRole>>>;
@@ -2680,6 +2712,32 @@ export type Live = {
   userId: Scalars['Int']['output'];
   value: Scalars['Decimal']['output'];
   viewCount: Scalars['Int']['output'];
+  viewedLives?: Maybe<Array<Maybe<ViewedLive>>>;
+};
+
+export type LiveBookmark = {
+  __typename?: 'LiveBookmark';
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  live?: Maybe<Live>;
+  liveId: Scalars['Int']['output'];
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+export type LiveBookmarkFilterInput = {
+  and?: InputMaybe<Array<LiveBookmarkFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  live?: InputMaybe<LiveFilterInput>;
+  liveId?: InputMaybe<IntOperationFilterInput>;
+  or?: InputMaybe<Array<LiveBookmarkFilterInput>>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
 };
 
 export type LiveComment = {
@@ -2855,7 +2913,7 @@ export type LiveDtoSortInput = {
 };
 
 export type LiveFilterInput = {
-  agoraUserId?: InputMaybe<IntOperationFilterInput>;
+  agoraUserId?: InputMaybe<StringOperationFilterInput>;
   and?: InputMaybe<Array<LiveFilterInput>>;
   category?: InputMaybe<StringOperationFilterInput>;
   channelRecords?: InputMaybe<ListFilterInputTypeOfChannelRecordFilterInput>;
@@ -2865,11 +2923,14 @@ export type LiveFilterInput = {
   funding?: InputMaybe<IntOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   introUrl?: InputMaybe<StringOperationFilterInput>;
+  isBlocked?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   isDraft?: InputMaybe<BooleanOperationFilterInput>;
   isFree?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   likeCount?: InputMaybe<IntOperationFilterInput>;
+  liveBookmarks?: InputMaybe<ListFilterInputTypeOfLiveBookmarkFilterInput>;
+  liveLikes?: InputMaybe<ListFilterInputTypeOfLiveLikeFilterInput>;
   liveType?: InputMaybe<LiveTypeOperationFilterInput>;
   or?: InputMaybe<Array<LiveFilterInput>>;
   photoUrl?: InputMaybe<StringOperationFilterInput>;
@@ -2881,6 +2942,7 @@ export type LiveFilterInput = {
   publishingScheduleDate?: InputMaybe<DateTimeOperationFilterInput>;
   publishingScheduleTime?: InputMaybe<TimeSpanOperationFilterInput>;
   purchaseCount?: InputMaybe<IntOperationFilterInput>;
+  purchasedLives?: InputMaybe<ListFilterInputTypeOfPurchasedLiveFilterInput>;
   rateAverage?: InputMaybe<FloatOperationFilterInput>;
   recordUrl?: InputMaybe<StringOperationFilterInput>;
   roles?: InputMaybe<ListFilterInputTypeOfLiveRoleFilterInput>;
@@ -2893,14 +2955,16 @@ export type LiveFilterInput = {
   userId?: InputMaybe<IntOperationFilterInput>;
   value?: InputMaybe<DecimalOperationFilterInput>;
   viewCount?: InputMaybe<IntOperationFilterInput>;
+  viewedLives?: InputMaybe<ListFilterInputTypeOfViewedLiveFilterInput>;
 };
 
 export type LiveInput = {
-  agoraUserId?: InputMaybe<Scalars['Int']['input']>;
+  agoraUserId?: InputMaybe<Scalars['String']['input']>;
   category?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   funding?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  isBlocked?: InputMaybe<Scalars['Int']['input']>;
   isDraft?: InputMaybe<Scalars['Boolean']['input']>;
   isFree?: InputMaybe<Scalars['Boolean']['input']>;
   liveType?: InputMaybe<LiveType>;
@@ -2916,6 +2980,31 @@ export type LiveInput = {
   setSchedule?: InputMaybe<Scalars['Boolean']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   value?: InputMaybe<Scalars['Decimal']['input']>;
+};
+
+export type LiveLike = {
+  __typename?: 'LiveLike';
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  live?: Maybe<Live>;
+  liveId: Scalars['Int']['output'];
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+export type LiveLikeFilterInput = {
+  and?: InputMaybe<Array<LiveLikeFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  live?: InputMaybe<LiveFilterInput>;
+  liveId?: InputMaybe<IntOperationFilterInput>;
+  or?: InputMaybe<Array<LiveLikeFilterInput>>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
 };
 
 export type LiveRateInput = {
@@ -2963,6 +3052,7 @@ export type LiveSortInput = {
   funding?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   introUrl?: InputMaybe<SortEnumType>;
+  isBlocked?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
   isDraft?: InputMaybe<SortEnumType>;
   isFree?: InputMaybe<SortEnumType>;
@@ -4285,6 +4375,33 @@ export type PointSortInput = {
   x?: InputMaybe<SortEnumType>;
   y?: InputMaybe<SortEnumType>;
   z?: InputMaybe<SortEnumType>;
+};
+
+export type PurchasedLive = {
+  __typename?: 'PurchasedLive';
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  live?: Maybe<Live>;
+  liveId: Scalars['Int']['output'];
+  price: Scalars['Decimal']['output'];
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+export type PurchasedLiveFilterInput = {
+  and?: InputMaybe<Array<PurchasedLiveFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  live?: InputMaybe<LiveFilterInput>;
+  liveId?: InputMaybe<IntOperationFilterInput>;
+  or?: InputMaybe<Array<PurchasedLiveFilterInput>>;
+  price?: InputMaybe<DecimalOperationFilterInput>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
 };
 
 export type Query = {
@@ -5907,6 +6024,31 @@ export type VerificationStatusOperationFilterInput = {
   nin?: InputMaybe<Array<VerificationStatus>>;
 };
 
+export type ViewedLive = {
+  __typename?: 'ViewedLive';
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  live?: Maybe<Live>;
+  liveId: Scalars['Int']['output'];
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+export type ViewedLiveFilterInput = {
+  and?: InputMaybe<Array<ViewedLiveFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  live?: InputMaybe<LiveFilterInput>;
+  liveId?: InputMaybe<IntOperationFilterInput>;
+  or?: InputMaybe<Array<ViewedLiveFilterInput>>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
 export type ViolationReport = {
   __typename?: 'ViolationReport';
   createdDate: Scalars['DateTime']['output'];
@@ -6153,6 +6295,33 @@ export type Category_GetCategoryQuery = {
   };
 };
 
+export type Community_CreateCommunityMutationVariables = Exact<{
+  input?: InputMaybe<CommunityInput>;
+}>;
+
+export type Community_CreateCommunityMutation = {
+  __typename?: 'Mutation';
+  community_createCommunity?: {
+    __typename?: 'ResponseBaseOfCommunity';
+    status?: any | null;
+    result?: {
+      __typename?: 'Community';
+      creatorId: number;
+      title?: string | null;
+      description?: string | null;
+      photoUrl?: string | null;
+      communityType: CommunityType;
+      userCount: number;
+      requestCount: number;
+      media?: string | null;
+      id: number;
+      isDeleted: boolean;
+      createdDate: any;
+      lastModifiedDate?: any | null;
+    } | null;
+  } | null;
+};
+
 export type Community_GetCommunitiesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -6177,6 +6346,7 @@ export type Community_GetCommunitiesQuery = {
         __typename?: 'Community';
         communityType: CommunityType;
         createdDate: any;
+        userCount: number;
         description?: string | null;
         id: number;
         requestCount: number;
@@ -6447,7 +6617,7 @@ export type Live_GetLivesQuery = {
           publishingScheduleTime?: any | null;
           viewCount: number;
           purchaseCount: number;
-          agoraUserId?: number | null;
+          agoraUserId?: string | null;
           user?: {
             __typename?: 'User';
             username?: string | null;
@@ -7748,6 +7918,55 @@ export const useInfiniteCategory_GetCategoryQuery = <
   );
 };
 
+export const Community_CreateCommunityDocument = `
+    mutation community_createCommunity($input: CommunityInput) {
+  community_createCommunity(input: $input) {
+    result {
+      creatorId
+      title
+      description
+      photoUrl
+      communityType
+      userCount
+      requestCount
+      media
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_CreateCommunityMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Community_CreateCommunityMutation,
+    TError,
+    Community_CreateCommunityMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Community_CreateCommunityMutation,
+    TError,
+    Community_CreateCommunityMutationVariables,
+    TContext
+  >(
+    ['community_createCommunity'],
+    (variables?: Community_CreateCommunityMutationVariables) =>
+      fetcher<
+        Community_CreateCommunityMutation,
+        Community_CreateCommunityMutationVariables
+      >(Community_CreateCommunityDocument, variables)(),
+    options,
+  );
+};
+
 export const Community_GetCommunitiesDocument = `
     query community_getCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
   community_getCommunities {
@@ -7764,6 +7983,7 @@ export const Community_GetCommunitiesDocument = `
           fullName
           photoUrl
         }
+        userCount
         description
         id
         requestCount

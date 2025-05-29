@@ -5,16 +5,20 @@ import {AppImage, AppText, AppTouchable, HStack, VStack} from '~/components';
 import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 
-const CommunityItem = () => {
+const CommunityItem = ({item}: any) => {
   const infoItem = [
     {
-      title: '34',
+      title: item?.userCount,
       icon: <GroupUsersIcon />,
     },
-    {
-      title: 'private',
-      icon: <LockIcon />,
-    },
+    ...(item?.communityType === 'PRIVATE'
+      ? [
+          {
+            title: 'private',
+            icon: <LockIcon />,
+          },
+        ]
+      : []),
   ];
 
   const ownerButtons = [
@@ -24,7 +28,7 @@ const CommunityItem = () => {
       onPress: () => navigate('CommunityStack', {screen: 'CommunityInfo'}),
     },
     {
-      title: 'Requesters +2',
+      title: `Requesters ${item?.requestCount > 0 ? item?.requestCount : ""}`,
       color: Colors.PRIMARY,
       onPress: () => navigate('CommunityStack', {screen: 'Requesters'}),
     },
@@ -47,7 +51,7 @@ const CommunityItem = () => {
         <AppImage style={styles.imageStyle} imageSource={{uri: ''}} />
         <HStack>
           <AppText fontSize={16} fontWeight={'500'}>
-            Beauty Documentary
+            {item?.title}
           </AppText>
           <ChevronBack
             width={16}
@@ -66,8 +70,7 @@ const CommunityItem = () => {
         fontWeight={'400'}
         lineHeight={24}
         color={Colors.VeryLightGrey}>
-        I want to make a film in the field of cosmetics and skincare products,
-        and I am currently looking for these skills for this project.
+        {item?.description}
       </AppText>
       <HStack justifyContent="space-between">
         {infoItem?.map(i => {
@@ -102,5 +105,5 @@ const CommunityItem = () => {
 export default CommunityItem;
 
 const styles = StyleSheet.create({
-  imageStyle:{width: 32, height: 32}
+  imageStyle: {width: 32, height: 32},
 });

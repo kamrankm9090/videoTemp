@@ -112,11 +112,11 @@ const UserSchema = yup.object({
 });
 
 const createContentSchema = yup.object({
-  title: yup.string().required('Title is required').trim(),
+  title: yup.string().required('required').trim(),
   isFree: yup.boolean().nullable(),
   isSchedule: yup.boolean().nullable(),
-  description: yup.string().trim().nullable(),
-  category: yup.object().nullable(),
+  description: yup.string().required('required').trim(),
+  category: yup.object().required('required').nullable(),
   price: yup
     .string()
     .trim()
@@ -149,7 +149,8 @@ const createContentSchema = yup.object({
       then: schema => schema.nullable(),
       otherwise: schema => schema.required('Time is required'),
     }),
-  previewUrl: yup.string().trim().nullable(),
+  // previewUrl: yup.string().trim().nullable(),
+  previewUrl: yup.string().required('required').trim(),
 });
 
 export {
