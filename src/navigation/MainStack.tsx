@@ -7,6 +7,7 @@ import HomeStack, {HomeStackParamList} from './HomeStack';
 import MainTabs, {MainTabParamList} from './MainTabs';
 import {appCreateStackNavigator} from './methods';
 import OffersStack, {OffersStackParamList} from './OffersStack';
+import ProfileStack, {ProfileStackParamList} from './ProfileStack';
 
 export type MainStackParamList = {
   MainTabs: {
@@ -23,6 +24,10 @@ export type MainStackParamList = {
   };
   CommunityStack?: {
     screen?: keyof CommunityStackParamList;
+  };
+  ProfileStack: {
+    screen: keyof ProfileStackParamList;
+    params?: ProfileStackParamList[keyof ProfileStackParamList];
   };
 };
 
@@ -48,6 +53,10 @@ const screens = [
   {
     name: 'CommunityStack',
     component: CommunityStack,
+  },
+  {
+    name: 'ProfileStack',
+    component: ProfileStack,
   },
 ];
 
