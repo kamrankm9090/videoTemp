@@ -2644,7 +2644,7 @@ export type ListStringOperationFilterInput = {
 
 export type Live = {
   __typename?: 'Live';
-  agoraUserId?: Maybe<Scalars['Int']['output']>;
+  agoraUserId?: Maybe<Scalars['String']['output']>;
   category?: Maybe<Scalars['String']['output']>;
   channelRecords?: Maybe<Array<Maybe<ChannelRecord>>>;
   commentCount: Scalars['Int']['output'];
@@ -2653,6 +2653,7 @@ export type Live = {
   funding: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   introUrl?: Maybe<Scalars['String']['output']>;
+  isBlocked: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
   isDraft: Scalars['Boolean']['output'];
   isFree: Scalars['Boolean']['output'];
@@ -2855,7 +2856,7 @@ export type LiveDtoSortInput = {
 };
 
 export type LiveFilterInput = {
-  agoraUserId?: InputMaybe<IntOperationFilterInput>;
+  agoraUserId?: InputMaybe<StringOperationFilterInput>;
   and?: InputMaybe<Array<LiveFilterInput>>;
   category?: InputMaybe<StringOperationFilterInput>;
   channelRecords?: InputMaybe<ListFilterInputTypeOfChannelRecordFilterInput>;
@@ -2865,6 +2866,7 @@ export type LiveFilterInput = {
   funding?: InputMaybe<IntOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   introUrl?: InputMaybe<StringOperationFilterInput>;
+  isBlocked?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   isDraft?: InputMaybe<BooleanOperationFilterInput>;
   isFree?: InputMaybe<BooleanOperationFilterInput>;
@@ -2896,11 +2898,12 @@ export type LiveFilterInput = {
 };
 
 export type LiveInput = {
-  agoraUserId?: InputMaybe<Scalars['Int']['input']>;
+  agoraUserId?: InputMaybe<Scalars['String']['input']>;
   category?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   funding?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  isBlocked?: InputMaybe<Scalars['Int']['input']>;
   isDraft?: InputMaybe<Scalars['Boolean']['input']>;
   isFree?: InputMaybe<Scalars['Boolean']['input']>;
   liveType?: InputMaybe<LiveType>;
@@ -2963,6 +2966,7 @@ export type LiveSortInput = {
   funding?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   introUrl?: InputMaybe<SortEnumType>;
+  isBlocked?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
   isDraft?: InputMaybe<SortEnumType>;
   isFree?: InputMaybe<SortEnumType>;
@@ -6447,7 +6451,7 @@ export type Live_GetLivesQuery = {
           publishingScheduleTime?: any | null;
           viewCount: number;
           purchaseCount: number;
-          agoraUserId?: number | null;
+          agoraUserId?: string | null;
           user?: {
             __typename?: 'User';
             username?: string | null;
