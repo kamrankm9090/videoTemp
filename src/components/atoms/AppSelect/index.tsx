@@ -16,6 +16,7 @@ type Props = React.ComponentProps<typeof View> & {
   alignItems?: 'center' | 'flex-end' | 'flex-start';
   disabled?: boolean;
   mb?: ViewStyle['marginBottom'];
+  backgroundColor?:ViewStyle['backgroundColor']
 };
 
 const AppSelect = React.forwardRef(
@@ -30,6 +31,7 @@ const AppSelect = React.forwardRef(
     alignItems = 'center',
     disabled,
     mb,
+    backgroundColor
   }: Props) => {
     const {control} = useFormContext();
 
@@ -46,7 +48,7 @@ const AppSelect = React.forwardRef(
                 {marginBottom: mb},
               ]}>
               {value && (
-                <View style={styles.label}>
+                <View style={{...styles.label, backgroundColor}}>
                   <AppText
                     fontSize={10}
                     color={error ? Colors.ERROR : Colors.WHITE}>
