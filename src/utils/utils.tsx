@@ -1,18 +1,33 @@
-import {Keyboard, Linking} from 'react-native';
+import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
+import {CommonActions} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
-import {AppToast, OptionalToast} from '~/components';
+import {Keyboard, Linking, Platform} from 'react-native';
+import {createThumbnail} from 'react-native-create-thumbnail';
+import {
+  ExternalCachesDirectoryPath,
+  MainBundlePath,
+  copyFileAssets,
+  exists,
+} from 'react-native-fs';
 import Toast, {
   BaseToast,
   ErrorToast,
   ToastProps,
 } from 'react-native-toast-message';
+import {AppToast, OptionalToast} from '~/components';
 import {Colors} from '~/styles';
-import {isIos} from './helper';
-import {CommonActions} from '@react-navigation/native';
-import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
-import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
-import {createThumbnail} from 'react-native-create-thumbnail';
+import {isAndroid, isIos, reportError} from './helper';
+import {StackNavigationOptions} from '@react-navigation/stack';
+import {SheetManager} from 'react-native-actions-sheet';
+import {Error, InfoCircle, TickCircle, Warning} from '~/assets/svgs';
+import {queryClient} from '~/components/atoms/QueryClientProvider';
+import {AgoraDropdownItem} from '~/components/ui';
+import {screenTransitionConfig} from '~/navigation/methods';
+import {userDataStore} from '~/stores';
+import jwtDecode, {JwtPayload} from 'jwt-decode';
+import {graphQLClient} from '~/graphql/fetcher';
+import Share from 'react-native-share';
 
 export const toastConfig = {
   success: (props: ToastProps) => <BaseToast {...props} />,
@@ -26,7 +41,8 @@ export const toastConfig = {
           icon: props.icon,
           color: props.color,
           onPress: props.onPress,
-          backgroundColor: Colors.ERROR,
+          backgroundColor: props.backgroundColor,
+          text1Color: Colors.BLACK,
         }}
       />
     );
@@ -40,7 +56,7 @@ export const toastConfig = {
         icon: props.icon,
         color: props.color,
         onPress: props.onPress,
-        backgroundColor: Colors.SUCCESS,
+        backgroundColor: props.backgroundColor,
       }}
     />
   ),
@@ -63,7 +79,7 @@ export const toastConfig = {
         icon: props.icon,
         color: props.color,
         onPress: props.onPress,
-        backgroundColor: Colors.INFO,
+        backgroundColor: props.backgroundColor,
       }}
     />
   ),
@@ -75,7 +91,7 @@ export const toastConfig = {
         icon: props.icon,
         color: props.color,
         onPress: props.onPress,
-        backgroundColor: Colors.WARNING,
+        backgroundColor: props.backgroundColor,
       }}
     />
   ),
@@ -106,9 +122,19 @@ export const toastConfig = {
 
 export function showSuccessMessage(
   message: any = 'Success',
-  message2?: any,
-  icon?: any,
-  autoHide: boolean = true,
+  {
+    message2,
+    icon = <TickCircle />,
+    autoHide = true,
+    color = Colors.Jaguar,
+    backgroundColor = Colors.WePeep,
+  }: {
+    message2?: any;
+    icon?: any;
+    autoHide?: boolean;
+    color?: string;
+    backgroundColor?: string;
+  } = {},
 ) {
   Toast.show({
     autoHide: autoHide,
@@ -118,16 +144,57 @@ export function showSuccessMessage(
     position: 'top',
     props: {
       icon,
-      color: Colors.WHITE,
+      color,
+      backgroundColor,
+    },
+  });
+}
+
+export function showErrorMessage(
+  message: any = 'Error',
+  {
+    message2,
+    icon = <Error />,
+    autoHide = true,
+    color = Colors.Jaguar,
+    backgroundColor = Colors.WePeep,
+  }: {
+    message2?: any;
+    icon?: any;
+    autoHide?: boolean;
+    color?: string;
+    backgroundColor?: string;
+  } = {},
+) {
+  Toast.show({
+    autoHide: autoHide,
+    type: 'baseError',
+    text1: message,
+    text2: message2,
+    position: 'top',
+    props: {
+      icon,
+      color,
+      backgroundColor,
     },
   });
 }
 
 export function showInfoMessage(
   message: any = '',
-  message2?: any,
-  icon?: any,
-  autoHide: boolean = true,
+  {
+    message2,
+    icon = <InfoCircle />,
+    autoHide = true,
+    color = Colors.BACKGROUND,
+    backgroundColor = Colors.Gainsboro,
+  }: {
+    message2?: any;
+    icon?: any;
+    autoHide?: boolean;
+    color?: string;
+    backgroundColor?: string;
+  } = {},
 ) {
   Toast.show({
     autoHide: autoHide,
@@ -137,16 +204,27 @@ export function showInfoMessage(
     position: 'top',
     props: {
       icon,
-      color: Colors.BACKGROUND,
+      color,
+      backgroundColor,
     },
   });
 }
 
 export function showWarningMessage(
   message: any = '',
-  message2?: any,
-  icon?: any,
-  autoHide: boolean = true,
+  {
+    message2,
+    icon = <Warning />,
+    autoHide = true,
+    color = Colors.Jaguar,
+    backgroundColor = Colors.BlanchedAlmond,
+  }: {
+    message2?: any;
+    icon?: any;
+    autoHide?: boolean;
+    color?: string;
+    backgroundColor?: string;
+  } = {},
 ) {
   Toast.show({
     autoHide: autoHide,
@@ -156,22 +234,30 @@ export function showWarningMessage(
     position: 'top',
     props: {
       icon,
-      color: Colors.BACKGROUND,
+      color,
+      backgroundColor,
     },
   });
 }
 
 export function showSnackBar(
   message: any = 'Success',
-  icon?: any,
-  autoHide: boolean = true,
+  {
+    icon,
+    autoHide = true,
+    color = Colors.WHITE,
+  }: {
+    icon?: any;
+    autoHide?: boolean;
+    color?: string;
+  } = {},
 ) {
   Toast.show({
     autoHide: autoHide,
     type: 'baseSnackBar',
     text1: message,
     position: 'bottom',
-    props: {icon, color: Colors.WHITE},
+    props: {icon, color},
   });
 }
 
@@ -202,11 +288,15 @@ export const publicTabScreenOption: BottomTabNavigationOptions = {
   ...CommonActions,
 };
 
-export const publicScreenOption: NativeStackNavigationOptions = {
-  animation: 'slide_from_right',
-  gestureEnabled: true,
-  gestureDirection: 'horizontal',
+// export const publicScreenOption: NativeStackNavigationOptions = {
+//   animation: 'slide_from_right',
+//   gestureEnabled: true,
+//   gestureDirection: 'horizontal',
+//   headerShown: false,
+// };
+export const publicScreenOption: StackNavigationOptions = {
   headerShown: false,
+  ...screenTransitionConfig,
 };
 
 export function openCall(phoneNumber: string) {
@@ -240,5 +330,124 @@ export async function generateThumbnail(path: string, timeStamp: string) {
     console.error(err);
   } finally {
     // setIsLoading(false);
+  }
+}
+
+export const objectToItems = (object: any): AgoraDropdownItem[] => {
+  return Object.keys(object).map(value => {
+    return {
+      label: value,
+      value: object[value],
+    };
+  });
+};
+
+export const arrayToItems = (array: any[]): AgoraDropdownItem[] => {
+  return array.map(value => {
+    return {
+      label: value.toString(),
+      value: value,
+    };
+  });
+};
+
+export const enumToItems = (enumType: any): AgoraDropdownItem[] => {
+  const entries = Object.entries(enumType);
+  const items = entries.filter(([, value]) => typeof value === 'number');
+  items.sort((a: any, b: any) => a[1] - b[1]);
+  return items.map(([key, value]) => ({
+    label: key,
+    value: value,
+  }));
+};
+
+export function getResourcePath(fileName: string): string {
+  if (isAndroid) {
+    return `/assets/${fileName}`;
+  }
+  return `${MainBundlePath}/${fileName}`;
+}
+
+export async function getAbsolutePath(filePath: string): Promise<string> {
+  if (isAndroid) {
+    if (filePath.startsWith('/assets/')) {
+      // const fileName = filePath;
+      const fileName = filePath.replace('/assets/', '');
+      const destPath = `${ExternalCachesDirectoryPath}/${fileName}`;
+      if (!(await exists(destPath))) {
+        await copyFileAssets(fileName, destPath);
+      }
+      return destPath;
+    }
+  }
+  return filePath;
+}
+
+export function showSheet<T extends SheetNames>(
+  name: T,
+  payload?: Parameters<typeof SheetManager.show>[1],
+) {
+  return SheetManager.show(name, payload);
+}
+
+export function hideSheet<T extends SheetNames>(name: T) {
+  return SheetManager.hide(name);
+}
+
+export function switchActions(
+  newAction: SheetNames,
+  oldAction: SheetNames = 'post-options-action',
+  payload?: Parameters<typeof SheetManager.show>[1],
+) {
+  hideSheet(oldAction);
+  setTimeout(() => {
+    showSheet(newAction, payload);
+  }, 300);
+}
+
+export const isTokenExpired = (token?: string | null): boolean => {
+  if (!token) {
+    return true;
+  }
+  try {
+    const decoded = jwtDecode<JwtPayload>(token);
+    const tt = (decoded.exp ?? 0) < Date.now() / 1000;
+    console.log('tt===>', tt);
+    return tt;
+  } catch (err) {
+    console.error('Invalid token:', err);
+    return true;
+  }
+};
+
+export function setHeader(token: string) {
+  graphQLClient.setHeader('authorization', 'Bearer ' + token);
+}
+
+export async function logout() {
+  setHeader('');
+  queryClient.cancelQueries();
+  queryClient.clear();
+  userDataStore.getState()?.resetAuthData();
+  userDataStore.getState()?.resetUserData();
+  userDataStore?.setState({isUserLoggedIn: false});
+}
+
+export async function appSharing(text: string) {
+  try {
+    const options = Platform.select({
+      ios: {
+        message: text,
+        type: 'text',
+      },
+      default: {
+        title: 'Share',
+        url: text,
+        failOnCancel: false,
+      },
+    });
+    await Share.open(options);
+  } catch (err) {
+    reportError(err, 'share error');
   }
 }

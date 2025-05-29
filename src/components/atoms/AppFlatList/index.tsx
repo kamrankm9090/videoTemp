@@ -197,7 +197,7 @@ const AppFlatList = forwardRef<FlatList<any>, Props<any>>((props, ref) => {
         }}
         {...rest}
       />
-      <AnimationProvider
+      {showScrollButton && <AnimationProvider
         visible={showScrollButton}
         visibleChildren={
           <Fab
@@ -207,7 +207,7 @@ const AppFlatList = forwardRef<FlatList<any>, Props<any>>((props, ref) => {
           />
         }
         inVisibleChildren={null}
-      />
+      />}
     </>
   );
 });

@@ -1,0 +1,16 @@
+overwrite: true
+schema: 'https://tempklippd-fge6habkfxdcdgdm.westus2-01.azurewebsites.net/graphql/'
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+documents: 'src/graphql/**/*.gql'
+generates:
+  src/graphql/generated.tsx:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      addInfiniteQuery: true
+      fetcher:
+        func: 'src/graphql/fetcher#fetcher'

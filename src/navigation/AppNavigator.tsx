@@ -1,22 +1,41 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {DarkTheme, NavigationContainer, Theme} from '@react-navigation/native';
 import React, {useCallback, useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import {navigationRef} from './methods';
 import {AppLoading} from '~/components';
+import {useNotificationAddedSubscription} from '~/hooks/live/useNotificationAddedSubscription';
+import {userDataStore} from '~/stores';
+import {Colors} from '~/styles';
+import {publicScreenOption} from '~/utils/utils';
+import AuthStack from './AuthStack';
 import MainStack from './MainStack';
+import {appCreateStackNavigator, navigationRef} from './methods';
 
 export type AppNavigatorParamList = {
   Main: undefined;
+  Auth: undefined;
 };
 
-const Stack = createNativeStackNavigator<AppNavigatorParamList>();
-
-const navigatorOptions = {
-  headerShown: false,
+const AppTheme: Theme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: Colors.BACKGROUND,
+  },
 };
+
+const Stack = appCreateStackNavigator<AppNavigatorParamList>();
 
 export default function AppNavigator() {
+  const {isUserLoggedIn} = userDataStore(state => state);
+
+  const userData = userDataStore(state => state?.userData);
+  useNotificationAddedSubscription({
+    userId: userData?.id,
+    callback() {
+      // console.log('new notif');
+    },
+  });
+
   const hideSplash = useCallback(() => {
     setTimeout(() => {
       SplashScreen.hide();
@@ -28,9 +47,18 @@ export default function AppNavigator() {
   }, [hideSplash]);
 
   return (
-    <NavigationContainer ref={navigationRef} fallback={<AppLoading />}>
-      <Stack.Navigator screenOptions={navigatorOptions}>
-        <Stack.Screen name="Main" component={MainStack} />
+    <NavigationContainer
+      theme={AppTheme}
+      ref={navigationRef}
+      fallback={<AppLoading />}>
+      <Stack.Navigator
+        detachInactiveScreens={false}
+        screenOptions={publicScreenOption}>
+        {isUserLoggedIn ? (
+          <Stack.Screen name="Main" component={MainStack} />
+        ) : (
+          <Stack.Screen name="Auth" component={AuthStack} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

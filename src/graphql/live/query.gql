@@ -1,0 +1,291 @@
+query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]){
+    live_getLives{
+        result(skip: $skip, take: $take, where: $where, order: $order){
+            pageInfo{
+                hasNextPage
+                hasPreviousPage
+            }
+            items{
+                live{
+                    id
+                    likeCount
+                    userId
+                    introUrl
+                    liveType
+                    photoUrl
+                    title
+                    description
+                    proposalTitle
+                    proposalCategory
+                    proposalSummary
+                    isDraft
+                    category
+                    price
+                    recordUrl
+                    isFree
+                    previewUrl
+                    value
+                    funding
+                    setSchedule
+                    publishingScheduleDate
+                    publishingScheduleTime
+                    viewCount
+                    purchaseCount
+                    agoraUserId
+                    user{
+                        username
+                        phoneNumber
+                        photoUrl
+                        fullName
+                        about
+                        gender
+                        lastSeen
+                        isVerified
+                        isDeleted
+                        createdDate
+                        id
+                        email
+                        emailConfirmed
+                        phoneNumberConfirmed
+                    }
+                }
+                isViewed
+                isBookmark
+                isPurchased
+                isFollowed
+                isLiked
+                recordStarted
+                recordEnded
+            }
+            totalCount
+        }
+        status
+    }
+}
+query live_getLiveStreams(
+  $skip: Int
+  $take: Int
+  $where: LiveDtoFilterInput
+  $order: [LiveDtoSortInput!]
+) {
+  live_getLiveStreams {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        isBookmark
+        isPurchased
+        isViewed
+        isFollowed
+        live {
+          id
+          introUrl
+          category
+          createdDate
+          description
+          photoUrl
+          recordUrl
+          title
+          viewCount
+          user {
+            fullName
+            photoUrl
+            username
+            id
+          }
+        }
+
+        recordEnded
+        recordStarted
+      }
+      totalCount
+    }
+    status
+  }
+}
+
+query live_getRecommendedLives(
+  $skip: Int
+  $take: Int
+  $where: LiveDtoFilterInput
+  $order: [LiveDtoSortInput!]
+) {
+  live_getRecommendedLives {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        isBookmark
+        isPurchased
+        isViewed
+        live {
+          id
+          introUrl
+          category
+          createdDate
+          description
+          photoUrl
+          recordUrl
+          title
+          viewCount
+          user {
+            photoUrl
+            fullName
+            username
+            id
+          }
+        }
+        recordEnded
+        recordStarted
+      }
+      totalCount
+    }
+    status
+  }
+}
+
+query live_getTrendingLives(
+  $skip: Int
+  $take: Int
+  $where: LiveDtoFilterInput
+  $order: [LiveDtoSortInput!]
+) {
+  live_getTrendingLives {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        isBookmark
+        isPurchased
+        isViewed
+        live {
+          id
+          introUrl
+          category
+          createdDate
+          description
+          recordUrl
+          liveType
+          photoUrl
+          title
+          viewCount
+          user {
+            photoUrl
+            fullName
+            username
+            id
+          }
+        }
+        recordEnded
+        recordStarted
+      }
+      totalCount
+    }
+    status
+  }
+}
+
+query live_getNewLives(
+  $skip: Int
+  $take: Int
+  $where: LiveDtoFilterInput
+  $order: [LiveDtoSortInput!]
+) {
+  live_getNewLives {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        isBookmark
+        isPurchased
+        isViewed
+        live {
+          id
+          introUrl
+          category
+          createdDate
+          description
+          photoUrl
+          recordUrl
+          title
+          viewCount
+          user {
+            photoUrl
+            fullName
+            username
+            id
+          }
+        }
+        recordEnded
+        recordStarted
+      }
+      totalCount
+    }
+    status
+  }
+}
+
+query live_getLiveComments(
+  $liveId: Int!
+  $skip: Int
+  $take: Int
+  $where: LiveCommentDtoFilterInput
+  $order: [LiveCommentDtoSortInput!]
+) {
+  live_getLiveComments(liveId: $liveId) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        comment {
+          id
+          text
+          user {
+            photoUrl
+            fullName
+            username
+            id
+          }
+          children {
+            text
+          }
+        }
+        tip
+      }
+      totalCount
+    }
+    status
+  }
+}
+
+query live_getLivesForHomePage($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!], $category: String){
+    live_getLivesForHomePage(category: $category){
+        result(skip: $skip, take: $take, where: $where, order: $order){
+            pageInfo{
+                hasNextPage
+                hasPreviousPage
+            }
+            items{
+                isViewed
+                isBookmark
+                isPurchased
+                isFollowed
+                isLiked
+                recordStarted
+                recordEnded
+            }
+            totalCount
+        }
+        status
+    }
+}

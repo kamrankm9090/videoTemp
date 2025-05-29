@@ -1,3 +1,6 @@
+//upload
+export {useUploadFile} from './upload';
+
 //helper
 export {useGetStatusBarHeight} from './helper/useGetStatusBarHeight';
 export {useKeyboardHeight} from './helper/useKeyboardHeight';

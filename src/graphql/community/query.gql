@@ -1,0 +1,58 @@
+
+
+query community_getCommunities ($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
+  community_getCommunities {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+      items{
+        communityType
+        createdDate
+        creator{
+          about
+          fullName
+          photoUrl
+        }
+        description
+        id
+        requestCount
+        title
+        
+      }
+      totalCount
+    }
+  
+    status
+  }
+}
+
+
+query community_getOtherCommunities ($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
+  community_getOtherCommunities {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+      items{
+        communityType
+        createdDate
+        creator{
+          about
+          fullName
+          photoUrl
+        }
+        description
+        id
+        requestCount
+        title
+        
+      }
+      totalCount
+    }
+  
+    status
+  }
+}
