@@ -14,6 +14,8 @@ export function generateUuid() {
 export const isIos = Platform.OS === 'ios';
 export const isAndroid = Platform.OS === 'android';
 
+export const IS_DEV = __DEV__;
+
 export async function reportError(error: unknown, message: string) {
   //console.log('error-->', error, ' message-->', message)
 }
@@ -118,3 +120,25 @@ export const formatTimeAgo = (timestamp: string | number | Date): string => {
   if (months < 12) return `${months} month${months > 1 ? 's' : ''} ago`;
   return `${years} year${years > 1 ? 's' : ''} ago`;
 };
+
+export function formatViewCount(count?: number): string {
+  if (typeof count !== 'number') return '0 views';
+
+  let formatted: string;
+
+  if (count >= 1_000_000) {
+    formatted = (count / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+  } else if (count >= 1_000) {
+    formatted = (count / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+  } else {
+    formatted = count.toLocaleString();
+  }
+
+  const label = count === 1 ? 'viewer' : 'viewers';
+  return `${formatted} ${label}`;
+}
+
+export function getAvatarInitial(title?: string): string {
+  if (!title || typeof title !== 'string') return '';
+  return title.trim().charAt(0).toUpperCase();
+}
