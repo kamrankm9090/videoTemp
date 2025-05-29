@@ -82,9 +82,17 @@ export default function LiveScreen() {
   const onJoinChannelSuccess = useCallback(
     (connection: RtcConnection, elapsed: number) => {
       mutateUpdateLive(
-        {input: {agoraUserId: connection.localUid}},
+        {
+          input: {
+            agoraUserId: connection.localUid?.toString(),
+            id: Number(channelId),
+          },
+        },
         {
           onSuccess: response => {
+            if (response?.live_updateLive?.status?.code === 1) {
+              console.log('yes success');
+            }
             console.log('response-->', response);
           },
         },
@@ -96,7 +104,7 @@ export default function LiveScreen() {
         console.log('uuuy');
       }
     },
-    [channelId, uid],
+    [channelId, uid, mutateUpdateLive],
   );
 
   function joinChannelHandler() {
