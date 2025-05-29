@@ -4305,16 +4305,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"amazon-ivs-react-native-player@npm:1.5.0":
-  version: 1.5.0
-  resolution: "amazon-ivs-react-native-player@npm:1.5.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: a1f299011ce27345c15159d9a6b1b6b6150a9ec1d53ed071b511b4f8775869e9ed0df88af3eeb694a42d4fb0e938e85a3dde20d06ed81a46347fcf9f997c22e6
-  languageName: node
-  linkType: hard
-
 "anser@npm:^1.4.9":
   version: 1.4.10
   resolution: "anser@npm:1.4.10"
@@ -8755,7 +8745,6 @@ __metadata:
     "@types/react": ^18.2.6
     "@types/react-test-renderer": ^18.0.0
     "@types/uuid": ^10.0.0
-    amazon-ivs-react-native-player: 1.5.0
     babel-jest: ^29.6.3
     babel-plugin-module-resolver: 5.0.2
     dayjs: 1.11.13
@@ -8805,7 +8794,7 @@ __metadata:
     react-native-toast-message: 2.2.1
     react-native-url-polyfill: 2.0.0
     react-native-vector-icons: 9.2.0
-    react-native-video: 6.13.0
+    react-native-video: 6.14.1
     react-native-vision-camera: 4.6.4
     react-test-renderer: 18.3.1
     typescript: 5.0.4
@@ -11000,13 +10989,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-video@npm:6.13.0":
-  version: 6.13.0
-  resolution: "react-native-video@npm:6.13.0"
+"react-native-video@npm:6.14.1":
+  version: 6.14.1
+  resolution: "react-native-video@npm:6.14.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 3b9c511d238de3991e5412fbc72e5a8ccc16416cc82f330fbcae470ed658e24448a2c5bce0b003308d8fef1f84c709de9b6143fc751345d068c9120586333b7b
+  checksum: fff267341cfb6c063ae0d34095177b3aa18fcd61e411a28740f4ce145cf08115cf4cc188389cd43445e1c84dd5159adcb94be645585300bcee9ca03a8b4e6fa1
   languageName: node
   linkType: hard
 
