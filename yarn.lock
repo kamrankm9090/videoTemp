@@ -3086,11 +3086,6 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-amazon-ivs-react-native-player@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/amazon-ivs-react-native-player/-/amazon-ivs-react-native-player-1.5.0.tgz#608b9561e31ed3c42befe8e59ccc34d167672934"
-  integrity sha512-p4GlL/GNgkxnaOMJKlQeyYeEQ2Ejo+B5Iu9VGPsgWaUyVvpA/81E8Hr3czouxr7IylPyxlM3gSPzbOo4hW1+wg==
-
 anser@^1.4.9:
   version "1.4.10"
   resolved "https://registry.yarnpkg.com/anser/-/anser-1.4.10.tgz#befa3eddf282684bd03b63dcda3927aef8c2e35b"
@@ -7821,10 +7816,10 @@ react-native-vector-icons@9.2.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native-video@6.13.0:
-  version "6.13.0"
-  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-6.13.0.tgz#c5161176fa3cbe78966ea1f26faa92503cbf475f"
-  integrity sha512-eY6jgLcmYKAAlAZhsZbp8wfCVrGu7jmUYTTspn8udN8j4jqr4Fq90ROOM/QegGkwNs4waclL0IkzGuq61kT4DQ==
+react-native-video@6.14.1:
+  version "6.14.1"
+  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-6.14.1.tgz#1b62acb8f3e1821b08f1ff20271ab427329f544c"
+  integrity sha512-nTPHqg+GKu6UV6Hr5Ph48Hn2jod963bHCt0wWtlK9jv9lE1FDGyDdX0Jl15lky8v7VhNdqjqb9DX0EUhMontWg==
 
 react-native-vision-camera@4.6.4:
   version "4.6.4"

@@ -41,10 +41,6 @@ PODS:
   - AgoraRtcEngine_iOS/VideoCodecEnc (4.5.2)
   - AgoraRtcEngine_iOS/VirtualBackground (4.5.2)
   - AgoraRtcEngine_iOS/VQA (4.5.2)
-  - amazon-ivs-react-native-player (1.5.0):
-    - AmazonIVSPlayer (~> 1.23.0)
-    - React-Core
-  - AmazonIVSPlayer (1.23.0)
   - boost (1.84.0)
   - BVLinearGradient (2.8.3):
     - React-Core
@@ -1486,7 +1482,7 @@ PODS:
     - Yoga
   - react-native-splash-screen (3.3.0):
     - React-Core
-  - react-native-video (6.13.0):
+  - react-native-video (6.14.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1499,7 +1495,7 @@ PODS:
     - React-featureflags
     - React-graphics
     - React-ImageManager
-    - react-native-video/Video (= 6.13.0)
+    - react-native-video/Video (= 6.14.1)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-rendererdebug
@@ -1508,7 +1504,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-video/Fabric (6.13.0):
+  - react-native-video/Fabric (6.14.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1529,7 +1525,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-video/Video (6.13.0):
+  - react-native-video/Video (6.14.1):
     - DoubleConversion
     - DVAssetLoaderDelegate (~> 0.3.1)
     - glog
@@ -2188,7 +2184,6 @@ PODS:
   - Yoga (0.0.0)
 
 DEPENDENCIES:
-  - amazon-ivs-react-native-player (from `../node_modules/amazon-ivs-react-native-player`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -2289,7 +2284,6 @@ SPEC REPOS:
     - AgoraInfra_iOS
     - AgoraIrisRTC_iOS
     - AgoraRtcEngine_iOS
-    - AmazonIVSPlayer
     - DVAssetLoaderDelegate
     - libwebp
     - SDWebImage
@@ -2298,8 +2292,6 @@ SPEC REPOS:
     - SPTPersistentCache
 
 EXTERNAL SOURCES:
-  amazon-ivs-react-native-player:
-    :path: "../node_modules/amazon-ivs-react-native-player"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   BVLinearGradient:
@@ -2486,8 +2478,6 @@ SPEC CHECKSUMS:
   AgoraInfra_iOS: 3691b2b277a1712a35ae96de25af319de0d73d08
   AgoraIrisRTC_iOS: eab58c126439adf5ec99632828a558ea216860da
   AgoraRtcEngine_iOS: 97e2398a2addda9057815a2a583a658e36796ff6
-  amazon-ivs-react-native-player: 26b73e30380ccf132470c0829e6fd7bdf1db1f55
-  AmazonIVSPlayer: 056aa543826328b578f51d5f3a1ac47b227d813d
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
@@ -2536,7 +2526,7 @@ SPEC CHECKSUMS:
   react-native-pager-view: e54bbc404b86aef2a8ee3f862d3045a9cac978c9
   react-native-safe-area-context: f145b8906585d648f9f9c7dfa3885bac54f38fcc
   react-native-splash-screen: 95994222cc95c236bd3cdc59fe45ed5f27969594
-  react-native-video: d3add651d67cbcdb9f5ebe73d34b16975f96a1bf
+  react-native-video: e1458266270907e72fe34bb78beaf77c846b0c24
   React-nativeconfig: f7ab6c152e780b99a8c17448f2d99cf5f69a2311
   React-NativeModulesApple: 9aeb901b9bfcc9235e912445fb3cf4780a99baf4
   React-perflogger: 16e049953d21b37e9871ddf0b02f414e12ff14ba
