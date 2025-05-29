@@ -153,7 +153,6 @@ export default function VideoPreviewRecorder({
       };
 
       const response: any = await uploadFile(param, progress => {
-        console.log(`Upload Progress: ${progress}%`);
         setUploadProgress(progress);
       });
 
@@ -178,71 +177,67 @@ export default function VideoPreviewRecorder({
     setCameraPosition(prev => (prev === 'back' ? 'front' : 'back'));
   }
 
-  return (
-      videoUri ? (
-        <VStack flexGrow={1} bg={Colors.BACKGROUND}>
-          <Video
-            source={{uri: videoUri}}
-            style={styles.video}
-            controls
-            resizeMode="cover"
-          />
-          <VStack position="absolute" alignSelf="center" bottom={100} space={12}>
-            <AppButton
-              title={
-                uploading ? `Uploading... ${uploadProgress}%` : 'Upload Video'
-              }
-              onPress={uploadVideo}
-              disabled={uploading}
-            />
+  return videoUri ? (
+    <VStack flexGrow={1} bg={Colors.BACKGROUND}>
+      <Video
+        source={{uri: videoUri}}
+        style={styles.video}
+        controls
+        resizeMode="cover"
+      />
+      <VStack position="absolute" alignSelf="center" bottom={100} space={12}>
+        <AppButton
+          title={uploading ? `Uploading... ${uploadProgress}%` : 'Upload Video'}
+          onPress={uploadVideo}
+          disabled={uploading}
+        />
 
-            <AppButton
-              title={'Record Again'}
-              onPress={recordAgain}
-              disabled={uploading}
-            />
-          </VStack>
-        </VStack>
-      ) : (
-        <>
-          <Camera
-            ref={cameraRef}
-            style={styles.preview}
-            device={device}
-            isActive
-            video={true}
-            audio={hasMicrophonePermission}
-          />
-          {recording && (
-            <HStack space={8} m={10} position="absolute" top={40} left={20}>
-              <Box w={14} h={14} rounded={7} bg={Colors.ERROR} />
-              <AppText fontFamily="bold" fontSize={fontSize.large}>
-                {formatTimer(timer)}
-              </AppText>
-            </HStack>
-          )}
-          <HStack
-            w="100%"
-            space={24}
-            bottom={100}
-            alignSelf="center"
-            position="absolute"
-            justifyContent="center">
-            <AppButton
-              width="auto"
-              title={recording ? 'Stop Recording' : `Record (${maxDuration}s)`}
-              onPress={recording ? stopRecording : startRecording}
-            />
-            <AppTouchable
-              onPress={switchOnPress}
-              rounded={8}
-              p={7}
-              bg={Colors.Silver_transparent_80}>
-              <Reload />
-            </AppTouchable>
-          </HStack>
-        </>
-      )
+        <AppButton
+          title={'Record Again'}
+          onPress={recordAgain}
+          disabled={uploading}
+        />
+      </VStack>
+    </VStack>
+  ) : (
+    <>
+      <Camera
+        ref={cameraRef}
+        style={styles.preview}
+        device={device}
+        isActive
+        video={true}
+        audio={hasMicrophonePermission}
+      />
+      {recording && (
+        <HStack space={8} m={10} position="absolute" top={40} left={20}>
+          <Box w={14} h={14} rounded={7} bg={Colors.ERROR} />
+          <AppText fontFamily="bold" fontSize={fontSize.large}>
+            {formatTimer(timer)}
+          </AppText>
+        </HStack>
+      )}
+      <HStack
+        w="100%"
+        space={24}
+        bottom={100}
+        alignSelf="center"
+        position="absolute"
+        justifyContent="center">
+        <AppButton
+          width="auto"
+          title={recording ? 'Stop Recording' : `Record (${maxDuration}s)`}
+          onPress={recording ? stopRecording : startRecording}
+        />
+        <AppTouchable
+          onPress={switchOnPress}
+          rounded={8}
+          p={7}
+          bg={Colors.Silver_transparent_80}>
+          <Reload />
+        </AppTouchable>
+      </HStack>
+    </>
   );
 }
 

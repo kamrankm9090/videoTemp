@@ -41,9 +41,7 @@ export default function CollaborativeScreen() {
 
   const {handleSubmit, register, formState} = methods;
 
-  const onSubmit = useCallback((data: any) => {
-    console.log('SUBMIT:', data);
-  }, []);
+  const onSubmit = useCallback((data: any) => {}, []);
 
   return (
     <AppContainer>

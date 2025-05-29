@@ -6,7 +6,7 @@ const initialState = {
   token: '',
   liveType: LiveType.LiveContent,
   tokenCreateDate: undefined as number | undefined,
-  liveData: {},
+  liveData: null,
 };
 
 const liveStore = proxy<liveStoreType>({
@@ -23,7 +23,7 @@ const liveStore = proxy<liveStoreType>({
   setTokenCreateDate: (tokenCreateDate: number) => {
     liveStore.tokenCreateDate = tokenCreateDate;
   },
-  setLiveData: (liveData: any) => {
+  setLiveData: (liveData: LiveG) => {
     liveStore.liveData = liveData;
   },
   resetLiveStore: () => {

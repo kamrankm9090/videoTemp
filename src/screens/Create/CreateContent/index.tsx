@@ -24,7 +24,6 @@ import {
   useAgora_CreateTokenMutation,
   useLive_CreateLiveMutation,
 } from '~/graphql/generated';
-import useInitAgora from '~/hooks/agora/useInitAgora';
 import {navigate} from '~/navigation/methods';
 import {createContentSchema} from '~/schemas';
 import {liveStore} from '~/stores';
@@ -32,8 +31,6 @@ import {Colors} from '~/styles';
 import {showErrorMessage} from '~/utils/utils';
 
 export default function CreateContentScreen() {
-  useInitAgora();
-
   const {liveType, setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
 
@@ -87,7 +84,7 @@ export default function CreateContentScreen() {
         setSchedule: formData?.isSchedule,
         ...(!formData?.isFree &&
           isLiveContent && {
-            price: formData?.price,
+            price: Number(formData?.price),
           }),
         ...(formData?.isSchedule && {
           publishingScheduleDate: new Date(formData?.date),

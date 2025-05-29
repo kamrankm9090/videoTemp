@@ -1,4 +1,4 @@
-mutation user_signIn($input: SignInInput){
+mutation user_signIn($input: SigninInput){
     user_signIn(input: $input){
         result{
             token

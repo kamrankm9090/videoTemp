@@ -61,7 +61,7 @@ export default function CommunityScreen() {
           );
         })}
       </HStack>
-      <SearchBar onSearch={t => console.log(t)} />
+      <SearchBar onSearch={t => {}} />
       <AppFlatList
         data={[1, 2]}
         renderItem={renderItem}

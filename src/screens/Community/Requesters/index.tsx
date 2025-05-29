@@ -15,7 +15,7 @@ export default function RequestersScreen() {
   return (
     <AppContainer>
       <ScreensHeader title="Requesters" />
-      <SearchBar onSearch={t => console.log(t)} />
+      <SearchBar onSearch={t => {}} />
       <AppFlatList data={[1, 2]} renderItem={renderItem} />
     </AppContainer>
   );

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Image } from 'react-native';
 import {ChevronBack} from '~/assets/svgs';
 import {AppImage, AppText, AppTouchable, HStack, VStack} from '~/components';
 import {Colors} from '~/styles';
@@ -27,7 +26,6 @@ export default function GroupInfoMedia() {
           <AppImage
             key={index}
             imageSource={'https://picsum.photos/200/300'}
-            
             style={{
               width: 100,
               height: 100,
@@ -41,7 +39,7 @@ export default function GroupInfoMedia() {
         ))}
       </HStack>
 
-      <AppTouchable alignSelf="center" onPress={() => console.log('See more')}>
+      <AppTouchable alignSelf="center" onPress={() => {}}>
         <HStack alignItems="center" gap={4} mt={4}>
           <AppText fontSize={14} fontWeight="500">
             See more

@@ -1,74 +1,67 @@
-query live_getLives(
-  $skip: Int
-  $take: Int
-  $where: LiveDtoFilterInput
-  $order: [LiveDtoSortInput!]
-) {
-  live_getLives {
-    result(skip: $skip, take: $take, where: $where, order: $order) {
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-      }
-      items {
-        isLiked
-        live {
-          likeCount
-          userId
-          introUrl
-          liveType
-          photoUrl
-          title
-          description
-          proposalTitle
-          proposalCategory
-          proposalSummary
-          isDraft
-          category
-          price
-          recordUrl
-          isFree
-          previewUrl
-          value
-          funding
-          setSchedule
-          publishingScheduleDate
-          publishingScheduleTime
-          viewCount
-          purchaseCount
-          user {
-            username
-            phoneNumber
-            photoUrl
-            fullName
-            about
-            gender
-            lastSeen
-            isVerified
-            isDeleted
-            createdDate
-            id
-            email
-            emailConfirmed
-            phoneNumberConfirmed
-          }
-          id
-          isDeleted
-          createdDate
-          lastModifiedDate
+query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!]){
+    live_getLives{
+        result(skip: $skip, take: $take, where: $where, order: $order){
+            pageInfo{
+                hasNextPage
+                hasPreviousPage
+            }
+            items{
+                live{
+                    id
+                    likeCount
+                    userId
+                    introUrl
+                    liveType
+                    photoUrl
+                    title
+                    description
+                    proposalTitle
+                    proposalCategory
+                    proposalSummary
+                    isDraft
+                    category
+                    price
+                    recordUrl
+                    isFree
+                    previewUrl
+                    value
+                    funding
+                    setSchedule
+                    publishingScheduleDate
+                    publishingScheduleTime
+                    viewCount
+                    purchaseCount
+                    agoraUserId
+                    user{
+                        username
+                        phoneNumber
+                        photoUrl
+                        fullName
+                        about
+                        gender
+                        lastSeen
+                        isVerified
+                        isDeleted
+                        createdDate
+                        id
+                        email
+                        emailConfirmed
+                        phoneNumberConfirmed
+                    }
+                }
+                isViewed
+                isBookmark
+                isPurchased
+                isFollowed
+                isLiked
+                recordStarted
+                recordEnded
+            }
+            totalCount
         }
-        recordStarted
-        recordEnded
-        isViewed
-        isBookmark
-        isFollowed
-      }
-      totalCount
+        status
     }
-    status
-  }
 }
-
 query live_getLiveStreams(
   $skip: Int
   $take: Int
@@ -273,4 +266,26 @@ query live_getLiveComments(
     }
     status
   }
+}
+
+query live_getLivesForHomePage($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: [LiveDtoSortInput!], $category: String){
+    live_getLivesForHomePage(category: $category){
+        result(skip: $skip, take: $take, where: $where, order: $order){
+            pageInfo{
+                hasNextPage
+                hasPreviousPage
+            }
+            items{
+                isViewed
+                isBookmark
+                isPurchased
+                isFollowed
+                isLiked
+                recordStarted
+                recordEnded
+            }
+            totalCount
+        }
+        status
+    }
 }

@@ -12,10 +12,17 @@ import {agoraStore, liveStore} from '~/stores';
 import * as log from '~/utils/log';
 import {askMediaAccess} from '~/utils/permissions';
 
-const useInitRtcEngine = (
-  enableVideo: boolean,
-  listenUserJoinOrLeave: boolean = true,
-) => {
+const useInitRtcEngine = ({
+  enableVideo,
+  listenUserJoinOrLeave = true,
+  isBroadcaster,
+  onJoinSuccess,
+}: {
+  enableVideo?: boolean;
+  listenUserJoinOrLeave?: boolean;
+  isBroadcaster?: boolean;
+  onJoinSuccess?: (connection: RtcConnection, elapsed: number) => void;
+}) => {
   const {appId} = agoraStore(state => state);
   const {liveId, token} = useSnapshot(liveStore);
 
@@ -81,6 +88,7 @@ const useInitRtcEngine = (
         (connection.localUid === uid || uid === 0)
       ) {
         setJoinChannelSuccess(true);
+        onJoinSuccess?.(connection, elapsed);
       }
     },
     [channelId, uid],
@@ -206,6 +214,7 @@ const useInitRtcEngine = (
     startPreview,
     engine,
     setChannelId,
+    onJoinChannelSuccess,
   };
 };
 export default useInitRtcEngine;

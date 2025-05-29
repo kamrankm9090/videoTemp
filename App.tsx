@@ -1,4 +1,3 @@
-import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import React, {useCallback, useLayoutEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {SheetProvider} from 'react-native-actions-sheet';
@@ -32,10 +31,8 @@ function App(): React.JSX.Element {
       <QueryClientProvider>
         <GestureHandlerRootView style={styles.flex1}>
           <SheetProvider>
-            <BottomSheetModalProvider>
-              <AppNavigator />
-              <Toast config={toastConfig} />
-            </BottomSheetModalProvider>
+            <AppNavigator />
+            <Toast config={toastConfig} />
           </SheetProvider>
         </GestureHandlerRootView>
       </QueryClientProvider>

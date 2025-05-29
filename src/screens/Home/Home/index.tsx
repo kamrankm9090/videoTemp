@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {StyleSheet, ViewToken} from 'react-native';
 import {
@@ -16,6 +17,12 @@ export default function HomeScreen() {
   const [visibleIndex, setVisibleIndex] = useState<number | null>(null);
   const viewConfigRef = useRef({viewAreaCoveragePercentThreshold: 70});
 
+  const today = useMemo(() => {
+    return dayjs(new Date().toUTCString());
+  }, []);
+
+  console.log({today});
+
   const {
     data: getLives,
     isLoading: isLoadingGetLives,
@@ -28,6 +35,9 @@ export default function HomeScreen() {
       and: [
         {recordStarted: {eq: true}},
         {live: {liveType: {eq: LiveType.LiveContent}}},
+        {
+          or: [{live: {setSchedule: {eq: false}}}],
+        },
       ],
     },
     order: {live: {createdDate: SortEnumType.Desc}},
@@ -58,9 +68,9 @@ export default function HomeScreen() {
 
   const listFooterComponent = useCallback(() => {
     return (
-      <VStack>
+      <VStack space={24}>
         <PeopleYouMayKnow />
-        <InviteFriendsCard />
+        <InviteFriendsCard w="auto" />
       </VStack>
     );
   }, []);
@@ -75,9 +85,9 @@ export default function HomeScreen() {
         viewabilityConfig={viewConfigRef.current}
         onViewableItemsChanged={onViewRef.current}
         removeClippedSubviews
+        contentContainerStyle={styles.contentContainerStyle}
         listFooterComponent={listFooterComponent}
         onEndReached={onLoadMore}
-        contentContainerStyle={styles.contentContainerStyle}
         refreshing={isRefetchingGetLives}
         onRefresh={refetchGetLives}
       />

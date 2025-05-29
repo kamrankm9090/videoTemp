@@ -34,8 +34,6 @@ export default function ZoomViewerModal({
   local,
   errorImage = images.noImage,
 }: Props) {
-  console.log(imageZoom, imageSource, 'hir ir');
-
   const {statusBarHeight} = useGetStatusBarHeight();
 
   const imageViewerRef = useRef<ImageViewer>();

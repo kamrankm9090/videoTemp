@@ -6,7 +6,7 @@ import {
   User_RefreshTokenMutationVariables,
 } from '~/graphql/generated';
 import {userDataStore} from '~/stores';
-import {isTokenExpired} from '~/utils/utils';
+import {isTokenExpired, setHeader} from '~/utils/utils';
 
 export const graphQLClient = new GraphQLClient(config.apiURL);
 
@@ -30,10 +30,9 @@ export async function handleToken() {
   const token = userDataStore.getState()?.authData?.token;
   const isUserLoggedIn = userDataStore.getState()?.isUserLoggedIn;
 
-  console.log({token, isUserLoggedIn});
+  console.log({token});
 
   if (isUserLoggedIn && isTokenExpired(token)) {
-    console.log('ggggg expired');
     await handleNewToken();
     return true;
   } else {
@@ -45,13 +44,6 @@ export async function handleNewToken() {
   const refreshToken = userDataStore.getState()?.authData?.refreshToken;
   const accessToken = userDataStore.getState()?.authData?.token;
 
-  console.log(
-    'refreshToken: ',
-    refreshToken,
-    '---- accessToken-->',
-    accessToken,
-  );
-
   if (!refreshToken) {
     return null;
   }
@@ -61,7 +53,6 @@ export async function handleNewToken() {
       refreshToken,
       accessToken,
     };
-    // console.log('variables-->', variables);
     const response = await graphQLClient.request<
       User_RefreshTokenMutation,
       any,
@@ -70,9 +61,8 @@ export async function handleNewToken() {
     >(refreshTokenQuery, {input: variables});
     const result = response?.user_refreshToken?.result;
 
-    console.log('res-->', response);
-
     if (result?.token && result?.refreshToken) {
+      setHeader(result?.token);
       userDataStore.setState({
         authData: {
           token: result?.token,

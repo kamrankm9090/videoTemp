@@ -12,13 +12,9 @@ export const useNotificationAddedSubscription = ({
 }) => {
   const queryClient = useQueryClient();
   useEffect(() => {
-    console.log("hiii");
-    
     const ws = new WebSocket(config.apiURL, 'graphql-ws');
-    console.log(ws);
 
     ws.onopen = () => {
-      console.log('connected');
       const message = {
         id: '1',
         type: 'start',
@@ -33,8 +29,7 @@ export const useNotificationAddedSubscription = ({
     };
     ws.onmessage = event => {
       const res = JSON.parse(event.data);
-      console.log("res sub =>", res);
-      
+
       if (
         res?.type !== 'ka' &&
         res.type === 'data' &&

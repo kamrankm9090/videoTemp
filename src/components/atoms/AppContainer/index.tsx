@@ -5,13 +5,14 @@ import {useGetStatusBarHeight} from '~/hooks';
 import {Colors} from '~/styles';
 
 type Props = {
-  children?: ReactChildren;
+  children?: React.ReactNode;
   isLoading?: boolean;
   safeArea?: boolean;
   backgroundColor?: string;
   barStyle?: 'dark-content' | 'light-content' | 'default';
   statusBarBackgroundColor?: string;
   isStatusBarHeight?: boolean;
+  loadingComponent?: React.ReactNode;
 };
 
 export default function AppContainer(props: Props) {
@@ -23,17 +24,27 @@ export default function AppContainer(props: Props) {
     statusBarBackgroundColor,
     barStyle = 'light-content',
     isStatusBarHeight = false,
+    loadingComponent,
   } = props;
 
   const [isLoadScreen, setIsLoadScreen] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsLoadScreen(true);
     }, 5);
+    return () => clearTimeout(timer);
   }, []);
 
   const {statusBarHeight} = useGetStatusBarHeight();
+  const Loader = loadingComponent ?? <AppLoading />;
+
+  const content = (
+    <>
+      {isLoading && Loader}
+      {!isLoading && (isLoadScreen ? children : Loader)}
+    </>
+  );
 
   if (safeArea) {
     return (
@@ -44,13 +55,12 @@ export default function AppContainer(props: Props) {
         ]}>
         <StatusBar
           translucent
-          barStyle={barStyle ?? 'dark-content'}
+          barStyle={barStyle}
           backgroundColor={
             statusBarBackgroundColor || backgroundColor || Colors.BLACK
           }
         />
-        {isLoading && <AppLoading />}
-        {isLoadScreen ? children : <AppLoading />}
+        {content}
       </SafeAreaView>
     );
   }
@@ -64,11 +74,10 @@ export default function AppContainer(props: Props) {
       ]}>
       <StatusBar
         translucent
-        barStyle={barStyle ?? 'light-content'}
+        barStyle={barStyle}
         backgroundColor={statusBarBackgroundColor ?? Colors.BLACK}
       />
-      {isLoading && <AppLoading />}
-      {isLoadScreen ? children : <AppLoading />}
+      {content}
     </View>
   );
 }

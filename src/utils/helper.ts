@@ -5,6 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 import * as Yup from 'yup';
 import config from '~/config';
 import {showSuccessMessage} from './utils';
+import dayjs from 'dayjs';
 
 export function generateUuid() {
   return uuidv4().replace(/-/g, '');
@@ -12,6 +13,8 @@ export function generateUuid() {
 
 export const isIos = Platform.OS === 'ios';
 export const isAndroid = Platform.OS === 'android';
+
+export const IS_DEV = __DEV__;
 
 export async function reportError(error: unknown, message: string) {
   //console.log('error-->', error, ' message-->', message)
@@ -78,6 +81,21 @@ export const getRandomColorFromName = (name: string): string => {
   return colors[charCode % colors.length];
 };
 
+export function parseISODuration(duration: string) {
+  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  const [, h, m, s] = match || [];
+
+  const hours = parseInt(h || '0', 10);
+  const minutes = parseInt(m || '0', 10);
+  // const seconds = parseInt(s || '0', 10);
+
+  const time = dayjs().hour(hours).minute(minutes);
+
+  const formattedTime = time.format('h:mm A');
+
+  return formattedTime;
+}
+
 // form helper
 export {useForm} from 'react-hook-form';
 export {Yup, yupResolver};
@@ -102,3 +120,25 @@ export const formatTimeAgo = (timestamp: string | number | Date): string => {
   if (months < 12) return `${months} month${months > 1 ? 's' : ''} ago`;
   return `${years} year${years > 1 ? 's' : ''} ago`;
 };
+
+export function formatViewCount(count?: number): string {
+  if (typeof count !== 'number') return '0 views';
+
+  let formatted: string;
+
+  if (count >= 1_000_000) {
+    formatted = (count / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+  } else if (count >= 1_000) {
+    formatted = (count / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+  } else {
+    formatted = count.toLocaleString();
+  }
+
+  const label = count === 1 ? 'viewer' : 'viewers';
+  return `${formatted} ${label}`;
+}
+
+export function getAvatarInitial(title?: string): string {
+  if (!title || typeof title !== 'string') return '';
+  return title.trim().charAt(0).toUpperCase();
+}

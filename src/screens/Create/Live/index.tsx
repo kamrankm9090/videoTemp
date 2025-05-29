@@ -1,9 +1,10 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {ReactElement, useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ClientRoleType,
   LocalVideoStreamReason,
   LocalVideoStreamState,
+  RtcConnection,
   RtcSurfaceView,
   VideoCanvas,
   VideoSourceType,
@@ -15,6 +16,7 @@ import {Note, Reload} from '~/assets/svgs';
 import {
   AppButton,
   AppContainer,
+  AppScrollView,
   AppText,
   AppTouchable,
   BaseComponent,
@@ -26,11 +28,16 @@ import {
   RenderNothing,
   VStack,
 } from '~/components';
-import {LiveType} from '~/graphql/generated';
+import {
+  LiveType,
+  useAgora_StopRecordMutation,
+  useLive_UpdateLiveMutation,
+} from '~/graphql/generated';
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {resetRoot} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
+import {parseISODuration} from '~/utils/helper';
 import * as log from '~/utils/log';
 import {fontSize, height} from '~/utils/style';
 import {
@@ -52,8 +59,16 @@ export default function LiveScreen() {
     uid,
     channelId,
     token,
-  } = useInitRtcEngine(enableVideo);
-  const {resetLiveStore, liveData, liveId} = useSnapshot(liveStore);
+  } = useInitRtcEngine({
+    enableVideo: true,
+    isBroadcaster: true,
+    onJoinSuccess: (connection: RtcConnection, elapsed: number) =>
+      onJoinChannelSuccess(connection, elapsed),
+  });
+  const {resetLiveStore} = useSnapshot(liveStore);
+
+  const {mutate: mutateStopRecord} = useAgora_StopRecordMutation();
+  const {mutate: mutateUpdateLive} = useLive_UpdateLiveMutation();
 
   const [_, setSwitchCamera] = useState(false);
   const [counterModalVisible, setCounterModalVisible] =
@@ -63,6 +78,34 @@ export default function LiveScreen() {
     engine.current.switchCamera();
     setSwitchCamera(prev => !prev);
   }
+
+  const onJoinChannelSuccess = useCallback(
+    (connection: RtcConnection, elapsed: number) => {
+      mutateUpdateLive(
+        {
+          input: {
+            agoraUserId: connection.localUid?.toString(),
+            id: Number(channelId),
+          },
+        },
+        {
+          onSuccess: response => {
+            if (response?.live_updateLive?.status?.code === 1) {
+              console.log('yes success');
+            }
+            console.log('response-->', response);
+          },
+        },
+      );
+      if (
+        connection.channelId === channelId &&
+        (connection.localUid === uid || uid === 0)
+      ) {
+        console.log('uuuy');
+      }
+    },
+    [channelId, uid, mutateUpdateLive],
+  );
 
   function joinChannelHandler() {
     if (liveStarted) {
@@ -74,49 +117,44 @@ export default function LiveScreen() {
 
   function leaveChannel() {
     engine.current.leaveChannel();
+    engine.current.stopChannelMediaRelay();
     engine.current.removeAllListeners();
+    engine.current.release();
+    mutateStopRecord(
+      {channelName: channelId},
+      {
+        onSuccess() {},
+      },
+    );
   }
 
-  useEffect(() => {
-    engine.current.addListener(
-      'onVideoDeviceStateChanged',
-      (deviceId: string, deviceType: number, deviceState: number) => {
-        log.info(
-          'onVideoDeviceStateChanged',
-          'deviceId',
-          deviceId,
-          'deviceType',
-          deviceType,
-          'deviceState',
-          deviceState,
-        );
-      },
-    );
+  // useEffect(() => {
+  //   engine.current.addListener(
+  //     'onVideoDeviceStateChanged',
+  //     (deviceId: string, deviceType: number, deviceState: number) => {},
+  //   );
 
-    engine.current.addListener(
-      'onLocalVideoStateChanged',
-      (
-        source: VideoSourceType,
-        state: LocalVideoStreamState,
-        error: LocalVideoStreamReason,
-      ) => {
-        log.info(
-          'onLocalVideoStateChanged',
-          'source',
-          source,
-          'state',
-          state,
-          'error',
-          error,
-        );
-      },
-    );
+  //   engine.current.addListener(
+  //     'onLocalVideoStateChanged',
+  //     (
+  //       source: VideoSourceType,
+  //       state: LocalVideoStreamState,
+  //       error: LocalVideoStreamReason,
+  //     ) => {},
+  //   );
 
-    const engineCopy = engine.current;
-    return () => {
-      engineCopy.removeAllListeners();
-    };
-  }, [engine]);
+  //   engine.current.addListener(
+  //     'onUserJoined',
+  //     (connection: RtcConnection, remoteUid: number, elapsed: number) => {
+  //       console.log('remoteUID===>', remoteUid);
+  //     },
+  //   );
+
+  //   const engineCopy = engine.current;
+  //   return () => {
+  //     engineCopy.removeAllListeners();
+  //   };
+  // }, [engine]);
 
   function closeHandler() {
     showSheet('confirmation-action', {
@@ -156,12 +194,12 @@ export default function LiveScreen() {
     // 2. If app certificate is turned on at dashboard, token is needed
     // when joining channel. The channel name and uid used to calculate
     // the token has to match the ones used for channel join
-    leaveChannel();
     engine.current.enableAudio();
     engine.current.joinChannel(token, channelId, uid, {
       // Make myself as the broadcaster to send stream to remote
       clientRoleType: ClientRoleType.ClientRoleBroadcaster,
     });
+    console.log('uid-->', uid);
   }
 
   function renderVideo(user: VideoCanvas): ReactElement | undefined {
@@ -187,7 +225,6 @@ export default function LiveScreen() {
           bg={Colors.BLACK_TRANSPARENT}
         />
       )}
-      {!liveStarted && <ExperienceCard />}
       <BaseComponent
         name={'JoinChannelVideo'}
         renderChannel={RenderNothing}
@@ -201,6 +238,7 @@ export default function LiveScreen() {
           />
         )}
       />
+      <ExperienceCard />
       <CreateLiveFooter
         liveHandler={joinChannelHandler}
         switchOnPress={switchCamera}
@@ -269,83 +307,91 @@ function ExperienceCard() {
       maxH={height * 0.5}
       minH={height * 0.3}
       position="absolute"
-      bottom={200}>
-      <VStack space={12}>
-        <AppText fontFamily="bold" fontSize={fontSize.large}>
-          {liveData?.title}
-        </AppText>
+      bottom={expanded ? 150 : 0}>
+      <AppScrollView contentContainerStyle={styles.scrollView}>
+        <VStack space={12}>
+          <AppText fontFamily="bold" fontSize={fontSize.large}>
+            {liveData?.title}
+          </AppText>
 
-        {!expanded ? (
-          <>
-            <AppText color={Colors.DarkGray} numberOfLines={2}>
-              {liveData?.description}
-            </AppText>
-            <AppText
-              right={0}
-              zIndex={800}
-              bottom={-20}
-              position="absolute"
-              color={Colors.PRIMARY}
-              onPress={() => setExpanded(true)}>
-              show more...
-            </AppText>
-          </>
-        ) : (
-          <VStack space={12}>
-            <AppText color={Colors.VeryLightGrey}>
-              {liveData?.description}
-            </AppText>
+          {!expanded ? (
+            <>
+              <AppText color={Colors.DarkGray} numberOfLines={2}>
+                {liveData?.description}
+              </AppText>
+              <AppText
+                right={0}
+                zIndex={800}
+                bottom={-20}
+                position="absolute"
+                color={Colors.PRIMARY}
+                onPress={() => setExpanded(true)}>
+                Show more...
+              </AppText>
+            </>
+          ) : (
+            <VStack space={12}>
+              <AppText color={Colors.VeryLightGrey}>
+                {liveData?.description}
+              </AppText>
 
-            <AppTouchable
-              py={6}
-              px={12}
-              gap={8}
-              rounded={8}
-              flexDirection="row"
-              bg={Colors.Nero_3}
-              alignSelf="flex-start">
-              <Note />
-              <AppText fontWeight="bold">See Resume</AppText>
-            </AppTouchable>
+              <AppTouchable
+                py={6}
+                px={12}
+                gap={8}
+                rounded={8}
+                flexDirection="row"
+                bg={Colors.Nero_3}
+                alignSelf="flex-start">
+                <Note />
+                <AppText fontWeight="bold">See Resume</AppText>
+              </AppTouchable>
 
-            <HStack justifyContent="space-between">
-              <VStack space={16}>
-                <AppText color={Colors.DarkGray}>Category</AppText>
-                <AppText fontFamily="bold">{liveData?.category?.title}</AppText>
-              </VStack>
-              {liveType === LiveType.LiveContent && (
+              <HStack justifyContent="space-between">
                 <VStack space={16}>
-                  <AppText color={Colors.DarkGray}>Price</AppText>
+                  <AppText color={Colors.DarkGray}>Category</AppText>
                   <AppText fontFamily="bold">
-                    {liveData?.isFree ? 'Free' : `$${liveData?.price}`}
+                    {liveData?.category?.title}
                   </AppText>
                 </VStack>
-              )}
-            </HStack>
+                {liveType === LiveType.LiveContent && (
+                  <VStack space={16}>
+                    <AppText color={Colors.DarkGray}>Price</AppText>
+                    <AppText fontFamily="bold">
+                      {liveData?.isFree ? 'Free' : `$${liveData?.price}`}
+                    </AppText>
+                  </VStack>
+                )}
+              </HStack>
 
-            <HStack mt={16} alignItems="flex-end">
-              <VStack flex={1} space={24}>
-                <AppText color={Colors.DarkGray}>Publishing schedule: </AppText>
-                <AppText fontFamily="bold">
-                  {liveData?.isSchedule
-                    ? `${appFormatDate(
-                        liveData?.publishingScheduleDate,
-                        'YYYY/m/dd',
-                      )}, ${appFormatDate(liveData?.publishingScheduleTime)}`
-                    : '-'}
+              <HStack mt={16} alignItems="flex-end">
+                <VStack flex={1} space={24}>
+                  <AppText color={Colors.DarkGray}>
+                    Publishing schedule:{' '}
+                  </AppText>
+                  <AppText fontFamily="bold">
+                    {liveData?.setSchedule
+                      ? `${appFormatDate(
+                          liveData?.publishingScheduleDate,
+                          'YYYY/m/dd',
+                        )}, ${parseISODuration(
+                          liveData?.publishingScheduleTime,
+                        )}`
+                      : '-'}
+                  </AppText>
+                </VStack>
+
+                <AppText
+                  zIndex={800}
+                  color={Colors.PRIMARY}
+                  onPress={() => setExpanded(false)}>
+                  Show less...
                 </AppText>
-              </VStack>
-
-              <AppText
-                zIndex={800}
-                color={Colors.PRIMARY}
-                onPress={() => setExpanded(false)}>
-                show Less...
-              </AppText>
-            </HStack>
-          </VStack>
-        )}
-      </VStack>
+              </HStack>
+            </VStack>
+          )}
+        </VStack>
+      </AppScrollView>
     </VStack>
   );
 }
@@ -355,5 +401,8 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     width: '100%',
+  },
+  scrollView: {
+    flexGrow: 1,
   },
 });

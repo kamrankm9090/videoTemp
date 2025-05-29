@@ -100,3 +100,13 @@ mutation live_deleteLive($liveId: Int!){
     description
   }
 }
+
+mutation live_updateLive($input: LiveInput){
+    live_updateLive(input: $input){
+        result{
+            userId
+            id
+        }
+        status
+    }
+}
