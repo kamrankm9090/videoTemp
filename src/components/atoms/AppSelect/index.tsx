@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react';
 import {Controller, useFormContext} from 'react-hook-form';
 import {StyleSheet, View, ViewStyle} from 'react-native';
 import {ArrowDown} from '~/assets/svgs';
-import {AppHelperText, AppText, AppTouchable} from '~/components';
+import {AppHelperText, AppText, AppTouchable, HStack} from '~/components';
 import {Colors} from '~/styles';
 
 type Props = React.ComponentProps<typeof View> & {
@@ -16,7 +16,8 @@ type Props = React.ComponentProps<typeof View> & {
   alignItems?: 'center' | 'flex-end' | 'flex-start';
   disabled?: boolean;
   mb?: ViewStyle['marginBottom'];
-  backgroundColor?:ViewStyle['backgroundColor']
+  backgroundColor?: ViewStyle['backgroundColor'];
+  mandatory?: any;
 };
 
 const AppSelect = React.forwardRef(
@@ -31,7 +32,8 @@ const AppSelect = React.forwardRef(
     alignItems = 'center',
     disabled,
     mb,
-    backgroundColor
+    backgroundColor,
+    mandatory,
   }: Props) => {
     const {control} = useFormContext();
 
@@ -48,13 +50,18 @@ const AppSelect = React.forwardRef(
                 {marginBottom: mb},
               ]}>
               {value && (
-                <View style={{...styles.label, backgroundColor}}>
+                <HStack style={{...styles.label, backgroundColor}}>
                   <AppText
                     fontSize={10}
                     color={error ? Colors.ERROR : Colors.WHITE}>
                     {label ? label + ' ' : ''}
                   </AppText>
-                </View>
+                  {mandatory && (
+                    <AppText fontFamily="bold" color={Colors.PRIMARY}>
+                      {' *'}
+                    </AppText>
+                  )}
+                </HStack>
               )}
               <AppTouchable
                 h={48}

@@ -1,0 +1,22 @@
+
+mutation community_createCommunity($input: CommunityInput) {
+  community_createCommunity(input: $input) {
+    result {
+      creatorId
+      title
+      description
+      photoUrl
+      communityType
+      userCount
+      requestCount
+      media
+ 
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+

@@ -13,20 +13,26 @@ import {
   VStack,
 } from '~/components';
 import UploadBox from '~/components/molecules/UploadBox';
+import {useCommunity_CreateCommunityMutation} from '~/graphql/generated';
 import {Colors} from '~/styles';
 import {hideSheet} from '~/utils/utils';
 
 const createCommunitySchema = yup.object().shape({
   title: yup.string().required('Title is required'),
-  type: yup.string().required('Type is required'),
+  communityType: yup
+    .object({
+      value: yup.string().required(),
+      title: yup.string(),
+    })
+    .required('Type is required'),
   description: yup.string().max(300),
 });
 export default function CreateCommunityAction() {
   const defaultValues = {
     title: '',
-    type: 'Private',
+    communityType: {title: 'Private', value: 'PRIVATE'},
     description: '',
-    photo: '',
+    photoUrl: '',
   };
 
   const methods = useForm({
@@ -35,11 +41,23 @@ export default function CreateCommunityAction() {
   });
 
   const {handleSubmit, watch, formState} = methods;
-  const description = watch('description');
 
+  const {mutate, isLoading} = useCommunity_CreateCommunityMutation();
   const onSubmit = (data: any) => {
     console.log('Create Community:', data);
-    // handle submission
+    const input = {
+      ...data,
+
+      communityType: data?.communityType?.value,
+    };
+    mutate(
+      {input},
+      {
+        onSettled(data, error, variables, context) {
+          hideSheet("create-community-action")
+        },
+      },
+    );
   };
   return (
     <ActionSheetContainer
@@ -50,7 +68,7 @@ export default function CreateCommunityAction() {
         onClose={() => hideSheet('create-community-action')}
       />
       <AppFormProvider methods={methods}>
-        <VStack space={16} mb={24}>
+        <VStack space={16} mb={24} mt={16}>
           <FormInput
             name="title"
             containerStyle={styles.InputContainer}
@@ -59,19 +77,18 @@ export default function CreateCommunityAction() {
             {...{formState}}
           />
           <AppDropDown
-            name="type"
+            name="communityType"
             placeholder="Select Type"
-            label='Type'
+            label="Type"
             backgroundColor={Colors.Nero_3}
             data={[
-              {title: 'Private', value: 'Private'},
-              {title: 'Public', value: 'Public'},
+              {title: 'Private', value: 'PRIVATE'},
+              {title: 'Public', value: 'PUBLIC'},
             ]}
-            
-            // mandatory
+            mandetory={true}
             {...{formState}}
           />
-          <UploadBox name="photo" label="Add photo" />
+          <UploadBox name="photoUrl" label="Add photo" />
           <FormInput
             textArea
             containerStyle={styles.InputContainer}
@@ -81,6 +98,7 @@ export default function CreateCommunityAction() {
             {...{formState}}
           />
           <AppButton
+            loading={isLoading}
             title="Create"
             disabled={!formState.isValid}
             onPress={handleSubmit(onSubmit)}
@@ -101,7 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor:Colors.Nero_3
+    backgroundColor: Colors.Nero_3,
   },
   contentContainerStyle: {
     backgroundColor: Colors.Nero_3,

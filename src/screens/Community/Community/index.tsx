@@ -11,14 +11,19 @@ import {
   ScreensHeader,
   SearchBar,
 } from '~/components';
+import { useCommunity_GetCommunitiesQuery } from '~/graphql/generated';
 import {Colors} from '~/styles';
 import {showSheet} from '~/utils/utils';
 
 export default function CommunityScreen() {
   const [tab, setTab] = useState('Your communities');
 
-  const renderItem = () => {
-    return <CommunityItem />;
+  const {data} = useCommunity_GetCommunitiesQuery()
+  console.log(data);
+  const commData = data?.community_getCommunities?.result?.items
+  
+  const renderItem = ({item}:any) => {
+    return <CommunityItem item={item}/>;
   };
 
   const ListFooterComponent = () => {
@@ -63,7 +68,7 @@ export default function CommunityScreen() {
       </HStack>
       <SearchBar onSearch={t => {}} />
       <AppFlatList
-        data={[1, 2]}
+        data={commData || []}
         renderItem={renderItem}
         ListFooterComponent={ListFooterComponent}
       />

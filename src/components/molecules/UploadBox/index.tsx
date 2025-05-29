@@ -1,8 +1,8 @@
 import React from 'react';
 import {Controller, useFormContext} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {AppImage, AppText, AppTouchable, VStack} from '~/components';
+import {AppText, AppTouchable, VStack} from '~/components';
 import {Colors} from '~/styles';
 
 interface UploadBoxProps {
@@ -27,8 +27,6 @@ export default function UploadBox({name, label}: UploadBoxProps) {
       control={control}
       render={({field: {value, onChange}}) => (
         <VStack space={8}>
-          {label && <AppText fontSize={14}>{label}</AppText>}
-
           <AppTouchable
             onPress={() => handlePickImage(onChange)}
             h={120}
@@ -39,8 +37,8 @@ export default function UploadBox({name, label}: UploadBoxProps) {
             alignItems="center"
             borderStyle="dashed">
             {value ? (
-              <AppImage
-                imageSource={{uri: value}}
+              <Image
+                source={{uri: value}}
                 resizeMode="cover"
                 style={styles.image}
               />

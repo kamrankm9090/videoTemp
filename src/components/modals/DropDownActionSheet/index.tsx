@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react';
 import {useController} from 'react-hook-form';
 import {StyleSheet, ViewStyle} from 'react-native';
+import {SheetProps} from 'react-native-actions-sheet';
 import {
   ActionSheetContainer,
   AppFlatList,
@@ -11,6 +12,7 @@ import {
 } from '~/components';
 import {Colors} from '~/styles';
 import {fontSize, height} from '~/utils/style';
+import {hideSheet} from '~/utils/utils';
 
 type Props = {
   name: string;
@@ -32,24 +34,27 @@ type Props = {
   backgroundColor?: ViewStyle['backgroundColor'];
 };
 
-const DropDownActionSheet = ({
-  name,
-  data,
-  label,
-  loading,
-  titleKey = 'title',
-  nestedTitleKey,
-  valueKey = 'value',
-  onSubmitSearch = () => {},
-  onChange,
-  disabled,
-  isObject = true,
-  searchable = true,
-  onLoadMore,
-  mb,
-  backgroundColor,
-}: Props) => {
-  const {field} = useController({name});
+const DropDownActionSheet = (props: SheetProps<'drop-down-action-sheet'>) => {
+  const {
+    name,
+    control,
+    data,
+    label,
+    loading,
+    titleKey = 'title',
+    nestedTitleKey,
+    valueKey = 'value',
+    onSubmitSearch = () => {},
+    onChange,
+    disabled,
+    isObject = true,
+    searchable = true,
+    onLoadMore,
+    mb,
+    backgroundColor,
+  } = props?.payload ?? {};
+
+  const {field} = useController({name, control});
 
   const renderItem = useCallback(
     ({item}: {item: any}) => {
@@ -66,6 +71,7 @@ const DropDownActionSheet = ({
           field.onChange?.(item);
           onChange?.(item);
         }
+        hideSheet('drop-down-action-sheet');
       }
 
       return (

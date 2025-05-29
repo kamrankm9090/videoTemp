@@ -1,5 +1,5 @@
 import React from 'react';
-import {useController} from 'react-hook-form';
+import {useFormContext} from 'react-hook-form';
 import {ViewStyle} from 'react-native';
 import {AppContainer, AppSelect} from '~/components';
 import {Colors} from '~/styles';
@@ -23,6 +23,7 @@ type Props = {
   onLoadMore?: () => void;
   mb?: ViewStyle['marginBottom'];
   backgroundColor?: ViewStyle['backgroundColor'];
+  mandetory?:boolean
 };
 
 const AppDropDown = React.forwardRef(
@@ -42,13 +43,15 @@ const AppDropDown = React.forwardRef(
     onLoadMore,
     mb,
     backgroundColor,
+    mandetory
   }: Props) => {
-    const {field} = useController({name});
+    const {control} = useFormContext();
 
     function onPressHandler() {
       showSheet('drop-down-action-sheet', {
         payload: {
           name,
+          control,
           data,
           label,
           loading,
@@ -79,6 +82,7 @@ const AppDropDown = React.forwardRef(
         <AppSelect
           name={name}
           label={label}
+          mandatory={mandetory}
           onPress={onPressHandler}
           titleKey={titleKey}
           disabled={disabled}
