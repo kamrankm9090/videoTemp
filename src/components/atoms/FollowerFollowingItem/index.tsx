@@ -8,8 +8,53 @@ import AppButton from '../AppButton';
 import AppText from '../AppText';
 import AppTouchable from '../AppTouchable';
 import Avatar from '../Avatar';
+import {hideSheet, showSheet} from '~/utils/utils';
+import {UserType, useSocial_RemoveFollowerMutation} from '~/graphql/generated';
 
-const FollowerFollowingItem = () => {
+const FollowerFollowingItem = ({
+  item,
+}: {
+  item: {
+    __typename?: 'FollowerFolloweeDto';
+    isFollower: boolean;
+    followedByCurrentUser: boolean;
+    followerOfCurrentUser: boolean;
+    user?: {
+      __typename?: 'User';
+      username?: string | null;
+      phoneNumber?: string | null;
+      photoUrl?: string | null;
+      fullName?: string | null;
+      about?: string | null;
+      userType?: UserType | null;
+      displayGender?: boolean | null;
+      displayContactInfo?: boolean | null;
+      isVerified: boolean;
+      id: number;
+      email?: string | null;
+    } | null;
+  };
+}) => {
+  const {mutate: mutateRemoveFollower} = useSocial_RemoveFollowerMutation();
+
+  function removePress() {
+    showSheet('confirmation-action', {
+      payload: {
+        title: 'Remove follower',
+        description: 'Are you sure you want to remove this user?',
+        positiveText: 'Remove',
+        positiveBackgroundColor: 'red',
+        positiveColor: '#fff',
+        onClose: () => hideSheet('confirmation-action'),
+        onConfirm: () => {
+          const input = {};
+          mutateRemoveFollower(input);
+          hideSheet('confirmation-action');
+        },
+      },
+    });
+  }
+
   return (
     <HStack px={scale(15)} justifyContent="space-between" alignItems="center">
       <Avatar
@@ -34,7 +79,7 @@ const FollowerFollowingItem = () => {
           hasWidth
           title="follow"
         />
-        <AppTouchable>
+        <AppTouchable onPress={removePress}>
           <CloseIcon fill={Colors.WHITE} style={{}} />
         </AppTouchable>
       </HStack>
