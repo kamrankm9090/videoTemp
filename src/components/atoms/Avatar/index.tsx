@@ -56,8 +56,10 @@ const Avatar: React.FC<AvatarProps> = ({
     if (onPress) onPress(event);
   };
 
+  const Wrapper = !zoomable ? View : AppTouchable;
+
   return (
-    <AppTouchable
+    <Wrapper
       activeOpacity={0.8}
       disabled={zoomable}
       onPress={handlePress}
@@ -112,7 +114,7 @@ const Avatar: React.FC<AvatarProps> = ({
           </AppText>
         </View>
       )}
-    </AppTouchable>
+    </Wrapper>
   );
 };
 

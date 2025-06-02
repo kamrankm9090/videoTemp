@@ -86,6 +86,8 @@ const UserSchema = yup.object({
     .required('Full Name is required')
     .trim(),
 
+  imageProfile: yup.string().nullable(),
+
   nickName: yup.string().max(50, 'Nickname cannot exceed 50 characters').trim(),
 
   phoneNumber: yup

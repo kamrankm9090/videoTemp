@@ -49,7 +49,12 @@ const UserIdentityHeader = ({
           </AppText>
           <AppText color={Colors.GARY_3}>{user?.user?.skills}</AppText>
         </VStack>
-        <AppTouchable>
+        <AppTouchable
+          onPress={() =>
+            navigate('ProfileStack', {
+              screen: 'EditProfile',
+            })
+          }>
           <PencilIcon />
         </AppTouchable>
       </HStack>

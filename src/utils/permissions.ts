@@ -65,3 +65,25 @@ export const askMediaAccess = async (
   }
   return results;
 };
+
+export async function requestReadPermission() {
+  if (Platform.OS !== 'android') return true;
+
+  const permissions = [
+    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+    PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES, // Available from Android 13+
+    PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO, // Available from Android 13+
+  ];
+
+  try {
+    const granted = await PermissionsAndroid.requestMultiple(permissions);
+
+    // Check if all permissions are granted
+    return permissions.every(
+      permission => granted[permission] === PermissionsAndroid.RESULTS.GRANTED,
+    );
+  } catch (err) {
+    console.warn('Permission request error:', err);
+    return false;
+  }
+}
