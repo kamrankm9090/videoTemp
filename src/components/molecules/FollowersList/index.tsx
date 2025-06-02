@@ -1,9 +1,11 @@
 import React, {useCallback} from 'react';
-import AppFlatList from '~/components/atoms/AppFlatList';
-import AppLoading from '~/components/atoms/AppLoading';
-import Empty from '~/components/atoms/Empty';
-import FollowerFollowingItem from '~/components/atoms/FollowerFollowingItem';
-import Spacer from '~/components/common/Spacer';
+import {StyleSheet} from 'react-native';
+import {
+  AppFlatList,
+  AppLoading,
+  Empty,
+  FollowerFollowingItem,
+} from '~/components';
 import {useGetFollowerFollowings} from '~/hooks/user';
 import {userDataStore} from '~/stores';
 import {scale} from '~/utils/style';
@@ -29,33 +31,35 @@ const FollowersList = () => {
   }
 
   const renderItem = useCallback(
-    ({item, index}) => <FollowerFollowingItem {...{item}} />,
+    ({item}: any) => <FollowerFollowingItem {...{item}} />,
     [],
   );
 
-  const ItemSeparatorComponent = useCallback(
-    () => <Spacer spaceY={scale(15)} />,
-    [],
-  );
-
-  if (isLoading) return <AppLoading />;
+  if (isLoading) {
+    return <AppLoading />;
+  }
 
   return (
     <AppFlatList
-      style={{flex: 1}}
-      contentContainerStyle={{
-        paddingTop: scale(20),
-        paddingBottom: scale(70),
-      }}
+      style={styles.flatList}
+      contentContainerStyle={styles.contentContainerStyle}
       data={data?.pages || []}
-      ItemSeparatorComponent={ItemSeparatorComponent}
       renderItem={renderItem}
       ListEmptyComponent={<Empty text={'You have no\nFollowers yet!'} />}
       onEndReached={onLoadMore}
       refreshing={isRefetching}
       onRefresh={refetch}
+      spaceY={15}
     />
   );
 };
 
 export default FollowersList;
+
+const styles = StyleSheet.create({
+  flatList: {flex: 1},
+  contentContainerStyle: {
+    paddingTop: scale(20),
+    paddingBottom: scale(70),
+  },
+});

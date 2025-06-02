@@ -1,3 +1,4 @@
+
 import React, {useCallback, useLayoutEffect} from 'react';
 import {LogBox, StyleSheet} from 'react-native';
 import {SheetProvider} from 'react-native-actions-sheet';
@@ -33,8 +34,8 @@ function App(): React.JSX.Element {
       <QueryClientProvider>
         <GestureHandlerRootView style={styles.flex1}>
           <SheetProvider>
-            <AppNavigator />
-            <Toast config={toastConfig} />
+              <AppNavigator />
+              <Toast config={toastConfig} />
           </SheetProvider>
         </GestureHandlerRootView>
       </QueryClientProvider>

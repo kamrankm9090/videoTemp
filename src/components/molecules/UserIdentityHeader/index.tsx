@@ -1,11 +1,11 @@
 import React, {memo} from 'react';
 import {PencilIcon} from '~/assets/svgs';
-import {AppText, AppTouchable, HStack, VStack, Avatar} from '~/components';
-import {Social_GetUserQuery, UserType} from '~/graphql/generated';
+import {AppText, AppTouchable, Avatar, HStack, VStack} from '~/components';
+import {UserType} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
-import {fontFamily, fontSize, scale} from '~/utils/style';
+import {fontSize, scale} from '~/utils/style';
 
 const UserIdentityHeader = ({
   user,
@@ -44,7 +44,7 @@ const UserIdentityHeader = ({
           h={scale(50)}
           flex={1}
           ps={scale(12)}>
-          <AppText fontSize={fontSize.xMedium} fontFamily={fontFamily.bold}>
+          <AppText fontSize={fontSize.xMedium} fontFamily="bold">
             {user?.user?.fullName || user?.user?.username}
           </AppText>
           <AppText color={Colors.GARY_3}>{user?.user?.skills}</AppText>
@@ -97,7 +97,7 @@ const Item = ({
   return (
     <AppTouchable onPress={onPress}>
       <VStack alignItems="center" space={scale(5)} justifyContent="center">
-        <AppText fontSize={fontSize.xMedium} fontFamily={fontFamily.bold}>
+        <AppText fontSize={fontSize.xMedium} fontFamily="bold">
           {value}
         </AppText>
         <AppText color={Colors.GARY_3}>{title}</AppText>

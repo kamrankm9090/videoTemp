@@ -65,7 +65,7 @@ const FormImagePicker = forwardRef<FormImagePickerRef, FormImagePickerProps>(
       <>
         <AppTouchable
           onPress={openPicker}
-          style={{alignSelf: 'center'}}
+          alignSelf="center"
           disabled={disabled || uploading || isLoading}>
           {uploading || isLoading ? (
             <AppIndicator />

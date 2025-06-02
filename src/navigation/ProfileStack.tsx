@@ -28,7 +28,6 @@ const screens = [
     name: 'EditProfile',
     component: EditProfileScreen,
   },
-  ,
 ];
 
 export default function ProfileStack() {
