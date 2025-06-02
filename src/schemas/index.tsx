@@ -86,9 +86,20 @@ const UserSchema = yup.object({
     .required('Full Name is required')
     .trim(),
 
-  imageProfile: yup.string().nullable(),
+  photoUrl: yup.string().nullable(),
 
-  nickName: yup.string().max(50, 'Nickname cannot exceed 50 characters').trim(),
+  skills: yup.string().nullable(),
+
+  username: yup
+    .string()
+    .required('Username is required')
+    .min(3, 'Username must be at least 3 characters')
+    .max(50, 'Username cannot exceed 50 characters')
+    .matches(
+      /^[a-zA-Z0-9_]+$/,
+      'Username can only contain letters, numbers, and underscores',
+    )
+    .trim(),
 
   phoneNumber: yup
     .string()
@@ -99,7 +110,7 @@ const UserSchema = yup.object({
     .required('Phone Number is required')
     .trim(),
 
-  birthdate: yup
+  dateOfBirth: yup
     .date()
     .required('Birthdate is required')
     .max(new Date(), 'Birthdate cannot be in the future'),

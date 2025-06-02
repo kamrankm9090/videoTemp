@@ -81,6 +81,11 @@ export default React.forwardRef(
           mode={mode}
           onConfirm={onConfirm}
           onCancel={() => setVisible(false)}
+          style={{
+            alignSelf: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         />
       </VStack>
     );

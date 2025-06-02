@@ -1,23 +1,36 @@
 import {yupResolver} from '@hookform/resolvers/yup';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import {
+  AppButton,
   AppContainer,
+  AppDropDown,
   AppFormProvider,
   AppHeader,
   AppKeyboardAwareScrollView,
+  FormDateTimePicker,
   FormImagePicker,
   FormInput,
   VStack,
 } from '~/components';
+import {useUser_UpdateUserMutation} from '~/graphql/generated';
 import {UserSchema} from '~/schemas';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
+import {showErrorMessage} from '~/utils/utils';
 
 const EditProfileScreen = () => {
+  const {userData, setUserData} = userDataStore(state => state);
+
   const defaultValues = {
     title: '',
-    imageProfile: '',
+    photoUrl: '',
+    username: '',
+    email: '',
+    skills: '',
+    dateOfBirth: '',
+    phoneNumber: '',
   };
 
   const {...methods} = useForm({
@@ -26,6 +39,27 @@ const EditProfileScreen = () => {
   });
 
   const {handleSubmit, formState, watch} = methods;
+
+  const {mutate: mutateUserUpdate, isLoading: isLoadingUpdateUser} =
+    useUser_UpdateUserMutation();
+
+  const onSubmit = useCallback((formData: typeof defaultValues) => {
+    const variables = {
+      userId: null,
+      userInput: {
+        ...formData,
+      },
+    };
+    mutateUserUpdate(variables, {
+      onSuccess: response => {
+        if (response?.user_updateUser?.status?.code === 1) {
+          setUserData(response?.user_updateUser?.result);
+        } else {
+          showErrorMessage(response?.user_updateUser?.status?.description);
+        }
+      },
+    });
+  }, []);
 
   return (
     <AppContainer>
@@ -40,13 +74,60 @@ const EditProfileScreen = () => {
         <AppKeyboardAwareScrollView
           contentContainerStyle={styles.contentContainerStyle}>
           <VStack mb={16} space={16}>
+            <FormImagePicker name="photoUrl" {...{formState}} />
+
             <FormInput
               mandatory
-              name="title"
-              placeholder="Title"
+              name="fullName"
+              placeholder="Full name"
               {...{formState}}
             />
-            <FormImagePicker name="imageProfile" {...{formState}} />
+            <FormInput
+              mandatory
+              name="username"
+              placeholder="Username"
+              {...{formState}}
+            />
+            <FormInput
+              mandatory
+              name="email"
+              placeholder="Email"
+              {...{formState}}
+            />
+            <FormInput
+              mandatory
+              name="phoneNumber"
+              keyboardType="phone-pad"
+              placeholder="Phone Number"
+              {...{formState}}
+            />
+            <FormInput name="skills" placeholder="Skills" {...{formState}} />
+            <AppDropDown
+              name="communityType"
+              placeholder="Select Type"
+              label="Gender"
+              data={[
+                {title: 'Male', value: 'MALE'},
+                {title: 'Female', value: 'FEMALE'},
+                {title: 'Others', value: 'OTHERS'},
+              ]}
+              searchable={false}
+              mandetory={true}
+              {...{formState}}
+            />
+            <FormDateTimePicker
+              flex={1}
+              label="Birth date"
+              name="dateOfBirth"
+              mode="date"
+            />
+
+            <AppButton
+              mt={24}
+              loading={isLoadingUpdateUser}
+              title="Continue"
+              onPress={handleSubmit(onSubmit)}
+            />
           </VStack>
         </AppKeyboardAwareScrollView>
       </AppFormProvider>
