@@ -1,10 +1,15 @@
 import React from 'react';
 import {ImageBackground, StyleSheet} from 'react-native';
-import {AppContainer, AppText, AppTouchable, VStack} from '~/components';
-import {navigate} from '~/navigation/methods';
+import {AppButton, AppContainer, AppText, VStack} from '~/components';
+import {resetRoot} from '~/navigation/methods';
 import {Colors} from '~/styles';
+import {fontSize} from '~/utils/style';
 
-const LiveEndedScreen = () => {
+export default function LiveEndedScreen() {
+  function backToHomeOnPress() {
+    resetRoot('MainTabs');
+  }
+
   return (
     <AppContainer backgroundColor={Colors.BLACK}>
       <ImageBackground
@@ -16,34 +21,27 @@ const LiveEndedScreen = () => {
           justifyContent="center"
           flex={1}
           px={32}
+          space={20}
           bg={Colors.BLACK_TRANSPARENT_6}>
           <AppText
-            fontSize={20}
+            fontSize={fontSize.xLarge}
             fontWeight="bold"
-            color={Colors.WHITE}
-            marginBottom={8}>
+            color={Colors.WHITE}>
             Live Has Ended.
           </AppText>
-          <AppText fontSize={14} color={Colors.WHITE} marginBottom={8}>
+          <AppText fontSize={fontSize.medium} color={Colors.WHITE}>
             Thanks for watching!
           </AppText>
-          <AppTouchable
-            onPress={() => navigate('HomeTab')}
-            bg={Colors.PRIMARY}
-            px={24}
-            py={12}
-            borderRadius={12}>
-            <AppText fontSize={14} fontWeight="bold" color={Colors.WHITE}>
-              Back to home
-            </AppText>
-          </AppTouchable>
+          <AppButton
+            width="auto"
+            title="Back to home"
+            onPress={backToHomeOnPress}
+          />
         </VStack>
       </ImageBackground>
     </AppContainer>
   );
-};
-
-export default LiveEndedScreen;
+}
 
 const styles = StyleSheet.create({
   background: {

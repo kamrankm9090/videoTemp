@@ -17,11 +17,19 @@ const useInitRtcEngine = ({
   listenUserJoinOrLeave = true,
   isBroadcaster,
   onJoinSuccess,
+  onOfflineUser,
+  onLeaveSuccess,
 }: {
   enableVideo?: boolean;
   listenUserJoinOrLeave?: boolean;
   isBroadcaster?: boolean;
   onJoinSuccess?: (connection: RtcConnection, elapsed: number) => void;
+  onLeaveSuccess?: (connection: RtcConnection, stats: RtcStats) => void;
+  onOfflineUser?: (
+    connection: RtcConnection,
+    remoteUid: number,
+    reason: UserOfflineReasonType,
+  ) => void;
 }) => {
   const {appId} = agoraStore(state => state);
   const {liveId, token} = useSnapshot(liveStore);
@@ -50,25 +58,26 @@ const useInitRtcEngine = ({
       channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
     });
 
-    // Need granted the microphone permission
-    await askMediaAccess(['android.permission.RECORD_AUDIO']);
+    if (isBroadcaster) {
+      // Need granted the microphone permission
+      await askMediaAccess(['android.permission.RECORD_AUDIO']);
 
-    // Only need to enable audio on this case
-    engine.current.enableAudio();
+      // Only need to enable audio on this case
+      engine.current.enableAudio();
 
-    if (enableVideo) {
-      // Need granted the camera permission
-      await askMediaAccess(['android.permission.CAMERA']);
+      if (enableVideo) {
+        // Need granted the camera permission
+        await askMediaAccess(['android.permission.CAMERA']);
 
-      // Need to enable video on this case
-      // If you only call `enableAudio`, only relay the audio stream to the target channel
-      engine.current.enableVideo();
-
-      // Start preview before joinChannel
-      engine.current.startPreview();
-      setStartPreview(true);
+        // Need to enable video on this case
+        // If you only call `enableAudio`, only relay the audio stream to the target channel
+      }
     }
-  }, [appId, enableVideo]);
+    engine.current.enableVideo();
+    // Start preview before joinChannel
+    engine.current.startPreview();
+    setStartPreview(true);
+  }, [appId, enableVideo, isBroadcaster]);
 
   const onError = useCallback((err: ErrorCodeType, msg: string) => {
     log.info('onError', 'err', err, 'msg', msg);
@@ -76,13 +85,13 @@ const useInitRtcEngine = ({
 
   const onJoinChannelSuccess = useCallback(
     (connection: RtcConnection, elapsed: number) => {
-      log.info(
-        'onJoinChannelSuccess',
-        'connection',
-        connection,
-        'elapsed',
-        elapsed,
-      );
+      // log.info(
+      //   'onJoinChannelSuccess',
+      //   'connection',
+      //   connection,
+      //   'elapsed',
+      //   elapsed,
+      // );
       if (
         connection.channelId === channelId &&
         (connection.localUid === uid || uid === 0)
@@ -91,12 +100,13 @@ const useInitRtcEngine = ({
         onJoinSuccess?.(connection, elapsed);
       }
     },
-    [channelId, uid],
+    [channelId, uid, onJoinSuccess],
   );
 
   const onLeaveChannel = useCallback(
     (connection: RtcConnection, stats: RtcStats) => {
-      log.info('onLeaveChannel', 'connection', connection, 'stats', stats);
+      // log.info('onLeaveChannel', 'connection', connection, 'stats', stats);
+      onLeaveSuccess?.(connection, stats);
       if (
         connection.channelId === channelId &&
         (connection.localUid === uid || uid === 0)
@@ -105,20 +115,20 @@ const useInitRtcEngine = ({
         setRemoteUsers([]);
       }
     },
-    [channelId, uid],
+    [channelId, uid, onLeaveSuccess],
   );
 
   const onUserJoined = useCallback(
     (connection: RtcConnection, remoteUid: number, elapsed: number) => {
-      log.info(
-        'onUserJoined',
-        'connection',
-        connection,
-        'remoteUid',
-        remoteUid,
-        'elapsed',
-        elapsed,
-      );
+      // log.info(
+      //   'onUserJoined',
+      //   'connection',
+      //   connection,
+      //   'remoteUid',
+      //   remoteUid,
+      //   'elapsed',
+      //   elapsed,
+      // );
       if (
         connection.channelId === channelId &&
         (connection.localUid === uid || uid === 0)
@@ -138,15 +148,16 @@ const useInitRtcEngine = ({
       remoteUid: number,
       reason: UserOfflineReasonType,
     ) => {
-      log.info(
-        'onUserOffline',
-        'connection',
-        connection,
-        'remoteUid',
-        remoteUid,
-        'reason',
-        reason,
-      );
+      // log.info(
+      //   'onUserOffline',
+      //   'connection',
+      //   connection,
+      //   'remoteUid',
+      //   remoteUid,
+      //   'reason',
+      //   reason,
+      // );
+      onOfflineUser?.(connection, remoteUid, reason);
       if (
         connection.channelId === channelId &&
         (connection.localUid === uid || uid === 0)
@@ -157,7 +168,7 @@ const useInitRtcEngine = ({
         });
       }
     },
-    [channelId, uid],
+    [channelId, uid, onOfflineUser],
   );
 
   useEffect(() => {

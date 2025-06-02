@@ -39,6 +39,7 @@ export default function CreateContentScreen() {
   }, [liveType]);
 
   const defaultValues = {
+    liveType,
     title: '',
     isFree: true,
     isSchedule: false,
@@ -48,7 +49,8 @@ export default function CreateContentScreen() {
     time: '',
     ...(isLiveContent && {
       price: '',
-      previewUrl: '',
+      previewUrl:
+        'https://klpmedia.blob.core.windows.net/klpmedia/images/685e7926ff1e7cvideo_1748763306429.mp4',
     }),
   };
 
@@ -73,6 +75,8 @@ export default function CreateContentScreen() {
       const seconds = date.getUTCSeconds();
 
       const publishingScheduleTime = `PT${hours}H${minutes}M${seconds}S`;
+
+      console.log('previURL-->', formData?.previewUrl);
 
       const input: LiveInput = {
         liveType: liveType || LiveType.LiveContent,
@@ -113,7 +117,8 @@ export default function CreateContentScreen() {
                       setLiveId(liveId);
                       setToken(res?.agora_createToken?.result);
                       setTokenCreateDate(Date.now());
-                      navigate('Live');
+                      // navigate('Live');
+                      navigate('CreateStack', {screen: 'Live'});
                     }
                   },
                 },
@@ -161,7 +166,7 @@ export default function CreateContentScreen() {
               placeholder="Description"
               {...{formState}}
             />
-            <SectionCategory name="category" />
+            <SectionCategory mandatory name="category" />
             {isLiveContent && (
               <>
                 <FormInput

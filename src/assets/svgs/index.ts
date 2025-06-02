@@ -1,3 +1,9 @@
+//#region -------------------TSX
+export {default as CloseIcon} from './SvgComponents/CloseIcon';
+export {default as EmptyIcon} from './SvgComponents/EmptyIcon';
+//#endregion-----------------TSX
+
+//#region -------------------SVG
 export {default as Apple} from './apple.svg';
 export {default as AppLogo} from './appLogo.svg';
 export {default as ArchiveIcon} from './archive.svg';
@@ -93,3 +99,4 @@ export {default as KlippedIcon} from './klipped.svg';
 export {default as PencilIcon} from './pencil.svg';
 export {default as WalletIcon} from './wallet.svg';
 export {default as SignalIcon} from './signal.svg';
+//#endregion ----------------SVG

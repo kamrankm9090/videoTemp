@@ -56,7 +56,7 @@ export {default as AppGradientView} from './atoms/AppGradientView';
 export {default as HeaderProfile} from './atoms/HeaderProfile';
 export {default as ContentItem} from './atoms/ContentItem';
 export {default as CustomTabView} from './atoms/CustomTabView';
-
+export {default as Avatar} from './atoms/Avatar';
 //#endregion ---------Atoms
 
 //#region ---------Molecules
@@ -101,14 +101,13 @@ export {default as ScrollPager} from './molecules/ScrollPager';
 export {default as FollowersList} from './molecules/FollowersList';
 export {default as FollowingsList} from './molecules/FollowingsList';
 export {default as UserIdentityHeader} from './molecules/UserIdentityHeader';
-
 export {
   Tabs,
   TAB_BAR_HEIGHT,
   TabsFlatList,
   TabsFlashList,
 } from './molecules/CollapsibleTabView';
-
+export {default as SectionHomeFooter} from './molecules/SectionHomeFooter';
 //#endregion ---------Molecules
 
 //#region ---------Organisms
