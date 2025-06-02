@@ -29,7 +29,8 @@ export {default as InviteLinkScreen} from './Community/InviteLink';
 
 //PROFILE
 export {default as ProfileScreen} from './Profile/Profile';
-export {default as FollowerFollowingScreen} from './Profile/FollowerFollowingScreen';
+export {default as FollowerFollowingScreen} from './Profile/FollowerFollowing';
+export {default as EditProfileScreen} from './Profile/EditProfile';
 
 //CREATE
 export {default as CreateContentScreen} from './Create/CreateContent';

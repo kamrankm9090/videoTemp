@@ -4,11 +4,11 @@ import React, {
   useImperativeHandle,
   useState,
 } from 'react';
-import {StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {StyleSheet, View, ViewStyle} from 'react-native';
 import FastImage, {FastImageProps} from 'react-native-fast-image';
 import {createImageProgress} from 'react-native-image-progress';
 import images from '~/assets/images';
-import {AppIndicator, ZoomViewerModal} from '~/components';
+import {AppIndicator, AppTouchable, ZoomViewerModal} from '~/components';
 import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
 
@@ -101,10 +101,11 @@ const AppImage = forwardRef(
         </LoadingContainer>
       );
     }
+    const Wrapper = !zooming || errorLoading ? View : AppTouchable;
 
     return (
       <>
-        <TouchableOpacity
+        <Wrapper
           activeOpacity={0.7}
           disabled={!zooming || errorLoading}
           onPress={onPressHandler}
@@ -130,7 +131,7 @@ const AppImage = forwardRef(
             )}
             {children}
           </Image>
-        </TouchableOpacity>
+        </Wrapper>
 
         {imageZoom && !errorLoading && (
           <ZoomViewerModal
