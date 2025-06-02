@@ -1,5 +1,5 @@
 import {yupResolver} from '@hookform/resolvers/yup';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import {
@@ -14,23 +14,29 @@ import {
   FormInput,
   VStack,
 } from '~/components';
+import {GENDERS} from '~/constants/constants';
 import {useUser_UpdateUserMutation} from '~/graphql/generated';
+import {goBack} from '~/navigation/methods';
 import {UserSchema} from '~/schemas';
 import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
-import {showErrorMessage} from '~/utils/utils';
+import {showErrorMessage, showSuccessMessage} from '~/utils/utils';
 
 const EditProfileScreen = () => {
-  const {setUserData} = userDataStore(state => state);
+  const {userData, setUserData} = userDataStore(state => state);
+  const gender = GENDERS.find(
+    el => userData?.gender?.toString().trim().toUpperCase() === el.value,
+  );
 
   const defaultValues = {
-    title: '',
+    fullName: '',
     photoUrl: '',
     username: '',
     email: '',
     skills: '',
     dateOfBirth: '',
     phoneNumber: '',
+    gender: '',
   };
 
   const {...methods} = useForm({
@@ -38,22 +44,41 @@ const EditProfileScreen = () => {
     defaultValues,
   });
 
-  const {handleSubmit, formState} = methods;
+  const {handleSubmit, formState, setValue, watch} = methods;
+
+  useEffect(() => {
+    if (userData) {
+      setValue('email', userData?.email || '');
+      setValue('dateOfBirth', userData?.dateOfBirth || '');
+      setValue('photoUrl', userData?.photoUrl || '');
+      setValue('skills', userData?.skills || '');
+      setValue('phoneNumber', userData?.phoneNumber || '');
+      setValue('fullName', userData?.fullName || '');
+      setValue('username', userData?.username || '');
+      if (userData?.gender) {
+        setValue('gender', gender || {title: 'Others', value: 'OTHERS'});
+      }
+    }
+  }, [userData]);
 
   const {mutate: mutateUserUpdate, isLoading: isLoadingUpdateUser} =
     useUser_UpdateUserMutation();
 
   const onSubmit = useCallback((formData: typeof defaultValues) => {
     const variables = {
-      userId: null,
+      userId: userData?.id,
       userInput: {
         ...formData,
+        gender: formData?.gender?.value,
       },
     };
+
     mutateUserUpdate(variables, {
       onSuccess: response => {
         if (response?.user_updateUser?.status?.code === 1) {
           setUserData(response?.user_updateUser?.result);
+          goBack();
+          showSuccessMessage('Success');
         } else {
           showErrorMessage(response?.user_updateUser?.status?.description);
         }
@@ -103,16 +128,12 @@ const EditProfileScreen = () => {
             />
             <FormInput name="skills" placeholder="Skills" {...{formState}} />
             <AppDropDown
-              name="communityType"
+              name="gender"
               placeholder="Select Type"
               label="Gender"
-              data={[
-                {title: 'Male', value: 'MALE'},
-                {title: 'Female', value: 'FEMALE'},
-                {title: 'Others', value: 'OTHERS'},
-              ]}
+              data={GENDERS}
               searchable={false}
-              mandetory={true}
+              mandatory
               {...{formState}}
             />
             <FormDateTimePicker
