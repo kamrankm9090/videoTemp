@@ -23,7 +23,7 @@ type Props = {
   onLoadMore?: () => void;
   mb?: ViewStyle['marginBottom'];
   backgroundColor?: ViewStyle['backgroundColor'];
-  mandetory?:boolean
+  mandatory?: boolean;
 };
 
 const AppDropDown = React.forwardRef(
@@ -43,7 +43,7 @@ const AppDropDown = React.forwardRef(
     onLoadMore,
     mb,
     backgroundColor,
-    mandetory
+    mandatory,
   }: Props) => {
     const {control} = useFormContext();
 
@@ -82,7 +82,7 @@ const AppDropDown = React.forwardRef(
         <AppSelect
           name={name}
           label={label}
-          mandatory={mandetory}
+          mandatory={mandatory}
           onPress={onPressHandler}
           titleKey={titleKey}
           disabled={disabled}

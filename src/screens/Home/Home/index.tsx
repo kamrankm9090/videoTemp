@@ -6,9 +6,6 @@ import {
   AppFlatList,
   HomeHeader,
   HomePostItem,
-  InviteFriendsCard,
-  PeopleYouMayKnow,
-  VStack,
 } from '~/components';
 import {LiveType, SortEnumType} from '~/graphql/generated';
 import {useGetLives} from '~/hooks/live';
@@ -66,15 +63,6 @@ export default function HomeScreen() {
     [visibleIndex],
   );
 
-  const listFooterComponent = useCallback(() => {
-    return (
-      <VStack space={24}>
-        <PeopleYouMayKnow />
-        <InviteFriendsCard w="auto" />
-      </VStack>
-    );
-  }, []);
-
   return (
     <AppContainer isLoading={isLoadingGetLives}>
       <HomeHeader />
@@ -86,7 +74,6 @@ export default function HomeScreen() {
         onViewableItemsChanged={onViewRef.current}
         removeClippedSubviews
         contentContainerStyle={styles.contentContainerStyle}
-        listFooterComponent={listFooterComponent}
         onEndReached={onLoadMore}
         refreshing={isRefetchingGetLives}
         onRefresh={refetchGetLives}

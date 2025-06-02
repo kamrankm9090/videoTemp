@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import {LiveType} from '~/graphql/generated';
 
 const loginSchema = yup.object().shape({
   email: yup.string().required('Required').trim(),
@@ -86,7 +87,20 @@ const UserSchema = yup.object({
     .required('Full Name is required')
     .trim(),
 
-  nickName: yup.string().max(50, 'Nickname cannot exceed 50 characters').trim(),
+  photoUrl: yup.string().nullable(),
+
+  skills: yup.string().nullable(),
+
+  username: yup
+    .string()
+    .required('Username is required')
+    .min(3, 'Username must be at least 3 characters')
+    .max(50, 'Username cannot exceed 50 characters')
+    .matches(
+      /^[a-zA-Z0-9_]+$/,
+      'Username can only contain letters, numbers, and underscores',
+    )
+    .trim(),
 
   phoneNumber: yup
     .string()
@@ -97,7 +111,7 @@ const UserSchema = yup.object({
     .required('Phone Number is required')
     .trim(),
 
-  birthdate: yup
+  dateOfBirth: yup
     .date()
     .required('Birthdate is required')
     .max(new Date(), 'Birthdate cannot be in the future'),
@@ -112,11 +126,12 @@ const UserSchema = yup.object({
 });
 
 const createContentSchema = yup.object({
+  liveType: yup.string().nullable(),
   title: yup.string().required('required').trim(),
   isFree: yup.boolean().nullable(),
   isSchedule: yup.boolean().nullable(),
   description: yup.string().required('required').trim(),
-  category: yup.object().required('required').nullable(),
+  category: yup.object().required('required'),
   price: yup
     .string()
     .trim()
@@ -149,8 +164,15 @@ const createContentSchema = yup.object({
       then: schema => schema.nullable(),
       otherwise: schema => schema.required('Time is required'),
     }),
-  // previewUrl: yup.string().trim().nullable(),
-  previewUrl: yup.string().required('required').trim(),
+  previewUrl: yup
+    .string()
+    .trim()
+    .nullable()
+    .when('liveType', {
+      is: LiveType.LiveContent,
+      then: schema => schema.required('required').trim(),
+      otherwise: schema => schema.nullable(),
+    }),
 });
 
 export {

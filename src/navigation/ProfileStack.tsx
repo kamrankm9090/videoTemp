@@ -1,11 +1,16 @@
 import React from 'react';
-import {FollowerFollowingScreen, ProfileScreen} from '~/screens';
+import {
+  EditProfileScreen,
+  FollowerFollowingScreen,
+  ProfileScreen,
+} from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
 import {appCreateStackNavigator} from './methods';
 
 export type ProfileStackParamList = {
   Profile: undefined;
   FollowerFollowing: {type: 'follower' | 'following'};
+  EditProfile: undefined;
 };
 
 const Stack = appCreateStackNavigator<ProfileStackParamList>();
@@ -18,6 +23,10 @@ const screens = [
   {
     name: 'FollowerFollowing',
     component: FollowerFollowingScreen,
+  },
+  {
+    name: 'EditProfile',
+    component: EditProfileScreen,
   },
 ];
 

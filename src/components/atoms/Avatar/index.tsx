@@ -8,9 +8,7 @@ import {
 } from 'react-native';
 import images from '~/assets/images';
 import {Colors} from '~/styles';
-import AppImage from '../AppImage';
-import AppText from '../AppText';
-import AppTouchable from '../AppTouchable';
+import {AppImage, AppText, AppTouchable} from '~/components';
 import {getAvatarInitial} from '~/utils/helper';
 
 interface AvatarProps {
@@ -56,8 +54,10 @@ const Avatar: React.FC<AvatarProps> = ({
     if (onPress) onPress(event);
   };
 
+  const Wrapper = !zoomable ? View : AppTouchable;
+
   return (
-    <AppTouchable
+    <Wrapper
       activeOpacity={0.8}
       disabled={zoomable}
       onPress={handlePress}
@@ -112,7 +112,7 @@ const Avatar: React.FC<AvatarProps> = ({
           </AppText>
         </View>
       )}
-    </AppTouchable>
+    </Wrapper>
   );
 };
 
