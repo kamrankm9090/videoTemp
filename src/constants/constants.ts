@@ -24,3 +24,9 @@ export const pickerOptions: ImagePickerOptions = {
   forceJpg: true,
   hideBottomControls: true,
 };
+
+export const GENDERS = [
+  {title: 'Male', value: 'MALE'},
+  {title: 'Female', value: 'FEMALE'},
+  {title: 'Others', value: 'OTHERS'},
+];
