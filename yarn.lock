@@ -8737,6 +8737,7 @@ __metadata:
     react-native-fs: 2.20.0
     react-native-gesture-handler: 2.25.0
     react-native-get-random-values: 1.11.0
+    react-native-image-crop-picker: 0.50.1
     react-native-image-picker: ^8.2.1
     react-native-image-progress: 1.2.0
     react-native-image-zoom-viewer: 3.0.1
@@ -10648,6 +10649,16 @@ __metadata:
   peerDependencies:
     react-native: ">=0.56"
   checksum: 07729f70a007f7a3b8f98ebf687c1298ba288b87dd71d8ba385be6b5a377718b27b97547bbe1db6b225b83ee109dfce0b01721e6ed535d53892f3ac81e6bf975
+  languageName: node
+  linkType: hard
+
+"react-native-image-crop-picker@npm:0.50.1":
+  version: 0.50.1
+  resolution: "react-native-image-crop-picker@npm:0.50.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 35d4fae23e7da88da388fea740b39aeb2d5f9adecfd971a1efb04c8331e636dff777baedb4c94755a2ae18d9d43bacb68a25d39343e63c7dd14562c5d6934816
   languageName: node
   linkType: hard
 
