@@ -6992,14 +6992,6 @@ export type Social_GetUserFollowerFolloweesQueryVariables = Exact<{
   order?: InputMaybe<
     Array<FollowerFolloweeDtoSortInput> | FollowerFolloweeDtoSortInput
   >;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  where1?: InputMaybe<FollowerFolloweeDtoFilterInput>;
-  order1?: InputMaybe<
-    Array<FollowerFolloweeDtoSortInput> | FollowerFolloweeDtoSortInput
-  >;
   userId: Scalars['Int']['input'];
 }>;
 
@@ -7037,6 +7029,18 @@ export type Social_GetUserFollowerFolloweesQuery = {
         } | null;
       } | null> | null;
     } | null;
+  } | null;
+};
+
+export type Social_RemoveFollowerMutationVariables = Exact<{
+  followerId: Scalars['Int']['input'];
+}>;
+
+export type Social_RemoveFollowerMutation = {
+  __typename?: 'Mutation';
+  social_removeFollower?: {
+    __typename?: 'ResponseBase';
+    status?: any | null;
   } | null;
 };
 
@@ -7180,6 +7184,7 @@ export type User_UpdateUserMutation = {
       emailConfirmed: boolean;
       phoneNumberConfirmed: boolean;
       twoFactorEnabled: boolean;
+      skills?: string | null;
     } | null;
   } | null;
 };
@@ -7450,6 +7455,38 @@ export type User_RefreshTokenMutation = {
   } | null;
 };
 
+export type Social_GetUserQueryVariables = Exact<{
+  otherId: Scalars['Int']['input'];
+}>;
+
+export type Social_GetUserQuery = {
+  __typename?: 'Query';
+  social_getUser?: {
+    __typename?: 'SingleResponseBaseOfUserDto';
+    status?: any | null;
+    result?: {
+      __typename?: 'UserDto';
+      followersCount: number;
+      followedCount: number;
+      isFollowed: boolean;
+      isFollower: boolean;
+      requestSent: boolean;
+      requestReceived: boolean;
+      user?: {
+        __typename?: 'User';
+        skills?: string | null;
+        username?: string | null;
+        photoUrl?: string | null;
+        fullName?: string | null;
+        about?: string | null;
+        userType?: UserType | null;
+        professionalSummary?: string | null;
+        education?: string | null;
+      } | null;
+    } | null;
+  } | null;
+};
+
 export type User_GetCurrentUserQueryVariables = Exact<{[key: string]: never}>;
 
 export type User_GetCurrentUserQuery = {
@@ -7489,6 +7526,7 @@ export type User_GetCurrentUserQuery = {
       emailConfirmed: boolean;
       phoneNumberConfirmed: boolean;
       twoFactorEnabled: boolean;
+      skills?: string | null;
     } | null;
   } | null;
 };
@@ -9198,7 +9236,7 @@ export const useSocial_UnfollowMutation = <
 };
 
 export const Social_GetUserFollowerFolloweesDocument = `
-    query social_getUserFollowerFollowees($skip: Int, $take: Int, $where: FollowerFolloweeDtoFilterInput, $order: [FollowerFolloweeDtoSortInput!], $first: Int, $after: String, $last: Int, $before: String, $where1: FollowerFolloweeDtoFilterInput, $order1: [FollowerFolloweeDtoSortInput!], $userId: Int!) {
+    query social_getUserFollowerFollowees($skip: Int, $take: Int, $where: FollowerFolloweeDtoFilterInput, $order: [FollowerFolloweeDtoSortInput!], $userId: Int!) {
   social_getUserFollowerFollowees(userId: $userId) {
     result(skip: $skip, take: $take, where: $where, order: $order) {
       pageInfo {
@@ -9272,6 +9310,41 @@ export const useInfiniteSocial_GetUserFollowerFolloweesQuery = <
         ...variables,
         ...(metaData.pageParam ?? {}),
       })(),
+    options,
+  );
+};
+
+export const Social_RemoveFollowerDocument = `
+    mutation social_removeFollower($followerId: Int!) {
+  social_removeFollower(followerId: $followerId) {
+    status
+  }
+}
+    `;
+
+export const useSocial_RemoveFollowerMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Social_RemoveFollowerMutation,
+    TError,
+    Social_RemoveFollowerMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Social_RemoveFollowerMutation,
+    TError,
+    Social_RemoveFollowerMutationVariables,
+    TContext
+  >(
+    ['social_removeFollower'],
+    (variables?: Social_RemoveFollowerMutationVariables) =>
+      fetcher<
+        Social_RemoveFollowerMutation,
+        Social_RemoveFollowerMutationVariables
+      >(Social_RemoveFollowerDocument, variables)(),
     options,
   );
 };
@@ -9444,6 +9517,7 @@ export const User_UpdateUserDocument = `
       emailConfirmed
       phoneNumberConfirmed
       twoFactorEnabled
+      skills
     }
     status
   }
@@ -9921,6 +9995,67 @@ export const useUser_RefreshTokenMutation = <
   );
 };
 
+export const Social_GetUserDocument = `
+    query social_getUser($otherId: Int!) {
+  social_getUser(otherId: $otherId) {
+    result {
+      user {
+        skills
+        username
+        photoUrl
+        fullName
+        about
+        userType
+        professionalSummary
+        education
+      }
+      followersCount
+      followedCount
+      isFollowed
+      isFollower
+      requestSent
+      requestReceived
+    }
+    status
+  }
+}
+    `;
+
+export const useSocial_GetUserQuery = <
+  TData = Social_GetUserQuery,
+  TError = unknown,
+>(
+  variables: Social_GetUserQueryVariables,
+  options?: UseQueryOptions<Social_GetUserQuery, TError, TData>,
+) => {
+  return useQuery<Social_GetUserQuery, TError, TData>(
+    ['social_getUser', variables],
+    fetcher<Social_GetUserQuery, Social_GetUserQueryVariables>(
+      Social_GetUserDocument,
+      variables,
+    ),
+    options,
+  );
+};
+
+export const useInfiniteSocial_GetUserQuery = <
+  TData = Social_GetUserQuery,
+  TError = unknown,
+>(
+  variables: Social_GetUserQueryVariables,
+  options?: UseInfiniteQueryOptions<Social_GetUserQuery, TError, TData>,
+) => {
+  return useInfiniteQuery<Social_GetUserQuery, TError, TData>(
+    ['social_getUser.infinite', variables],
+    metaData =>
+      fetcher<Social_GetUserQuery, Social_GetUserQueryVariables>(
+        Social_GetUserDocument,
+        {...variables, ...(metaData.pageParam ?? {})},
+      )(),
+    options,
+  );
+};
+
 export const User_GetCurrentUserDocument = `
     query user_getCurrentUser {
   user_getCurrentUser {
@@ -9955,6 +10090,7 @@ export const User_GetCurrentUserDocument = `
       emailConfirmed
       phoneNumberConfirmed
       twoFactorEnabled
+      skills
     }
     status
   }

@@ -55,6 +55,7 @@ query user_getCurrentUser {
       emailConfirmed
       phoneNumberConfirmed
       twoFactorEnabled
+      skills
     }
     status
   }
