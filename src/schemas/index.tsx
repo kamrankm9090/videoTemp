@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import {LiveType} from '~/graphql/generated';
 
 const loginSchema = yup.object().shape({
   email: yup.string().required('Required').trim(),
@@ -125,11 +126,12 @@ const UserSchema = yup.object({
 });
 
 const createContentSchema = yup.object({
+  liveType: yup.string().nullable(),
   title: yup.string().required('required').trim(),
   isFree: yup.boolean().nullable(),
   isSchedule: yup.boolean().nullable(),
   description: yup.string().required('required').trim(),
-  category: yup.object().required('required').nullable(),
+  category: yup.object().required('required'),
   price: yup
     .string()
     .trim()
@@ -162,8 +164,15 @@ const createContentSchema = yup.object({
       then: schema => schema.nullable(),
       otherwise: schema => schema.required('Time is required'),
     }),
-  // previewUrl: yup.string().trim().nullable(),
-  previewUrl: yup.string().required('required').trim(),
+  previewUrl: yup
+    .string()
+    .trim()
+    .nullable()
+    .when('liveType', {
+      is: LiveType.LiveContent,
+      then: schema => schema.required('required').trim(),
+      otherwise: schema => schema.nullable(),
+    }),
 });
 
 export {

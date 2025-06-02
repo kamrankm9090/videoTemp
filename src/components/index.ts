@@ -103,14 +103,13 @@ export {default as ScrollPager} from './molecules/ScrollPager';
 export {default as FollowersList} from './molecules/FollowersList';
 export {default as FollowingsList} from './molecules/FollowingsList';
 export {default as UserIdentityHeader} from './molecules/UserIdentityHeader';
-
 export {
   Tabs,
   TAB_BAR_HEIGHT,
   TabsFlatList,
   TabsFlashList,
 } from './molecules/CollapsibleTabView';
-
+export {default as SectionHomeFooter} from './molecules/SectionHomeFooter';
 //#endregion ---------Molecules
 
 //#region ---------Organisms

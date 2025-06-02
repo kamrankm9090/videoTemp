@@ -41,7 +41,15 @@ export default function ContentViewerLiveScreen() {
     remoteUsers,
     startPreview,
     engine,
-  } = useInitRtcEngine({enableVideo: true, isBroadcaster: false});
+  } = useInitRtcEngine({
+    enableVideo: true,
+    isBroadcaster: false,
+    onOfflineUser: (
+      connection: RtcConnection,
+      remoteUid: number,
+      reason: UserOfflineReasonType,
+    ) => onUserOffline(connection, remoteUid, reason),
+  });
 
   const {liveData, resetLiveStore} = useSnapshot(liveStore);
 
@@ -77,111 +85,18 @@ export default function ContentViewerLiveScreen() {
     }
   };
 
-  console.log(liveData?.agoraUserId);
-
-  useEffect(() => {
-    engine.current.addListener(
-      'onVideoDeviceStateChanged',
-      (deviceId: string, deviceType: number, deviceState: number) => {
-        log.info(
-          'onVideoDeviceStateChanged',
-          'deviceId',
-          deviceId,
-          'deviceType',
-          deviceType,
-          'deviceState',
-          deviceState,
-        );
-      },
-    );
-
-    engine.current.addListener(
-      'onLocalVideoStateChanged',
-      (
-        source: VideoSourceType,
-        state: LocalVideoStreamState,
-        error: LocalVideoStreamReason,
-      ) => {
-        log.info(
-          'onLocalVideoStateChanged',
-          'source',
-          source,
-          'state',
-          state,
-          'error',
-          error,
-        );
-      },
-    );
-
-    engine.current.addListener(
-      'onUserOffline',
-      (
-        connection: RtcConnection,
-        remoteUid: number,
-        reason: UserOfflineReasonType,
-      ) => {
-        console.log('liveData?.agoraUserId', liveData?.agoraUserId, {
-          remoteUid,
-          isAndroid,
-        });
-        if (liveData?.agoraUserId === remoteUid) {
-          engine.current.leaveChannel();
-          resetLiveStore();
-          replace('LiveEnded');
-          console.log('yes broadcaster is left', {reason});
-        }
-        // log.info(
-        //   'platform1:',
-        //   Platform.OS,
-        //   'onLeaveChannel--->',
-        //   'connection',
-        //   connection,
-        //   'remoteUid',
-        //   remoteUid,
-        //   'reason',
-        //   reason,
-        // );
-      },
-    );
-
-    engine.current.addListener(
-      'onUserStateChanged',
-      (connection: RtcConnection, remoteUid: number, state: number) => {
-        log.info(
-          'platform1:',
-          Platform.OS,
-          'onUserStateChanged--->',
-          'remoteUid',
-          remoteUid,
-          'connection',
-          connection,
-          'state',
-          state,
-        );
-      },
-    );
-
-    engine.current.addListener(
-      'onLeaveChannel',
-      (connection: RtcConnection, stats: RtcStats) => {
-        log.info(
-          'platform1:',
-          Platform.OS,
-          'onLeaveChannel--555->',
-          'connection',
-          connection,
-          'stats',
-          stats,
-        );
-      },
-    );
-
-    const engineCopy = engine.current;
-    return () => {
-      engineCopy.removeAllListeners();
-    };
-  }, [engine]);
+  const onUserOffline = (
+    connection: RtcConnection,
+    remoteUid: number,
+    reason: UserOfflineReasonType,
+  ) => {
+    if (liveData?.agoraUserId === remoteUid?.toString()) {
+      engine.current.leaveChannel();
+      resetLiveStore();
+      replace('LiveEnded');
+      console.log('yes broadcaster is left', {reason});
+    }
+  };
 
   return (
     <AppContainer>

@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 import {TextStyle, ViewStyle} from 'react-native';
-import {EmptyIcon} from '~/assets/svgs/SvgComponents';
+import {EmptyIcon} from '~/assets/svgs';
 import {AppText, VStack} from '~/components';
 import {height, scale} from '~/utils/style';
 

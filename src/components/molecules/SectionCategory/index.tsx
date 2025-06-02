@@ -1,6 +1,5 @@
 import React, {useMemo, useState} from 'react';
 import {useController} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
 import {AppDropDown} from '~/components';
 import {useInfiniteCategory_GetCategoriesQuery} from '~/graphql/generated';
 
@@ -10,11 +9,13 @@ const SectionCategory = React.forwardRef(
     label = 'Category',
     disabled,
     onChange,
+    mandatory,
   }: {
     name: string;
     label?: string | null;
     disabled?: boolean;
     onChange?: (item: any) => void;
+    mandatory?: boolean;
   }) => {
     const {field: stateField} = useController({name: 'state'});
     const [searchText, setSearchText] = useState<string>('');
@@ -66,6 +67,7 @@ const SectionCategory = React.forwardRef(
         disabled={disabled}
         onChange={onChangeCountry}
         onLoadMore={onLoadMore}
+        mandatory={mandatory}
       />
     );
   },
@@ -74,13 +76,3 @@ const SectionCategory = React.forwardRef(
 SectionCategory.displayName = 'SectionCategory';
 
 export default SectionCategory;
-
-const styles = StyleSheet.create({
-  rowCenter: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: 8,
-    paddingHorizontal: 16,
-    gap: 4,
-  },
-});
