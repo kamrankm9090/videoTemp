@@ -7184,6 +7184,7 @@ export type User_UpdateUserMutation = {
       emailConfirmed: boolean;
       phoneNumberConfirmed: boolean;
       twoFactorEnabled: boolean;
+      skills?: string | null;
     } | null;
   } | null;
 };
@@ -7525,6 +7526,7 @@ export type User_GetCurrentUserQuery = {
       emailConfirmed: boolean;
       phoneNumberConfirmed: boolean;
       twoFactorEnabled: boolean;
+      skills?: string | null;
     } | null;
   } | null;
 };
@@ -9515,6 +9517,7 @@ export const User_UpdateUserDocument = `
       emailConfirmed
       phoneNumberConfirmed
       twoFactorEnabled
+      skills
     }
     status
   }
@@ -10087,6 +10090,7 @@ export const User_GetCurrentUserDocument = `
       emailConfirmed
       phoneNumberConfirmed
       twoFactorEnabled
+      skills
     }
     status
   }
