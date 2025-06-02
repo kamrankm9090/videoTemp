@@ -1,17 +1,17 @@
 import * as React from 'react';
-import Svg, {Path} from 'react-native-svg';
+import Svg, {Path, SvgProps} from 'react-native-svg';
 
-function SvgComponent(props) {
+export default function CloseIcon(props: SvgProps) {
   const color = props?.color || '#fff';
-  const size = props?.size || 22;
+  const height = props?.height || 22;
+  const width = props?.width || 22;
 
   return (
     <Svg
-      width={size}
-      height={size}
+      height={height}
+      width={width}
       viewBox="0 0 22 21"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       {...props}>
       <Path
         d="M5.874 15.175l9.8-9.8a.326.326 0 01.452 0 .326.326 0 010 .451l-9.8 9.8a.326.326 0 01-.452 0 .326.326 0 010-.451z"
@@ -26,5 +26,3 @@ function SvgComponent(props) {
     </Svg>
   );
 }
-
-export default SvgComponent;

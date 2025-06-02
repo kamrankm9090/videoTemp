@@ -8,9 +8,7 @@ import {
 } from 'react-native';
 import images from '~/assets/images';
 import {Colors} from '~/styles';
-import AppImage from '../AppImage';
-import AppText from '../AppText';
-import AppTouchable from '../AppTouchable';
+import {AppImage, AppText, AppTouchable} from '~/components';
 import {getAvatarInitial} from '~/utils/helper';
 
 interface AvatarProps {

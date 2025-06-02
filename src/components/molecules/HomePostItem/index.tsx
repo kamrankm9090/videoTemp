@@ -11,6 +11,7 @@ import {
   Center,
   HomePostOptions,
   HStack,
+  SectionHomeFooter,
   VStack,
 } from '~/components';
 import {
@@ -43,12 +44,10 @@ export default function HomePostItem({
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
     } else {
       const liveId = item?.live?.id?.toString();
-      console.log('45454', item);
       mutateCreateAgoraToken(
         {channelName: liveId, publisher: false},
         {
           onSuccess: res => {
-            console.log('res-->', res);
             if (res?.agora_createToken?.status?.code === 1) {
               setLiveData({
                 ...item?.live,
@@ -66,32 +65,33 @@ export default function HomePostItem({
     }
   }
 
-  console.log(item?.live?.publishingScheduleDate);
-
   return (
-    <AppTouchable
-      disabled={isLoadingCreateAgoraToken}
-      onPress={onPressHandler}
-      mx={16}
-      h={335}>
-      <AppVideoPlayer
-        key={index}
-        showTimer
-        style={styles.player}
-        muted={true}
-        volume={0}
-        isPlaying={index === visibleIndex}
-        source={{
-          uri: item?.live?.previewUrl,
-        }}
-        showMute={true}
-      />
-      <LiveBadge isLive={!item?.recordEnded} />
-      <SaveButton isSaved={item?.isBookmark} liveId={item?.live?.id} />
+    <VStack space={48}>
+      <AppTouchable
+        disabled={isLoadingCreateAgoraToken}
+        onPress={onPressHandler}
+        mx={16}
+        h={335}>
+        <AppVideoPlayer
+          key={index}
+          showTimer
+          style={styles.player}
+          muted={true}
+          volume={0}
+          isPlaying={index === visibleIndex}
+          source={{
+            uri: item?.live?.previewUrl,
+          }}
+          showMute={true}
+        />
+        <LiveBadge isLive={!item?.recordEnded} />
+        <SaveButton isSaved={item?.isBookmark} liveId={item?.live?.id} />
 
-      <SectionUserRow data={item} />
-      {isLoadingCreateAgoraToken && <AppLoading />}
-    </AppTouchable>
+        <SectionUserRow data={item} />
+        {isLoadingCreateAgoraToken && <AppLoading />}
+      </AppTouchable>
+      {(index + 1) % 7 === 0 && <SectionHomeFooter />}
+    </VStack>
   );
 }
 

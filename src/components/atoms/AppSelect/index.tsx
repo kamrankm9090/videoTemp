@@ -111,9 +111,8 @@ const styles = StyleSheet.create({
     left: 10,
     position: 'absolute',
     zIndex: 9999,
-    top: -7,
+    top: -9,
     paddingHorizontal: 8,
-    backgroundColor: Colors.BACKGROUND,
   },
   textWrapper: {
     flex: 1,

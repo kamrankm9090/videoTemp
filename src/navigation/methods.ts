@@ -43,7 +43,10 @@ export function navigate<T extends keyof RootStackParamList>(
 /**
  * Navigate and reset root.
  */
-export function resetRoot(routeName: string, params?: object) {
+export function resetRoot<T extends keyof RootStackParamList>(
+  routeName: T,
+  params?: RootStackParamList[T],
+) {
   navigationMethod(() => {
     navigationRef?.current?.dispatch(
       CommonActions.reset({
