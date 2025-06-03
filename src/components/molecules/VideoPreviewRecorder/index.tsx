@@ -184,6 +184,9 @@ export default function VideoPreviewRecorder({
         style={styles.video}
         controls
         resizeMode="cover"
+        allowsExternalPlayback={true}
+        disableAudioSessionManagement
+        mixWithOthers="mix"
       />
       <VStack position="absolute" alignSelf="center" bottom={100} space={12}>
         <AppButton
