@@ -17,12 +17,14 @@ export const useGetFollowerFollowings = ({
   order,
   options = {},
   userId,
+  isFollower = true,
 }: {
   where?: FollowerFolloweeDtoFilterInput;
   order?: Array<FollowerFolloweeDtoSortInput> | FollowerFolloweeDtoSortInput;
   options?: UseInfiniteQueryOptions<Social_GetUserFollowerFolloweesQuery>;
   take?: number;
   userId: Scalars['Int']['input'];
+  isFollower: boolean;
 }) => {
   return useInfiniteQuery<
     Social_GetUserFollowerFolloweesQuery,
@@ -30,14 +32,14 @@ export const useGetFollowerFollowings = ({
     Social_GetUserFollowerFolloweesQueryVariables,
     any
   >(
-    [queryKeys.getFollowerFollowings, where, take, order, userId],
+    [queryKeys.getFollowerFollowings, isFollower],
     async ({pageParam = 0}) => {
       return fetcher(Social_GetUserFollowerFolloweesDocument, {
         skip: pageParam * PAGE_SIZE,
         take,
         where,
         order,
-        userId: 1,
+        userId,
       })();
     },
     {
