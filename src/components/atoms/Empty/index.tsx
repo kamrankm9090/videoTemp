@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {TextStyle, ViewStyle} from 'react-native';
 import {EmptyIcon} from '~/assets/svgs';
-import {AppText, VStack} from '~/components';
+import {AppIndicator, AppText, VStack} from '~/components';
 import {height, scale} from '~/utils/style';
 
 type EmptyStateProps = {
@@ -10,6 +10,7 @@ type EmptyStateProps = {
   style?: ViewStyle;
   textStyle?: TextStyle;
   h?: number | null;
+  isLoading?: boolean;
 };
 
 const Empty: React.FC<EmptyStateProps> = ({
@@ -18,6 +19,7 @@ const Empty: React.FC<EmptyStateProps> = ({
   style,
   textStyle,
   h = height * 0.7,
+  isLoading = false,
 }) => {
   return (
     <VStack
@@ -26,10 +28,16 @@ const Empty: React.FC<EmptyStateProps> = ({
       h={h}
       style={style}
       space={scale(30)}>
-      {icon}
-      <AppText textAlign="center" lineHeight={scale(25)} style={textStyle}>
-        {text}
-      </AppText>
+      {isLoading ? (
+        <AppIndicator />
+      ) : (
+        <>
+          {icon}
+          <AppText textAlign="center" lineHeight={scale(25)} style={textStyle}>
+            {text}
+          </AppText>
+        </>
+      )}
     </VStack>
   );
 };
