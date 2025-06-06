@@ -2,7 +2,6 @@
 export {default as CloseIcon} from './SvgComponents/CloseIcon';
 export {default as EmptyIcon} from './SvgComponents/EmptyIcon';
 export {default as RightArrowIcon} from './SvgComponents/RightArrowIcon';
-
 //#endregion-----------------TSX
 
 //#region -------------------SVG
