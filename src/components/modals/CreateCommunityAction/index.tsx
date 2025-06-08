@@ -12,6 +12,7 @@ import {
   ModalHeader,
   VStack,
 } from '~/components';
+import { queryClient } from '~/components/atoms/QueryClientProvider';
 import UploadBox from '~/components/molecules/UploadBox';
 import {useCommunity_CreateCommunityMutation} from '~/graphql/generated';
 import {Colors} from '~/styles';
@@ -54,6 +55,7 @@ export default function CreateCommunityAction() {
       {input},
       {
         onSettled(data, error, variables, context) {
+          queryClient.refetchQueries(["community_getCommunities.infinite"])
           hideSheet("create-community-action")
         },
       },

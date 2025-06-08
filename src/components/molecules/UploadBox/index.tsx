@@ -1,8 +1,9 @@
 import React from 'react';
 import {Controller, useFormContext} from 'react-hook-form';
 import {Image, StyleSheet} from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import {AppText, AppTouchable, VStack} from '~/components';
+import {useUploadFile} from '~/hooks';
 import {Colors} from '~/styles';
 
 interface UploadBoxProps {
@@ -12,13 +13,50 @@ interface UploadBoxProps {
 
 export default function UploadBox({name, label}: UploadBoxProps) {
   const {control} = useFormContext();
+  const {mutate: uploadFileMutate, isLoading: uploading} = useUploadFile();
 
-  const handlePickImage = (onChange: (uri: string) => void) => {
-    launchImageLibrary({mediaType: 'photo'}, res => {
-      if (res.assets?.[0]?.uri) {
-        onChange(res.assets[0].uri);
+  const handleUpload = (image: any): Promise<string | undefined> => {
+    return new Promise((resolve, reject) => {
+      if (!image?.path) {
+        reject(new Error('No image selected'));
+        return;
       }
+
+      uploadFileMutate(
+        { param: image },
+        {
+          onSuccess: (data: any) => {
+            if (data?.uploadedUrl) {
+              resolve(data.uploadedUrl);
+            } else {
+              resolve(undefined);
+            }
+          },
+          onError: error => {
+            console.error('Upload failed:', error);
+            reject(error);
+          },
+        },
+      );
     });
+  };
+
+  const handlePickImage = async (onChange: (uri: string) => void) => {
+    try {
+      const image = await ImagePicker.openPicker({
+        width: 300,
+        height: 300,
+        cropping: true,
+        compressImageQuality: 0.8,
+      });
+
+      const url = await handleUpload(image);
+      if (url) {
+        onChange(url);
+      }
+    } catch (error) {
+      console.error('Image picker error:', error);
+    }
   };
 
   return (
@@ -35,7 +73,8 @@ export default function UploadBox({name, label}: UploadBoxProps) {
             borderColor={Colors.GARY_3}
             justifyContent="center"
             alignItems="center"
-            borderStyle="dashed">
+            borderStyle="dashed"
+            disabled={uploading}>
             {value ? (
               <Image
                 source={{uri: value}}

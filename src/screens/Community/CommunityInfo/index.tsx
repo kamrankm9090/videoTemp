@@ -1,3 +1,4 @@
+import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {MoreIcon} from '~/assets/svgs';
@@ -16,6 +17,10 @@ import {Colors} from '~/styles';
 import {showSheet} from '~/utils/utils';
 
 const CommunityInfoScreen = () => {
+
+  const route: any = useRoute()
+  const item = route?.params?.item
+
   return (
     <AppContainer>
       <AppHeader
@@ -30,9 +35,9 @@ const CommunityInfoScreen = () => {
         }
       />
       <AppScrollView style={{padding: 20}}>
-        <GroupInfoSection />
-        <GroupInfoActionButtons />
-        <GroupInfoDescription />
+        <GroupInfoSection item={item}/>
+        <GroupInfoActionButtons item={item}/>
+        <GroupInfoDescription item={item}/>
         <GroupInfoMemberList />
         <GroupInfoMedia />
       </AppScrollView>
