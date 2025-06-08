@@ -62,7 +62,8 @@ export {default as Empty} from './atoms/Empty';
 export {default as FollowerFollowingItem} from './atoms/FollowerFollowingItem';
 export {default as SettingActivityItem} from './atoms/SettingActivityItem';
 export {default as SavedItem} from './atoms/SavedItem';
-
+export {default as WaterMark} from './atoms/WaterMark';
+export {default as TextIcon} from './atoms/TextIcon';
 //#endregion ---------Atoms
 
 //#region ---------Molecules
