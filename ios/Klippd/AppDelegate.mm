@@ -1,7 +1,7 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
-#import <AVFoundation/AVFoundation.h> 
+#import <AVFoundation/AVFoundation.h>
 
 @implementation AppDelegate
 
@@ -10,7 +10,7 @@
   self.moduleName = @"Klippd";
   // You can add your custom initial props in the dictionary below.
     // --- You can add your custom initial props in the dictionary below.
-  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
   // --- They will be passed down to the ViewController used by React Native.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
