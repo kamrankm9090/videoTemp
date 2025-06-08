@@ -61,6 +61,7 @@ export {default as FormImagePicker} from './atoms/FormImagePicker';
 export {default as Empty} from './atoms/Empty';
 export {default as FollowerFollowingItem} from './atoms/FollowerFollowingItem';
 export {default as SettingActivityItem} from './atoms/SettingActivityItem';
+export {default as SavedItem} from './atoms/SavedItem';
 
 //#endregion ---------Atoms
 
