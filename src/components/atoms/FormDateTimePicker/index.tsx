@@ -81,6 +81,7 @@ export default React.forwardRef(
           mode={mode}
           onConfirm={onConfirm}
           onCancel={() => setVisible(false)}
+          style={styles.datePickerModal}
         />
       </VStack>
     );
@@ -103,5 +104,10 @@ const styles = StyleSheet.create({
     top: -7,
     paddingHorizontal: 8,
     backgroundColor: Colors.BACKGROUND,
+  },
+  datePickerModal: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -1,13 +1,15 @@
 import React from 'react';
-import {CloseIcon} from '~/assets/svgs/SvgComponents';
-import HStack from '~/components/common/HStack';
-import VStack from '~/components/common/VStack';
+import {CloseIcon} from '~/assets/svgs';
+import {
+  HStack,
+  VStack,
+  AppTouchable,
+  AppText,
+  AppButton,
+  Avatar,
+} from '~/components';
 import {Colors} from '~/styles';
 import {scale} from '~/utils/style';
-import AppButton from '../AppButton';
-import AppText from '../AppText';
-import AppTouchable from '../AppTouchable';
-import Avatar from '../Avatar';
 
 const FollowerFollowingItem = () => {
   return (

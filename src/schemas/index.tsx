@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import {LiveType} from '~/graphql/generated';
 
 const loginSchema = yup.object().shape({
   email: yup.string().required('Required').trim(),
@@ -74,49 +75,65 @@ const verificationSchema = yup.object().shape({
 const UserSchema = yup.object({
   email: yup
     .string()
-    .email('Invalid email address')
-    .required('Email is required')
+    .email('Please enter a valid email address.')
+    .required('Email is required.')
     .lowercase()
     .trim(),
 
   fullName: yup
     .string()
-    .min(1, 'Full Name is required')
-    .max(100, 'Full Name is too long')
-    .required('Full Name is required')
+    .min(1, 'Full name is required.')
+    .max(100, 'Full name must not exceed 100 characters.')
+    .required('Full name is required.')
     .trim(),
 
-  nickName: yup.string().max(50, 'Nickname cannot exceed 50 characters').trim(),
+  photoUrl: yup.string().nullable(),
+
+  skills: yup.string().required('Please specify your skills.'),
+
+  username: yup
+    .string()
+    .required('Username is required.')
+    .min(3, 'Username must be at least 3 characters.')
+    .max(50, 'Username must not exceed 50 characters.')
+    .matches(
+      /^[a-zA-Z0-9_]+$/,
+      'Username can only contain letters, numbers, and underscores.',
+    )
+    .trim(),
 
   phoneNumber: yup
     .string()
+    .required('Phone number is required.')
     .matches(
       /^[\+]?[1-9][0-9]{7,14}$/,
-      'Phone number is not valid (should be a valid international phone number)',
+      'Please enter a valid international phone number.',
     )
-    .required('Phone Number is required')
     .trim(),
 
-  birthdate: yup
+  dateOfBirth: yup
     .date()
-    .required('Birthdate is required')
-    .max(new Date(), 'Birthdate cannot be in the future'),
+    .required('Date of birth is required.')
+    .max(new Date(), 'Date of birth cannot be in the future.'),
 
   gender: yup
-    .string()
-    .oneOf(
-      ['male', 'female', 'non-binary', 'other', 'prefer not to say'],
-      'Invalid gender',
-    )
-    .required('Gender is required'),
+    .object({
+      title: yup.string().required('Gender title is required.'),
+      value: yup
+        .string()
+        .oneOf(['MALE', 'FEMALE', 'OTHERS'], 'Please select a valid gender.')
+        .required('Gender value is required.'),
+    })
+    .required('Gender is required.'),
 });
 
 const createContentSchema = yup.object({
+  liveType: yup.string().nullable(),
   title: yup.string().required('required').trim(),
   isFree: yup.boolean().nullable(),
   isSchedule: yup.boolean().nullable(),
   description: yup.string().required('required').trim(),
-  category: yup.object().required('required').nullable(),
+  category: yup.object().required('required'),
   price: yup
     .string()
     .trim()
@@ -149,8 +166,15 @@ const createContentSchema = yup.object({
       then: schema => schema.nullable(),
       otherwise: schema => schema.required('Time is required'),
     }),
-  // previewUrl: yup.string().trim().nullable(),
-  previewUrl: yup.string().required('required').trim(),
+  previewUrl: yup
+    .string()
+    .trim()
+    .nullable()
+    .when('liveType', {
+      is: LiveType.LiveContent,
+      then: schema => schema.required('required').trim(),
+      otherwise: schema => schema.nullable(),
+    }),
 });
 
 export {

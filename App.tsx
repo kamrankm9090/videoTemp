@@ -1,5 +1,5 @@
 import React, {useCallback, useLayoutEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import {LogBox, StyleSheet} from 'react-native';
 import {SheetProvider} from 'react-native-actions-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import 'react-native-get-random-values';
@@ -12,6 +12,8 @@ import AppNavigator from '~/navigation/AppNavigator';
 import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {setHeader, toastConfig} from '~/utils/utils';
+
+LogBox.ignoreAllLogs();
 
 function App(): React.JSX.Element {
   const {authData} = userDataStore(state => state);

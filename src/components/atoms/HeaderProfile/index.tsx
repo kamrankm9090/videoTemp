@@ -7,10 +7,22 @@ import {
   UserIdentityHeader,
   VStack,
 } from '~/components';
+import {useSocial_GetUserQuery} from '~/graphql/generated';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {scale, width} from '~/utils/style';
 
 const HeaderProfile = () => {
+  const userData = userDataStore(state => state?.userData);
+
+  const {data} = useSocial_GetUserQuery(
+    {otherId: userData?.id as number},
+    {
+      enabled: !!userData?.id,
+    },
+  );
+  const user = data?.social_getUser?.result;
+
   return (
     <VStack w={width} pb={scale(25)} space={scale(25)} px={scale(18)}>
       <HStack justifyContent="space-between" alignItems="center">
@@ -24,7 +36,7 @@ const HeaderProfile = () => {
         </HStack>
       </HStack>
 
-      <UserIdentityHeader />
+      <UserIdentityHeader user={user} />
 
       <InviteFriendsCard mx={0} />
 
