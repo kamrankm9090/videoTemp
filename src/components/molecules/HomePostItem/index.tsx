@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useSnapshot} from 'valtio';
-import {HotSpot, Purchase, Save, Saved} from '~/assets/svgs';
+import {Like, LikeOutline, Save, Saved} from '~/assets/svgs';
 import {
   AppImage,
   AppLoading,
@@ -17,13 +17,17 @@ import {
 import {
   useAgora_CreateTokenMutation,
   useLive_AddToBookmarkMutation,
+  useLive_LikeMutation,
   useLive_RemoveFromBookmarkMutation,
 } from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import {formatNumber} from '~/utils/helper';
+import {fontSize, height} from '~/utils/style';
 import {showErrorMessage} from '~/utils/utils';
+
+const HEIGHT = height * 0.6;
 
 export default function HomePostItem({
   item,
@@ -70,23 +74,20 @@ export default function HomePostItem({
       <AppTouchable
         disabled={isLoadingCreateAgoraToken}
         onPress={onPressHandler}
-        mx={16}
-        h={335}>
+        pb={12}>
         <AppVideoPlayer
           key={index}
           showTimer
           style={styles.player}
-          muted={true}
-          volume={0}
           isPlaying={index === visibleIndex}
           source={{
             uri: item?.live?.previewUrl,
           }}
           showMute={true}
+          showWaterMark
         />
         <LiveBadge isLive={!item?.recordEnded} />
         <SaveButton isSaved={item?.isBookmark} liveId={item?.live?.id} />
-
         <SectionUserRow data={item} />
         {isLoadingCreateAgoraToken && <AppLoading />}
       </AppTouchable>
@@ -100,40 +101,40 @@ function SectionUserRow({data}: {data: LiveDto}) {
   const user = live?.user;
 
   return (
-    <HStack mt={16} alignItems="flex-start" space={20}>
+    <HStack px={16} mt={8} alignItems="flex-start" space={12}>
       <AppImage
         resizeMode="stretch"
         imageSource={user?.photoUrl}
         style={styles.avatar}
       />
-      <VStack space={20} flex={1}>
-        <HStack alignItems="flex-start">
-          <VStack space={8} flex={1}>
-            <AppText fontFamily="medium">{live?.title ?? '-'}</AppText>
-            <AppText>{live?.description ?? '-'}</AppText>
-          </VStack>
+      <VStack space={8} flex={1}>
+        <HStack space={12} alignItems="flex-start">
+          <AppText
+            flex={1}
+            numberOfLines={2}
+            fontSize={fontSize.medium}
+            fontFamily="medium">
+            {live?.title ?? '-'}
+          </AppText>
+          <LikeButton
+            likeCount={data?.live?.likeCount}
+            isLiked={data?.isLiked}
+            liveId={data?.live?.id}
+          />
           <HomePostOptions data={data} />
         </HStack>
-        <HStack justifyContent="space-between" space={16}>
-          <TextIcon
-            icon={<HotSpot />}
-            text={`${formatNumber(live?.viewCount)} viewers`}
-          />
-          <TextIcon
-            icon={<Purchase />}
-            text={`${formatNumber(live?.purchaseCount)} Purchases`}
-          />
+        <HStack space={6}>
+          <AppText color={Colors.DarkGray}>{live?.user?.username}</AppText>
+          <AppText color={Colors.DarkGray}>.</AppText>
+          <AppText color={Colors.DarkGray}>{`${formatNumber(
+            live?.viewCount,
+          )} views`}</AppText>
+          <AppText color={Colors.DarkGray}>.</AppText>
+          <AppText color={Colors.DarkGray}>{`${formatNumber(
+            live?.purchaseCount,
+          )} bought`}</AppText>
         </HStack>
       </VStack>
-    </HStack>
-  );
-}
-
-function TextIcon({icon, text}: {icon?: JSX.Element; text?: string}) {
-  return (
-    <HStack space={8}>
-      {icon}
-      <AppText color={Colors.DarkGray}>{text}</AppText>
     </HStack>
   );
 }
@@ -178,9 +179,74 @@ function SaveButton({isSaved, liveId}: {isSaved?: boolean; liveId: number}) {
   }
 
   return (
-    <AppTouchable onPress={saveOnPress} position="absolute" top={12} right={12}>
+    <AppTouchable
+      p={4}
+      onPress={saveOnPress}
+      position="absolute"
+      top={12}
+      right={12}>
       {saved ? <Saved /> : <Save />}
     </AppTouchable>
+  );
+}
+
+function LikeButton({
+  isLiked,
+  liveId,
+  likeCount = 0,
+}: {
+  isLiked?: boolean;
+  liveId: number;
+  likeCount: number;
+}) {
+  const [liked, setLiked] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(likeCount);
+
+  const {mutate: mutateLike} = useLive_LikeMutation();
+  const {mutate: mutateRemoveFromBookmark} =
+    useLive_RemoveFromBookmarkMutation();
+
+  useEffect(() => {
+    setLiked(isLiked ?? false);
+  }, [isLiked]);
+
+  async function saveOnPress() {
+    if (liked) {
+      setLiked(false);
+      setCount(prev => prev - 1);
+      mutateRemoveFromBookmark(
+        {liveId},
+        {
+          onSuccess: response => {
+            if (response?.live_removeFromBookmark?.code !== 1) {
+              showErrorMessage(response?.live_removeFromBookmark?.description);
+            }
+          },
+        },
+      );
+    } else {
+      setLiked(true);
+      setCount(prev => prev + 1);
+      mutateLike(
+        {liveId},
+        {
+          onSuccess: response => {
+            if (response?.live_like?.code !== 1) {
+              showErrorMessage(response?.live_like?.description);
+            }
+          },
+        },
+      );
+    }
+  }
+
+  return (
+    <HStack space={4}>
+      <AppTouchable onPress={saveOnPress}>
+        {liked ? <Like /> : <LikeOutline />}
+      </AppTouchable>
+      <AppText fontSize={fontSize.small}>{count}</AppText>
+    </HStack>
   );
 }
 
@@ -206,12 +272,12 @@ function LiveBadge({isLive}: {isLive?: boolean}) {
 
 const styles = StyleSheet.create({
   avatar: {
-    height: 42,
-    width: 42,
-    borderRadius: 42,
+    height: 41,
+    width: 41,
+    borderRadius: 41,
   },
   player: {
-    height: 200,
+    height: HEIGHT,
     backgroundColor: Colors.Nero,
     borderRadius: 8,
   },
