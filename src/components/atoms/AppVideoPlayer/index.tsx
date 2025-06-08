@@ -89,6 +89,11 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
           source={source}
           repeat={repeat}
           paused={paused}
+          //***** */
+          allowsExternalPlayback={true}
+          disableAudioSessionManagement
+          mixWithOthers="mix"
+          //**** */
           resizeMode={resizeMode}
           playInBackground={false}
           playWhenInactive={false}

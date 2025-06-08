@@ -60,6 +60,9 @@ export {default as Avatar} from './atoms/Avatar';
 export {default as FormImagePicker} from './atoms/FormImagePicker';
 export {default as Empty} from './atoms/Empty';
 export {default as FollowerFollowingItem} from './atoms/FollowerFollowingItem';
+export {default as SettingActivityItem} from './atoms/SettingActivityItem';
+export {default as SavedItem} from './atoms/SavedItem';
+
 //#endregion ---------Atoms
 
 //#region ---------Molecules
@@ -111,6 +114,8 @@ export {
   TabsFlashList,
 } from './molecules/CollapsibleTabView';
 export {default as SectionHomeFooter} from './molecules/SectionHomeFooter';
+export {default as SettingActivity} from './molecules/SettingActivity';
+
 //#endregion ---------Molecules
 
 //#region ---------Organisms
@@ -133,6 +138,7 @@ export {default as MoreOptionAction} from './modals/MoreOptionAction';
 export {default as CreateCommunityAction} from './modals/CreateCommunityAction';
 export {default as DropDownActionSheet} from './modals/DropDownActionSheet';
 export {default as AttachmentPickerModal} from './modals/AttachmentPickerModal';
+
 //#endregion ---------Modals
 
 //#region ---------Placeholders

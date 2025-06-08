@@ -1,6 +1,10 @@
 //#region -------------------TSX
 export {default as CloseIcon} from './SvgComponents/CloseIcon';
 export {default as EmptyIcon} from './SvgComponents/EmptyIcon';
+export {default as RightArrowIcon} from './SvgComponents/RightArrowIcon';
+export {default as BookmarkFillIcon} from './SvgComponents/BookmarkFillIcon';
+export {default as MessageSentIcon} from './SvgComponents/MessageSentIcon';
+
 //#endregion-----------------TSX
 
 //#region -------------------SVG

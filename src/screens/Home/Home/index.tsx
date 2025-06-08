@@ -18,8 +18,6 @@ export default function HomeScreen() {
     return dayjs(new Date().toUTCString());
   }, []);
 
-  console.log({today});
-
   const {
     data: getLives,
     isLoading: isLoadingGetLives,
