@@ -1,17 +1,11 @@
-import React, {memo} from 'react';
-import {ScrollView} from 'react-native';
-import {CloseIcon} from '~/assets/svgs';
-import {
-  AppText,
-  AppTouchable,
-  Box,
-  HStack,
-  SettingActivityItem,
-  VStack,
-} from '~/components';
+import React, {memo, useCallback} from 'react';
+import {StyleSheet} from 'react-native';
+import {AppFlatList, SettingActivityItem} from '~/components';
+import {MoreOptionItemType} from '~/components/modals/MoreOptionAction';
+import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
-import {fontFamily, fontSize, height, scale} from '~/utils/style';
-import {logout} from '~/utils/utils';
+import {scale} from '~/utils/style';
+import {hideSheet, logout, showSheet} from '~/utils/utils';
 
 type Item = {
   title: string;
@@ -19,71 +13,129 @@ type Item = {
   onPress: () => void;
 };
 
-const SettingActivity = ({onclosePress}: {onclosePress: () => void}) => {
+const accountSettingOptions: MoreOptionItemType[] = [
+  {
+    id: 0,
+    title: 'Password setting',
+    onPress: () => {
+      hideSheet('more-option-action');
+      navigate('ProfileStack', {
+        screen: 'PasswordSetting',
+      });
+    },
+  },
+  {
+    id: 1,
+    title: 'Delete Account',
+    color: Colors.ERROR,
+    onPress: () => {
+      hideSheet('more-option-action');
+      navigate('ProfileStack', {
+        screen: 'DeleteAccount',
+      });
+    },
+  },
+];
+
+const SettingActivity = () => {
   const data: Item[] = [
     {
       title: 'Personal Information',
-      onPress: () => null,
+      onPress: () =>
+        navigate('ProfileStack', {
+          screen: 'EditProfile',
+        }),
     },
     {
       title: 'Analytics',
-      onPress: () => null,
+      onPress: () =>
+        navigate('ProfileStack', {
+          screen: 'Analytics',
+        }),
     },
     {
       title: 'Your Resume ',
-      onPress: () => null,
+      onPress: () =>
+        navigate('ProfileStack', {
+          screen: 'Resume',
+        }),
     },
     {
       title: 'Wallet',
-      onPress: () => null,
+      onPress: () =>
+        navigate('ProfileStack', {
+          screen: 'Wallet',
+        }),
     },
     {
       title: 'Saved',
-      onPress: () => null,
+      onPress: () =>
+        navigate('ProfileStack', {
+          screen: 'Saved',
+        }),
     },
     {
       title: 'Support',
-      onPress: () => null,
+      onPress: () =>
+        navigate('ProfileStack', {
+          screen: 'Support',
+        }),
     },
     {
       title: 'Account Setting',
-      onPress: () => null,
+      onPress: () =>
+        showSheet('more-option-action', {
+          payload: {
+            title: 'More Option',
+            data: accountSettingOptions,
+          },
+        }),
     },
-    {
-      title: 'Logout',
-      color: Colors.ERROR,
-      onPress: logout,
-    },
+    {title: 'Logout', color: Colors.ERROR, onPress: logoutHandler},
   ];
 
+  function logoutHandler() {
+    showSheet('confirmation-action', {
+      payload: {
+        title: 'Log out',
+        description: 'Are you sure you want to log out?',
+        positiveText: 'Log out',
+        positiveBackgroundColor: 'red',
+        positiveColor: '#fff',
+        onClose: () => hideSheet('confirmation-action'),
+        onConfirm: () => {
+          logout();
+          hideSheet('confirmation-action');
+        },
+      },
+    });
+  }
+
+  const renderItem = useCallback(
+    ({item}) => <SettingActivityItem item={item} />,
+    [],
+  );
+
   return (
-    <VStack space={scale(25)} h={height * 0.88}>
-      <HStack justifyContent="space-between" alignItems="center">
-        <AppTouchable alignSelf="flex-start" onPress={onclosePress}>
-          <CloseIcon height={scale(30)} width={scale(30)} />
-        </AppTouchable>
-        <AppText
-          flex={1}
-          fontFamily={fontFamily.bold}
-          fontSize={fontSize.large}
-          textAlign="center">
-          Setting Activity
-        </AppText>
-        <Box w={scale(30)} />
-      </HStack>
-      <ScrollView bounces={false}>
-        <VStack
-          py={scale(20)}
-          px={scale(15)}
-          borderRadius={scale(15)}
-          bg={Colors.Nero_3}>
-          {data?.map(el => (
-            <SettingActivityItem item={el} />
-          ))}
-        </VStack>
-      </ScrollView>
-    </VStack>
+    <AppFlatList
+      bounces={false}
+      data={data}
+      contentContainerStyle={styles.main}
+      renderItem={renderItem}
+    />
   );
 };
 
 export default memo(SettingActivity);
+
+const styles = StyleSheet.create({
+  main: {
+    paddingVertical: scale(20),
+    paddingHorizontal: scale(15),
+    borderRadius: scale(15),
+    backgroundColor: Colors.Nero_3,
+    marginHorizontal: scale(12),
+    marginBottom: scale(80),
+    marginTop: scale(10),
+  },
+});

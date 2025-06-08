@@ -14,7 +14,6 @@ const SettingActivityItem = ({item}: {item: Item}) => {
   return (
     <AppTouchable onPress={() => item?.onPress?.()}>
       <HStack
-        my={scale(5)}
         bg={Colors.NERO}
         py={scale(17)}
         px={scale(10)}

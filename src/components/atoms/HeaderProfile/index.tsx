@@ -1,25 +1,21 @@
-import React, {memo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {memo} from 'react';
 import {BarIcon, KlippedIcon, WalletIcon} from '~/assets/svgs';
 import {
   AppButton,
   AppTouchable,
   HStack,
   InviteFriendsCard,
-  ModalContainer,
-  SettingActivity,
   UserIdentityHeader,
   VStack,
 } from '~/components';
 import {useSocial_GetUserQuery} from '~/graphql/generated';
+import {navigate} from '~/navigation/methods';
 import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {scale, width} from '~/utils/style';
 
 const HeaderProfile = () => {
   const userData = userDataStore(state => state?.userData);
-  const [activitySettingModalVisible, setActivitySettingModalVisible] =
-    useState(false);
 
   const {data} = useSocial_GetUserQuery(
     {otherId: userData?.id as number},
@@ -30,10 +26,6 @@ const HeaderProfile = () => {
 
   const user = data?.social_getUser?.result;
 
-  function oncloseModal() {
-    setActivitySettingModalVisible(false);
-  }
-
   return (
     <VStack w={width} pb={scale(25)} space={scale(25)} px={scale(18)}>
       <HStack justifyContent="space-between" alignItems="center">
@@ -43,7 +35,12 @@ const HeaderProfile = () => {
           justifyContent="space-between"
           alignItems="center">
           <WalletIcon />
-          <AppTouchable onPress={() => setActivitySettingModalVisible(true)}>
+          <AppTouchable
+            onPress={() =>
+              navigate('ProfileStack', {
+                screen: 'SettingsActivity',
+              })
+            }>
             <BarIcon />
           </AppTouchable>
         </HStack>
@@ -61,26 +58,14 @@ const HeaderProfile = () => {
         color={Colors.WHITE_TRANSPARENT_8}
         borderWidth={1}
         width={'100%'}
+        onPress={() =>
+          navigate('ProfileStack', {
+            screen: 'Resume',
+          })
+        }
       />
-      <ModalContainer
-        style={styles.main}
-        animationIn={'slideInRight'}
-        animationOut={'slideOutRight'}
-        isVisible={activitySettingModalVisible}
-        backdropOpacity={1}
-        onDismiss={oncloseModal}>
-        <SettingActivity onclosePress={oncloseModal} />
-      </ModalContainer>
     </VStack>
   );
 };
 
 export default memo(HeaderProfile);
-
-const styles = StyleSheet.create({
-  main: {
-    flexGrow: 1,
-    width: width,
-    zIndex: 12,
-  },
-});
