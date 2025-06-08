@@ -11,8 +11,6 @@ function MessageSentIcon(props: SvgProps) {
       width={width}
       viewBox="0 0 323 270"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
       {...props}>
       <Path fill="url(#pattern0_7359_40475)" d="M0.5 0H322.5V270H0.5z" />
       <Defs>

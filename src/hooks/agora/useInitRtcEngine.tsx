@@ -54,29 +54,19 @@ const useInitRtcEngine = ({
     engine.current.initialize({
       appId,
       logConfig: {filePath: ''},
-      // Should use ChannelProfileLiveBroadcasting on most of cases
       channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
     });
 
     if (isBroadcaster) {
-      // Need granted the microphone permission
-      await askMediaAccess(['android.permission.RECORD_AUDIO']);
-
-      // Only need to enable audio on this case
-      engine.current.enableAudio();
-
-      if (enableVideo) {
-        // Need granted the camera permission
-        await askMediaAccess(['android.permission.CAMERA']);
-
-        // Need to enable video on this case
-        // If you only call `enableAudio`, only relay the audio stream to the target channel
-      }
     }
-    engine.current.enableVideo();
-    // Start preview before joinChannel
-    engine.current.startPreview();
-    setStartPreview(true);
+    await askMediaAccess(['android.permission.RECORD_AUDIO']);
+    engine.current.enableAudio();
+    if (enableVideo) {
+      await askMediaAccess(['android.permission.CAMERA']);
+      engine.current.enableVideo();
+      engine.current.startPreview();
+      setStartPreview(true);
+    }
   }, [appId, enableVideo, isBroadcaster]);
 
   const onError = useCallback((err: ErrorCodeType, msg: string) => {
@@ -148,15 +138,6 @@ const useInitRtcEngine = ({
       remoteUid: number,
       reason: UserOfflineReasonType,
     ) => {
-      // log.info(
-      //   'onUserOffline',
-      //   'connection',
-      //   connection,
-      //   'remoteUid',
-      //   remoteUid,
-      //   'reason',
-      //   reason,
-      // );
       onOfflineUser?.(connection, remoteUid, reason);
       if (
         connection.channelId === channelId &&
