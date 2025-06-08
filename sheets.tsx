@@ -1,5 +1,6 @@
 import {ViewStyle} from 'react-native';
 import {registerSheet, SheetDefinition} from 'react-native-actions-sheet';
+import {MoreOptionActionPayloadType} from '~/@types/globals';
 import {
   ConfirmationAction,
   CreateCommunityAction,
@@ -28,6 +29,9 @@ declare module 'react-native-actions-sheet' {
   interface Sheets {
     'confirmation-action': SheetDefinition<{
       payload?: ConfirmationActionPayloadType;
+    }>;
+    'more-option-action': SheetDefinition<{
+      payload?: MoreOptionActionPayloadType;
     }>;
     'drop-down-action-sheet': SheetDefinition<{
       payload?: {
