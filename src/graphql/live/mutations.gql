@@ -110,3 +110,11 @@ mutation live_updateLive($input: LiveInput){
         status
     }
 }
+
+mutation live_removeLike($liveId: Int!){
+    live_removeLike(liveId: $liveId){
+        code
+        value
+        description
+    }
+}
