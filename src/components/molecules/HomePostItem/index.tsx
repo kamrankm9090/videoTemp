@@ -19,6 +19,7 @@ import {
   useLive_AddToBookmarkMutation,
   useLive_LikeMutation,
   useLive_RemoveFromBookmarkMutation,
+  useLive_RemoveLikeMutation,
 } from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {liveStore} from '~/stores';
@@ -203,8 +204,7 @@ function LikeButton({
   const [count, setCount] = useState<number>(likeCount);
 
   const {mutate: mutateLike} = useLive_LikeMutation();
-  const {mutate: mutateRemoveFromBookmark} =
-    useLive_RemoveFromBookmarkMutation();
+  const {mutate: mutateRemoveLike} = useLive_RemoveLikeMutation();
 
   useEffect(() => {
     setLiked(isLiked ?? false);
@@ -214,12 +214,12 @@ function LikeButton({
     if (liked) {
       setLiked(false);
       setCount(prev => prev - 1);
-      mutateRemoveFromBookmark(
+      mutateRemoveLike(
         {liveId},
         {
           onSuccess: response => {
-            if (response?.live_removeFromBookmark?.code !== 1) {
-              showErrorMessage(response?.live_removeFromBookmark?.description);
+            if (response?.live_removeLike?.code !== 1) {
+              showErrorMessage(response?.live_removeLike?.description);
             }
           },
         },
