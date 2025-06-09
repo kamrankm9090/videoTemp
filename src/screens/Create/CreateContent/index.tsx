@@ -117,8 +117,7 @@ export default function CreateContentScreen() {
                       setLiveId(liveId);
                       setToken(res?.agora_createToken?.result);
                       setTokenCreateDate(Date.now());
-                      // navigate('Live');
-                      navigate('CreateStack', {screen: 'Live'});
+                      navigate('Live');
                     }
                   },
                 },

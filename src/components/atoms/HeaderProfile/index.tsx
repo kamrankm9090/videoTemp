@@ -2,12 +2,14 @@ import React, {memo} from 'react';
 import {BarIcon, KlippedIcon, WalletIcon} from '~/assets/svgs';
 import {
   AppButton,
+  AppTouchable,
   HStack,
   InviteFriendsCard,
   UserIdentityHeader,
   VStack,
 } from '~/components';
 import {useSocial_GetUserQuery} from '~/graphql/generated';
+import {navigate} from '~/navigation/methods';
 import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {scale, width} from '~/utils/style';
@@ -21,6 +23,7 @@ const HeaderProfile = () => {
       enabled: !!userData?.id,
     },
   );
+
   const user = data?.social_getUser?.result;
 
   return (
@@ -32,7 +35,14 @@ const HeaderProfile = () => {
           justifyContent="space-between"
           alignItems="center">
           <WalletIcon />
-          <BarIcon />
+          <AppTouchable
+            onPress={() =>
+              navigate('ProfileStack', {
+                screen: 'SettingsActivity',
+              })
+            }>
+            <BarIcon />
+          </AppTouchable>
         </HStack>
       </HStack>
 
@@ -48,6 +58,11 @@ const HeaderProfile = () => {
         color={Colors.WHITE_TRANSPARENT_8}
         borderWidth={1}
         width={'100%'}
+        onPress={() =>
+          navigate('ProfileStack', {
+            screen: 'Resume',
+          })
+        }
       />
     </VStack>
   );

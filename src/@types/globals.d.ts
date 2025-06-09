@@ -320,7 +320,7 @@ declare global {
     | 'more-option-action'
     | 'offer-select-option-action'
     | 'create-community-action'
-    | 'drop-down-action-sheet'
+    | 'drop-down-action-sheet';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 
@@ -432,5 +432,32 @@ declare global {
     negativeOutline?: boolean;
     negativeBackgroundColor?: ViewStyle['backgroundColor'];
     positiveBackgroundColor?: ViewStyle['backgroundColor'];
+  };
+
+  type MoreOptionActionPayloadType = {
+    title: string;
+    data: MoreOptionItemType;
+    onClose?: () => void;
+  };
+
+  type DropDownActionPayLoadType = {
+    name: string;
+    control: any;
+    data: any;
+    label?: string;
+    placeholder?: string;
+    loading?: boolean;
+    titleKey?: string;
+    nestedTitleKey?: string;
+    valueKey?: string;
+    onSubmitSearch?: (val: string) => void;
+    onChange?: (val: any) => void;
+    disabled?: boolean;
+    isObject?: boolean;
+    optional?: boolean;
+    searchable?: boolean;
+    onLoadMore?: () => void;
+    mb?: ViewStyle['marginBottom'];
+    backgroundColor?: ViewStyle['backgroundColor'];
   };
 }

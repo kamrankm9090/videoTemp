@@ -6,9 +6,9 @@ import {
   Box,
   ContentItem,
   HeaderProfile,
+  ProfilePlaceholder,
   Tabs,
   TabsFlatList,
-  ProfilePlaceholder,
 } from '~/components';
 import Empty from '~/components/atoms/Empty';
 import {TabRoute} from '~/components/molecules/CollapsibleTabView';
@@ -17,7 +17,6 @@ import {LiveType, SortEnumType} from '~/graphql/generated';
 import {useGetLives} from '~/hooks/live';
 import {userDataStore} from '~/stores';
 import {scale, width} from '~/utils/style';
-import {logout} from '~/utils/utils';
 
 const routes: TabRoute[] = [
   {key: 'content', title: 'Content', icon: () => <ContentIcon />},
@@ -104,10 +103,6 @@ export default function ProfileScreen() {
   const livesOffer = useMemo(() => {
     return getLivesOffer?.pages || [];
   }, [getLivesOffer]);
-
-  function logoutOnPress() {
-    logout();
-  }
 
   function onLoadMore() {
     if (hasNextPageLivesContent) {

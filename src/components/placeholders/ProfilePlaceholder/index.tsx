@@ -1,7 +1,6 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import {VStack} from '~/components';
 import {Colors} from '~/styles';
 import {scale} from '~/utils/style';
 

@@ -1,4 +1,3 @@
-import {ViewStyle} from 'react-native';
 import {registerSheet, SheetDefinition} from 'react-native-actions-sheet';
 import {
   ConfirmationAction,
@@ -37,26 +36,7 @@ declare module 'react-native-actions-sheet' {
       payload?: CommunityType;
     }>;
     'drop-down-action-sheet': SheetDefinition<{
-      payload?: {
-        name: string;
-        control: any;
-        data: any;
-        label?: string;
-        placeholder?: string;
-        loading?: boolean;
-        titleKey?: string;
-        nestedTitleKey?: string;
-        valueKey?: string;
-        onSubmitSearch?: (val: string) => void;
-        onChange?: (val: any) => void;
-        disabled?: boolean;
-        isObject?: boolean;
-        optional?: boolean;
-        searchable?: boolean;
-        onLoadMore?: () => void;
-        mb?: ViewStyle['marginBottom'];
-        backgroundColor?: ViewStyle['backgroundColor'];
-      };
+      payload?: DropDownActionPayLoadType;
     }>;
   }
 }

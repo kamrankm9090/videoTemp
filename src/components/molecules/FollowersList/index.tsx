@@ -1,17 +1,13 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {
-  AppFlatList,
-  AppLoading,
-  Empty,
-  FollowerFollowingItem,
-} from '~/components';
+import {AppFlatList, Empty, FollowerFollowingItem} from '~/components';
 import {useGetFollowerFollowings} from '~/hooks/user';
 import {userDataStore} from '~/stores';
 import {scale} from '~/utils/style';
 
 const FollowersList = () => {
   const userData = userDataStore(state => state?.userData);
+  const [followers, setFollowers] = useState([]);
 
   const {data, isLoading, hasNextPage, fetchNextPage, refetch, isRefetching} =
     useGetFollowerFollowings({
@@ -21,8 +17,21 @@ const FollowersList = () => {
       },
       options: {
         enabled: !!userData?.id,
+        refetchOnMount: 'always',
       },
+      isFollower: true,
     });
+
+  useEffect(() => {
+    if (data?.pages?.length) {
+      const flattened = data.pages.flat();
+      setFollowers(flattened);
+    }
+  }, [data]);
+
+  const removeByUserId = useCallback((userIdToRemove: number) => {
+    setFollowers(prev => prev.filter(item => item.user?.id !== userIdToRemove));
+  }, []);
 
   function onLoadMore() {
     if (hasNextPage) {
@@ -31,21 +40,25 @@ const FollowersList = () => {
   }
 
   const renderItem = useCallback(
-    ({item}: any) => <FollowerFollowingItem {...{item}} />,
-    [],
+    ({item}: any) => (
+      <FollowerFollowingItem
+        {...{item}}
+        isFollower
+        onRemovePress={removeByUserId}
+      />
+    ),
+    [data, removeByUserId],
   );
-
-  if (isLoading) {
-    return <AppLoading />;
-  }
 
   return (
     <AppFlatList
       style={styles.flatList}
       contentContainerStyle={styles.contentContainerStyle}
-      data={data?.pages || []}
+      data={followers || []}
       renderItem={renderItem}
-      ListEmptyComponent={<Empty text={'You have no\nFollowers yet!'} />}
+      ListEmptyComponent={
+        <Empty isLoading={isLoading} text={'You have no\nFollowers yet!'} />
+      }
       onEndReached={onLoadMore}
       refreshing={isRefetching}
       onRefresh={refetch}

@@ -31,6 +31,14 @@ export {default as InviteLinkScreen} from './Community/InviteLink';
 export {default as ProfileScreen} from './Profile/Profile';
 export {default as FollowerFollowingScreen} from './Profile/FollowerFollowing';
 export {default as EditProfileScreen} from './Profile/EditProfile';
+export {default as SettingsActivityScreen} from './Profile/SettingsActivity';
+export {default as SavedScreen} from './Profile/Saved';
+export {default as ResumeScreen} from './Profile/Resume';
+export {default as SupportScreen} from './Profile/Support';
+export {default as AnalyticsScreen} from './Profile/Analytics';
+export {default as PasswordSettingScreen} from './Profile/PasswordSetting';
+export {default as DeleteAccountScreen} from './Profile/DeleteAccount';
+export {default as WalletScreen} from './Profile/Wallet';
 
 //CREATE
 export {default as CreateContentScreen} from './Create/CreateContent';
