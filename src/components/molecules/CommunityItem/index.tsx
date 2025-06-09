@@ -2,10 +2,19 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {ChevronBack, GroupUsersIcon, LockIcon} from '~/assets/svgs';
 import {AppImage, AppText, AppTouchable, HStack, VStack} from '~/components';
+import { queryClient } from '~/components/atoms/QueryClientProvider';
+import {useCommunity_CreateRequestMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 
-const CommunityItem = ({item}: any) => {
+const CommunityItem = ({item, isMyComm}: any) => {
+  const userData = userDataStore(state => state?.userData);
+
+  const isOwner = item?.creator?.id === userData?.id;
+  const isRequester =
+    item?.requests?.filter((i: any) => i?.userId === userData?.id)?.length > 0;
+
   const infoItem = [
     {
       title: item?.userCount,
@@ -21,23 +30,44 @@ const CommunityItem = ({item}: any) => {
       : []),
   ];
 
+  const {mutate, isLoading} = useCommunity_CreateRequestMutation();
+  const createRequest = () => {
+    mutate(
+      {communityId: item?.id},
+      {
+        onSuccess(data, variables, context) {
+          console.log(data);
+          queryClient.refetchQueries(["community_getCommunities.infinite"])
+        },
+      },
+    );
+  };
   const ownerButtons = [
     {
       title: 'See more',
       color: Colors.NIGHT_RIDER,
-      onPress: () => navigate('CommunityStack', {screen: 'CommunityInfo'}),
+      colorText: Colors.WHITE,
+      disabled: false,
+      onPress: () => navigate('CommunityStack', {screen: 'CommunityInfo', params: { item }}),
     },
     {
-      title: `Requesters ${item?.requestCount > 0 ? item?.requestCount : ""}`,
+      title: `Requesters ${item?.requestCount > 0 ? item?.requestCount : ''}`,
       color: Colors.PRIMARY,
+      colorText: Colors.WHITE,
+      disabled: false,
       onPress: () => navigate('CommunityStack', {screen: 'Requesters'}),
     },
   ];
   const othersButtons = [
     {
-      title: 'Join community',
-      color: Colors.NIGHT_RIDER,
-      onPress: () => {},
+      title:
+        isLoading ? "Sending request..." : item?.communityType === 'PRIVATE'
+          ? 'Request to join'
+          : 'Join community',
+      color: isRequester ? Colors.NIGHT_RIDER + '80' : Colors?.NIGHT_RIDER,
+      colorText: isRequester ? Colors.GARY_3 : Colors.WHITE,
+      disabled: isRequester,
+      onPress: () => createRequest(),
     },
   ];
   return (
@@ -48,7 +78,7 @@ const CommunityItem = ({item}: any) => {
       borderRadius={8}
       onPress={() => navigate('CommunityStack', {screen: 'CommunityDetail'})}>
       <HStack gap={8}>
-        <AppImage style={styles.imageStyle} imageSource={{uri: ''}} />
+        <AppImage style={styles.imageStyle} imageSource={item?.photoUrl} />
         <HStack>
           <AppText fontSize={16} fontWeight={'500'}>
             {item?.title}
@@ -59,11 +89,13 @@ const CommunityItem = ({item}: any) => {
             style={{transform: [{rotate: '180deg'}]}}
           />
         </HStack>
-        <VStack bg={Colors.GARY_3} borderRadius={100} py={4} px={8}>
-          <AppText fontSize={12} fontWeight={'400'}>
-            Owner
-          </AppText>
-        </VStack>
+        {isOwner && (
+          <VStack bg={Colors.GARY_3} borderRadius={100} py={4} px={8}>
+            <AppText fontSize={12} fontWeight={'400'}>
+              Owner
+            </AppText>
+          </VStack>
+        )}
       </HStack>
       <AppText
         fontSize={14}
@@ -85,15 +117,16 @@ const CommunityItem = ({item}: any) => {
         })}
       </HStack>
       <HStack justifyContent="space-between">
-        {(true ? ownerButtons : othersButtons)?.map(i => {
+        {(isMyComm ? ownerButtons : othersButtons)?.map(i => {
           return (
             <AppTouchable
+              disabled={i?.disabled}
               py={8}
               px={20}
               bg={i?.color}
               borderRadius={4}
               onPress={i?.onPress}>
-              <AppText>{i.title}</AppText>
+              <AppText color={i?.colorText}>{i.title}</AppText>
             </AppTouchable>
           );
         })}
@@ -105,5 +138,5 @@ const CommunityItem = ({item}: any) => {
 export default CommunityItem;
 
 const styles = StyleSheet.create({
-  imageStyle: {width: 32, height: 32},
+  imageStyle: {width: 32, height: 32, borderRadius: 5},
 });

@@ -1,31 +1,34 @@
-
-
-query community_getCommunities ($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
+    query community_getCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
   community_getCommunities {
     result(skip: $skip, take: $take, where: $where, order: $order) {
-      pageInfo{
+      pageInfo {
         hasNextPage
         hasPreviousPage
       }
-      items{
+      items {
         communityType
         createdDate
-        creator{
+        creator {
+          id
           about
           fullName
           photoUrl
         }
+        users{
+          userId
+        }
+        requests{
+          userId
+        }
         userCount
-        
         description
         id
         requestCount
         title
-        
+        photoUrl
       }
       totalCount
     }
-  
     status
   }
 }
