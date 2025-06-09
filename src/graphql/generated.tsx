@@ -6421,6 +6421,47 @@ export type Community_LeaveCommunityMutation = {
   } | null;
 };
 
+export type Community_UpdateCommunityMutationVariables = Exact<{
+  input?: InputMaybe<CommunityInput>;
+}>;
+
+export type Community_UpdateCommunityMutation = {
+  __typename?: 'Mutation';
+  community_updateCommunity?: {
+    __typename?: 'ResponseBaseOfCommunity';
+    status?: any | null;
+    result?: {
+      __typename?: 'Community';
+      creatorId: number;
+      title?: string | null;
+      description?: string | null;
+      photoUrl?: string | null;
+      communityType: CommunityType;
+      userCount: number;
+      requestCount: number;
+      media?: string | null;
+      id: number;
+      isDeleted: boolean;
+      createdDate: any;
+      lastModifiedDate?: any | null;
+    } | null;
+  } | null;
+};
+
+export type Community_DeleteCommunityMutationVariables = Exact<{
+  communityId: Scalars['Int']['input'];
+}>;
+
+export type Community_DeleteCommunityMutation = {
+  __typename?: 'Mutation';
+  community_deleteCommunity?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Community_GetCommunitiesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -6451,6 +6492,7 @@ export type Community_GetCommunitiesQuery = {
         requestCount: number;
         title?: string | null;
         photoUrl?: string | null;
+        media?: string | null;
         creator?: {
           __typename?: 'User';
           id: number;
@@ -6461,10 +6503,27 @@ export type Community_GetCommunitiesQuery = {
         users?: Array<{
           __typename?: 'CommunityUser';
           userId: number;
+          communityId: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            id: number;
+            profession?: string | null;
+          } | null;
         } | null> | null;
         requests?: Array<{
           __typename?: 'CommunityRequest';
           userId: number;
+          id: number;
+          communityId: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            profession?: string | null;
+            id: number;
+          } | null;
         } | null> | null;
       } | null> | null;
     } | null;
@@ -8378,6 +8437,92 @@ export const useCommunity_LeaveCommunityMutation = <
   );
 };
 
+export const Community_UpdateCommunityDocument = `
+    mutation community_updateCommunity($input: CommunityInput) {
+  community_updateCommunity(input: $input) {
+    result {
+      creatorId
+      title
+      description
+      photoUrl
+      communityType
+      userCount
+      requestCount
+      media
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_UpdateCommunityMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Community_UpdateCommunityMutation,
+    TError,
+    Community_UpdateCommunityMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Community_UpdateCommunityMutation,
+    TError,
+    Community_UpdateCommunityMutationVariables,
+    TContext
+  >(
+    ['community_updateCommunity'],
+    (variables?: Community_UpdateCommunityMutationVariables) =>
+      fetcher<
+        Community_UpdateCommunityMutation,
+        Community_UpdateCommunityMutationVariables
+      >(Community_UpdateCommunityDocument, variables)(),
+    options,
+  );
+};
+
+export const Community_DeleteCommunityDocument = `
+    mutation community_deleteCommunity($communityId: Int!) {
+  community_deleteCommunity(communityId: $communityId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useCommunity_DeleteCommunityMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Community_DeleteCommunityMutation,
+    TError,
+    Community_DeleteCommunityMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Community_DeleteCommunityMutation,
+    TError,
+    Community_DeleteCommunityMutationVariables,
+    TContext
+  >(
+    ['community_deleteCommunity'],
+    (variables?: Community_DeleteCommunityMutationVariables) =>
+      fetcher<
+        Community_DeleteCommunityMutation,
+        Community_DeleteCommunityMutationVariables
+      >(Community_DeleteCommunityDocument, variables)(),
+    options,
+  );
+};
+
 export const Community_GetCommunitiesDocument = `
     query community_getCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
   community_getCommunities {
@@ -8397,9 +8542,24 @@ export const Community_GetCommunitiesDocument = `
         }
         users {
           userId
+          communityId
+          user {
+            fullName
+            photoUrl
+            id
+            profession
+          }
         }
         requests {
           userId
+          id
+          communityId
+          user {
+            fullName
+            photoUrl
+            profession
+            id
+          }
         }
         userCount
         description
@@ -8407,6 +8567,7 @@ export const Community_GetCommunitiesDocument = `
         requestCount
         title
         photoUrl
+        media
       }
       totalCount
     }

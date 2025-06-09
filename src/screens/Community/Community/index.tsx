@@ -34,7 +34,7 @@ export default function CommunityScreen() {
         },
         users: {
           some: {
-            id: {
+            userId: {
               [tab === 'Your communities' ? 'eq' : 'neq']: userData?.id,
             },
           },
