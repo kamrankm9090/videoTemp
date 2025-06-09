@@ -34,6 +34,15 @@ declare module 'react-native-actions-sheet' {
     'drop-down-action-sheet': SheetDefinition<{
       payload?: DropDownActionPayLoadType;
     }>;
+    'report-reason-action': SheetDefinition<{
+      payload?: ReportActionPayLoadType;
+    }>;
+    'post-options-action': SheetDefinition<{
+      payload?: postOptionActionPayLoadType;
+    }>;
+    'sharing-action': SheetDefinition<{
+      payload?: postOptionActionPayLoadType;
+    }>;
   }
 }
 

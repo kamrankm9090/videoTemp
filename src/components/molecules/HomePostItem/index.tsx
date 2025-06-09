@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useSnapshot} from 'valtio';
-import {Like, LikeOutline, Save, Saved} from '~/assets/svgs';
+import {LikeFillIcon, LikeIcon, Save, Saved} from '~/assets/svgs';
 import {
   AppImage,
   AppLoading,
@@ -11,6 +11,7 @@ import {
   Center,
   HomePostOptions,
   HStack,
+  LikeButton,
   SectionHomeFooter,
   VStack,
 } from '~/components';
@@ -22,7 +23,7 @@ import {
   useLive_RemoveLikeMutation,
 } from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
-import {liveStore} from '~/stores';
+import {contentStore, liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import {formatNumber} from '~/utils/helper';
 import {fontSize, height} from '~/utils/style';
@@ -45,8 +46,11 @@ export default function HomePostItem({
     useSnapshot(liveStore);
 
   function onPressHandler() {
+    console.log(item?.live?.isPurchased);
     if (item?.recordEnded) {
-      navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
+      // navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
+      contentStore.contentData = item;
+      navigate('HomeStack', {screen: 'ContentViewer'});
     } else {
       const liveId = item?.live?.id?.toString();
       mutateCreateAgoraToken(
@@ -54,9 +58,7 @@ export default function HomePostItem({
         {
           onSuccess: res => {
             if (res?.agora_createToken?.status?.code === 1) {
-              setLiveData({
-                ...item?.live,
-              });
+              setLiveData(item);
               setLiveId(liveId);
               setToken(res?.agora_createToken?.result);
               setTokenCreateDate(Date.now());
@@ -188,65 +190,6 @@ function SaveButton({isSaved, liveId}: {isSaved?: boolean; liveId: number}) {
       right={12}>
       {saved ? <Saved /> : <Save />}
     </AppTouchable>
-  );
-}
-
-function LikeButton({
-  isLiked,
-  liveId,
-  likeCount = 0,
-}: {
-  isLiked?: boolean;
-  liveId: number;
-  likeCount: number;
-}) {
-  const [liked, setLiked] = useState<boolean>(false);
-  const [count, setCount] = useState<number>(likeCount);
-
-  const {mutate: mutateLike} = useLive_LikeMutation();
-  const {mutate: mutateRemoveLike} = useLive_RemoveLikeMutation();
-
-  useEffect(() => {
-    setLiked(isLiked ?? false);
-  }, [isLiked]);
-
-  async function saveOnPress() {
-    if (liked) {
-      setLiked(false);
-      setCount(prev => prev - 1);
-      mutateRemoveLike(
-        {liveId},
-        {
-          onSuccess: response => {
-            if (response?.live_removeLike?.code !== 1) {
-              showErrorMessage(response?.live_removeLike?.description);
-            }
-          },
-        },
-      );
-    } else {
-      setLiked(true);
-      setCount(prev => prev + 1);
-      mutateLike(
-        {liveId},
-        {
-          onSuccess: response => {
-            if (response?.live_like?.code !== 1) {
-              showErrorMessage(response?.live_like?.description);
-            }
-          },
-        },
-      );
-    }
-  }
-
-  return (
-    <HStack space={4}>
-      <AppTouchable onPress={saveOnPress}>
-        {liked ? <Like /> : <LikeOutline />}
-      </AppTouchable>
-      <AppText fontSize={fontSize.small}>{count}</AppText>
-    </HStack>
   );
 }
 

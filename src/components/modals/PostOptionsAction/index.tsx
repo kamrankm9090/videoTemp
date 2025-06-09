@@ -6,14 +6,19 @@ import {
   AppText,
   AppTouchable,
   HStack,
+  queryClient,
   VStack,
 } from '~/components';
+import {queryKeys} from '~/constants/queryKeys';
 import {useLive_CreateNotInterestedMutation} from '~/graphql/generated';
 import {Colors} from '~/styles';
 import {hideSheet, showErrorMessage, switchActions} from '~/utils/utils';
 
-export default function PostOptionsAction(props: SheetProps) {
+export default function PostOptionsAction(
+  props: SheetProps<'post-options-action'>,
+) {
   const {payload} = props;
+  const liveId = payload?.item?.live?.id;
 
   const {mutate: mutateNotInterested, isLoading: isLoadingNotInterested} =
     useLive_CreateNotInterestedMutation();
@@ -24,11 +29,14 @@ export default function PostOptionsAction(props: SheetProps) {
       title: 'Not interested',
       onPress: async () => {
         mutateNotInterested(
-          {liveId: payload?.data?.live?.id},
+          {liveId},
           {
             onSuccess: response => {
               if (response?.live_createNotInterested?.code === 1) {
                 hideSheet('post-options-action');
+                queryClient.invalidateQueries([queryKeys.getLives], {
+                  exact: false,
+                });
               } else {
                 showErrorMessage(
                   response?.live_createNotInterested?.description,
@@ -49,7 +57,10 @@ export default function PostOptionsAction(props: SheetProps) {
     {
       id: 2,
       title: 'Report',
-      onPress: () => switchActions('report-action'),
+      onPress: () =>
+        switchActions('report-action', 'post-options-action', {
+          payload: {liveId},
+        }),
       icon: <InformationCircle />,
       color: Colors.ERROR,
     },

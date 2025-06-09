@@ -27,11 +27,13 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
 
   const {mutate: mutateCreateAgoraToken} = useAgora_CreateTokenMutation();
-  const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
+  const {setLiveId, setToken, setTokenCreateDate, setLiveData, liveData} =
     useSnapshot(liveStore);
 
-  const bgColor = getRandomColorFromName(item?.live?.user?.fullName || item?.live?.user?.username || '');
-    
+  const bgColor = getRandomColorFromName(
+    item?.live?.user?.fullName || item?.live?.user?.username || '',
+  );
+
   function onPressHandler() {
     if (item?.recordEnded) {
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
@@ -42,7 +44,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         {
           onSuccess: res => {
             if (res?.agora_createToken?.status?.code === 1) {
-              setLiveData(item);
+              setLiveData({...liveData, live: {...item}});
               setLiveId(liveId);
               setToken(res?.agora_createToken?.result || '');
               setTokenCreateDate(Date.now());
@@ -105,7 +107,11 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
           <AppText fontWeight="500" fontSize={fontSize.medium}>
             {item?.live?.title}
           </AppText>
-          <AppText numberOfLines={1} maxWidth={200} fontWeight="400" fontSize={fontSize.small}>
+          <AppText
+            numberOfLines={1}
+            maxWidth={200}
+            fontWeight="400"
+            fontSize={fontSize.small}>
             {item?.live?.description}
           </AppText>
           <HStack space={8}>

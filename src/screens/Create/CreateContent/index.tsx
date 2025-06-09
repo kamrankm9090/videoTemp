@@ -31,8 +31,14 @@ import {Colors} from '~/styles';
 import {showErrorMessage} from '~/utils/utils';
 
 export default function CreateContentScreen() {
-  const {liveType, setLiveId, setToken, setTokenCreateDate, setLiveData} =
-    useSnapshot(liveStore);
+  const {
+    liveType,
+    setLiveId,
+    setToken,
+    setTokenCreateDate,
+    liveData,
+    setLiveData,
+  } = useSnapshot(liveStore);
 
   const isLiveContent = useMemo(() => {
     return liveType === 'LIVE_CONTENT';
@@ -111,8 +117,11 @@ export default function CreateContentScreen() {
                   onSuccess: res => {
                     if (res?.agora_createToken?.status?.code === 1) {
                       setLiveData({
-                        ...input,
-                        category: formData?.category,
+                        ...liveData,
+                        live: {
+                          ...input,
+                          category: formData?.category,
+                        },
                       });
                       setLiveId(liveId);
                       setToken(res?.agora_createToken?.result);
@@ -138,6 +147,7 @@ export default function CreateContentScreen() {
       setLiveData,
       isLiveContent,
       liveType,
+      liveData,
     ],
   );
 

@@ -294,6 +294,7 @@ function CreateLiveFooter({
 
 function ExperienceCard() {
   const {liveData, liveType} = useSnapshot(liveStore);
+  const live = liveData?.live;
   const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
@@ -311,13 +312,13 @@ function ExperienceCard() {
       <AppScrollView contentContainerStyle={styles.scrollView}>
         <VStack space={12}>
           <AppText fontFamily="bold" fontSize={fontSize.large}>
-            {liveData?.title}
+            {live?.title}
           </AppText>
 
           {!expanded ? (
             <>
               <AppText color={Colors.DarkGray} numberOfLines={2}>
-                {liveData?.description}
+                {live?.description}
               </AppText>
               <AppText
                 right={0}
@@ -332,7 +333,7 @@ function ExperienceCard() {
           ) : (
             <VStack space={12}>
               <AppText color={Colors.VeryLightGrey}>
-                {liveData?.description}
+                {live?.description}
               </AppText>
 
               <AppTouchable
@@ -350,15 +351,13 @@ function ExperienceCard() {
               <HStack justifyContent="space-between">
                 <VStack space={16}>
                   <AppText color={Colors.DarkGray}>Category</AppText>
-                  <AppText fontFamily="bold">
-                    {liveData?.category?.title}
-                  </AppText>
+                  <AppText fontFamily="bold">{live?.category?.title}</AppText>
                 </VStack>
                 {liveType === LiveType.LiveContent && (
                   <VStack space={16}>
                     <AppText color={Colors.DarkGray}>Price</AppText>
                     <AppText fontFamily="bold">
-                      {liveData?.isFree ? 'Free' : `$${liveData?.price}`}
+                      {live?.isFree ? 'Free' : `$${live?.price}`}
                     </AppText>
                   </VStack>
                 )}
@@ -370,13 +369,11 @@ function ExperienceCard() {
                     Publishing schedule:{' '}
                   </AppText>
                   <AppText fontFamily="bold">
-                    {liveData?.setSchedule
+                    {live?.setSchedule
                       ? `${appFormatDate(
-                          liveData?.publishingScheduleDate,
+                          live?.publishingScheduleDate,
                           'YYYY/m/dd',
-                        )}, ${parseISODuration(
-                          liveData?.publishingScheduleTime,
-                        )}`
+                        )}, ${parseISODuration(live?.publishingScheduleTime)}`
                       : '-'}
                   </AppText>
                 </VStack>
