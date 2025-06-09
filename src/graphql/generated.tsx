@@ -3362,6 +3362,7 @@ export type Mutation = {
   live_purchase?: Maybe<ResponseStatus>;
   live_rate?: Maybe<ResponseStatus>;
   live_removeFromBookmark?: Maybe<ResponseStatus>;
+  live_removeLike?: Maybe<ResponseStatus>;
   live_updateLive?: Maybe<ResponseBaseOfLive>;
   live_viewLive?: Maybe<ResponseStatus>;
   message_addUserToGroup?: Maybe<ResponseStatus>;
@@ -3578,6 +3579,10 @@ export type MutationLive_RateArgs = {
 };
 
 export type MutationLive_RemoveFromBookmarkArgs = {
+  liveId: Scalars['Int']['input'];
+};
+
+export type MutationLive_RemoveLikeArgs = {
   liveId: Scalars['Int']['input'];
 };
 
@@ -6665,6 +6670,20 @@ export type Live_UpdateLiveMutation = {
   } | null;
 };
 
+export type Live_RemoveLikeMutationVariables = Exact<{
+  liveId: Scalars['Int']['input'];
+}>;
+
+export type Live_RemoveLikeMutation = {
+  __typename?: 'Mutation';
+  live_removeLike?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Live_GetLivesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -8855,6 +8874,43 @@ export const useLive_UpdateLiveMutation = <
     (variables?: Live_UpdateLiveMutationVariables) =>
       fetcher<Live_UpdateLiveMutation, Live_UpdateLiveMutationVariables>(
         Live_UpdateLiveDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const Live_RemoveLikeDocument = `
+    mutation live_removeLike($liveId: Int!) {
+  live_removeLike(liveId: $liveId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useLive_RemoveLikeMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Live_RemoveLikeMutation,
+    TError,
+    Live_RemoveLikeMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Live_RemoveLikeMutation,
+    TError,
+    Live_RemoveLikeMutationVariables,
+    TContext
+  >(
+    ['live_removeLike'],
+    (variables?: Live_RemoveLikeMutationVariables) =>
+      fetcher<Live_RemoveLikeMutation, Live_RemoveLikeMutationVariables>(
+        Live_RemoveLikeDocument,
         variables,
       )(),
     options,
