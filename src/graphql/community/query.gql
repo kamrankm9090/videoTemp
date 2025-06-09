@@ -16,9 +16,25 @@
         }
         users{
           userId
+        communityId
+          
+          user{
+            fullName
+            photoUrl
+            id
+            profession
+          }
         }
         requests{
           userId
+          id
+          communityId
+          user{
+            fullName
+            photoUrl
+            profession
+            id
+          }
         }
         userCount
         description
@@ -26,13 +42,13 @@
         requestCount
         title
         photoUrl
+        media
       }
       totalCount
     }
     status
   }
 }
-
 
 query community_getOtherCommunities ($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
   community_getOtherCommunities {

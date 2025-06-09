@@ -12,9 +12,12 @@ const mediaItems = [
   {uri: ''},
 ];
 
-export default function GroupInfoMedia() {
+export default function GroupInfoMedia({media}:any) {
   const displayedItems = mediaItems.slice(0, 6); // Only show first 6
 
+  console.log('====================================');
+  console.log(media);
+  console.log('====================================');
   return (
     <VStack mt={24} p={16} gap={12} bg={Colors.NERO} borderRadius={8}>
       <AppText fontSize={13} fontWeight="500" color={Colors.DarkGray}>

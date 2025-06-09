@@ -9,7 +9,9 @@ export type CommunityStackParamList = {
   CommunityInfo:{
     item: any
   }
-  CommunityDetail: undefined
+  CommunityDetail: {
+    item: any
+  }
   CommunitySearch: undefined
   InviteLink: undefined
 };
