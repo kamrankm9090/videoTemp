@@ -5,8 +5,7 @@ export {default as RightArrowIcon} from './SvgComponents/RightArrowIcon';
 export {default as BookmarkFillIcon} from './SvgComponents/BookmarkFillIcon';
 export {default as MessageSentIcon} from './SvgComponents/MessageSentIcon';
 export {default as WaterMarkIcon} from './SvgComponents/WaterMarkIcon';
-export {default as LikeOutline} from './SvgComponents/LikeOutline';
-export {default as Like} from './SvgComponents/Like';
+export {default as LockIcon2} from './SvgComponents/LockIcon2';
 //#endregion-----------------TSX
 
 //#region -------------------SVG

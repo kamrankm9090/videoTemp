@@ -55,7 +55,7 @@ const CommunityItem = ({item, isMyComm}: any) => {
       color: Colors.PRIMARY,
       colorText: Colors.WHITE,
       disabled: false,
-      onPress: () => navigate('CommunityStack', {screen: 'Requesters'}),
+      onPress: () => navigate('CommunityStack', {screen: 'Requesters', params: {item}}),
     },
   ];
   const othersButtons = [
@@ -76,7 +76,7 @@ const CommunityItem = ({item, isMyComm}: any) => {
       p={16}
       gap={16}
       borderRadius={8}
-      onPress={() => navigate('CommunityStack', {screen: 'CommunityDetail'})}>
+      onPress={() => navigate('CommunityStack', {screen: 'CommunityDetail', params: {...item}})}>
       <HStack gap={8}>
         <AppImage style={styles.imageStyle} imageSource={item?.photoUrl} />
         <HStack>

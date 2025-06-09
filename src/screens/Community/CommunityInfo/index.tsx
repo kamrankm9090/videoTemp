@@ -29,7 +29,7 @@ const CommunityInfoScreen = () => {
         backgroundColor={Colors.BACKGROUND}
         titleColor={Colors.WHITE}
         rightHeader={
-          <AppTouchable onPress={() => showSheet('more-option-action')}>
+          <AppTouchable onPress={() => showSheet('more-option-action', {payload: item})}>
             <MoreIcon />
           </AppTouchable>
         }
@@ -38,8 +38,8 @@ const CommunityInfoScreen = () => {
         <GroupInfoSection item={item}/>
         <GroupInfoActionButtons item={item}/>
         <GroupInfoDescription item={item}/>
-        <GroupInfoMemberList />
-        <GroupInfoMedia />
+        <GroupInfoMemberList item={item}/>
+        <GroupInfoMedia media={item?.media}/>
       </AppScrollView>
     </AppContainer>
   );

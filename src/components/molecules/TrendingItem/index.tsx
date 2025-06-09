@@ -25,11 +25,13 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
 
   const {mutate: mutateCreateAgoraToken} = useAgora_CreateTokenMutation();
-  const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
+  const {setLiveId, setToken, setTokenCreateDate, setLiveData, liveData} =
     useSnapshot(liveStore);
 
-  const bgColor = getRandomColorFromName(item?.live?.user?.fullName || item?.live?.user?.username || '');
-    
+  const bgColor = getRandomColorFromName(
+    item?.live?.user?.fullName || item?.live?.user?.username || '',
+  );
+
   function onPressHandler() {
     if (item?.recordEnded) {
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
@@ -40,7 +42,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
         {
           onSuccess: res => {
             if (res?.agora_createToken?.status?.code === 1) {
-              setLiveData(item);
+              setLiveData({...liveData, live: {...item}});
               setLiveId(liveId);
               setToken(res?.agora_createToken?.result || '');
               setTokenCreateDate(Date.now());

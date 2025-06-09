@@ -82,4 +82,54 @@ mutation community_leaveCommunity($communityId: Int!){
     }
     status
   }
+
 }
+
+
+mutation community_updateCommunity($input: CommunityInput) {
+  community_updateCommunity(input: $input) {
+    result {
+      creatorId
+      title
+      description
+      photoUrl
+      communityType
+      userCount
+      requestCount
+      media
+ 
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+
+
+
+mutation community_deleteCommunity($communityId: Int!){
+  community_deleteCommunity(communityId: $communityId) {
+    code
+    value
+    description
+  }
+}
+
+
+mutation community_createMessage($input: CommunityMessageInput){
+  community_createMessage(input: $input) {
+    result {
+      userId
+      communityId
+      message
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+

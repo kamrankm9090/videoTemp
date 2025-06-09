@@ -11,6 +11,7 @@ import {
   ReportReasonAction,
   SharingAction,
 } from '~/components';
+import { CommunityType } from '~/graphql/generated';
 
 registerSheet('post-options-action', PostOptionsAction);
 registerSheet('sharing-action', SharingAction);
@@ -29,10 +30,22 @@ declare module 'react-native-actions-sheet' {
       payload?: ConfirmationActionPayloadType;
     }>;
     'more-option-action': SheetDefinition<{
-      payload?: MoreOptionActionPayloadType;
+      payload?: CommunityType;
+    }>;
+    'create-community-action': SheetDefinition<{
+      payload?: CommunityType;
     }>;
     'drop-down-action-sheet': SheetDefinition<{
       payload?: DropDownActionPayLoadType;
+    }>;
+    'report-reason-action': SheetDefinition<{
+      payload?: ReportActionPayLoadType;
+    }>;
+    'post-options-action': SheetDefinition<{
+      payload?: postOptionActionPayLoadType;
+    }>;
+    'sharing-action': SheetDefinition<{
+      payload?: postOptionActionPayLoadType;
     }>;
   }
 }
