@@ -17,7 +17,7 @@ export type AuthStackParamList = {
   SignupSignin: undefined;
   Signup: undefined;
   Signin: undefined;
-  ForgotPassword: undefined;
+  ForgotPassword: {hasGoBack?: boolean};
   VerificationCode: undefined;
   SignupSuccess: undefined;
   SelectCategory: undefined;

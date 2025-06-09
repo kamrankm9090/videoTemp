@@ -4,6 +4,7 @@ import {
   DeleteAccountScreen,
   EditProfileScreen,
   FollowerFollowingScreen,
+  ForgotPasswordScreen,
   PasswordSettingScreen,
   ProfileScreen,
   ResumeScreen,
@@ -27,6 +28,7 @@ export type ProfileStackParamList = {
   PasswordSetting: undefined;
   DeleteAccount: undefined;
   Wallet: undefined;
+  ForgotPassword: {hasGoBack?: boolean};
 };
 
 const Stack = appCreateStackNavigator<ProfileStackParamList>();
@@ -75,6 +77,10 @@ const screens = [
   {
     name: 'Wallet',
     component: WalletScreen,
+  },
+  {
+    name: 'ForgotPassword',
+    component: ForgotPasswordScreen,
   },
   ,
 ];

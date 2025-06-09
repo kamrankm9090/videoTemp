@@ -64,6 +64,8 @@ export {default as SettingActivityItem} from './atoms/SettingActivityItem';
 export {default as SavedItem} from './atoms/SavedItem';
 export {default as WaterMark} from './atoms/WaterMark';
 export {default as TextIcon} from './atoms/TextIcon';
+export {default as TagInputListForm} from './atoms/TagInputListForm';
+
 //#endregion ---------Atoms
 
 //#region ---------Molecules
