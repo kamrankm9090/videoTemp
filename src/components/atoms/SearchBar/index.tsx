@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: Colors.WHITE,
   },
 });
 

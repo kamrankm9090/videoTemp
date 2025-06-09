@@ -14,7 +14,7 @@ export default function RequestersScreen() {
 
   return (
     <AppContainer>
-      <ScreensHeader title="Requesters" />
+      <ScreensHeader title="Requesters" backAction/>
       <SearchBar onSearch={t => {}} />
       <AppFlatList data={[1, 2]} renderItem={renderItem} />
     </AppContainer>
