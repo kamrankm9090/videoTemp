@@ -44,7 +44,7 @@ const data = [
   },
 ];
 
-export default function SharingAction(props: SheetProps) {
+export default function SharingAction(props: SheetProps<'sharing-action'>) {
   function onSubmitSearch() {}
 
   function renderItem({item}: any) {

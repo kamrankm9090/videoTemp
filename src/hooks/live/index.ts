@@ -4,6 +4,9 @@ import {queryKeys} from '~/constants/queryKeys';
 import {fetcher} from '~/graphql/fetcher';
 import {
   Live_GetLivesDocument,
+  Live_GetLivesForHomePageDocument,
+  Live_GetLivesForHomePageQuery,
+  Live_GetLivesForHomePageQueryVariables,
   Live_GetLivesQuery,
   Live_GetLivesQueryVariables,
   LiveDtoFilterInput,
@@ -53,6 +56,58 @@ export const useGetLives = ({
         return {
           ...data,
           pages: data?.pages?.map(a => a?.live_getLives?.result?.items).flat(),
+        };
+      },
+      ...options,
+    },
+  );
+};
+
+export const useGetLivesForHome = ({
+  where,
+  take = PAGE_SIZE,
+  order,
+  options = {},
+  category,
+}: {
+  where?: LiveDtoFilterInput;
+  order?: Array<LiveDtoSortInput> | LiveDtoSortInput;
+  options?: any;
+  take?: number;
+  category?: string;
+}) => {
+  return useInfiniteQuery<
+    Live_GetLivesForHomePageQuery,
+    any,
+    Live_GetLivesForHomePageQueryVariables,
+    any
+  >(
+    [queryKeys.getLivesForHome, where, take, order, category],
+    async ({pageParam = 0}) => {
+      return fetcher(Live_GetLivesForHomePageDocument, {
+        skip: pageParam * PAGE_SIZE,
+        take,
+        where,
+        order,
+        category,
+      })();
+    },
+    {
+      getNextPageParam: (
+        lastPage: Live_GetLivesForHomePageQuery,
+        allPages: Live_GetLivesForHomePageQuery[],
+      ) => {
+        if (lastPage?.live_getLivesForHomePage?.result?.pageInfo?.hasNextPage) {
+          return allPages.length;
+        }
+        return undefined;
+      },
+      select: data => {
+        return {
+          ...data,
+          pages: data?.pages
+            ?.map(a => a?.live_getLivesForHomePage?.result?.items)
+            .flat(),
         };
       },
       ...options,
