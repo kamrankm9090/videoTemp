@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {AppText, AppTouchable, VStack} from '~/components';
 import {Colors} from '~/styles';
 
-const FULL_DESCRIPTION =
-  'Digital Marketing Specialist With 5 Years Of Experience In Campaign Management';
-
-export default function GroupInfoDescription() {
+export default function GroupInfoDescription({item}:any) {
   const [expanded, setExpanded] = useState(false);
+
+
+const FULL_DESCRIPTION = item?.description || ""
 
   const shortText =
     FULL_DESCRIPTION.length > 60
