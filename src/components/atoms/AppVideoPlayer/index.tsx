@@ -16,7 +16,7 @@ import Video, {
   VideoRef,
 } from 'react-native-video';
 import {VolumeHighIcon, VolumeSlashIcon} from '~/assets/svgs';
-import {AppText, AppTouchable, Center} from '~/components';
+import {AppText, AppTouchable, Center, WaterMark} from '~/components';
 import {Colors} from '~/styles';
 import {formatTime} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
@@ -26,6 +26,7 @@ type AppVideoPlayerProps = {
   showTimer?: boolean;
   videoStyle?: VideoNativeProps['style'];
   showMute?: boolean;
+  showWaterMark?: boolean;
 } & ReactVideoProps;
 
 const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
@@ -39,6 +40,7 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
       showTimer,
       showMute = false,
       videoStyle = styles.video,
+      showWaterMark,
       ...rest
     },
     ref,
@@ -47,7 +49,7 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
     const isFocused = useIsFocused();
     const [durationState, setDurationState] = useState(0);
     const [curTime, setCurTime] = useState(0);
-    const [isMuted, setIsMuted] = useState(rest?.muted || false);
+    const [isMuted, setIsMuted] = useState<boolean>(rest?.muted || false);
     const currentTimeRef = useRef(0);
 
     const paused = useMemo(
@@ -73,6 +75,10 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
 
     const handleError = useCallback((error: any) => {
       console.error('Video error:', error);
+    }, []);
+
+    const muteHandler = useCallback(() => {
+      setIsMuted(prev => !prev);
     }, []);
 
     const remainingTime = useMemo(() => {
@@ -113,8 +119,9 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
             right={12}
             top={55}
             rounded={16}
+            p={4}
             position="absolute"
-            onPress={() => setIsMuted(!isMuted)}>
+            onPress={muteHandler}>
             {isMuted ? <VolumeSlashIcon /> : <VolumeHighIcon />}
           </AppTouchable>
         )}
@@ -130,6 +137,7 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
             <AppText fontSize={fontSize.tiny}>{remainingTime}</AppText>
           </Center>
         )}
+        {showWaterMark && <WaterMark />}
       </View>
     );
   },
@@ -151,5 +159,5 @@ const styles = StyleSheet.create({
     position: 'relative',
     backgroundColor: Colors.BLACK,
   },
-  video: {backgroundColor: Colors.GARY_3, borderRadius: 12},
+  video: {backgroundColor: Colors.GARY_3},
 });
