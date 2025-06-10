@@ -66,6 +66,9 @@ export {default as WaterMark} from './atoms/WaterMark';
 export {default as TextIcon} from './atoms/TextIcon';
 export {default as TagInputListForm} from './atoms/TagInputListForm';
 export {default as MuteButton} from './atoms/MuteButton';
+export {default as TipCard} from './atoms/TipCard';
+export {default as IncomeChart} from './atoms/IncomeChart';
+
 //#endregion ---------Atoms
 
 //#region ---------Molecules

@@ -11,6 +11,7 @@ import {
   SavedScreen,
   SettingsActivityScreen,
   SupportScreen,
+  TotalIncomeScreen,
   WalletScreen,
 } from '~/screens';
 import {publicScreenOption} from '~/utils/utils';
@@ -29,6 +30,7 @@ export type ProfileStackParamList = {
   DeleteAccount: undefined;
   Wallet: undefined;
   ForgotPassword: {hasGoBack?: boolean};
+  TotalIncome: undefined;
 };
 
 const Stack = appCreateStackNavigator<ProfileStackParamList>();
@@ -82,7 +84,10 @@ const screens = [
     name: 'ForgotPassword',
     component: ForgotPasswordScreen,
   },
-  ,
+  {
+    name: 'TotalIncome',
+    component: TotalIncomeScreen,
+  },
 ];
 
 export default function ProfileStack() {

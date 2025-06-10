@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import images from '~/assets/images';
 import {BookmarkFillIcon} from '~/assets/svgs';
 import {AppImage, AppText, AppTouchable, HStack, VStack} from '~/components';
@@ -6,7 +6,27 @@ import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
 import {fontSize, scale} from '~/utils/style';
 
-const SavedItem = ({item}: {item: any}) => {
+const SavedItem = ({
+  item,
+  type = 'saved',
+}: {
+  item: any;
+  type?: 'income' | 'saved';
+}) => {
+  const renderRightItem = useCallback(() => {
+    switch (type) {
+      case 'income':
+        return <AppText color={Colors.WHITE_TRANSPARENT}>$75</AppText>;
+
+      default:
+        return (
+          <AppTouchable>
+            <BookmarkFillIcon />
+          </AppTouchable>
+        );
+    }
+  }, [type]);
+
   return (
     <HStack justifyContent="space-between" alignItems="center" px={scale(12)}>
       <AppImage
@@ -32,9 +52,7 @@ const SavedItem = ({item}: {item: any}) => {
           a live stream where the person that peopl...
         </AppText>
       </VStack>
-      <AppTouchable>
-        <BookmarkFillIcon />
-      </AppTouchable>
+      {renderRightItem?.()}
     </HStack>
   );
 };

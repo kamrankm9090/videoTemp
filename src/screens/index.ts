@@ -39,6 +39,7 @@ export {default as AnalyticsScreen} from './Profile/Analytics';
 export {default as PasswordSettingScreen} from './Profile/PasswordSetting';
 export {default as DeleteAccountScreen} from './Profile/DeleteAccount';
 export {default as WalletScreen} from './Profile/Wallet';
+export {default as TotalIncomeScreen} from './Profile/TotalIncome';
 
 //CREATE
 export {default as CreateContentScreen} from './Create/CreateContent';
