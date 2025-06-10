@@ -11,6 +11,7 @@ declare module 'react-native-config' {
     BASE_URL?: string;
     GOOGLE_WEB_CLIENT_ID?: string;
     GOOGLE_IOS_CLIENT_ID?: string;
+    LINKING_URL?: string;
     CDN_URL?: string;
     BLOB_URL?: string;
     ENVIRONMENT?: 'DEV' | 'QA' | 'STG' | 'PRD';

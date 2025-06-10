@@ -30,8 +30,6 @@ export async function handleToken() {
   const token = userDataStore.getState()?.authData?.token;
   const isUserLoggedIn = userDataStore.getState()?.isUserLoggedIn;
 
-  console.log({token});
-
   if (isUserLoggedIn && isTokenExpired(token)) {
     await handleNewToken();
     return true;

@@ -25,6 +25,13 @@ declare global {
 
   type User = UserType;
 
+  type followingItem = {
+    isFollower: boolean;
+    followedByCurrentUser: boolean;
+    followerOfCurrentUser: boolean;
+    user?: User | null;
+  } | null;
+
   type AuthDataType = {
     token?: string | null;
     expireDate?: string | null;
@@ -291,6 +298,12 @@ declare global {
     resetLiveStore: () => void;
   };
 
+  type homePostStoreType = {
+    isMuted?: boolean;
+    setIsMuted: (isMute: boolean) => void;
+    resetHomePostStore: () => void;
+  };
+
   type OfferOptionItemType = {
     id: number;
     title: string;
@@ -460,6 +473,7 @@ declare global {
 
   type ReportActionPayLoadType = {
     liveId: number;
+    showToastInActionSheet?: boolean;
   };
 
   type postOptionActionPayLoadType = {

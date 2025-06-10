@@ -35,6 +35,7 @@ type Props = {
   indicatorBackgroundColor?: ViewStyle['backgroundColor'];
   backgroundColor?: ViewStyle['backgroundColor'];
   isLoading?: boolean;
+  showToastInActionSheet?: boolean;
 };
 
 function ActionSheetContainer(props: Props, ref: ModalRef) {
@@ -56,6 +57,7 @@ function ActionSheetContainer(props: Props, ref: ModalRef) {
     backgroundColor = Colors.Nero,
     indicatorBackgroundColor = Colors.TRANSPARENT,
     isLoading,
+    showToastInActionSheet = true,
   } = props;
 
   useImperativeHandle(ref, () => ({
@@ -91,19 +93,20 @@ function ActionSheetContainer(props: Props, ref: ModalRef) {
       }}
       ref={actionSheetRef}
       onClose={closeModal}>
+      {showToastInActionSheet && (
+        <View style={[styles.toastContainer, {bottom: height - insets.top}]}>
+          <Toast config={toastConfig} />
+        </View>
+      )}
       {scrollable ? (
         <AppKeyboardAwareScrollView
           contentContainerStyle={[contentContainerStyle, {minHeight}]}>
-          <>
-            {children}
-            <Toast config={toastConfig} />
-          </>
+          <>{children}</>
         </AppKeyboardAwareScrollView>
       ) : (
         <View style={[style, {minHeight}]}>
           {children}
           {isAndroid && <Box bottom={statusBarHeight} />}
-          <Toast config={toastConfig} />
         </View>
       )}
       {isLoading && (
@@ -127,5 +130,10 @@ const styles = StyleSheet.create({
   },
   main: {
     backgroundColor: Colors.Nero,
+  },
+  toastContainer: {
+    zIndex: 999,
+    position: 'absolute',
+    width: '100%',
   },
 });
