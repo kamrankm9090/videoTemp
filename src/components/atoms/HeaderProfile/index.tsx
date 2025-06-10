@@ -34,7 +34,14 @@ const HeaderProfile = () => {
           space={scale(10)}
           justifyContent="space-between"
           alignItems="center">
-          <WalletIcon />
+          <AppTouchable
+            onPress={() =>
+              navigate('ProfileStack', {
+                screen: 'Wallet',
+              })
+            }>
+            <WalletIcon />
+          </AppTouchable>
           <AppTouchable
             onPress={() =>
               navigate('ProfileStack', {
