@@ -20,7 +20,6 @@ const RequestersItem = ({item}: any) => {
       {requestId: item?.id},
       {
         onSuccess(data, variables, context) {
-          console.log(data);
           if (data?.community_acceptRequest?.code === 1) {
             setAceepted(true);
           }
@@ -34,7 +33,6 @@ const RequestersItem = ({item}: any) => {
       {requestId: item?.id},
       {
         onSuccess(data, variables, context) {
-          console.log(data);
           setAceepted(true);
           queryClient.refetchQueries(['community_getCommunities.infinite']);
         },

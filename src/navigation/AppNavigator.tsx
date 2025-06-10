@@ -31,9 +31,7 @@ export default function AppNavigator() {
   const userData = userDataStore(state => state?.userData);
   useNotificationAddedSubscription({
     userId: userData?.id,
-    callback() {
-      // console.log('new notif');
-    },
+    callback() {},
   });
 
   const hideSplash = useCallback(() => {

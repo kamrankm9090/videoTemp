@@ -45,13 +45,13 @@ const Avatar: React.FC<AvatarProps> = ({
   const imageSource = !fallback ? (local ? {uri} : uri) : undefined;
 
   const handleError = () => {
-    console.log('error');
-
     setError(true);
   };
 
   const handlePress = (event: GestureResponderEvent) => {
-    if (onPress) onPress(event);
+    if (onPress) {
+      onPress(event);
+    }
   };
 
   return (

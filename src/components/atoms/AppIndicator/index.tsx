@@ -13,6 +13,8 @@ type Props = {
   alignSelf?: ViewStyle['alignSelf'];
   top?: ViewStyle['top'];
   bottom?: ViewStyle['bottom'];
+  left?: ViewStyle['top'];
+  right?: ViewStyle['bottom'];
 } & ActivityIndicatorProps;
 
 export default function AppIndicator({
@@ -22,6 +24,8 @@ export default function AppIndicator({
   alignSelf,
   top,
   bottom,
+  left,
+  right,
   style,
   ...rest
 }: Props) {
@@ -30,7 +34,7 @@ export default function AppIndicator({
       color={color}
       size={size}
       {...rest}
-      style={[{position, alignSelf, bottom, top}, style]}
+      style={[{position, alignSelf, bottom, top, left, right}, style]}
     />
   );
 }

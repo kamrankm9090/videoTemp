@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {ChevronBack, GroupUsersIcon, LockIcon} from '~/assets/svgs';
 import {AppImage, AppText, AppTouchable, HStack, VStack} from '~/components';
-import { queryClient } from '~/components/atoms/QueryClientProvider';
+import {queryClient} from '~/components/atoms/QueryClientProvider';
 import {useCommunity_CreateRequestMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {userDataStore} from '~/stores';
@@ -36,8 +36,7 @@ const CommunityItem = ({item, isMyComm}: any) => {
       {communityId: item?.id},
       {
         onSuccess(data, variables, context) {
-          console.log(data);
-          queryClient.refetchQueries(["community_getCommunities.infinite"])
+          queryClient.refetchQueries(['community_getCommunities.infinite']);
         },
       },
     );
@@ -48,22 +47,25 @@ const CommunityItem = ({item, isMyComm}: any) => {
       color: Colors.NIGHT_RIDER,
       colorText: Colors.WHITE,
       disabled: false,
-      onPress: () => navigate('CommunityStack', {screen: 'CommunityInfo', params: { item }}),
+      onPress: () =>
+        navigate('CommunityStack', {screen: 'CommunityInfo', params: {item}}),
     },
     {
       title: `Requesters ${item?.requestCount > 0 ? item?.requestCount : ''}`,
       color: Colors.PRIMARY,
       colorText: Colors.WHITE,
       disabled: false,
-      onPress: () => navigate('CommunityStack', {screen: 'Requesters', params: {item}}),
+      onPress: () =>
+        navigate('CommunityStack', {screen: 'Requesters', params: {item}}),
     },
   ];
   const othersButtons = [
     {
-      title:
-        isLoading ? "Sending request..." : item?.communityType === 'PRIVATE'
-          ? 'Request to join'
-          : 'Join community',
+      title: isLoading
+        ? 'Sending request...'
+        : item?.communityType === 'PRIVATE'
+        ? 'Request to join'
+        : 'Join community',
       color: isRequester ? Colors.NIGHT_RIDER + '80' : Colors?.NIGHT_RIDER,
       colorText: isRequester ? Colors.GARY_3 : Colors.WHITE,
       disabled: isRequester,
@@ -76,7 +78,12 @@ const CommunityItem = ({item, isMyComm}: any) => {
       p={16}
       gap={16}
       borderRadius={8}
-      onPress={() => navigate('CommunityStack', {screen: 'CommunityDetail', params: {...item}})}>
+      onPress={() =>
+        navigate('CommunityStack', {
+          screen: 'CommunityDetail',
+          params: {...item},
+        })
+      }>
       <HStack gap={8}>
         <AppImage style={styles.imageStyle} imageSource={item?.photoUrl} />
         <HStack>

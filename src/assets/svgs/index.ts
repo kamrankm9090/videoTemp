@@ -6,6 +6,9 @@ export {default as BookmarkFillIcon} from './SvgComponents/BookmarkFillIcon';
 export {default as MessageSentIcon} from './SvgComponents/MessageSentIcon';
 export {default as WaterMarkIcon} from './SvgComponents/WaterMarkIcon';
 export {default as LockIcon2} from './SvgComponents/LockIcon2';
+export {default as DollarIcon} from './SvgComponents/DollarIcon';
+export {default as ExportIcon} from './SvgComponents/ExportIcon';
+
 //#endregion-----------------TSX
 
 //#region -------------------SVG

@@ -1,15 +1,17 @@
 import React from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Close, CloseCircle} from '~/assets/svgs';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
+import Toast from 'react-native-toast-message';
+import {Close} from '~/assets/svgs';
 import {AppText, AppTouchable} from '~/components';
 import {useGetStatusBarHeight} from '~/hooks';
 import {Colors} from '~/styles';
 import {fontSize, scale, verticalScale} from '~/utils/style';
-import Toast, {
-  BaseToast,
-  ErrorToast,
-  ToastProps,
-} from 'react-native-toast-message';
 
 type Props = {
   text1: string;
@@ -22,6 +24,7 @@ type Props = {
   onPress?: () => void;
   closeIcon?: JSX.Element;
   closeAction?: () => void;
+  style?: ViewStyle | ViewStyle[];
 };
 
 export default function AppToast({
@@ -35,17 +38,14 @@ export default function AppToast({
   onPress,
   closeIcon = <Close />,
   closeAction = () => Toast.hide(),
+  style = styles.container,
 }: Props) {
   const {statusBarHeight} = useGetStatusBarHeight();
 
   const marginTop = text2 ? 6 : -3;
 
   return (
-    <View
-      style={[
-        {backgroundColor, top: top || statusBarHeight},
-        styles.container,
-      ]}>
+    <View style={[{backgroundColor, top: top || statusBarHeight}, style]}>
       <View style={styles.direction}>
         {icon && <View style={{marginTop}}>{icon}</View>}
         <ScrollView style={styles.scrollView}>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(16),
     paddingVertical: verticalScale(16),
     width: '100%',
-    minHeight: 72,
+    minHeight: 52,
     marginHorizontal: 8,
     borderRadius: 8,
   },

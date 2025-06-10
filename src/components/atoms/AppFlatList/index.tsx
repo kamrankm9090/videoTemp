@@ -197,17 +197,19 @@ const AppFlatList = forwardRef<FlatList<any>, Props<any>>((props, ref) => {
         }}
         {...rest}
       />
-      {showScrollButton && <AnimationProvider
-        visible={showScrollButton}
-        visibleChildren={
-          <Fab
-            left={24}
-            onPress={scrollToTop}
-            name={inverted ? 'arrow-down' : 'arrow-up'}
-          />
-        }
-        inVisibleChildren={null}
-      />}
+      {showScrollButton && (
+        <AnimationProvider
+          visible={showScrollButton}
+          visibleChildren={
+            <Fab
+              left={24}
+              onPress={scrollToTop}
+              name={inverted ? 'arrow-down' : 'arrow-up'}
+            />
+          }
+          inVisibleChildren={null}
+        />
+      )}
     </>
   );
 });
