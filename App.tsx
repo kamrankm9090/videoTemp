@@ -14,7 +14,6 @@ import {Colors} from '~/styles';
 import {setHeader, toastConfig} from '~/utils/utils';
 
 LogBox.ignoreAllLogs();
-
 function App(): React.JSX.Element {
   const {authData} = userDataStore(state => state);
 
