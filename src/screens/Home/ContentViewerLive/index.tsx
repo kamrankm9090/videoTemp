@@ -1,15 +1,11 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   ClientRoleType,
-  LocalVideoStreamReason,
-  LocalVideoStreamState,
   RtcConnection,
-  RtcStats,
   RtcSurfaceView,
   UserOfflineReasonType,
   VideoCanvas,
-  VideoSourceType,
   VideoViewSetupMode,
 } from 'react-native-agora';
 import {useSnapshot} from 'valtio';
@@ -25,7 +21,6 @@ import {
 import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {goBack, replace} from '~/navigation/methods';
 import {liveStore} from '~/stores';
-import {isAndroid} from '~/utils/helper';
 import * as log from '~/utils/log';
 import {height, width} from '~/utils/style';
 
@@ -52,6 +47,7 @@ export default function ContentViewerLiveScreen() {
   });
 
   const {liveData, resetLiveStore} = useSnapshot(liveStore);
+  const live = liveData?.live;
 
   useEffect(() => {
     setTimeout(() => {
@@ -90,7 +86,7 @@ export default function ContentViewerLiveScreen() {
     remoteUid: number,
     reason: UserOfflineReasonType,
   ) => {
-    if (liveData?.agoraUserId === remoteUid?.toString()) {
+    if (live?.agoraUserId === remoteUid?.toString()) {
       engine.current.leaveChannel();
       resetLiveStore();
       replace('LiveEnded');
@@ -102,8 +98,8 @@ export default function ContentViewerLiveScreen() {
     <AppContainer>
       <LiveHeader
         user={{
-          photoUrl: liveData?.user?.photoUrl,
-          username: liveData?.user?.username,
+          photoUrl: live?.user?.photoUrl,
+          username: live?.user?.username,
         }}
         isOwner={false}
         onClose={leaveChannel}

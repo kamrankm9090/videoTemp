@@ -1,11 +1,20 @@
+import {useRoute} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {SettingIcon} from '~/assets/svgs';
-import {AppContainer, AppFlatList, AppHeader, CommunityDetailBottomInputBar, CommunityDetailItem} from '~/components';
-import { navigate } from '~/navigation/methods';
+import {
+  AppContainer,
+  AppFlatList,
+  AppHeader,
+  CommunityDetailBottomInputBar,
+  CommunityDetailItem,
+} from '~/components';
+import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 
 const CommunityDetail = () => {
+  const route = useRoute();
+  const item = route?.params;
   const renderItem = () => {
     return <CommunityDetailItem />;
   };
@@ -13,15 +22,22 @@ const CommunityDetail = () => {
     <AppContainer>
       <AppHeader
         backAction
-        title="Beauty Documentary"
+        title={item?.title}
         backgroundColor={Colors.BACKGROUND}
         titleColor={Colors.WHITE}
         rightHeader={
           <>
-            <SettingIcon onPress={() => navigate("CommunityStack", {screen:"CommunityInfo"})} />
+            <SettingIcon
+              onPress={() =>
+                navigate('CommunityStack', {
+                  screen: 'CommunityInfo',
+                  params: {item},
+                })
+              }
+            />
           </>
         }
-        subTitle="5,780 member • 1,230 online"
+        subTitle={`${item?.userCount} member • 1,230 online`}
         subTitleColor={Colors.DarkGray}
       />
       <AppFlatList

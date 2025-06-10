@@ -35,7 +35,7 @@ export default function LiveCommentSection() {
   const listRef: any = useRef(null);
   const contentHeight = useRef(0);
 
-  const liveId = liveData?.id || params?.item?.live?.id;
+  const liveId = liveData?.live?.id || params?.item?.live?.id;
   const {data} = useLive_GetLiveCommentsQuery({liveId});
 
   const comments = data?.live_getLiveComments?.result?.items;
@@ -96,8 +96,7 @@ export default function LiveCommentSection() {
         onPress={Keyboard.dismiss}>
         <AppKeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'height' : 'position'}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
-          >
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
           <VStack
             flex={1}
             justifyContent="flex-end"
@@ -107,8 +106,8 @@ export default function LiveCommentSection() {
             <AppFlatList
               ref={listRef}
               data={comments || []}
-              style={{maxHeight: height / 3, zIndex: 10,}}
-              contentContainerStyle={{flex:1, justifyContent:"flex-end"}}
+              style={{maxHeight: height / 3, zIndex: 10}}
+              contentContainerStyle={{flex: 1, justifyContent: 'flex-end'}}
               keyExtractor={keyExtractor}
               renderItem={renderItem}
               initialNumToRender={10}
@@ -135,7 +134,7 @@ export default function LiveCommentSection() {
                 value={text}
                 style={styles.input}
                 onChangeText={setText}
-                returnKeyLabel='Send'
+                returnKeyLabel="Send"
               />
               <AppTouchable
                 p={4}
@@ -144,8 +143,7 @@ export default function LiveCommentSection() {
                 borderColor={Colors.GARY_3}
                 px={8}
                 py={8}
-                onPress={() => sendComment(text.trim())}
-                >
+                onPress={() => sendComment(text.trim())}>
                 {isLoading ? (
                   <AppIndicator />
                 ) : (

@@ -8,12 +8,30 @@ import {
 } from '~/graphql/generated';
 import {goBack} from '~/navigation/methods';
 import {Colors} from '~/styles';
+import {formatNumber} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
 import {showErrorMessage} from '~/utils/utils';
 
-const ContentViewerHeader = ({user, isFollowed, viewCount}: {user:any , isFollowed: boolean, viewCount:number }) => {
+const ContentViewerHeader = ({
+  user,
+  isFollowed,
+  viewCount,
+}: {
+  user: any;
+  isFollowed: boolean;
+  viewCount: number;
+}) => {
   return (
-    <HStack space={8} mx={16} mt={12}>
+    <HStack
+      justifyContent="space-between"
+      position="absolute"
+      top={10}
+      left={0}
+      right={0}
+      space={8}
+      mx={16}
+      zIndex={710}
+      mt={12}>
       <AppTouchable
         bg={Colors.BLACK_TRANSPARENT_4}
         p={16}
@@ -38,7 +56,7 @@ const ContentViewerHeader = ({user, isFollowed, viewCount}: {user:any , isFollow
             {user?.fullName || user?.username}
           </AppText>
 
-          <FollowButton userId={user?.id} isFollowed={isFollowed}/>
+          <FollowButton userId={user?.id} isFollowed={isFollowed} />
         </HStack>
 
         <HStack space={8}>
@@ -47,7 +65,7 @@ const ContentViewerHeader = ({user, isFollowed, viewCount}: {user:any , isFollow
               fontSize={fontSize.small}
               fontWeight="600"
               color={Colors.WHITE}>
-              0
+              {formatNumber(viewCount)}
             </AppText>
             <Center w={18} h={18} rounded={9} bg={Colors.PRIMARY}>
               <LiveIcon />
@@ -64,7 +82,13 @@ const ContentViewerHeader = ({user, isFollowed, viewCount}: {user:any , isFollow
 
 export default ContentViewerHeader;
 
-function FollowButton({userId,isFollowed}: {userId: number,isFollowed:boolean}) {
+function FollowButton({
+  userId,
+  isFollowed,
+}: {
+  userId: number;
+  isFollowed: boolean;
+}) {
   const [isFollow, setIsFollow] = useState<boolean>(isFollowed || false);
 
   const {mutate: mutateFollowUser} = useSocial_FollowUserMutation();
@@ -105,7 +129,8 @@ function FollowButton({userId,isFollowed}: {userId: number,isFollowed:boolean}) 
       py={4}
       px={10}
       borderRadius={4}
-      bg={Colors.BLACK_TRANSPARENT_4} onPress={followHandler}>
+      bg={Colors.BLACK_TRANSPARENT_4}
+      onPress={followHandler}>
       <AppText fontSize={fontSize.small} fontFamily="medium" borderRadius={8}>
         {isFollow ? 'Following' : 'Follow'}
       </AppText>
