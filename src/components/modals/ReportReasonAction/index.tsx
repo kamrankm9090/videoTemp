@@ -1,5 +1,7 @@
-import React from 'react';
 import {yupResolver} from '@hookform/resolvers/yup';
+import React from 'react';
+import {useForm} from 'react-hook-form';
+import {StyleSheet} from 'react-native';
 import {SheetProps} from 'react-native-actions-sheet';
 import {
   ActionSheetContainer,
@@ -9,15 +11,21 @@ import {
   FormInput,
   VStack,
 } from '~/components';
+import {useReportHandler} from '~/hooks';
+import {reportReasonSchema} from '~/schemas';
 import {Colors} from '~/styles';
 import {height} from '~/utils/style';
-import {useForm} from 'react-hook-form';
-import {reportReasonSchema} from '~/schemas';
-import {StyleSheet} from 'react-native';
+import {hideSheet} from '~/utils/utils';
 
 const defaultValues = {reason: ''};
 
-export default function ReportReasonAction(props: SheetProps) {
+export default function ReportReasonAction(
+  props: SheetProps<'report-reason-action'>,
+) {
+  const liveId = props?.payload?.liveId;
+  const showToastInActionSheet =
+    props?.payload?.showToastInActionSheet || false;
+
   const {...methods} = useForm({
     resolver: yupResolver(reportReasonSchema),
     defaultValues,
@@ -25,12 +33,27 @@ export default function ReportReasonAction(props: SheetProps) {
 
   const {handleSubmit, register, formState} = methods;
 
-  async function onSubmit(formData: typeof defaultValues) {}
+  function onSuccessReport() {
+    hideSheet('report-reason-action');
+  }
+
+  const {reportHandler, isLoading} = useReportHandler();
+
+  async function onSubmit(formData: typeof defaultValues) {
+    reportHandler({
+      liveId,
+      reason: formData.reason,
+      onSuccess: () => onSuccessReport(),
+    });
+  }
 
   const loading = false;
 
   return (
-    <ActionSheetContainer minHeight={height * 0.35}>
+    <ActionSheetContainer
+      isLoading={isLoading}
+      showToastInActionSheet={showToastInActionSheet}
+      minHeight={height * 0.35}>
       <AppFormProvider methods={methods}>
         <VStack space={30} flex={1}>
           <AppText color={Colors.WhiteSmoke} fontFamily="bold">

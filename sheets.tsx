@@ -47,6 +47,9 @@ declare module 'react-native-actions-sheet' {
     'sharing-action': SheetDefinition<{
       payload?: postOptionActionPayLoadType;
     }>;
+    'report-action': SheetDefinition<{
+      payload?: ReportActionPayLoadType;
+    }>;
   }
 }
 

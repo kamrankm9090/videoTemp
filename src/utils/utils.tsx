@@ -43,6 +43,7 @@ export const toastConfig = {
           onPress: props.onPress,
           backgroundColor: props.backgroundColor,
           text1Color: Colors.BLACK,
+          style: props.style,
         }}
       />
     );
@@ -57,6 +58,7 @@ export const toastConfig = {
         color: props.color,
         onPress: props.onPress,
         backgroundColor: props.backgroundColor,
+        style: props.style,
       }}
     />
   ),
@@ -68,6 +70,7 @@ export const toastConfig = {
         text1Color: props.color,
         backgroundColor: Colors.LABEL,
         top: 0,
+        style: props.style,
       }}
     />
   ),
@@ -80,6 +83,7 @@ export const toastConfig = {
         color: props.color,
         onPress: props.onPress,
         backgroundColor: props.backgroundColor,
+        style: props.style,
       }}
     />
   ),
@@ -92,6 +96,7 @@ export const toastConfig = {
         color: props.color,
         onPress: props.onPress,
         backgroundColor: props.backgroundColor,
+        style: props.style,
       }}
     />
   ),
@@ -104,6 +109,7 @@ export const toastConfig = {
         color: props.color,
         onPress: props.onPress,
         backgroundColor: Colors.WHITE,
+        style: props.style,
       }}
     />
   ),
@@ -412,7 +418,6 @@ export const isTokenExpired = (token?: string | null): boolean => {
   try {
     const decoded = jwtDecode<JwtPayload>(token);
     const tt = (decoded.exp ?? 0) < Date.now() / 1000;
-    console.log('tt===>', tt);
     return tt;
   } catch (err) {
     console.error('Invalid token:', err);

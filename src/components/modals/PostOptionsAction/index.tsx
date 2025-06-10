@@ -11,8 +11,14 @@ import {
 } from '~/components';
 import {queryKeys} from '~/constants/queryKeys';
 import {useLive_CreateNotInterestedMutation} from '~/graphql/generated';
+import {homeFlatListRef} from '~/screens/Home/Home';
 import {Colors} from '~/styles';
-import {hideSheet, showErrorMessage, switchActions} from '~/utils/utils';
+import {
+  hideSheet,
+  showErrorMessage,
+  showInfoMessage,
+  switchActions,
+} from '~/utils/utils';
 
 export default function PostOptionsAction(
   props: SheetProps<'post-options-action'>,
@@ -33,8 +39,15 @@ export default function PostOptionsAction(
           {
             onSuccess: response => {
               if (response?.live_createNotInterested?.code === 1) {
+                showInfoMessage('Content has been Hidden');
                 hideSheet('post-options-action');
-                queryClient.invalidateQueries([queryKeys.getLives], {
+                setTimeout(() => {
+                  homeFlatListRef?.current?.scrollToIndex?.({
+                    index: 0,
+                    animated: true,
+                  });
+                }, 100);
+                queryClient.invalidateQueries([queryKeys.getLivesForHome], {
                   exact: false,
                 });
               } else {
@@ -51,7 +64,8 @@ export default function PostOptionsAction(
     {
       id: 1,
       title: 'Share',
-      onPress: () => switchActions('sharing-action'),
+      onPress: () =>
+        switchActions('sharing-action', 'post-options-action', {payload}),
       icon: <Share />,
     },
     {
