@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import config from '~/config';
 import {showSuccessMessage} from './utils';
 import dayjs from 'dayjs';
+import {useIsMutating} from '@tanstack/react-query';
 
 export function generateUuid() {
   return uuidv4().replace(/-/g, '');
@@ -142,3 +143,7 @@ export function getAvatarInitial(title?: string): string {
   if (!title || typeof title !== 'string') return '';
   return title.trim().charAt(0).toUpperCase();
 }
+
+export const useAnyMutating = (keys: string[]) => {
+  return keys.some(key => useIsMutating({mutationKey: [key]}) > 0);
+};

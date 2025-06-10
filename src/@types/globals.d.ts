@@ -444,6 +444,14 @@ declare global {
     positiveBackgroundColor?: ViewStyle['backgroundColor'];
   };
 
+  type MoreOptionItemType = {
+    id: number;
+    title: string;
+    onPress: () => void;
+    color?: string;
+    keyLoading?: string;
+  };
+
   type MoreOptionActionPayloadType = {
     title: string;
     data: MoreOptionItemType;
