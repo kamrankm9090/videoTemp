@@ -8,7 +8,7 @@ import {
   HomePostItem,
 } from '~/components';
 import {LiveType, SortEnumType} from '~/graphql/generated';
-import {useGetLives} from '~/hooks/live';
+import {useGetLives, useGetLivesForHome} from '~/hooks/live';
 
 export default function HomeScreen() {
   const [visibleIndex, setVisibleIndex] = useState<number | null>(null);
@@ -25,22 +25,24 @@ export default function HomeScreen() {
     fetchNextPage: fetchNextPageLives,
     refetch: refetchGetLives,
     isRefetching: isRefetchingGetLives,
-  } = useGetLives({
-    where: {
-      and: [
-        {recordStarted: {eq: true}},
-        {live: {liveType: {eq: LiveType.LiveContent}}},
-        {
-          or: [{live: {setSchedule: {eq: false}}}],
-        },
-      ],
-    },
+  } = useGetLivesForHome({
+    // where: {
+    //   and: [
+    //     {recordStarted: {eq: true}},
+    //     {live: {liveType: {eq: LiveType.LiveContent}}},
+    //     {
+    //       or: [{live: {setSchedule: {eq: false}}}],
+    //     },
+    //   ],
+    // },
     order: {live: {createdDate: SortEnumType.Desc}},
   });
 
   const lives = useMemo(() => {
     return getLives?.pages || [];
   }, [getLives]);
+
+  console.log('data-->', lives);
 
   const onViewRef = useRef(({viewableItems}: {viewableItems: ViewToken[]}) => {
     if (viewableItems.length > 0) {

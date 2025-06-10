@@ -1,6 +1,12 @@
 import * as yup from 'yup';
 import {LiveType} from '~/graphql/generated';
 
+const validTag = yup
+  .string()
+  .trim()
+  .min(1, 'Empty tag is not allowed')
+  .matches(/^[\p{L} ]+$/u, 'Only letters and spaces are allowed');
+
 const loginSchema = yup.object().shape({
   email: yup.string().required('Required').trim(),
   password: yup.string().required('Required').trim(),
@@ -190,6 +196,25 @@ const supportSchema = yup.object({
     .max(300, 'Message must not exceed 300 characters.'),
 });
 
+const resumeSchema = yup.object({
+  profession: yup
+    .string()
+    .required('Profession is required.')
+    .min(3, 'Profession must be at least 3 characters.')
+    .max(100, 'Profession must not exceed 100 characters.'),
+
+  professionalSummary: yup
+    .string()
+    .required('Professional summary is required.')
+    .min(10, 'Professional summary must be at least 10 characters.')
+    .max(300, 'Professional summary must not exceed 300 characters.'),
+
+  education: yup.array().of(validTag).optional(),
+  workExperience: yup.array().of(validTag).optional(),
+  skills: yup.array().of(validTag).optional(),
+  languages: yup.array().of(validTag).optional(),
+});
+
 export {
   loginSchema,
   registerSchema,
@@ -201,4 +226,5 @@ export {
   reportReasonSchema,
   createContentSchema,
   supportSchema,
+  resumeSchema,
 };

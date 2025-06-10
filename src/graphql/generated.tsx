@@ -7104,6 +7104,51 @@ export type Live_GetLivesForHomePageQuery = {
         isLiked: boolean;
         recordStarted: boolean;
         recordEnded: boolean;
+        live?: {
+          __typename?: 'Live';
+          id: number;
+          likeCount: number;
+          userId: number;
+          introUrl?: string | null;
+          liveType: LiveType;
+          photoUrl?: string | null;
+          title?: string | null;
+          description?: string | null;
+          proposalTitle?: string | null;
+          proposalCategory?: string | null;
+          proposalSummary?: string | null;
+          isDraft: boolean;
+          category?: string | null;
+          price: any;
+          recordUrl?: string | null;
+          isFree: boolean;
+          previewUrl?: string | null;
+          value: any;
+          funding: number;
+          setSchedule: boolean;
+          publishingScheduleDate?: any | null;
+          publishingScheduleTime?: any | null;
+          viewCount: number;
+          purchaseCount: number;
+          agoraUserId?: string | null;
+          user?: {
+            __typename?: 'User';
+            username?: string | null;
+            phoneNumber?: string | null;
+            photoUrl?: string | null;
+            fullName?: string | null;
+            about?: string | null;
+            gender?: Gender | null;
+            lastSeen?: any | null;
+            isVerified: boolean;
+            isDeleted: boolean;
+            createdDate?: any | null;
+            id: number;
+            email?: string | null;
+            emailConfirmed: boolean;
+            phoneNumberConfirmed: boolean;
+          } | null;
+        } | null;
       } | null> | null;
     } | null;
   } | null;
@@ -9586,6 +9631,49 @@ export const Live_GetLivesForHomePageDocument = `
         isLiked
         recordStarted
         recordEnded
+        live {
+          id
+          likeCount
+          userId
+          introUrl
+          liveType
+          photoUrl
+          title
+          description
+          proposalTitle
+          proposalCategory
+          proposalSummary
+          isDraft
+          category
+          price
+          recordUrl
+          isFree
+          previewUrl
+          value
+          funding
+          setSchedule
+          publishingScheduleDate
+          publishingScheduleTime
+          viewCount
+          purchaseCount
+          agoraUserId
+          user {
+            username
+            phoneNumber
+            photoUrl
+            fullName
+            about
+            gender
+            lastSeen
+            isVerified
+            isDeleted
+            createdDate
+            id
+            email
+            emailConfirmed
+            phoneNumberConfirmed
+          }
+        }
       }
       totalCount
     }

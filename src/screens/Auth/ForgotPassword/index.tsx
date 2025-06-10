@@ -24,7 +24,8 @@ import {showErrorMessage} from '~/utils/utils';
 
 const defaultValues = {email: ''};
 
-export default function ForgotPasswordScreen() {
+export default function ForgotPasswordScreen({route}: {route: any}) {
+  const hasGoBack = route?.params?.hasGoBack;
   const {...methods} = useForm({
     resolver: yupResolver(forgotPasswordSchema),
     defaultValues,
@@ -70,7 +71,7 @@ export default function ForgotPasswordScreen() {
     <AppContainer barStyle="light-content" backgroundColor={Colors.BACKGROUND}>
       <AppKeyboardAwareScrollView>
         <VStack p={24} space={48} flex={1}>
-          <AuthHeader />
+          <AuthHeader hasGoBack={hasGoBack} />
           <VStack space={24}>
             <AppText fontSize={fontSize.large} color={Colors.WHITE}>
               Reset Your Password
