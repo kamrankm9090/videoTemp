@@ -56,7 +56,6 @@ export default function CreateCommunityAction(
     : useCommunity_CreateCommunityMutation();
 
   const onSubmit = (data: any) => {
-    console.log('Create Community:', data);
     const input = {
       ...data,
       id: item?.id,

@@ -1,33 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useSnapshot} from 'valtio';
-import {LikeFillIcon, LikeIcon, Save, Saved} from '~/assets/svgs';
 import {
-  AppImage,
   AppLoading,
-  AppText,
   AppTouchable,
   AppVideoPlayer,
-  Center,
-  HomePostOptions,
-  HStack,
-  LikeButton,
+  LiveBadge,
+  SaveButton,
   SectionHomeFooter,
   VStack,
+  SectionUserRow,
+  MuteButton,
 } from '~/components';
-import {
-  useAgora_CreateTokenMutation,
-  useLive_AddToBookmarkMutation,
-  useLive_LikeMutation,
-  useLive_RemoveFromBookmarkMutation,
-  useLive_RemoveLikeMutation,
-} from '~/graphql/generated';
+import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
-import {contentStore, liveStore} from '~/stores';
+import {contentStore, homePostStore, liveStore} from '~/stores';
 import {Colors} from '~/styles';
-import {formatNumber} from '~/utils/helper';
-import {fontSize, height} from '~/utils/style';
-import {showErrorMessage} from '~/utils/utils';
+import {height} from '~/utils/style';
 
 const HEIGHT = height * 0.6;
 
@@ -44,9 +33,9 @@ export default function HomePostItem({
     useAgora_CreateTokenMutation();
   const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
     useSnapshot(liveStore);
+  const {isMuted} = useSnapshot(homePostStore);
 
   function onPressHandler() {
-    console.log(item?.live?.isPurchased);
     if (item?.recordEnded) {
       // navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
       contentStore.contentData = item;
@@ -86,10 +75,12 @@ export default function HomePostItem({
           source={{
             uri: item?.live?.previewUrl,
           }}
-          showMute={true}
+          showMute={false}
           showWaterMark
+          muted={isMuted}
         />
         <LiveBadge isLive={!item?.recordEnded} />
+        <HomePostMuteButton />
         <SaveButton isSaved={item?.isBookmark} liveId={item?.live?.id} />
         <SectionUserRow data={item} />
         {isLoadingCreateAgoraToken && <AppLoading />}
@@ -99,126 +90,17 @@ export default function HomePostItem({
   );
 }
 
-function SectionUserRow({data}: {data: LiveDto}) {
-  const live = data?.live;
-  const user = live?.user;
+function HomePostMuteButton() {
+  const {isMuted, setIsMuted} = useSnapshot(homePostStore);
 
-  return (
-    <HStack px={16} mt={8} alignItems="flex-start" space={12}>
-      <AppImage
-        resizeMode="stretch"
-        imageSource={user?.photoUrl}
-        style={styles.avatar}
-      />
-      <VStack space={8} flex={1}>
-        <HStack space={12} alignItems="flex-start">
-          <AppText
-            flex={1}
-            numberOfLines={2}
-            fontSize={fontSize.medium}
-            fontFamily="medium">
-            {live?.title ?? '-'}
-          </AppText>
-          <LikeButton
-            likeCount={data?.live?.likeCount}
-            isLiked={data?.isLiked}
-            liveId={data?.live?.id}
-          />
-          <HomePostOptions data={data} />
-        </HStack>
-        <HStack space={6}>
-          <AppText color={Colors.DarkGray}>{live?.user?.username}</AppText>
-          <AppText color={Colors.DarkGray}>.</AppText>
-          <AppText color={Colors.DarkGray}>{`${formatNumber(
-            live?.viewCount,
-          )} views`}</AppText>
-          <AppText color={Colors.DarkGray}>.</AppText>
-          <AppText color={Colors.DarkGray}>{`${formatNumber(
-            live?.purchaseCount,
-          )} bought`}</AppText>
-        </HStack>
-      </VStack>
-    </HStack>
-  );
-}
-
-function SaveButton({isSaved, liveId}: {isSaved?: boolean; liveId: number}) {
-  const [saved, setSaved] = useState<boolean>(false);
-
-  const {mutate: mutateAddToBookmark} = useLive_AddToBookmarkMutation();
-  const {mutate: mutateRemoveFromBookmark} =
-    useLive_RemoveFromBookmarkMutation();
-
-  useEffect(() => {
-    setSaved(isSaved ?? false);
-  }, [isSaved]);
-
-  async function saveOnPress() {
-    if (saved) {
-      setSaved(false);
-      mutateRemoveFromBookmark(
-        {liveId},
-        {
-          onSuccess: response => {
-            if (response?.live_removeFromBookmark?.code !== 1) {
-              showErrorMessage(response?.live_removeFromBookmark?.description);
-            }
-          },
-        },
-      );
-    } else {
-      setSaved(true);
-      mutateAddToBookmark(
-        {liveId},
-        {
-          onSuccess: response => {
-            if (response?.live_addToBookmark?.code !== 1) {
-              showErrorMessage(response?.live_addToBookmark?.description);
-            }
-          },
-        },
-      );
-    }
+  function muteHandler() {
+    setIsMuted(!isMuted);
   }
 
-  return (
-    <AppTouchable
-      p={4}
-      onPress={saveOnPress}
-      position="absolute"
-      top={12}
-      right={12}>
-      {saved ? <Saved /> : <Save />}
-    </AppTouchable>
-  );
-}
-
-function LiveBadge({isLive}: {isLive?: boolean}) {
-  if (isLive) {
-    return (
-      <Center
-        pt={3}
-        pb={5}
-        px={10}
-        top={12}
-        left={12}
-        rounded={20}
-        bg={Colors.ERROR}
-        position="absolute">
-        <AppText fontFamily="bold">Live</AppText>
-      </Center>
-    );
-  }
-
-  return null;
+  return <MuteButton onPress={muteHandler} status={isMuted} />;
 }
 
 const styles = StyleSheet.create({
-  avatar: {
-    height: 41,
-    width: 41,
-    borderRadius: 41,
-  },
   player: {
     height: HEIGHT,
     backgroundColor: Colors.Nero,

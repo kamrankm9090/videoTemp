@@ -82,8 +82,6 @@ export default function CreateContentScreen() {
 
       const publishingScheduleTime = `PT${hours}H${minutes}M${seconds}S`;
 
-      console.log('previURL-->', formData?.previewUrl);
-
       const input: LiveInput = {
         liveType: liveType || LiveType.LiveContent,
         isFree: isLiveContent ? formData?.isFree : null,

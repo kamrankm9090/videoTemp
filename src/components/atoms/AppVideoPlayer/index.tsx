@@ -16,7 +16,13 @@ import Video, {
   VideoRef,
 } from 'react-native-video';
 import {VolumeHighIcon, VolumeSlashIcon} from '~/assets/svgs';
-import {AppText, AppTouchable, Center, WaterMark} from '~/components';
+import {
+  AppText,
+  AppTouchable,
+  Center,
+  MuteButton,
+  WaterMark,
+} from '~/components';
 import {Colors} from '~/styles';
 import {formatTime} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
@@ -114,17 +120,8 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
           style={[StyleSheet.absoluteFill, videoStyle]}
           {...rest}
         />
-        {showMute && (
-          <AppTouchable
-            right={12}
-            top={55}
-            rounded={16}
-            p={4}
-            position="absolute"
-            onPress={muteHandler}>
-            {isMuted ? <VolumeSlashIcon /> : <VolumeHighIcon />}
-          </AppTouchable>
-        )}
+        {showMute && <MuteButton onPress={muteHandler} status={isMuted} />}
+
         {showTimer && (
           <Center
             py={4}

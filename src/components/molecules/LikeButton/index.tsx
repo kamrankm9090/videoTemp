@@ -22,7 +22,7 @@ export default function LikeButton({
   isLiked?: boolean;
   liveId: number;
   likeCount: number;
-  orientation: 'horizontal' | 'vertical';
+  orientation?: 'horizontal' | 'vertical';
   p?: ViewStyle['padding'];
   rounded?: ViewStyle['borderRadius'];
   bg?: ViewStyle['backgroundColor'];

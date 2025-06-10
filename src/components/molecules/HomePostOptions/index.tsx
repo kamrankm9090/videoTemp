@@ -5,7 +5,7 @@ import {showSheet} from '~/utils/utils';
 
 export default function HomePostOptions({data}: {data: LiveDto}) {
   function openOptionsModal() {
-    showSheet('post-options-action', {payload: {data}});
+    showSheet('post-options-action', {payload: {item: data}});
   }
 
   return (
