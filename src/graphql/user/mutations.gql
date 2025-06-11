@@ -115,6 +115,10 @@ mutation user_updateUser($userId: Int, $userInput: UserInput) {
       verificationErrors
       socialLinks
       profession
+      professionalSummary
+      languages
+      workExperience
+      education
       yearsOfExperience
       height
       favoriteCategories

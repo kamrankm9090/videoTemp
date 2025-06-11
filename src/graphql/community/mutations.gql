@@ -8,9 +8,7 @@ mutation community_createCommunity($input: CommunityInput) {
       photoUrl
       communityType
       userCount
-      requestCount
-      media
- 
+      requestCount 
       id
       isDeleted
       createdDate
@@ -96,8 +94,6 @@ mutation community_updateCommunity($input: CommunityInput) {
       communityType
       userCount
       requestCount
-      media
- 
       id
       isDeleted
       createdDate

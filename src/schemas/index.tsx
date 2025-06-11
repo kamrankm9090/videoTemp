@@ -3,9 +3,30 @@ import {LiveType} from '~/graphql/generated';
 
 const validTag = yup
   .string()
-  .trim()
-  .min(1, 'Empty tag is not allowed')
-  .matches(/^[\p{L} ]+$/u, 'Only letters and spaces are allowed');
+  .matches(/^[\p{L} ]+$/u, 'Only letters and spaces are allowed')
+  .min(1, 'Tag cannot be empty')
+  .max(50, 'Tag cannot exceed 50 characters.');
+
+const validJsonTagArray = yup
+  .string()
+  .test('is-valid-json-tag-array', 'Invalid tag list', value => {
+    if (!value) return true; // allow optional
+    try {
+      const parsed = JSON.parse(value);
+      if (!Array.isArray(parsed)) return false;
+      const uniqueTags = new Set();
+      return parsed.every(tag => {
+        if (typeof tag !== 'string') return false;
+        if (!/^[\p{L} ]+$/u.test(tag)) return false;
+        if (tag.trim().length === 0 || tag.length > 50) return false;
+        if (uniqueTags.has(tag)) return false;
+        uniqueTags.add(tag);
+        return true;
+      });
+    } catch {
+      return false;
+    }
+  });
 
 const loginSchema = yup.object().shape({
   email: yup.string().required('Required').trim(),
@@ -209,12 +230,11 @@ const resumeSchema = yup.object({
     .min(10, 'Professional summary must be at least 10 characters.')
     .max(300, 'Professional summary must not exceed 300 characters.'),
 
-  education: yup.array().of(validTag).optional(),
-  workExperience: yup.array().of(validTag).optional(),
-  skills: yup.array().of(validTag).optional(),
-  languages: yup.array().of(validTag).optional(),
+  education: validJsonTagArray.optional(),
+  workExperience: validJsonTagArray.optional(),
+  skills: validJsonTagArray.optional(),
+  languages: validJsonTagArray.optional(),
 });
-
 export {
   loginSchema,
   registerSchema,
