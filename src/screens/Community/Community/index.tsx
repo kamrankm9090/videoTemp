@@ -15,7 +15,8 @@ import {
 import CommunityPlaceholder from '~/components/placeholders/CommunityPlaceholder';
 import {
   SortEnumType,
-  useInfiniteCommunity_GetCommunitiesQuery,
+  useInfiniteCommunity_GetOtherCommunitiesQuery,
+  useInfiniteCommunity_GetYourCommunitiesQuery,
 } from '~/graphql/generated';
 import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
@@ -27,25 +28,46 @@ export default function CommunityScreen() {
   const [search, setSearch] = useState('');
 
   const {data, hasNextPage, fetchNextPage, refetch, isRefetching, isLoading} =
-    useInfiniteCommunity_GetCommunitiesQuery({
-      where: {
-        title: {
-          startsWith: search,
-        },
-        users: {
-          some: {
-            userId: {
-              [tab === 'Your communities' ? 'eq' : 'neq']: userData?.id,
+    tab === 'Your communities'
+      ? useInfiniteCommunity_GetYourCommunitiesQuery({
+          where: {
+            title: {
+              startsWith: search,
+            },
+            users: {
+              some: {
+                userId: {
+                  eq: userData?.id,
+                },
+              },
             },
           },
-        },
-      },
-      order: {
-        createdDate: SortEnumType.Desc,
-      },
-    });
+          order: {
+            createdDate: SortEnumType.Desc,
+          },
+        })
+      : useInfiniteCommunity_GetOtherCommunitiesQuery({
+          where: {
+            title: {
+              startsWith: search,
+            },
+            users: {
+              some: {
+                userId: {
+                  neq: userData?.id,
+                },
+              },
+            },
+          },
+          order: {
+            createdDate: SortEnumType.Desc,
+          },
+        });
 
-  const commData = data?.pages?.[0]?.community_getCommunities?.result?.items;
+  const commData =
+    tab === 'Your communities'
+      ? data?.pages?.[0]?.community_getYourCommunities?.result?.items
+      : data?.pages?.[0]?.community_getOtherCommunities?.result?.items;
 
   const renderItem = ({item}: any) => {
     return <CommunityItem item={item} isMyComm={tab === 'Your communities'} />;

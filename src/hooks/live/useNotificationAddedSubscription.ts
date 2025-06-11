@@ -38,6 +38,8 @@ export const useNotificationAddedSubscription = ({
         queryClient.invalidateQueries(['live_getLiveComments'], {
           exact: false,
         });
+        queryClient.refetchQueries(["community_getCommunityMessages.infinite"])
+        
       }
     };
     // ws.onmessage = callback;
