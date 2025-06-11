@@ -42,7 +42,6 @@
         requestCount
         title
         photoUrl
-        media
       }
       totalCount
     }

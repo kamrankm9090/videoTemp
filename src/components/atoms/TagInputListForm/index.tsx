@@ -24,11 +24,20 @@ const TagInputListForm = React.forwardRef<any, TagInputListProps>(
     const {field, fieldState} = useController({
       name,
       control,
-      defaultValue: [],
+      defaultValue: '[]', // default is a JSON string
     });
 
     const [inputValue, setInputValue] = useState('');
     const [localError, setLocalError] = useState<string | null>(null);
+
+    // Decode the JSON string to array
+    const tagList: string[] = (() => {
+      try {
+        return JSON.parse(field.value || '[]');
+      } catch {
+        return [];
+      }
+    })();
 
     const handleAddTag = () => {
       const newTag = inputValue.trim();
@@ -38,17 +47,19 @@ const TagInputListForm = React.forwardRef<any, TagInputListProps>(
         setLocalError('Tag cannot be empty');
       } else if (!isValidTag) {
         setLocalError('Only letters and spaces are allowed');
-      } else if (field.value.includes(newTag)) {
+      } else if (tagList.includes(newTag)) {
         setLocalError('Duplicate tag');
       } else {
-        field.onChange([...field.value, newTag]);
+        const updatedList = [...tagList, newTag];
+        field.onChange(JSON.stringify(updatedList)); // save as JSON
         setInputValue('');
-        setLocalError(null); // clear error
+        setLocalError(null);
       }
     };
 
     const handleRemoveTag = (tagToRemove: string) => {
-      field.onChange(field.value.filter((tag: string) => tag !== tagToRemove));
+      const updatedList = tagList.filter(tag => tag !== tagToRemove);
+      field.onChange(JSON.stringify(updatedList)); // save as JSON
     };
 
     return (
@@ -58,7 +69,7 @@ const TagInputListForm = React.forwardRef<any, TagInputListProps>(
           value={inputValue}
           onChangeText={text => {
             setInputValue(text);
-            if (localError) setLocalError(null); // clear error while typing
+            if (localError) setLocalError(null);
           }}
           placeholder={placeholder || 'Enter a tag'}
           borderColor={
@@ -66,7 +77,7 @@ const TagInputListForm = React.forwardRef<any, TagInputListProps>(
               ? Colors.ERROR
               : fieldState.error
               ? Colors.ERROR
-              : field.value.length
+              : tagList.length
               ? Colors.INFO
               : Colors.GARY_3
           }
@@ -74,7 +85,6 @@ const TagInputListForm = React.forwardRef<any, TagInputListProps>(
           onSubmitEditing={handleAddTag}
         />
 
-        {/* Inline validation message */}
         {localError ? (
           <AppHelperText error={{message: localError}} />
         ) : (
@@ -83,7 +93,7 @@ const TagInputListForm = React.forwardRef<any, TagInputListProps>(
 
         <HStack justifyContent="space-between" alignItems="flex-start" w="100%">
           <View style={styles.mainList}>
-            {field.value.map((item: string, index: number) => (
+            {tagList.map((item: string, index: number) => (
               <AppTouchable
                 key={`${item}-${index}`}
                 onPress={() => handleRemoveTag(item)}

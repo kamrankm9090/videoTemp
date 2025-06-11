@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   AppButton,
   AppContainer,
@@ -15,12 +15,25 @@ import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {StyleSheet} from 'react-native';
 import {scale} from '~/utils/style';
+import {userDataStore} from '~/stores';
+import {useUser_UpdateUserMutation} from '~/graphql/generated';
+import {showErrorMessage, showSuccessMessage} from '~/utils/utils';
+import {goBack} from '~/navigation/methods';
 
 const defaultValues = {
-  fullName: '',
+  profession: '',
+  professionalSummary: '',
+  education: '',
+  workExperience: '',
+  skills: '',
+  languages: '',
 };
 
 const ResumeScreen = () => {
+  const {userData, setUserData} = userDataStore(state => state);
+  const {mutate: mutateUserUpdate, isLoading: isLoadingUpdateUser} =
+    useUser_UpdateUserMutation();
+
   const {...methods} = useForm({
     resolver: yupResolver(resumeSchema),
     defaultValues,
@@ -28,7 +41,38 @@ const ResumeScreen = () => {
 
   const {handleSubmit, formState, setValue, watch} = methods;
 
-  const onSubmit = useCallback((formData: typeof defaultValues) => {}, []);
+  useEffect(() => {
+    if (userData) {
+      setValue('profession', userData?.profession || '');
+      setValue('professionalSummary', userData?.professionalSummary || '');
+      setValue('education', userData?.education || '');
+      setValue('workExperience', userData?.workExperience || '');
+      setValue('skills', userData?.skills || '');
+      setValue('languages', userData?.languages || '');
+    }
+  }, [userData]);
+
+  const onSubmit = useCallback((formData: typeof defaultValues) => {
+    const variables = {
+      userId: userData?.id,
+      userInput: {
+        ...formData,
+      },
+    };
+
+    mutateUserUpdate(variables, {
+      onSuccess: response => {
+        if (response?.user_updateUser?.status?.code === 1) {
+          console.log('response', response);
+          setUserData(response?.user_updateUser?.result);
+          goBack();
+          showSuccessMessage('Success');
+        } else {
+          showErrorMessage(response?.user_updateUser?.status?.description);
+        }
+      },
+    });
+  }, []);
 
   return (
     <AppContainer>
@@ -79,6 +123,7 @@ const ResumeScreen = () => {
             <AppButton
               mt={24}
               title="Continue"
+              loading={isLoadingUpdateUser}
               onPress={handleSubmit(onSubmit)}
             />
           </VStack>
