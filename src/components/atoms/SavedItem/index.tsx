@@ -7,11 +7,19 @@ import {getFullImageUrl} from '~/utils/helper';
 import {fontSize, scale} from '~/utils/style';
 
 const SavedItem = ({
-  item,
+  title,
+  description,
+  imageSource,
   type = 'saved',
+  id,
+  onRemovePress,
 }: {
-  item: any;
+  title: string;
+  description: string;
+  imageSource: string;
+  id: number;
   type?: 'income' | 'saved';
+  onRemovePress: (id: number) => void;
 }) => {
   const renderRightItem = useCallback(() => {
     switch (type) {
@@ -20,7 +28,7 @@ const SavedItem = ({
 
       default:
         return (
-          <AppTouchable>
+          <AppTouchable onPress={() => onRemovePress?.(id)}>
             <BookmarkFillIcon />
           </AppTouchable>
         );
@@ -37,19 +45,17 @@ const SavedItem = ({
         }}
         resizeMode="cover"
         errorImage={images.noImage}
-        imageSource={getFullImageUrl(
-          'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-        )}
+        imageSource={getFullImageUrl(imageSource)}
       />
       <VStack space={scale(10)} flex={1} px={scale(8)}>
         <AppText fontSize={fontSize.small} numberOfLines={1}>
-          Beauty Documentary
+          {title}
         </AppText>
         <AppText
           fontSize={fontSize.tiny}
           color={Colors.PLACEHOLDER}
           numberOfLines={2}>
-          a live stream where the person that peopl...
+          {description}
         </AppText>
       </VStack>
       {renderRightItem?.()}

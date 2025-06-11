@@ -12,6 +12,8 @@ import {
   FormDateTimePicker,
   FormImagePicker,
   FormInput,
+  queryClient,
+  TagInputListForm,
   VStack,
 } from '~/components';
 import {GENDERS} from '~/constants/constants';
@@ -77,6 +79,7 @@ const EditProfileScreen = () => {
       onSuccess: response => {
         if (response?.user_updateUser?.status?.code === 1) {
           setUserData(response?.user_updateUser?.result);
+          queryClient.invalidateQueries(['social_getUser']);
           goBack();
           showSuccessMessage('Success');
         } else {
@@ -126,7 +129,11 @@ const EditProfileScreen = () => {
               placeholder="Phone Number"
               {...{formState}}
             />
-            <FormInput name="skills" placeholder="Skills" {...{formState}} />
+            <TagInputListForm
+              name="skills"
+              placeholder="Skills"
+              {...{formState}}
+            />
             <AppDropDown
               name="gender"
               placeholder="Select Type"
