@@ -235,6 +235,35 @@ const resumeSchema = yup.object({
   skills: validJsonTagArray.optional(),
   languages: validJsonTagArray.optional(),
 });
+
+const passwordChangeSchema = yup.object().shape({
+  currentPassword: yup
+    .string()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/,
+      'Passwords must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+    )
+    .max(36, 'Must be 36 characters or less')
+    .required('Required')
+    .trim(),
+
+  newPassword: yup
+    .string()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/,
+      'Passwords must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+    )
+    .max(36, 'Must be 36 characters or less')
+    .required('New password is required')
+    .trim(),
+
+  repeatNewPassword: yup
+    .string()
+    .oneOf([yup.ref('newPassword'), null], 'Passwords must match')
+    .required('Please confirm your new password')
+    .trim(),
+});
+
 export {
   loginSchema,
   registerSchema,
@@ -247,4 +276,5 @@ export {
   createContentSchema,
   supportSchema,
   resumeSchema,
+  passwordChangeSchema,
 };
