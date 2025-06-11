@@ -14,7 +14,7 @@ import {
   GroupInfoSection,
   queryClient,
 } from '~/components';
-import {useCommunity_DeleteCommunityMutation} from '~/graphql/generated';
+import {useCommunity_DeleteCommunityMutation, useInfiniteCommunity_GetCommunityMediaQuery} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 import {hideSheet, showSheet} from '~/utils/utils';
@@ -24,6 +24,10 @@ const CommunityInfoScreen = () => {
   const item = route?.params?.item;
   const {mutate} = useCommunity_DeleteCommunityMutation();
 
+  const {data: mediaData} = useInfiniteCommunity_GetCommunityMediaQuery({communityId: item?.id})
+
+  const mediaUrls = mediaData?.pages?.[0]?.community_getCommunityMedia?.result
+  
   const deleteCommunity = () => {
     mutate(
       {communityId: item?.id},
@@ -93,7 +97,7 @@ const CommunityInfoScreen = () => {
         <GroupInfoActionButtons item={item} />
         <GroupInfoDescription item={item} />
         <GroupInfoMemberList item={item} />
-        <GroupInfoMedia media={item?.media} />
+        <GroupInfoMedia media={mediaUrls} />
       </AppScrollView>
     </AppContainer>
   );

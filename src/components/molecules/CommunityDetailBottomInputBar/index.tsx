@@ -1,23 +1,81 @@
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
   View,
 } from 'react-native';
-import {CameraIcon, MicIcon, Send2Icon} from '~/assets/svgs';
-import {AppInput, AppTouchable, HStack} from '~/components';
+import ImagePicker from 'react-native-image-crop-picker';
+import {CameraIcon, Close2, MicIcon, Send2Icon} from '~/assets/svgs';
+import {
+  AppImage,
+  AppIndicator,
+  AppInput,
+  AppTouchable,
+  HStack,
+} from '~/components';
+import {useUploadFile} from '~/hooks';
 import {Colors} from '~/styles';
 
-const BottomInputBar = ({onSendMessage, onAttach, onVoice}: any) => {
+const BottomInputBar = ({onSendMessage, onAttach, onVoice, isLoading}: any) => {
   const [message, setMessage] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   const handleSend = () => {
     if (!message.trim()) return;
     onSendMessage?.(message.trim());
     setMessage('');
+    setImageUrl('');
     Keyboard.dismiss();
+  };
+
+  const {mutate: uploadFileMutate, isLoading: uploading} = useUploadFile();
+
+  const handleUpload = (image: any): Promise<string | undefined> => {
+    return new Promise((resolve, reject) => {
+      if (!image?.path) {
+        reject(new Error('No image selected'));
+        return;
+      }
+
+      uploadFileMutate(
+        {param: image},
+        {
+          onSuccess: (data: any) => {
+            if (data?.uploadedUrl) {
+              resolve(data.uploadedUrl);
+            } else {
+              resolve(undefined);
+            }
+          },
+          onError: error => {
+            console.error('Upload failed:', error);
+            reject(error);
+          },
+        },
+      );
+    });
+  };
+
+  const handlePickImage = async () => {
+    try {
+      const image = await ImagePicker.openPicker({
+        width: 300,
+        height: 300,
+        cropping: true,
+        compressImageQuality: 0.8,
+      });
+
+      const url = await handleUpload(image);
+      if (url) {
+        onAttach(url);
+        setImageUrl(url);
+      }
+    } catch (error) {
+      console.error('Image picker error:', error);
+    }
   };
 
   return (
@@ -25,6 +83,22 @@ const BottomInputBar = ({onSendMessage, onAttach, onVoice}: any) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
       style={styles.wrapper}>
+      {imageUrl && (
+        <HStack justifyContent="space-between" p={12} mx={12} bg={Colors.NIGHT_RIDER} borderRadius={12}>
+          <AppImage
+            imageSource={imageUrl}
+            style={{
+              width: 100,
+              height: 100,
+              margin: 12,
+              borderLeftWidth: 4,
+              borderColor: Colors.PRIMARY,
+            }}
+          />
+          <Close2 style={{alignSelf:"flex-start"}} onPress={()=> [setImageUrl("") , onAttach("")]} />
+        </HStack>
+      )}
+
       <HStack px={12} py={8}>
         <View style={styles.inputContainer}>
           <AppInput
@@ -38,7 +112,7 @@ const BottomInputBar = ({onSendMessage, onAttach, onVoice}: any) => {
           <AppTouchable onPress={onVoice}>
             <MicIcon />
           </AppTouchable>
-          <AppTouchable onPress={onAttach}>
+          <AppTouchable onPress={handlePickImage}>
             <CameraIcon />
           </AppTouchable>
         </View>
@@ -47,7 +121,7 @@ const BottomInputBar = ({onSendMessage, onAttach, onVoice}: any) => {
           onPress={handleSend}
           disabled={!message.trim()}
           style={styles.sendButton}>
-          <Send2Icon />
+          {isLoading ? <AppIndicator color={Colors.Grey}/> : <Send2Icon />}
         </AppTouchable>
       </HStack>
     </KeyboardAvoidingView>
@@ -64,13 +138,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor:Colors.BORDER,
-    borderWidth:1,
+    borderColor: Colors.BORDER,
+    borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 8,
     marginRight: 8,
-    gap:8
+    gap: 8,
   },
   input: {
     flex: 1,

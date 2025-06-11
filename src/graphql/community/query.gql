@@ -42,7 +42,9 @@
         requestCount
         title
         photoUrl
-        media
+        media{
+        mediaUrl
+      }
       }
       totalCount
     }
@@ -50,30 +52,160 @@
   }
 }
 
-query community_getOtherCommunities ($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
-  community_getOtherCommunities {
+query community_getCommunityMessages($communityId: Int!, $skip: Int, $take: Int, $where:CommunityMessageFilterInput, $order: [CommunityMessageSortInput!]){
+  community_getCommunityMessages(communityId:$communityId ) {
     result(skip: $skip, take: $take, where: $where, order: $order) {
       pageInfo{
         hasNextPage
         hasPreviousPage
       }
       items{
-        communityType
-        createdDate
-        creator{
-          about
-          fullName
-          photoUrl
+        community{
+          id
+          messageCount
         }
-        description
-        id
-        requestCount
-        title
-        
+        message
+        mediaUrl
+        user{
+          id
+          photoUrl
+          fullName
+        }
+        createdDate
       }
       totalCount
     }
   
+    status
+  }
+}
+
+
+query community_getYourCommunities($skip: Int, $take: Int, $where:CommunityFilterInput, $order: [CommunitySortInput!]){
+  community_getYourCommunities {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+           items {
+        communityType
+        createdDate
+        creator {
+          id
+          about
+          fullName
+          photoUrl
+        }
+        users{
+          userId
+        communityId
+          
+          user{
+            fullName
+            photoUrl
+            id
+            profession
+          }
+        }
+        requests{
+          userId
+          id
+          communityId
+          user{
+            fullName
+            photoUrl
+            profession
+            id
+          }
+        }
+        userCount
+        description
+        id
+        requestCount
+        title
+        photoUrl
+           media{
+        mediaUrl
+      }
+      }
+      totalCount
+    }
+    status
+  }
+}
+
+
+
+query community_getOtherCommunities($skip: Int, $take: Int, $where:CommunityFilterInput, $order: [CommunitySortInput!]){
+  community_getOtherCommunities {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+           items {
+        communityType
+        createdDate
+        creator {
+          id
+          about
+          fullName
+          photoUrl
+        }
+        users{
+          userId
+        communityId
+          
+          user{
+            fullName
+            photoUrl
+            id
+            profession
+          }
+        }
+        requests{
+          userId
+          id
+          communityId
+          user{
+            fullName
+            photoUrl
+            profession
+            id
+          }
+        }
+        userCount
+        description
+        id
+        requestCount
+        title
+        photoUrl
+           media{
+        mediaUrl
+      }
+      }
+      totalCount
+    }
+    status
+  }
+}
+
+
+query community_getCommunityMedia($communityId: Int!, $skip: Int, $take: Int, $where:CommunityMediaFilterInput, $order: [CommunityMediaSortInput!]) {
+  community_getCommunityMedia(communityId:$communityId) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+      items{
+        mediaUrl
+        id
+        communityId
+      }
+      totalCount
+    }
     status
   }
 }

@@ -195,6 +195,7 @@ export type BlockUser = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   user?: Maybe<User>;
   userId: Scalars['Int']['output'];
@@ -218,6 +219,7 @@ export type Category = {
   id: Scalars['Int']['output'];
   imageUrl?: Maybe<Scalars['String']['output']>;
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   parent?: Maybe<Category>;
   parentId?: Maybe<Scalars['Int']['output']>;
@@ -269,6 +271,7 @@ export type CategoryFilterInput = {
   id?: InputMaybe<IntOperationFilterInput>;
   imageUrl?: InputMaybe<StringOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<CategoryFilterInput>>;
   parent?: InputMaybe<CategoryFilterInput>;
@@ -297,6 +300,7 @@ export type CategorySortInput = {
   id?: InputMaybe<SortEnumType>;
   imageUrl?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   parent?: InputMaybe<CategorySortInput>;
   parentId?: InputMaybe<SortEnumType>;
@@ -320,6 +324,7 @@ export type ChannelRecord = {
   endDate?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   live?: Maybe<Live>;
   liveId?: Maybe<Scalars['Int']['output']>;
@@ -336,6 +341,7 @@ export type ChannelRecordFilterInput = {
   endDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
   liveId?: InputMaybe<IntOperationFilterInput>;
@@ -482,8 +488,9 @@ export type Community = {
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
-  media?: Maybe<Scalars['String']['output']>;
+  media?: Maybe<Array<Maybe<CommunityMedia>>>;
   messageCount: Scalars['Int']['output'];
   messages?: Maybe<Array<Maybe<CommunityMessage>>>;
   photoUrl?: Maybe<Scalars['String']['output']>;
@@ -535,8 +542,9 @@ export type CommunityFilterInput = {
   description?: InputMaybe<StringOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
-  media?: InputMaybe<StringOperationFilterInput>;
+  media?: InputMaybe<ListFilterInputTypeOfCommunityMediaFilterInput>;
   messageCount?: InputMaybe<IntOperationFilterInput>;
   messages?: InputMaybe<ListFilterInputTypeOfCommunityMessageFilterInput>;
   or?: InputMaybe<Array<CommunityFilterInput>>;
@@ -557,6 +565,74 @@ export type CommunityInput = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type CommunityMedia = {
+  __typename?: 'CommunityMedia';
+  community?: Maybe<Community>;
+  communityId: Scalars['Int']['output'];
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  mediaUrl?: Maybe<Scalars['String']['output']>;
+};
+
+/** A segment of a collection. */
+export type CommunityMediaCollectionSegment = {
+  __typename?: 'CommunityMediaCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<CommunityMedia>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type CommunityMediaConnection = {
+  __typename?: 'CommunityMediaConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<CommunityMediaEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<CommunityMedia>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type CommunityMediaEdge = {
+  __typename?: 'CommunityMediaEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<CommunityMedia>;
+};
+
+export type CommunityMediaFilterInput = {
+  and?: InputMaybe<Array<CommunityMediaFilterInput>>;
+  community?: InputMaybe<CommunityFilterInput>;
+  communityId?: InputMaybe<IntOperationFilterInput>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  mediaUrl?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<CommunityMediaFilterInput>>;
+};
+
+export type CommunityMediaSortInput = {
+  community?: InputMaybe<CommunitySortInput>;
+  communityId?: InputMaybe<SortEnumType>;
+  createdDate?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  mediaUrl?: InputMaybe<SortEnumType>;
+};
+
 export type CommunityMessage = {
   __typename?: 'CommunityMessage';
   community?: Maybe<Community>;
@@ -564,10 +640,44 @@ export type CommunityMessage = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  mediaUrl?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
   userId: Scalars['Int']['output'];
+};
+
+/** A segment of a collection. */
+export type CommunityMessageCollectionSegment = {
+  __typename?: 'CommunityMessageCollectionSegment';
+  /** A flattened list of the items. */
+  items?: Maybe<Array<Maybe<CommunityMessage>>>;
+  /** Information to aid in pagination. */
+  pageInfo: CollectionSegmentInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+/** A connection to a list of items. */
+export type CommunityMessageConnection = {
+  __typename?: 'CommunityMessageConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<CommunityMessageEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Maybe<CommunityMessage>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** Identifies the total count of items in the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+/** An edge in a connection. */
+export type CommunityMessageEdge = {
+  __typename?: 'CommunityMessageEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node?: Maybe<CommunityMessage>;
 };
 
 export type CommunityMessageFilterInput = {
@@ -577,7 +687,9 @@ export type CommunityMessageFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  mediaUrl?: InputMaybe<StringOperationFilterInput>;
   message?: InputMaybe<StringOperationFilterInput>;
   or?: InputMaybe<Array<CommunityMessageFilterInput>>;
   user?: InputMaybe<UserFilterInput>;
@@ -587,7 +699,22 @@ export type CommunityMessageFilterInput = {
 export type CommunityMessageInput = {
   communityId?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  mediaUrl?: InputMaybe<Scalars['String']['input']>;
   message?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CommunityMessageSortInput = {
+  community?: InputMaybe<CommunitySortInput>;
+  communityId?: InputMaybe<SortEnumType>;
+  createdDate?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
+  lastModifiedDate?: InputMaybe<SortEnumType>;
+  mediaUrl?: InputMaybe<SortEnumType>;
+  message?: InputMaybe<SortEnumType>;
+  user?: InputMaybe<UserSortInput>;
+  userId?: InputMaybe<SortEnumType>;
 };
 
 export type CommunityRequest = {
@@ -597,6 +724,7 @@ export type CommunityRequest = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   user?: Maybe<User>;
   userId: Scalars['Int']['output'];
@@ -609,6 +737,7 @@ export type CommunityRequestFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<CommunityRequestFilterInput>>;
   user?: InputMaybe<UserFilterInput>;
@@ -623,8 +752,8 @@ export type CommunitySortInput = {
   description?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
-  media?: InputMaybe<SortEnumType>;
   messageCount?: InputMaybe<SortEnumType>;
   photoUrl?: InputMaybe<SortEnumType>;
   requestCount?: InputMaybe<SortEnumType>;
@@ -651,6 +780,7 @@ export type CommunityUser = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   mute: Scalars['Boolean']['output'];
   user?: Maybe<User>;
@@ -664,6 +794,7 @@ export type CommunityUserFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   mute?: InputMaybe<BooleanOperationFilterInput>;
   or?: InputMaybe<Array<CommunityUserFilterInput>>;
@@ -693,6 +824,7 @@ export type Contact = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -735,6 +867,7 @@ export type ContactFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<ContactFilterInput>>;
 };
@@ -749,6 +882,7 @@ export type ContactSortInput = {
   createdDate?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
 };
 
@@ -759,6 +893,7 @@ export type ContactUs = {
   email?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   title?: Maybe<Scalars['String']['output']>;
 };
@@ -781,6 +916,7 @@ export type Conversation = {
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
   isGroup: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   latestMessageDate: Scalars['DateTime']['output'];
   messages: Array<Message>;
@@ -873,6 +1009,7 @@ export type ConversationFilterInput = {
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   isGroup?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   latestMessageDate?: InputMaybe<DateTimeOperationFilterInput>;
   messages?: InputMaybe<ListFilterInputTypeOfMessageFilterInput>;
@@ -894,6 +1031,7 @@ export type ConversationSortInput = {
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
   isGroup?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   latestMessageDate?: InputMaybe<SortEnumType>;
   secondUnreadCount?: InputMaybe<SortEnumType>;
@@ -1091,6 +1229,7 @@ export type DefaultViolation = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   violationReports?: Maybe<Array<ViolationReport>>;
 };
@@ -1133,6 +1272,7 @@ export type DefaultViolationFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<DefaultViolationFilterInput>>;
   violationReports?: InputMaybe<ListFilterInputTypeOfViolationReportFilterInput>;
@@ -1148,6 +1288,7 @@ export type DefaultViolationSortInput = {
   createdDate?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
 };
 
@@ -1173,6 +1314,7 @@ export type DisabledNotificationFromUser = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   targetUser?: Maybe<User>;
   targetUserId: Scalars['Int']['output'];
@@ -1215,6 +1357,7 @@ export type DisabledNotificationFromUserFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<DisabledNotificationFromUserFilterInput>>;
   targetUser?: InputMaybe<UserFilterInput>;
@@ -1225,6 +1368,7 @@ export type DisabledNotificationFromUserSortInput = {
   createdDate?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   targetUser?: InputMaybe<UserSortInput>;
   targetUserId?: InputMaybe<SortEnumType>;
@@ -1363,6 +1507,7 @@ export type Follower = {
   isAccepted: Scalars['Boolean']['output'];
   isDeleted: Scalars['Boolean']['output'];
   isMutual: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -1410,6 +1555,7 @@ export type FollowerFilterInput = {
   isAccepted?: InputMaybe<BooleanOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   isMutual?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<FollowerFilterInput>>;
 };
@@ -1485,6 +1631,7 @@ export type FollowerSortInput = {
   isAccepted?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
   isMutual?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
 };
 
@@ -1736,12 +1883,14 @@ export type Invite = {
   __typename?: 'Invite';
   code?: Maybe<Scalars['String']['output']>;
   createdDate: Scalars['DateTime']['output'];
+  email?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   invited?: Maybe<User>;
   invitedId?: Maybe<Scalars['Int']['output']>;
   inviter?: Maybe<User>;
   inviterId: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   link?: Maybe<Scalars['String']['output']>;
 };
@@ -1782,26 +1931,35 @@ export type InviteFilterInput = {
   and?: InputMaybe<Array<InviteFilterInput>>;
   code?: InputMaybe<StringOperationFilterInput>;
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  email?: InputMaybe<StringOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   invited?: InputMaybe<UserFilterInput>;
   invitedId?: InputMaybe<IntOperationFilterInput>;
   inviter?: InputMaybe<UserFilterInput>;
   inviterId?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   link?: InputMaybe<StringOperationFilterInput>;
   or?: InputMaybe<Array<InviteFilterInput>>;
 };
 
+export type InviteInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  link?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type InviteSortInput = {
   code?: InputMaybe<SortEnumType>;
   createdDate?: InputMaybe<SortEnumType>;
+  email?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   invited?: InputMaybe<UserSortInput>;
   invitedId?: InputMaybe<SortEnumType>;
   inviter?: InputMaybe<UserSortInput>;
   inviterId?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   link?: InputMaybe<SortEnumType>;
 };
@@ -1836,6 +1994,13 @@ export type ListFilterInputTypeOfChannelRecordFilterInput = {
   any?: InputMaybe<Scalars['Boolean']['input']>;
   none?: InputMaybe<ChannelRecordFilterInput>;
   some?: InputMaybe<ChannelRecordFilterInput>;
+};
+
+export type ListFilterInputTypeOfCommunityMediaFilterInput = {
+  all?: InputMaybe<CommunityMediaFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<CommunityMediaFilterInput>;
+  some?: InputMaybe<CommunityMediaFilterInput>;
 };
 
 export type ListFilterInputTypeOfCommunityMessageFilterInput = {
@@ -1899,6 +2064,13 @@ export type ListFilterInputTypeOfLiveLikeFilterInput = {
   any?: InputMaybe<Scalars['Boolean']['input']>;
   none?: InputMaybe<LiveLikeFilterInput>;
   some?: InputMaybe<LiveLikeFilterInput>;
+};
+
+export type ListFilterInputTypeOfLiveRateFilterInput = {
+  all?: InputMaybe<LiveRateFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<LiveRateFilterInput>;
+  some?: InputMaybe<LiveRateFilterInput>;
 };
 
 export type ListFilterInputTypeOfLiveRoleFilterInput = {
@@ -2040,6 +2212,52 @@ export type ListResponseBaseOfCommunityResult2Args = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<Array<CommunitySortInput>>;
   where?: InputMaybe<CommunityFilterInput>;
+};
+
+export type ListResponseBaseOfCommunityMedia = {
+  __typename?: 'ListResponseBaseOfCommunityMedia';
+  result?: Maybe<CommunityMediaCollectionSegment>;
+  result2?: Maybe<CommunityMediaConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfCommunityMediaResultArgs = {
+  order?: InputMaybe<Array<CommunityMediaSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityMediaFilterInput>;
+};
+
+export type ListResponseBaseOfCommunityMediaResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<CommunityMediaSortInput>>;
+  where?: InputMaybe<CommunityMediaFilterInput>;
+};
+
+export type ListResponseBaseOfCommunityMessage = {
+  __typename?: 'ListResponseBaseOfCommunityMessage';
+  result?: Maybe<CommunityMessageCollectionSegment>;
+  result2?: Maybe<CommunityMessageConnection>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ListResponseBaseOfCommunityMessageResultArgs = {
+  order?: InputMaybe<Array<CommunityMessageSortInput>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityMessageFilterInput>;
+};
+
+export type ListResponseBaseOfCommunityMessageResult2Args = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Array<CommunityMessageSortInput>>;
+  where?: InputMaybe<CommunityMessageFilterInput>;
 };
 
 export type ListResponseBaseOfContact = {
@@ -2685,10 +2903,13 @@ export type Live = {
   isDeleted: Scalars['Boolean']['output'];
   isDraft: Scalars['Boolean']['output'];
   isFree: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   likeCount: Scalars['Int']['output'];
   liveBookmarks?: Maybe<Array<Maybe<LiveBookmark>>>;
+  liveComments?: Maybe<Array<Maybe<LiveComment>>>;
   liveLikes?: Maybe<Array<Maybe<LiveLike>>>;
+  liveRates?: Maybe<Array<Maybe<LiveRate>>>;
   liveType: LiveType;
   photoUrl?: Maybe<Scalars['String']['output']>;
   previewUrl?: Maybe<Scalars['String']['output']>;
@@ -2720,6 +2941,7 @@ export type LiveBookmark = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   live?: Maybe<Live>;
   liveId: Scalars['Int']['output'];
@@ -2732,6 +2954,7 @@ export type LiveBookmarkFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
   liveId?: InputMaybe<IntOperationFilterInput>;
@@ -2746,6 +2969,7 @@ export type LiveComment = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   live?: Maybe<Live>;
   liveId: Scalars['Int']['output'];
@@ -2812,6 +3036,7 @@ export type LiveCommentFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
   liveId?: InputMaybe<IntOperationFilterInput>;
@@ -2834,6 +3059,7 @@ export type LiveCommentSortInput = {
   createdDate?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   live?: InputMaybe<LiveSortInput>;
   liveId?: InputMaybe<SortEnumType>;
@@ -2927,10 +3153,13 @@ export type LiveFilterInput = {
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   isDraft?: InputMaybe<BooleanOperationFilterInput>;
   isFree?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   likeCount?: InputMaybe<IntOperationFilterInput>;
   liveBookmarks?: InputMaybe<ListFilterInputTypeOfLiveBookmarkFilterInput>;
+  liveComments?: InputMaybe<ListFilterInputTypeOfLiveCommentFilterInput>;
   liveLikes?: InputMaybe<ListFilterInputTypeOfLiveLikeFilterInput>;
+  liveRates?: InputMaybe<ListFilterInputTypeOfLiveRateFilterInput>;
   liveType?: InputMaybe<LiveTypeOperationFilterInput>;
   or?: InputMaybe<Array<LiveFilterInput>>;
   photoUrl?: InputMaybe<StringOperationFilterInput>;
@@ -2987,6 +3216,7 @@ export type LiveLike = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   live?: Maybe<Live>;
   liveId: Scalars['Int']['output'];
@@ -2999,10 +3229,40 @@ export type LiveLikeFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
   liveId?: InputMaybe<IntOperationFilterInput>;
   or?: InputMaybe<Array<LiveLikeFilterInput>>;
+  user?: InputMaybe<UserFilterInput>;
+  userId?: InputMaybe<IntOperationFilterInput>;
+};
+
+export type LiveRate = {
+  __typename?: 'LiveRate';
+  createdDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  live?: Maybe<Live>;
+  liveId: Scalars['Int']['output'];
+  rate: Scalars['Float']['output'];
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
+export type LiveRateFilterInput = {
+  and?: InputMaybe<Array<LiveRateFilterInput>>;
+  createdDate?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<IntOperationFilterInput>;
+  isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
+  lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
+  live?: InputMaybe<LiveFilterInput>;
+  liveId?: InputMaybe<IntOperationFilterInput>;
+  or?: InputMaybe<Array<LiveRateFilterInput>>;
+  rate?: InputMaybe<FloatOperationFilterInput>;
   user?: InputMaybe<UserFilterInput>;
   userId?: InputMaybe<IntOperationFilterInput>;
 };
@@ -3017,6 +3277,7 @@ export type LiveRole = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   live?: Maybe<Live>;
   liveId: Scalars['Int']['output'];
@@ -3029,6 +3290,7 @@ export type LiveRoleFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
   liveId?: InputMaybe<IntOperationFilterInput>;
@@ -3056,6 +3318,7 @@ export type LiveSortInput = {
   isDeleted?: InputMaybe<SortEnumType>;
   isDraft?: InputMaybe<SortEnumType>;
   isFree?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   likeCount?: InputMaybe<SortEnumType>;
   liveType?: InputMaybe<SortEnumType>;
@@ -3102,6 +3365,7 @@ export type LoginActivity = {
   deviceInfo?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastLogin: Scalars['DateTime']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   logout: Scalars['Boolean']['output'];
@@ -3147,6 +3411,7 @@ export type LoginActivityFilterInput = {
   deviceInfo?: InputMaybe<StringOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastLogin?: InputMaybe<DateTimeOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   logout?: InputMaybe<BooleanOperationFilterInput>;
@@ -3167,6 +3432,7 @@ export type LoginActivitySortInput = {
   deviceInfo?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastLogin?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   logout?: InputMaybe<SortEnumType>;
@@ -3223,6 +3489,7 @@ export type Message = {
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
   isEdited: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   mediaEntityId?: Maybe<Scalars['Int']['output']>;
   mediaType: MediaType;
@@ -3276,6 +3543,7 @@ export type MessageFilterInput = {
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   isEdited?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   mediaEntityId?: InputMaybe<IntOperationFilterInput>;
   mediaType?: InputMaybe<MediaTypeOperationFilterInput>;
@@ -3306,6 +3574,7 @@ export type MessageSortInput = {
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
   isEdited?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   mediaEntityId?: InputMaybe<SortEnumType>;
   mediaType?: InputMaybe<SortEnumType>;
@@ -3335,6 +3604,7 @@ export type Mutation = {
   category_updateCategory: ResponseBaseOfCategory;
   community_acceptRequest?: Maybe<ResponseStatus>;
   community_createCommunity?: Maybe<ResponseBaseOfCommunity>;
+  community_createMedia?: Maybe<ResponseBaseOfCommunityMedia>;
   community_createMessage?: Maybe<ResponseBaseOfCommunityMessage>;
   community_createRequest?: Maybe<ResponseBaseOfCommunityRequest>;
   community_deleteCommunity?: Maybe<ResponseStatus>;
@@ -3395,6 +3665,7 @@ export type Mutation = {
   paymentStripe_subscribeToPlan?: Maybe<ResponseStatus>;
   paymentStripe_transferMoneyToAccount?: Maybe<ResponseBaseOfTransferDto>;
   paymentStripe_updatePaymentMethod?: Maybe<ResponseStatus>;
+  settings_updateSettings?: Maybe<ResponseBaseOfSettings>;
   social_acceptFollow?: Maybe<ResponseBase>;
   social_followUser?: Maybe<ResponseBaseOfFollower>;
   social_hideStory?: Maybe<ResponseStatus>;
@@ -3472,6 +3743,11 @@ export type MutationCommunity_AcceptRequestArgs = {
 
 export type MutationCommunity_CreateCommunityArgs = {
   input?: InputMaybe<CommunityInput>;
+};
+
+export type MutationCommunity_CreateMediaArgs = {
+  communityId: Scalars['Int']['input'];
+  mediaUrl?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type MutationCommunity_CreateMessageArgs = {
@@ -3735,6 +4011,10 @@ export type MutationPaymentStripe_UpdatePaymentMethodArgs = {
   input?: InputMaybe<PaymentMethodInput>;
 };
 
+export type MutationSettings_UpdateSettingsArgs = {
+  input?: InputMaybe<SettingsInput>;
+};
+
 export type MutationSocial_AcceptFollowArgs = {
   followerId: Scalars['Int']['input'];
 };
@@ -3794,7 +4074,7 @@ export type MutationUser_ConfirmPhoneNumberArgs = {
 };
 
 export type MutationUser_CreateInviteArgs = {
-  link?: InputMaybe<Scalars['String']['input']>;
+  input?: InputMaybe<InviteInput>;
 };
 
 export type MutationUser_CreateLoginActivityArgs = {
@@ -3898,6 +4178,7 @@ export type Notification = {
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
   isRead: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   /**
    * NewFollower,NewMessage,LikeComment,
@@ -3955,6 +4236,7 @@ export type NotificationFilterInput = {
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   isRead?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   /**
    * NewFollower,NewMessage,LikeComment,
@@ -3988,6 +4270,7 @@ export type NotificationSettings = {
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
   isEnabled: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   notificationType?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
@@ -4032,6 +4315,7 @@ export type NotificationSettingsFilterInput = {
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
   isEnabled?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   notificationType?: InputMaybe<StringOperationFilterInput>;
   or?: InputMaybe<Array<NotificationSettingsFilterInput>>;
@@ -4049,6 +4333,7 @@ export type NotificationSettingsSortInput = {
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
   isEnabled?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   notificationType?: InputMaybe<SortEnumType>;
   user?: InputMaybe<UserSortInput>;
@@ -4060,6 +4345,7 @@ export type NotificationSortInput = {
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
   isRead?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   /**
    * NewFollower,NewMessage,LikeComment,
@@ -4388,6 +4674,7 @@ export type PurchasedLive = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   live?: Maybe<Live>;
   liveId: Scalars['Int']['output'];
@@ -4401,6 +4688,7 @@ export type PurchasedLiveFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
   liveId?: InputMaybe<IntOperationFilterInput>;
@@ -4419,7 +4707,10 @@ export type Query = {
   category_getCategories: ListResponseBaseOfCategory;
   category_getCategory: SingleResponseBaseOfCategory;
   community_getCommunities?: Maybe<ListResponseBaseOfCommunity>;
+  community_getCommunityMedia?: Maybe<ListResponseBaseOfCommunityMedia>;
+  community_getCommunityMessages?: Maybe<ListResponseBaseOfCommunityMessage>;
   community_getOtherCommunities?: Maybe<ListResponseBaseOfCommunity>;
+  community_getYourCommunities?: Maybe<ListResponseBaseOfCommunity>;
   contactUs_getContactUs?: Maybe<ResponseBaseOfContactUs>;
   dashboard_getCollaborative?: Maybe<ResponseBaseOfDashboardCollaborativeDto>;
   dashboard_getContentChart?: Maybe<ListResponseBaseOfDashboardContentChartDto>;
@@ -4460,6 +4751,7 @@ export type Query = {
   paymentStripe_hasEnoughBalanceForPlatform?: Maybe<ResponseBaseOfBoolean>;
   paymentStripe_hasStripeAccount?: Maybe<ResponseBaseOfBoolean>;
   paymentStripe_isTransferEnabled?: Maybe<ResponseStatus>;
+  settings_getSettings?: Maybe<ResponseBaseOfSettings>;
   social_getFollowSummary?: Maybe<ResponseBaseOfFollowSummaryDto>;
   social_getUser?: Maybe<SingleResponseBaseOfUserDto>;
   social_getUserFollowerFollowees?: Maybe<ListResponseBaseOfFollowerFolloweeDto>;
@@ -4489,6 +4781,14 @@ export type QueryAgora_GetRecordFilesArgs = {
 
 export type QueryCategory_GetCategoryArgs = {
   entityId: Scalars['Int']['input'];
+};
+
+export type QueryCommunity_GetCommunityMediaArgs = {
+  communityId: Scalars['Int']['input'];
+};
+
+export type QueryCommunity_GetCommunityMessagesArgs = {
+  communityId: Scalars['Int']['input'];
 };
 
 export type QueryDashboard_GetCollaborativeArgs = {
@@ -4740,6 +5040,7 @@ export type RequestForVerification = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   status: VerificationStatus;
   user?: Maybe<User>;
@@ -4783,6 +5084,7 @@ export type RequestForVerificationFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<RequestForVerificationFilterInput>>;
   status?: InputMaybe<VerificationStatusOperationFilterInput>;
@@ -4799,6 +5101,7 @@ export type RequestForVerificationSortInput = {
   createdDate?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   status?: InputMaybe<SortEnumType>;
   user?: InputMaybe<UserSortInput>;
@@ -4855,6 +5158,12 @@ export type ResponseBaseOfChargeDto = {
 export type ResponseBaseOfCommunity = {
   __typename?: 'ResponseBaseOfCommunity';
   result?: Maybe<Community>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
+export type ResponseBaseOfCommunityMedia = {
+  __typename?: 'ResponseBaseOfCommunityMedia';
+  result?: Maybe<CommunityMedia>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -5014,6 +5323,12 @@ export type ResponseBaseOfSentEmail = {
   status?: Maybe<Scalars['Any']['output']>;
 };
 
+export type ResponseBaseOfSettings = {
+  __typename?: 'ResponseBaseOfSettings';
+  result?: Maybe<Settings>;
+  status?: Maybe<Scalars['Any']['output']>;
+};
+
 export type ResponseBaseOfString = {
   __typename?: 'ResponseBaseOfString';
   result?: Maybe<Scalars['String']['output']>;
@@ -5152,11 +5467,28 @@ export type SentEmail = {
   htmlContent?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   plainTextContent: Scalars['String']['output'];
   subject: Scalars['String']['output'];
   toEmailAddress: Scalars['String']['output'];
   toName?: Maybe<Scalars['String']['output']>;
+};
+
+export type Settings = {
+  __typename?: 'Settings';
+  createdDate: Scalars['DateTime']['output'];
+  earlyAdapterEmail?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
+  lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
+  maxInvitation?: Maybe<Scalars['Int']['output']>;
+};
+
+export type SettingsInput = {
+  earlyAdapterEmail?: InputMaybe<Scalars['String']['input']>;
+  maxInvitation?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type SignInExternalInput = {
@@ -5404,6 +5736,7 @@ export type Tip = {
   forUserId: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   user?: Maybe<User>;
   userId: Scalars['Int']['output'];
@@ -5449,6 +5782,7 @@ export type TipFilterInput = {
   forUserId?: InputMaybe<IntOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<TipFilterInput>>;
   user?: InputMaybe<UserFilterInput>;
@@ -5467,6 +5801,7 @@ export type TipSortInput = {
   forUserId?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   user?: InputMaybe<UserSortInput>;
   userId?: InputMaybe<SortEnumType>;
@@ -5507,6 +5842,7 @@ export type User = {
   accessFailedCount: Scalars['Int']['output'];
   age?: Maybe<Scalars['Int']['output']>;
   city?: Maybe<Scalars['String']['output']>;
+  comments?: Maybe<Array<Maybe<LiveComment>>>;
   communityCount: Scalars['Int']['output'];
   concurrencyStamp?: Maybe<Scalars['String']['output']>;
   config?: Maybe<Scalars['String']['output']>;
@@ -5560,6 +5896,7 @@ export type User = {
   ratePercent_3: Scalars['Float']['output'];
   ratePercent_4: Scalars['Float']['output'];
   ratePercent_5: Scalars['Float']['output'];
+  rates?: Maybe<Array<Maybe<LiveRate>>>;
   requestCount: Scalars['Int']['output'];
   reviewCount: Scalars['Int']['output'];
   securityStamp?: Maybe<Scalars['String']['output']>;
@@ -5688,6 +6025,7 @@ export type UserFilterInput = {
   age?: InputMaybe<IntOperationFilterInput>;
   and?: InputMaybe<Array<UserFilterInput>>;
   city?: InputMaybe<StringOperationFilterInput>;
+  comments?: InputMaybe<ListFilterInputTypeOfLiveCommentFilterInput>;
   communityCount?: InputMaybe<IntOperationFilterInput>;
   concurrencyStamp?: InputMaybe<StringOperationFilterInput>;
   config?: InputMaybe<StringOperationFilterInput>;
@@ -5740,6 +6078,7 @@ export type UserFilterInput = {
   ratePercent_3?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_4?: InputMaybe<FloatOperationFilterInput>;
   ratePercent_5?: InputMaybe<FloatOperationFilterInput>;
+  rates?: InputMaybe<ListFilterInputTypeOfLiveRateFilterInput>;
   requestCount?: InputMaybe<IntOperationFilterInput>;
   reviewCount?: InputMaybe<IntOperationFilterInput>;
   securityStamp?: InputMaybe<StringOperationFilterInput>;
@@ -5772,6 +6111,7 @@ export type UserGroup = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   unreadCount: Scalars['Int']['output'];
   user?: Maybe<User>;
@@ -5785,6 +6125,7 @@ export type UserGroupFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<UserGroupFilterInput>>;
   unreadCount?: InputMaybe<IntOperationFilterInput>;
@@ -5848,6 +6189,7 @@ export type UserPaymentAccount = {
   defaultPaymentMethodId?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   stripeAccountId?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
@@ -5859,6 +6201,7 @@ export type UserPhotoGallery = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   photoUrl?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
@@ -5902,6 +6245,7 @@ export type UserPhotoGalleryFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<UserPhotoGalleryFilterInput>>;
   photoUrl?: InputMaybe<StringOperationFilterInput>;
@@ -5913,6 +6257,7 @@ export type UserPhotoGallerySortInput = {
   createdDate?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   photoUrl?: InputMaybe<SortEnumType>;
   user?: InputMaybe<UserSortInput>;
@@ -6035,6 +6380,7 @@ export type ViewedLive = {
   createdDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   live?: Maybe<Live>;
   liveId: Scalars['Int']['output'];
@@ -6047,6 +6393,7 @@ export type ViewedLiveFilterInput = {
   createdDate?: InputMaybe<DateTimeOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   live?: InputMaybe<LiveFilterInput>;
   liveId?: InputMaybe<IntOperationFilterInput>;
@@ -6063,6 +6410,7 @@ export type ViolationReport = {
   defaultViolationId?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   reason?: Maybe<Scalars['String']['output']>;
   targetEntityId?: Maybe<Scalars['Int']['output']>;
@@ -6111,6 +6459,7 @@ export type ViolationReportFilterInput = {
   defaultViolationId?: InputMaybe<IntOperationFilterInput>;
   id?: InputMaybe<IntOperationFilterInput>;
   isDeleted?: InputMaybe<BooleanOperationFilterInput>;
+  isTestData?: InputMaybe<BooleanOperationFilterInput>;
   lastModifiedDate?: InputMaybe<DateTimeOperationFilterInput>;
   or?: InputMaybe<Array<ViolationReportFilterInput>>;
   reason?: InputMaybe<StringOperationFilterInput>;
@@ -6137,6 +6486,7 @@ export type ViolationReportSortInput = {
   defaultViolationId?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   isDeleted?: InputMaybe<SortEnumType>;
+  isTestData?: InputMaybe<SortEnumType>;
   lastModifiedDate?: InputMaybe<SortEnumType>;
   reason?: InputMaybe<SortEnumType>;
   targetEntityId?: InputMaybe<SortEnumType>;
@@ -6151,6 +6501,8 @@ export type WalletHistory = {
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   isDeleted: Scalars['Boolean']['output'];
+  isTestData: Scalars['Boolean']['output'];
+  isWithdraw: Scalars['Boolean']['output'];
   lastModifiedDate?: Maybe<Scalars['DateTime']['output']>;
   photoUrl?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
@@ -6161,6 +6513,7 @@ export type WalletHistory = {
 
 export type WalletHistoryInput = {
   description?: InputMaybe<Scalars['String']['input']>;
+  isWithdraw: Scalars['Boolean']['input'];
   photoUrl?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   userId: Scalars['Int']['input'];
@@ -6319,11 +6672,14 @@ export type Community_CreateCommunityMutation = {
       communityType: CommunityType;
       userCount: number;
       requestCount: number;
-      media?: string | null;
       id: number;
       isDeleted: boolean;
       createdDate: any;
       lastModifiedDate?: any | null;
+      media?: Array<{
+        __typename?: 'CommunityMedia';
+        mediaUrl?: string | null;
+      } | null> | null;
     } | null;
   } | null;
 };
@@ -6439,11 +6795,14 @@ export type Community_UpdateCommunityMutation = {
       communityType: CommunityType;
       userCount: number;
       requestCount: number;
-      media?: string | null;
       id: number;
       isDeleted: boolean;
       createdDate: any;
       lastModifiedDate?: any | null;
+      media?: Array<{
+        __typename?: 'CommunityMedia';
+        mediaUrl?: string | null;
+      } | null> | null;
     } | null;
   } | null;
 };
@@ -6455,6 +6814,42 @@ export type Community_DeleteCommunityMutationVariables = Exact<{
 export type Community_DeleteCommunityMutation = {
   __typename?: 'Mutation';
   community_deleteCommunity?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
+export type Community_CreateMessageMutationVariables = Exact<{
+  input?: InputMaybe<CommunityMessageInput>;
+}>;
+
+export type Community_CreateMessageMutation = {
+  __typename?: 'Mutation';
+  community_createMessage?: {
+    __typename?: 'ResponseBaseOfCommunityMessage';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityMessage';
+      userId: number;
+      communityId: number;
+      message?: string | null;
+      id: number;
+      isDeleted: boolean;
+      createdDate: any;
+      lastModifiedDate?: any | null;
+    } | null;
+  } | null;
+};
+
+export type Community_DeleteMessageMutationVariables = Exact<{
+  messageId: Scalars['Int']['input'];
+}>;
+
+export type Community_DeleteMessageMutation = {
+  __typename?: 'Mutation';
+  community_deleteMessage?: {
     __typename?: 'ResponseStatus';
     code: number;
     value?: string | null;
@@ -6492,7 +6887,6 @@ export type Community_GetCommunitiesQuery = {
         requestCount: number;
         title?: string | null;
         photoUrl?: string | null;
-        media?: string | null;
         creator?: {
           __typename?: 'User';
           id: number;
@@ -6525,6 +6919,125 @@ export type Community_GetCommunitiesQuery = {
             id: number;
           } | null;
         } | null> | null;
+        media?: Array<{
+          __typename?: 'CommunityMedia';
+          mediaUrl?: string | null;
+        } | null> | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Community_GetCommunityMessagesQueryVariables = Exact<{
+  communityId: Scalars['Int']['input'];
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityMessageFilterInput>;
+  order?: InputMaybe<
+    Array<CommunityMessageSortInput> | CommunityMessageSortInput
+  >;
+}>;
+
+export type Community_GetCommunityMessagesQuery = {
+  __typename?: 'Query';
+  community_getCommunityMessages?: {
+    __typename?: 'ListResponseBaseOfCommunityMessage';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityMessageCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'CommunityMessage';
+        message?: string | null;
+        mediaUrl?: string | null;
+        createdDate: any;
+        community?: {
+          __typename?: 'Community';
+          id: number;
+          messageCount: number;
+        } | null;
+        user?: {
+          __typename?: 'User';
+          id: number;
+          photoUrl?: string | null;
+          fullName?: string | null;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Community_GetYourCommunitiesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityFilterInput>;
+  order?: InputMaybe<Array<CommunitySortInput> | CommunitySortInput>;
+}>;
+
+export type Community_GetYourCommunitiesQuery = {
+  __typename?: 'Query';
+  community_getYourCommunities?: {
+    __typename?: 'ListResponseBaseOfCommunity';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'Community';
+        communityType: CommunityType;
+        createdDate: any;
+        userCount: number;
+        description?: string | null;
+        id: number;
+        requestCount: number;
+        title?: string | null;
+        photoUrl?: string | null;
+        creator?: {
+          __typename?: 'User';
+          id: number;
+          about?: string | null;
+          fullName?: string | null;
+          photoUrl?: string | null;
+        } | null;
+        users?: Array<{
+          __typename?: 'CommunityUser';
+          userId: number;
+          communityId: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            id: number;
+            profession?: string | null;
+          } | null;
+        } | null> | null;
+        requests?: Array<{
+          __typename?: 'CommunityRequest';
+          userId: number;
+          id: number;
+          communityId: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            profession?: string | null;
+            id: number;
+          } | null;
+        } | null> | null;
+        media?: Array<{
+          __typename?: 'CommunityMedia';
+          mediaUrl?: string | null;
+        } | null> | null;
       } | null> | null;
     } | null;
   } | null;
@@ -6554,16 +7067,79 @@ export type Community_GetOtherCommunitiesQuery = {
         __typename?: 'Community';
         communityType: CommunityType;
         createdDate: any;
+        userCount: number;
         description?: string | null;
         id: number;
         requestCount: number;
         title?: string | null;
+        photoUrl?: string | null;
         creator?: {
           __typename?: 'User';
+          id: number;
           about?: string | null;
           fullName?: string | null;
           photoUrl?: string | null;
         } | null;
+        users?: Array<{
+          __typename?: 'CommunityUser';
+          userId: number;
+          communityId: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            id: number;
+            profession?: string | null;
+          } | null;
+        } | null> | null;
+        requests?: Array<{
+          __typename?: 'CommunityRequest';
+          userId: number;
+          id: number;
+          communityId: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            profession?: string | null;
+            id: number;
+          } | null;
+        } | null> | null;
+        media?: Array<{
+          __typename?: 'CommunityMedia';
+          mediaUrl?: string | null;
+        } | null> | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Community_GetCommunityMediaQueryVariables = Exact<{
+  communityId: Scalars['Int']['input'];
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityMediaFilterInput>;
+  order?: InputMaybe<Array<CommunityMediaSortInput> | CommunityMediaSortInput>;
+}>;
+
+export type Community_GetCommunityMediaQuery = {
+  __typename?: 'Query';
+  community_getCommunityMedia?: {
+    __typename?: 'ListResponseBaseOfCommunityMedia';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityMediaCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'CommunityMedia';
+        mediaUrl?: string | null;
+        id: number;
+        communityId: number;
       } | null> | null;
     } | null;
   } | null;
@@ -8194,7 +8770,9 @@ export const Community_CreateCommunityDocument = `
       communityType
       userCount
       requestCount
-      media
+      media {
+        mediaUrl
+      }
       id
       isDeleted
       createdDate
@@ -8448,7 +9026,9 @@ export const Community_UpdateCommunityDocument = `
       communityType
       userCount
       requestCount
-      media
+      media {
+        mediaUrl
+      }
       id
       isDeleted
       createdDate
@@ -8523,6 +9103,87 @@ export const useCommunity_DeleteCommunityMutation = <
   );
 };
 
+export const Community_CreateMessageDocument = `
+    mutation community_createMessage($input: CommunityMessageInput) {
+  community_createMessage(input: $input) {
+    result {
+      userId
+      communityId
+      message
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_CreateMessageMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Community_CreateMessageMutation,
+    TError,
+    Community_CreateMessageMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Community_CreateMessageMutation,
+    TError,
+    Community_CreateMessageMutationVariables,
+    TContext
+  >(
+    ['community_createMessage'],
+    (variables?: Community_CreateMessageMutationVariables) =>
+      fetcher<
+        Community_CreateMessageMutation,
+        Community_CreateMessageMutationVariables
+      >(Community_CreateMessageDocument, variables)(),
+    options,
+  );
+};
+
+export const Community_DeleteMessageDocument = `
+    mutation community_deleteMessage($messageId: Int!) {
+  community_deleteMessage(messageId: $messageId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useCommunity_DeleteMessageMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Community_DeleteMessageMutation,
+    TError,
+    Community_DeleteMessageMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Community_DeleteMessageMutation,
+    TError,
+    Community_DeleteMessageMutationVariables,
+    TContext
+  >(
+    ['community_deleteMessage'],
+    (variables?: Community_DeleteMessageMutationVariables) =>
+      fetcher<
+        Community_DeleteMessageMutation,
+        Community_DeleteMessageMutationVariables
+      >(Community_DeleteMessageDocument, variables)(),
+    options,
+  );
+};
+
 export const Community_GetCommunitiesDocument = `
     query community_getCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
   community_getCommunities {
@@ -8567,7 +9228,9 @@ export const Community_GetCommunitiesDocument = `
         requestCount
         title
         photoUrl
-        media
+        media {
+          mediaUrl
+        }
       }
       totalCount
     }
@@ -8622,6 +9285,178 @@ export const useInfiniteCommunity_GetCommunitiesQuery = <
   );
 };
 
+export const Community_GetCommunityMessagesDocument = `
+    query community_getCommunityMessages($communityId: Int!, $skip: Int, $take: Int, $where: CommunityMessageFilterInput, $order: [CommunityMessageSortInput!]) {
+  community_getCommunityMessages(communityId: $communityId) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        community {
+          id
+          messageCount
+        }
+        message
+        mediaUrl
+        user {
+          id
+          photoUrl
+          fullName
+        }
+        createdDate
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_GetCommunityMessagesQuery = <
+  TData = Community_GetCommunityMessagesQuery,
+  TError = unknown,
+>(
+  variables: Community_GetCommunityMessagesQueryVariables,
+  options?: UseQueryOptions<Community_GetCommunityMessagesQuery, TError, TData>,
+) => {
+  return useQuery<Community_GetCommunityMessagesQuery, TError, TData>(
+    ['community_getCommunityMessages', variables],
+    fetcher<
+      Community_GetCommunityMessagesQuery,
+      Community_GetCommunityMessagesQueryVariables
+    >(Community_GetCommunityMessagesDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteCommunity_GetCommunityMessagesQuery = <
+  TData = Community_GetCommunityMessagesQuery,
+  TError = unknown,
+>(
+  variables: Community_GetCommunityMessagesQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Community_GetCommunityMessagesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Community_GetCommunityMessagesQuery, TError, TData>(
+    ['community_getCommunityMessages.infinite', variables],
+    metaData =>
+      fetcher<
+        Community_GetCommunityMessagesQuery,
+        Community_GetCommunityMessagesQueryVariables
+      >(Community_GetCommunityMessagesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
+export const Community_GetYourCommunitiesDocument = `
+    query community_getYourCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
+  community_getYourCommunities {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        communityType
+        createdDate
+        creator {
+          id
+          about
+          fullName
+          photoUrl
+        }
+        users {
+          userId
+          communityId
+          user {
+            fullName
+            photoUrl
+            id
+            profession
+          }
+        }
+        requests {
+          userId
+          id
+          communityId
+          user {
+            fullName
+            photoUrl
+            profession
+            id
+          }
+        }
+        userCount
+        description
+        id
+        requestCount
+        title
+        photoUrl
+        media {
+          mediaUrl
+        }
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_GetYourCommunitiesQuery = <
+  TData = Community_GetYourCommunitiesQuery,
+  TError = unknown,
+>(
+  variables?: Community_GetYourCommunitiesQueryVariables,
+  options?: UseQueryOptions<Community_GetYourCommunitiesQuery, TError, TData>,
+) => {
+  return useQuery<Community_GetYourCommunitiesQuery, TError, TData>(
+    variables === undefined
+      ? ['community_getYourCommunities']
+      : ['community_getYourCommunities', variables],
+    fetcher<
+      Community_GetYourCommunitiesQuery,
+      Community_GetYourCommunitiesQueryVariables
+    >(Community_GetYourCommunitiesDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteCommunity_GetYourCommunitiesQuery = <
+  TData = Community_GetYourCommunitiesQuery,
+  TError = unknown,
+>(
+  variables?: Community_GetYourCommunitiesQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Community_GetYourCommunitiesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Community_GetYourCommunitiesQuery, TError, TData>(
+    variables === undefined
+      ? ['community_getYourCommunities.infinite']
+      : ['community_getYourCommunities.infinite', variables],
+    metaData =>
+      fetcher<
+        Community_GetYourCommunitiesQuery,
+        Community_GetYourCommunitiesQueryVariables
+      >(Community_GetYourCommunitiesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
 export const Community_GetOtherCommunitiesDocument = `
     query community_getOtherCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
   community_getOtherCommunities {
@@ -8634,14 +9469,41 @@ export const Community_GetOtherCommunitiesDocument = `
         communityType
         createdDate
         creator {
+          id
           about
           fullName
           photoUrl
         }
+        users {
+          userId
+          communityId
+          user {
+            fullName
+            photoUrl
+            id
+            profession
+          }
+        }
+        requests {
+          userId
+          id
+          communityId
+          user {
+            fullName
+            photoUrl
+            profession
+            id
+          }
+        }
+        userCount
         description
         id
         requestCount
         title
+        photoUrl
+        media {
+          mediaUrl
+        }
       }
       totalCount
     }
@@ -8689,6 +9551,68 @@ export const useInfiniteCommunity_GetOtherCommunitiesQuery = <
         Community_GetOtherCommunitiesQuery,
         Community_GetOtherCommunitiesQueryVariables
       >(Community_GetOtherCommunitiesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
+export const Community_GetCommunityMediaDocument = `
+    query community_getCommunityMedia($communityId: Int!, $skip: Int, $take: Int, $where: CommunityMediaFilterInput, $order: [CommunityMediaSortInput!]) {
+  community_getCommunityMedia(communityId: $communityId) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        mediaUrl
+        id
+        communityId
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_GetCommunityMediaQuery = <
+  TData = Community_GetCommunityMediaQuery,
+  TError = unknown,
+>(
+  variables: Community_GetCommunityMediaQueryVariables,
+  options?: UseQueryOptions<Community_GetCommunityMediaQuery, TError, TData>,
+) => {
+  return useQuery<Community_GetCommunityMediaQuery, TError, TData>(
+    ['community_getCommunityMedia', variables],
+    fetcher<
+      Community_GetCommunityMediaQuery,
+      Community_GetCommunityMediaQueryVariables
+    >(Community_GetCommunityMediaDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteCommunity_GetCommunityMediaQuery = <
+  TData = Community_GetCommunityMediaQuery,
+  TError = unknown,
+>(
+  variables: Community_GetCommunityMediaQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Community_GetCommunityMediaQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Community_GetCommunityMediaQuery, TError, TData>(
+    ['community_getCommunityMedia.infinite', variables],
+    metaData =>
+      fetcher<
+        Community_GetCommunityMediaQuery,
+        Community_GetCommunityMediaQueryVariables
+      >(Community_GetCommunityMediaDocument, {
         ...variables,
         ...(metaData.pageParam ?? {}),
       })(),
