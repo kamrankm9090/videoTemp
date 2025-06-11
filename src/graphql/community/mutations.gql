@@ -8,7 +8,11 @@ mutation community_createCommunity($input: CommunityInput) {
       photoUrl
       communityType
       userCount
-      requestCount 
+      requestCount
+      media{
+        mediaUrl
+      }
+ 
       id
       isDeleted
       createdDate
@@ -94,6 +98,10 @@ mutation community_updateCommunity($input: CommunityInput) {
       communityType
       userCount
       requestCount
+      media{
+        mediaUrl
+      }
+ 
       id
       isDeleted
       createdDate
@@ -129,3 +137,12 @@ mutation community_createMessage($input: CommunityMessageInput){
   }
 }
 
+
+
+mutation community_deleteMessage($messageId: Int!){
+  community_deleteMessage(messageId: $messageId) {
+    code
+    value
+    description
+  }
+}

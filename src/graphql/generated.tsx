@@ -4187,6 +4187,7 @@ export type Notification = {
    *             CreateComment,
    *             Like,
    *             JoinToLive,
+   *             NewCommunityMessage,
    *
    */
   notificationType?: Maybe<Scalars['String']['output']>;
@@ -4245,6 +4246,7 @@ export type NotificationFilterInput = {
    *             CreateComment,
    *             Like,
    *             JoinToLive,
+   *             NewCommunityMessage,
    *
    */
   notificationType?: InputMaybe<StringOperationFilterInput>;
@@ -4354,6 +4356,7 @@ export type NotificationSortInput = {
    *             CreateComment,
    *             Like,
    *             JoinToLive,
+   *             NewCommunityMessage,
    *
    */
   notificationType?: InputMaybe<SortEnumType>;
@@ -4751,7 +4754,7 @@ export type Query = {
   paymentStripe_hasEnoughBalanceForPlatform?: Maybe<ResponseBaseOfBoolean>;
   paymentStripe_hasStripeAccount?: Maybe<ResponseBaseOfBoolean>;
   paymentStripe_isTransferEnabled?: Maybe<ResponseStatus>;
-  settings_getSettings?: Maybe<SingleResponseBaseOfSettings>;
+  settings_getSettings?: Maybe<ResponseBaseOfSettings>;
   social_getFollowSummary?: Maybe<ResponseBaseOfFollowSummaryDto>;
   social_getUser?: Maybe<SingleResponseBaseOfUserDto>;
   social_getUserFollowerFollowees?: Maybe<ListResponseBaseOfFollowerFolloweeDto>;
@@ -5532,12 +5535,6 @@ export type SingleResponseBaseOfConversation = {
 export type SingleResponseBaseOfFollower = {
   __typename?: 'SingleResponseBaseOfFollower';
   result?: Maybe<Follower>;
-  status?: Maybe<Scalars['Any']['output']>;
-};
-
-export type SingleResponseBaseOfSettings = {
-  __typename?: 'SingleResponseBaseOfSettings';
-  result?: Maybe<Settings>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
@@ -6682,6 +6679,10 @@ export type Community_CreateCommunityMutation = {
       isDeleted: boolean;
       createdDate: any;
       lastModifiedDate?: any | null;
+      media?: Array<{
+        __typename?: 'CommunityMedia';
+        mediaUrl?: string | null;
+      } | null> | null;
     } | null;
   } | null;
 };
@@ -6801,6 +6802,10 @@ export type Community_UpdateCommunityMutation = {
       isDeleted: boolean;
       createdDate: any;
       lastModifiedDate?: any | null;
+      media?: Array<{
+        __typename?: 'CommunityMedia';
+        mediaUrl?: string | null;
+      } | null> | null;
     } | null;
   } | null;
 };
@@ -6838,6 +6843,20 @@ export type Community_CreateMessageMutation = {
       createdDate: any;
       lastModifiedDate?: any | null;
     } | null;
+  } | null;
+};
+
+export type Community_DeleteMessageMutationVariables = Exact<{
+  messageId: Scalars['Int']['input'];
+}>;
+
+export type Community_DeleteMessageMutation = {
+  __typename?: 'Mutation';
+  community_deleteMessage?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
   } | null;
 };
 
@@ -6903,6 +6922,125 @@ export type Community_GetCommunitiesQuery = {
             id: number;
           } | null;
         } | null> | null;
+        media?: Array<{
+          __typename?: 'CommunityMedia';
+          mediaUrl?: string | null;
+        } | null> | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Community_GetCommunityMessagesQueryVariables = Exact<{
+  communityId: Scalars['Int']['input'];
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityMessageFilterInput>;
+  order?: InputMaybe<
+    Array<CommunityMessageSortInput> | CommunityMessageSortInput
+  >;
+}>;
+
+export type Community_GetCommunityMessagesQuery = {
+  __typename?: 'Query';
+  community_getCommunityMessages?: {
+    __typename?: 'ListResponseBaseOfCommunityMessage';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityMessageCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'CommunityMessage';
+        message?: string | null;
+        mediaUrl?: string | null;
+        createdDate: any;
+        community?: {
+          __typename?: 'Community';
+          id: number;
+          messageCount: number;
+        } | null;
+        user?: {
+          __typename?: 'User';
+          id: number;
+          photoUrl?: string | null;
+          fullName?: string | null;
+        } | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Community_GetYourCommunitiesQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityFilterInput>;
+  order?: InputMaybe<Array<CommunitySortInput> | CommunitySortInput>;
+}>;
+
+export type Community_GetYourCommunitiesQuery = {
+  __typename?: 'Query';
+  community_getYourCommunities?: {
+    __typename?: 'ListResponseBaseOfCommunity';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'Community';
+        communityType: CommunityType;
+        createdDate: any;
+        userCount: number;
+        description?: string | null;
+        id: number;
+        requestCount: number;
+        title?: string | null;
+        photoUrl?: string | null;
+        creator?: {
+          __typename?: 'User';
+          id: number;
+          about?: string | null;
+          fullName?: string | null;
+          photoUrl?: string | null;
+        } | null;
+        users?: Array<{
+          __typename?: 'CommunityUser';
+          userId: number;
+          communityId: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            id: number;
+            profession?: string | null;
+          } | null;
+        } | null> | null;
+        requests?: Array<{
+          __typename?: 'CommunityRequest';
+          userId: number;
+          id: number;
+          communityId: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            profession?: string | null;
+            id: number;
+          } | null;
+        } | null> | null;
+        media?: Array<{
+          __typename?: 'CommunityMedia';
+          mediaUrl?: string | null;
+        } | null> | null;
       } | null> | null;
     } | null;
   } | null;
@@ -6932,16 +7070,79 @@ export type Community_GetOtherCommunitiesQuery = {
         __typename?: 'Community';
         communityType: CommunityType;
         createdDate: any;
+        userCount: number;
         description?: string | null;
         id: number;
         requestCount: number;
         title?: string | null;
+        photoUrl?: string | null;
         creator?: {
           __typename?: 'User';
+          id: number;
           about?: string | null;
           fullName?: string | null;
           photoUrl?: string | null;
         } | null;
+        users?: Array<{
+          __typename?: 'CommunityUser';
+          userId: number;
+          communityId: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            id: number;
+            profession?: string | null;
+          } | null;
+        } | null> | null;
+        requests?: Array<{
+          __typename?: 'CommunityRequest';
+          userId: number;
+          id: number;
+          communityId: number;
+          user?: {
+            __typename?: 'User';
+            fullName?: string | null;
+            photoUrl?: string | null;
+            profession?: string | null;
+            id: number;
+          } | null;
+        } | null> | null;
+        media?: Array<{
+          __typename?: 'CommunityMedia';
+          mediaUrl?: string | null;
+        } | null> | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Community_GetCommunityMediaQueryVariables = Exact<{
+  communityId: Scalars['Int']['input'];
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CommunityMediaFilterInput>;
+  order?: InputMaybe<Array<CommunityMediaSortInput> | CommunityMediaSortInput>;
+}>;
+
+export type Community_GetCommunityMediaQuery = {
+  __typename?: 'Query';
+  community_getCommunityMedia?: {
+    __typename?: 'ListResponseBaseOfCommunityMedia';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityMediaCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'CommunityMedia';
+        mediaUrl?: string | null;
+        id: number;
+        communityId: number;
       } | null> | null;
     } | null;
   } | null;
@@ -8590,6 +8791,9 @@ export const Community_CreateCommunityDocument = `
       communityType
       userCount
       requestCount
+      media {
+        mediaUrl
+      }
       id
       isDeleted
       createdDate
@@ -8843,6 +9047,9 @@ export const Community_UpdateCommunityDocument = `
       communityType
       userCount
       requestCount
+      media {
+        mediaUrl
+      }
       id
       isDeleted
       createdDate
@@ -8961,6 +9168,43 @@ export const useCommunity_CreateMessageMutation = <
   );
 };
 
+export const Community_DeleteMessageDocument = `
+    mutation community_deleteMessage($messageId: Int!) {
+  community_deleteMessage(messageId: $messageId) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useCommunity_DeleteMessageMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Community_DeleteMessageMutation,
+    TError,
+    Community_DeleteMessageMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Community_DeleteMessageMutation,
+    TError,
+    Community_DeleteMessageMutationVariables,
+    TContext
+  >(
+    ['community_deleteMessage'],
+    (variables?: Community_DeleteMessageMutationVariables) =>
+      fetcher<
+        Community_DeleteMessageMutation,
+        Community_DeleteMessageMutationVariables
+      >(Community_DeleteMessageDocument, variables)(),
+    options,
+  );
+};
+
 export const Community_GetCommunitiesDocument = `
     query community_getCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
   community_getCommunities {
@@ -9005,6 +9249,9 @@ export const Community_GetCommunitiesDocument = `
         requestCount
         title
         photoUrl
+        media {
+          mediaUrl
+        }
       }
       totalCount
     }
@@ -9059,6 +9306,178 @@ export const useInfiniteCommunity_GetCommunitiesQuery = <
   );
 };
 
+export const Community_GetCommunityMessagesDocument = `
+    query community_getCommunityMessages($communityId: Int!, $skip: Int, $take: Int, $where: CommunityMessageFilterInput, $order: [CommunityMessageSortInput!]) {
+  community_getCommunityMessages(communityId: $communityId) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        community {
+          id
+          messageCount
+        }
+        message
+        mediaUrl
+        user {
+          id
+          photoUrl
+          fullName
+        }
+        createdDate
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_GetCommunityMessagesQuery = <
+  TData = Community_GetCommunityMessagesQuery,
+  TError = unknown,
+>(
+  variables: Community_GetCommunityMessagesQueryVariables,
+  options?: UseQueryOptions<Community_GetCommunityMessagesQuery, TError, TData>,
+) => {
+  return useQuery<Community_GetCommunityMessagesQuery, TError, TData>(
+    ['community_getCommunityMessages', variables],
+    fetcher<
+      Community_GetCommunityMessagesQuery,
+      Community_GetCommunityMessagesQueryVariables
+    >(Community_GetCommunityMessagesDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteCommunity_GetCommunityMessagesQuery = <
+  TData = Community_GetCommunityMessagesQuery,
+  TError = unknown,
+>(
+  variables: Community_GetCommunityMessagesQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Community_GetCommunityMessagesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Community_GetCommunityMessagesQuery, TError, TData>(
+    ['community_getCommunityMessages.infinite', variables],
+    metaData =>
+      fetcher<
+        Community_GetCommunityMessagesQuery,
+        Community_GetCommunityMessagesQueryVariables
+      >(Community_GetCommunityMessagesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
+export const Community_GetYourCommunitiesDocument = `
+    query community_getYourCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
+  community_getYourCommunities {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        communityType
+        createdDate
+        creator {
+          id
+          about
+          fullName
+          photoUrl
+        }
+        users {
+          userId
+          communityId
+          user {
+            fullName
+            photoUrl
+            id
+            profession
+          }
+        }
+        requests {
+          userId
+          id
+          communityId
+          user {
+            fullName
+            photoUrl
+            profession
+            id
+          }
+        }
+        userCount
+        description
+        id
+        requestCount
+        title
+        photoUrl
+        media {
+          mediaUrl
+        }
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_GetYourCommunitiesQuery = <
+  TData = Community_GetYourCommunitiesQuery,
+  TError = unknown,
+>(
+  variables?: Community_GetYourCommunitiesQueryVariables,
+  options?: UseQueryOptions<Community_GetYourCommunitiesQuery, TError, TData>,
+) => {
+  return useQuery<Community_GetYourCommunitiesQuery, TError, TData>(
+    variables === undefined
+      ? ['community_getYourCommunities']
+      : ['community_getYourCommunities', variables],
+    fetcher<
+      Community_GetYourCommunitiesQuery,
+      Community_GetYourCommunitiesQueryVariables
+    >(Community_GetYourCommunitiesDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteCommunity_GetYourCommunitiesQuery = <
+  TData = Community_GetYourCommunitiesQuery,
+  TError = unknown,
+>(
+  variables?: Community_GetYourCommunitiesQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Community_GetYourCommunitiesQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Community_GetYourCommunitiesQuery, TError, TData>(
+    variables === undefined
+      ? ['community_getYourCommunities.infinite']
+      : ['community_getYourCommunities.infinite', variables],
+    metaData =>
+      fetcher<
+        Community_GetYourCommunitiesQuery,
+        Community_GetYourCommunitiesQueryVariables
+      >(Community_GetYourCommunitiesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
 export const Community_GetOtherCommunitiesDocument = `
     query community_getOtherCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
   community_getOtherCommunities {
@@ -9071,14 +9490,41 @@ export const Community_GetOtherCommunitiesDocument = `
         communityType
         createdDate
         creator {
+          id
           about
           fullName
           photoUrl
         }
+        users {
+          userId
+          communityId
+          user {
+            fullName
+            photoUrl
+            id
+            profession
+          }
+        }
+        requests {
+          userId
+          id
+          communityId
+          user {
+            fullName
+            photoUrl
+            profession
+            id
+          }
+        }
+        userCount
         description
         id
         requestCount
         title
+        photoUrl
+        media {
+          mediaUrl
+        }
       }
       totalCount
     }
@@ -9126,6 +9572,68 @@ export const useInfiniteCommunity_GetOtherCommunitiesQuery = <
         Community_GetOtherCommunitiesQuery,
         Community_GetOtherCommunitiesQueryVariables
       >(Community_GetOtherCommunitiesDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
+export const Community_GetCommunityMediaDocument = `
+    query community_getCommunityMedia($communityId: Int!, $skip: Int, $take: Int, $where: CommunityMediaFilterInput, $order: [CommunityMediaSortInput!]) {
+  community_getCommunityMedia(communityId: $communityId) {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        mediaUrl
+        id
+        communityId
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_GetCommunityMediaQuery = <
+  TData = Community_GetCommunityMediaQuery,
+  TError = unknown,
+>(
+  variables: Community_GetCommunityMediaQueryVariables,
+  options?: UseQueryOptions<Community_GetCommunityMediaQuery, TError, TData>,
+) => {
+  return useQuery<Community_GetCommunityMediaQuery, TError, TData>(
+    ['community_getCommunityMedia', variables],
+    fetcher<
+      Community_GetCommunityMediaQuery,
+      Community_GetCommunityMediaQueryVariables
+    >(Community_GetCommunityMediaDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteCommunity_GetCommunityMediaQuery = <
+  TData = Community_GetCommunityMediaQuery,
+  TError = unknown,
+>(
+  variables: Community_GetCommunityMediaQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    Community_GetCommunityMediaQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<Community_GetCommunityMediaQuery, TError, TData>(
+    ['community_getCommunityMedia.infinite', variables],
+    metaData =>
+      fetcher<
+        Community_GetCommunityMediaQuery,
+        Community_GetCommunityMediaQueryVariables
+      >(Community_GetCommunityMediaDocument, {
         ...variables,
         ...(metaData.pageParam ?? {}),
       })(),

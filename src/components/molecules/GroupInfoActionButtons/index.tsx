@@ -26,7 +26,7 @@ export default function GroupInfoActionButtons({item}: any) {
     {
       label: 'Search',
       icon: SearchNormalIcon,
-      onPress: () => navigate('CommunityStack', {screen: 'CommunitySearch'}),
+      onPress: () => navigate('CommunityStack', {screen: 'CommunitySearch', params:{...item}}),
     },
     {
       label: 'Leave',
