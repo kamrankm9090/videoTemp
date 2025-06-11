@@ -32,7 +32,7 @@ export const useGetFollowerFollowings = ({
     Social_GetUserFollowerFolloweesQueryVariables,
     any
   >(
-    [queryKeys.getFollowerFollowings, isFollower],
+    [queryKeys.getFollowerFollowings, isFollower, userId, where],
     async ({pageParam = 0}) => {
       return fetcher(Social_GetUserFollowerFolloweesDocument, {
         skip: pageParam * PAGE_SIZE,

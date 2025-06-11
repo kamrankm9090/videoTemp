@@ -90,7 +90,6 @@ export default function ContentViewerLiveScreen() {
       engine.current.leaveChannel();
       resetLiveStore();
       replace('LiveEnded');
-      console.log('yes broadcaster is left', {reason});
     }
   };
 
