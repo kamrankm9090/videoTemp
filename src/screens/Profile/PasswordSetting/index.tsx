@@ -1,4 +1,7 @@
+import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useCallback} from 'react';
+import {useForm} from 'react-hook-form';
+import {StyleSheet} from 'react-native';
 import {
   AppButton,
   AppContainer,
@@ -9,26 +12,49 @@ import {
   FormInput,
   VStack,
 } from '~/components';
+import {useUser_ChangeUserPassowrdMutation} from '~/graphql/generated';
+import {goBack} from '~/navigation/methods';
+import {passwordChangeSchema} from '~/schemas';
 import {Colors} from '~/styles';
-import {UserSchema} from '~/schemas';
-import {useForm} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
-import {yupResolver} from '@hookform/resolvers/yup';
 import {scale} from '~/utils/style';
+import {showErrorMessage, showSuccessMessage} from '~/utils/utils';
 
 const defaultValues = {
-  fullName: '',
+  currentPassword: '',
+  newPassword: '',
+  repeatNewPassword: '',
 };
 
 const PasswordSettingScreen = () => {
   const {...methods} = useForm({
-    resolver: yupResolver(UserSchema),
+    resolver: yupResolver(passwordChangeSchema),
     defaultValues,
   });
 
-  const {handleSubmit, formState, setValue, register, watch} = methods;
+  const {mutate: mutateChangePassword, isLoading: isLoadingChangePassword} =
+    useUser_ChangeUserPassowrdMutation();
 
-  const onSubmit = useCallback((formData: typeof defaultValues) => {}, []);
+  const {handleSubmit, formState, register} = methods;
+
+  const onSubmit = useCallback((formData: typeof defaultValues) => {
+    const input = {
+      oldPassword: formData?.currentPassword,
+      newPassword: formData?.newPassword,
+    };
+    mutateChangePassword(
+      {input},
+      {
+        onSuccess: response => {
+          if (response?.user_changeUserPassowrd?.code === 1) {
+            showSuccessMessage('Your password has been changed successfully.');
+            goBack();
+          } else {
+            showErrorMessage(response?.user_changeUserPassowrd?.description);
+          }
+        },
+      },
+    );
+  }, []);
 
   return (
     <AppContainer>
@@ -44,21 +70,21 @@ const PasswordSettingScreen = () => {
           <VStack mb={16} space={scale(25)}>
             <FormInput
               mandatory
-              {...register('password')}
+              {...register('currentPassword')}
               {...{formState}}
               placeholder={'Current password'}
               keyboardType="visible-password"
             />
             <FormInput
               mandatory
-              {...register('password')}
+              {...register('newPassword')}
               {...{formState}}
               placeholder={'New password'}
               keyboardType="visible-password"
             />
             <FormInput
               mandatory
-              {...register('password')}
+              {...register('repeatNewPassword')}
               {...{formState}}
               placeholder={'Repeat new password'}
               keyboardType="visible-password"
@@ -66,7 +92,12 @@ const PasswordSettingScreen = () => {
           </VStack>
         </AppKeyboardAwareScrollView>
         <Box px={scale(12)} my={scale(50)}>
-          <AppButton mt={24} title="Save" onPress={handleSubmit(onSubmit)} />
+          <AppButton
+            mt={24}
+            title="Save"
+            loading={isLoadingChangePassword}
+            onPress={handleSubmit(onSubmit)}
+          />
         </Box>
       </AppFormProvider>
     </AppContainer>
