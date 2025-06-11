@@ -147,3 +147,14 @@ export function getAvatarInitial(title?: string): string {
 export const useAnyMutating = (keys: string[]) => {
   return keys.some(key => useIsMutating({mutationKey: [key]}) > 0);
 };
+
+export function getOrdinalText(jsonString: string): string {
+  try {
+    const arr = JSON.parse(jsonString);
+    if (!Array.isArray(arr)) return '';
+
+    return arr.map((item, index) => `${item}`).join(', ');
+  } catch (e) {
+    return '';
+  }
+}

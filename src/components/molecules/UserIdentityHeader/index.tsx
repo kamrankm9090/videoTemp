@@ -4,7 +4,7 @@ import {AppText, AppTouchable, Avatar, HStack, VStack} from '~/components';
 import {UserType} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
-import {getFullImageUrl} from '~/utils/helper';
+import {getFullImageUrl, getOrdinalText} from '~/utils/helper';
 import {fontSize, scale} from '~/utils/style';
 
 const UserIdentityHeader = ({
@@ -47,7 +47,9 @@ const UserIdentityHeader = ({
           <AppText fontSize={fontSize.xMedium} fontFamily="bold">
             {user?.user?.fullName || user?.user?.username}
           </AppText>
-          <AppText color={Colors.GARY_3}>{user?.user?.skills}</AppText>
+          <AppText color={Colors.GARY_3}>
+            {getOrdinalText(user?.user?.skills as string)}
+          </AppText>
         </VStack>
         <AppTouchable
           onPress={() =>

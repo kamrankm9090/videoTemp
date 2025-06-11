@@ -14,24 +14,68 @@ import {
   FormInput,
   VStack,
 } from '~/components';
+import {
+  User_SignInMutationVariables,
+  useUser_RemoveUserMutation,
+  useUser_SignInMutation,
+} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
 import {UserSchema} from '~/schemas';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {scale} from '~/utils/style';
+import {logout, showErrorMessage} from '~/utils/utils';
 
 const defaultValues = {
-  fullName: '',
+  password: '',
 };
 
 const DeleteAccountScreen = () => {
+  const {userData} = userDataStore(state => state);
+
   const {...methods} = useForm({
     resolver: yupResolver(UserSchema),
     defaultValues,
   });
+  const {mutate: mutateSignIn, isLoading: isLoadingSignIn} =
+    useUser_SignInMutation();
+
+  const {mutate: mutateRemoveUser, isLoading: isLoadingRemoveUser} =
+    useUser_RemoveUserMutation();
 
   const {handleSubmit, formState, setValue, register, watch} = methods;
 
-  const onSubmit = useCallback((formData: typeof defaultValues) => {}, []);
+  const onSubmit = useCallback((formData: typeof defaultValues) => {
+    const variables: User_SignInMutationVariables = {
+      input: {
+        email: userData?.email,
+        password: formData?.password,
+      },
+    };
+    mutateSignIn(variables, {
+      onSuccess: response => {
+        if (response?.user_signIn?.status?.code === 1) {
+          const userId = userData?.id;
+          mutateRemoveUser(
+            {userId},
+            {
+              onSuccess: responseRemove => {
+                if (responseRemove?.user_removeUser?.code === 1) {
+                  logout();
+                } else {
+                  showErrorMessage(
+                    responseRemove?.user_removeUser?.description,
+                  );
+                }
+              },
+            },
+          );
+        } else {
+          showErrorMessage(response?.user_signIn?.status?.description);
+        }
+      },
+    });
+  }, []);
 
   return (
     <AppContainer>
@@ -66,7 +110,12 @@ const DeleteAccountScreen = () => {
           </VStack>
         </AppKeyboardAwareScrollView>
         <Box px={scale(12)} my={scale(50)}>
-          <AppButton mt={24} title="Save" onPress={handleSubmit(onSubmit)} />
+          <AppButton
+            mt={24}
+            title="Save"
+            loading={isLoadingSignIn || isLoadingRemoveUser}
+            onPress={handleSubmit(onSubmit)}
+          />
         </Box>
       </AppFormProvider>
     </AppContainer>

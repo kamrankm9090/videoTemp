@@ -8064,6 +8064,20 @@ export type User_RefreshTokenMutation = {
   } | null;
 };
 
+export type User_ChangeUserPassowrdMutationVariables = Exact<{
+  input?: InputMaybe<ChangePassowrdInput>;
+}>;
+
+export type User_ChangeUserPassowrdMutation = {
+  __typename?: 'Mutation';
+  user_changeUserPassowrd?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Social_GetUserQueryVariables = Exact<{
   otherId: Scalars['Int']['input'];
 }>;
@@ -11040,6 +11054,43 @@ export const useUser_RefreshTokenMutation = <
         User_RefreshTokenDocument,
         variables,
       )(),
+    options,
+  );
+};
+
+export const User_ChangeUserPassowrdDocument = `
+    mutation user_changeUserPassowrd($input: ChangePassowrdInput) {
+  user_changeUserPassowrd(input: $input) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useUser_ChangeUserPassowrdMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    User_ChangeUserPassowrdMutation,
+    TError,
+    User_ChangeUserPassowrdMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    User_ChangeUserPassowrdMutation,
+    TError,
+    User_ChangeUserPassowrdMutationVariables,
+    TContext
+  >(
+    ['user_changeUserPassowrd'],
+    (variables?: User_ChangeUserPassowrdMutationVariables) =>
+      fetcher<
+        User_ChangeUserPassowrdMutation,
+        User_ChangeUserPassowrdMutationVariables
+      >(User_ChangeUserPassowrdDocument, variables)(),
     options,
   );
 };

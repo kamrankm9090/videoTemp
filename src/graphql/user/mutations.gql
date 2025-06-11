@@ -352,3 +352,11 @@ mutation user_refreshToken($input: TokenInput) {
     status
   }
 }
+
+mutation user_changeUserPassowrd($input: ChangePassowrdInput) {
+  user_changeUserPassowrd(input: $input) {
+    code
+    value
+    description
+  }
+}
