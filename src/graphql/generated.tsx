@@ -4187,6 +4187,7 @@ export type Notification = {
    *             CreateComment,
    *             Like,
    *             JoinToLive,
+   *             NewCommunityMessage,
    *
    */
   notificationType?: Maybe<Scalars['String']['output']>;
@@ -4245,6 +4246,7 @@ export type NotificationFilterInput = {
    *             CreateComment,
    *             Like,
    *             JoinToLive,
+   *             NewCommunityMessage,
    *
    */
   notificationType?: InputMaybe<StringOperationFilterInput>;
@@ -4354,6 +4356,7 @@ export type NotificationSortInput = {
    *             CreateComment,
    *             Like,
    *             JoinToLive,
+   *             NewCommunityMessage,
    *
    */
   notificationType?: InputMaybe<SortEnumType>;
@@ -5532,12 +5535,6 @@ export type SingleResponseBaseOfConversation = {
 export type SingleResponseBaseOfFollower = {
   __typename?: 'SingleResponseBaseOfFollower';
   result?: Maybe<Follower>;
-  status?: Maybe<Scalars['Any']['output']>;
-};
-
-export type SingleResponseBaseOfSettings = {
-  __typename?: 'SingleResponseBaseOfSettings';
-  result?: Maybe<Settings>;
   status?: Maybe<Scalars['Any']['output']>;
 };
 
