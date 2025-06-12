@@ -1,7 +1,12 @@
-import { useRoute } from '@react-navigation/native';
-import React, { useState, useRef, useEffect } from 'react';
-import { FlatList, StyleSheet, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
-import { SettingIcon } from '~/assets/svgs';
+import {useRoute} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  StyleSheet,
+} from 'react-native';
+import {SettingIcon} from '~/assets/svgs';
 import {
   AppContainer,
   AppFlatList,
@@ -13,10 +18,11 @@ import {
 import {
   SortEnumType,
   useCommunity_CreateMessageMutation,
+  useUser_GetUsersQuery,
 } from '~/graphql/generated';
-import { useInfiniteCommunity_GetCommunityMessagesQuery } from '~/hooks/community/useGetCommunityMessages';
-import { navigate } from '~/navigation/methods';
-import { Colors } from '~/styles';
+import {useInfiniteCommunity_GetCommunityMessagesQuery} from '~/hooks/community/useGetCommunityMessages';
+import {navigate} from '~/navigation/methods';
+import {Colors} from '~/styles';
 
 const CommunityDetail = () => {
   const route = useRoute();
@@ -26,7 +32,13 @@ const CommunityDetail = () => {
   const scrollOffsetRef = useRef(0);
   const contentHeightRef = useRef(0);
 
-  
+  const {data: userDate} = useUser_GetUsersQuery({
+    where: {
+      lastSeen: {eq: new Date()},
+    },
+  });
+  const onlineUsers = userDate?.user_getUsers?.result?.items?.length;
+
   const {
     data,
     hasNextPage,
@@ -42,13 +54,16 @@ const CommunityDetail = () => {
     },
   });
 
-  const allMessages = data?.pages?.flatMap(page => page?.community_getCommunityMessages?.result?.items || []);
+  const allMessages = data?.pages?.flatMap(
+    page => page?.community_getCommunityMessages?.result?.items || [],
+  );
 
-  const { mutate, isLoading: isLoadingMessage } = useCommunity_CreateMessageMutation();
+  const {mutate, isLoading: isLoadingMessage} =
+    useCommunity_CreateMessageMutation();
 
   const scrollToBottom = () => {
     setTimeout(() => {
-      flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+      flatListRef.current?.scrollToOffset({offset: 0, animated: true});
     }, 100);
   };
 
@@ -70,10 +85,12 @@ const CommunityDetail = () => {
       {
         onSuccess() {
           setImageUrl('');
-          queryClient.refetchQueries(['community_getCommunityMessages.infinite']);
+          queryClient.refetchQueries([
+            'community_getCommunityMessages.infinite',
+          ]);
           scrollToBottom();
         },
-      }
+      },
     );
   };
 
@@ -101,7 +118,7 @@ const CommunityDetail = () => {
     contentHeightRef.current = contentHeight;
   };
 
-  const renderItem = ({ item }: any) => <CommunityDetailItem item={item} />;
+  const renderItem = ({item}: any) => <CommunityDetailItem item={item} />;
 
   return (
     <AppContainer>
@@ -115,12 +132,12 @@ const CommunityDetail = () => {
             onPress={() =>
               navigate('CommunityStack', {
                 screen: 'CommunityInfo',
-                params: { item },
+                params: {item},
               })
             }
           />
         }
-        subTitle={`${item?.userCount} member • 1,230 online`}
+        subTitle={`${item?.userCount} member • ${onlineUsers || 0} online`}
         subTitleColor={Colors.DarkGray}
       />
 
@@ -128,7 +145,7 @@ const CommunityDetail = () => {
         ref={flatListRef}
         data={allMessages || []}
         keyExtractor={(item, index) => `message-${index}`}
-        contentContainerStyle={{ padding: 16, paddingBottom: 80 }}
+        contentContainerStyle={{padding: 16, paddingBottom: 80}}
         refreshing={isRefetching}
         onRefresh={refetch}
         renderItem={renderItem}
@@ -139,6 +156,7 @@ const CommunityDetail = () => {
       />
 
       <CommunityDetailBottomInputBar
+        communityId={item?.id}
         isLoading={isLoadingMessage}
         onSendMessage={onSendMessage}
         onAttach={setImageUrl}

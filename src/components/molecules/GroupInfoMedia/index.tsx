@@ -21,11 +21,11 @@ export default function GroupInfoMedia({media}: any) {
         Media
       </AppText>
 
-      <HStack flexWrap="wrap" gap={8}>
-        {displayedItems.map((src, index) => (
+      <HStack flexWrap="wrap" gap={8} justifyContent='center'>
+        {media.map((i:any) => (
           <AppImage
-            key={index}
-            imageSource={'https://picsum.photos/200/300'}
+            key={i?.id}
+            imageSource={i?.mediaUrl}
             style={{
               width: 100,
               height: 100,

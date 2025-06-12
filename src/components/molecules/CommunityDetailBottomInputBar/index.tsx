@@ -16,10 +16,11 @@ import {
   AppTouchable,
   HStack,
 } from '~/components';
+import { useCommunity_CreateMediaMutation } from '~/graphql/generated';
 import {useUploadFile} from '~/hooks';
 import {Colors} from '~/styles';
 
-const BottomInputBar = ({onSendMessage, onAttach, onVoice, isLoading}: any) => {
+const BottomInputBar = ({onSendMessage, onAttach, onVoice, isLoading,communityId}: any) => {
   const [message, setMessage] = useState('');
   const [imageUrl, setImageUrl] = useState('');
 
@@ -33,6 +34,7 @@ const BottomInputBar = ({onSendMessage, onAttach, onVoice, isLoading}: any) => {
 
   const {mutate: uploadFileMutate, isLoading: uploading} = useUploadFile();
 
+  const {mutate} = useCommunity_CreateMediaMutation()
   const handleUpload = (image: any): Promise<string | undefined> => {
     return new Promise((resolve, reject) => {
       if (!image?.path) {
@@ -67,8 +69,15 @@ const BottomInputBar = ({onSendMessage, onAttach, onVoice, isLoading}: any) => {
         cropping: true,
         compressImageQuality: 0.8,
       });
+    
 
       const url = await handleUpload(image);
+        mutate({communityId:communityId, mediaUrl: url}, {
+        onSuccess(data, variables, context) {
+          console.log(data);
+          
+        },
+      })
       if (url) {
         onAttach(url);
         setImageUrl(url);

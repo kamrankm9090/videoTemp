@@ -6860,6 +6860,29 @@ export type Community_DeleteMessageMutation = {
   } | null;
 };
 
+export type Community_CreateMediaMutationVariables = Exact<{
+  communityId: Scalars['Int']['input'];
+  mediaUrl?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+export type Community_CreateMediaMutation = {
+  __typename?: 'Mutation';
+  community_createMedia?: {
+    __typename?: 'ResponseBaseOfCommunityMedia';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityMedia';
+      communityId: number;
+      mediaUrl?: string | null;
+      id: number;
+      isDeleted: boolean;
+      createdDate: any;
+      lastModifiedDate?: any | null;
+      isTestData: boolean;
+    } | null;
+  } | null;
+};
+
 export type Community_GetCommunitiesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -9221,6 +9244,50 @@ export const useCommunity_DeleteMessageMutation = <
         Community_DeleteMessageMutation,
         Community_DeleteMessageMutationVariables
       >(Community_DeleteMessageDocument, variables)(),
+    options,
+  );
+};
+
+export const Community_CreateMediaDocument = `
+    mutation community_createMedia($communityId: Int!, $mediaUrl: String) {
+  community_createMedia(communityId: $communityId, mediaUrl: $mediaUrl) {
+    result {
+      communityId
+      mediaUrl
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+      isTestData
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_CreateMediaMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Community_CreateMediaMutation,
+    TError,
+    Community_CreateMediaMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Community_CreateMediaMutation,
+    TError,
+    Community_CreateMediaMutationVariables,
+    TContext
+  >(
+    ['community_createMedia'],
+    (variables?: Community_CreateMediaMutationVariables) =>
+      fetcher<
+        Community_CreateMediaMutation,
+        Community_CreateMediaMutationVariables
+      >(Community_CreateMediaDocument, variables)(),
     options,
   );
 };
