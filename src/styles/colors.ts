@@ -63,6 +63,7 @@ export const WHITE_TRANSPARENT_9 = 'rgba(255,255,255,.9)';
 export const WHITE_ARRAY = ['#FFFFFF', '#000000'];
 export const BLACK_ARRAY = ['#CECECE', '#6F6F6F', '#0B0B0B'];
 export const BLACK = '#000000';
+export const BLACK_33 = '#00000033';
 export const BLACK_TRANSPARENT = 'rgba(0,0,0,.6)';
 export const BLACK_TRANSPARENT_1 = 'rgba(0,0,0,.1)';
 export const BLACK_TRANSPARENT_2 = 'rgba(0,0,0,.2)';

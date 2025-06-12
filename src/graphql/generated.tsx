@@ -7355,6 +7355,7 @@ export type Live_GetLivesQuery = {
         live?: {
           __typename?: 'Live';
           id: number;
+          createdDate: any;
           likeCount: number;
           userId: number;
           introUrl?: string | null;
@@ -7834,6 +7835,25 @@ export type Social_GetUserFollowerFolloweesQuery = {
           email?: string | null;
         } | null;
       } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Tip_CreateTipMutationVariables = Exact<{
+  input?: InputMaybe<TipInput>;
+}>;
+
+export type Tip_CreateTipMutation = {
+  __typename?: 'Mutation';
+  tip_createTip?: {
+    __typename?: 'ResponseBaseOfTip';
+    status?: any | null;
+    result?: {
+      __typename?: 'Tip';
+      userId: number;
+      forUserId: number;
+      value: any;
+      id: number;
     } | null;
   } | null;
 };
@@ -10080,6 +10100,7 @@ export const Live_GetLivesDocument = `
       items {
         live {
           id
+          createdDate
           likeCount
           userId
           introUrl
@@ -10877,6 +10898,44 @@ export const useInfiniteSocial_GetUserFollowerFolloweesQuery = <
         ...variables,
         ...(metaData.pageParam ?? {}),
       })(),
+    options,
+  );
+};
+
+export const Tip_CreateTipDocument = `
+    mutation tip_createTip($input: TipInput) {
+  tip_createTip(input: $input) {
+    result {
+      userId
+      forUserId
+      value
+      id
+    }
+    status
+  }
+}
+    `;
+
+export const useTip_CreateTipMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    Tip_CreateTipMutation,
+    TError,
+    Tip_CreateTipMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Tip_CreateTipMutation,
+    TError,
+    Tip_CreateTipMutationVariables,
+    TContext
+  >(
+    ['tip_createTip'],
+    (variables?: Tip_CreateTipMutationVariables) =>
+      fetcher<Tip_CreateTipMutation, Tip_CreateTipMutationVariables>(
+        Tip_CreateTipDocument,
+        variables,
+      )(),
     options,
   );
 };

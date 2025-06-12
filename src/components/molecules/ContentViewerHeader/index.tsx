@@ -1,7 +1,14 @@
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Close2, LiveIcon, MoreIcon} from '~/assets/svgs';
-import {AppImage, AppText, AppTouchable, Center, HStack} from '~/components';
+import {
+  AppImage,
+  AppText,
+  AppTouchable,
+  Center,
+  ContentViewerMoreOption,
+  HStack,
+} from '~/components';
 import {
   useSocial_FollowUserMutation,
   useSocial_UnfollowMutation,
@@ -50,8 +57,9 @@ const ContentViewerHeader = ({
           />
           <AppText
             numberOfLines={1}
-            width={80}
+            width="auto"
             fontSize={fontSize.small}
+            maxWidth={'55%'}
             fontFamily="medium">
             {user?.fullName || user?.username}
           </AppText>
@@ -71,9 +79,7 @@ const ContentViewerHeader = ({
               <LiveIcon />
             </Center>
           </HStack>
-          <AppTouchable>
-            <MoreIcon fill={Colors.WHITE} />
-          </AppTouchable>
+          <ContentViewerMoreOption />
         </HStack>
       </HStack>
     </HStack>
@@ -129,7 +135,7 @@ function FollowButton({
       py={4}
       px={10}
       borderRadius={4}
-      bg={Colors.BLACK_TRANSPARENT_4}
+      bg={Colors.PRIMARY}
       onPress={followHandler}>
       <AppText fontSize={fontSize.small} fontFamily="medium" borderRadius={8}>
         {isFollow ? 'Following' : 'Follow'}
