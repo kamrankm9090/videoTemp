@@ -8,6 +8,10 @@ export {default as WaterMarkIcon} from './SvgComponents/WaterMarkIcon';
 export {default as LockIcon2} from './SvgComponents/LockIcon2';
 export {default as DollarIcon} from './SvgComponents/DollarIcon';
 export {default as ExportIcon} from './SvgComponents/ExportIcon';
+export {default as DepositIcon} from './SvgComponents/DepositIcon';
+export {default as WithdrawIcon} from './SvgComponents/WithdrawIcon';
+export {default as BuyIcon} from './SvgComponents/BuyIcon';
+export {default as PlusIcon2} from './SvgComponents/PlusIcon2';
 
 //#endregion-----------------TSX
 
