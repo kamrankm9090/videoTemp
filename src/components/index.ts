@@ -68,6 +68,10 @@ export {default as TagInputListForm} from './atoms/TagInputListForm';
 export {default as MuteButton} from './atoms/MuteButton';
 export {default as TipCard} from './atoms/TipCard';
 export {default as IncomeChart} from './atoms/IncomeChart';
+export {default as PurchaseItem} from './atoms/PurchaseItem';
+export {default as HeaderWallet} from './atoms/HeaderWallet';
+export {default as WalletTipCard} from './atoms/WalletTipCard';
+
 //#endregion ---------Atoms
 
 //#region ---------Molecules

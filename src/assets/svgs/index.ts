@@ -12,6 +12,11 @@ export {default as EditIcon} from './SvgComponents/EditIcon';
 export {default as CalendarIcon} from './SvgComponents/CalendarIcon';
 export {default as UploadIcon} from './SvgComponents/UploadIcon';
 export {default as TrashIcon} from './SvgComponents/TrashIcon';
+export {default as DepositIcon} from './SvgComponents/DepositIcon';
+export {default as WithdrawIcon} from './SvgComponents/WithdrawIcon';
+export {default as BuyIcon} from './SvgComponents/BuyIcon';
+export {default as PlusIcon2} from './SvgComponents/PlusIcon2';
+
 //#endregion-----------------TSX
 
 //#region -------------------SVG

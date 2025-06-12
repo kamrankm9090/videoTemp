@@ -7771,6 +7771,31 @@ export type Message_CreateDirectMessageMutation = {
   } | null;
 };
 
+export type Email_SendEmailMutationVariables = Exact<{
+  emailInput: EmailInput;
+}>;
+
+export type Email_SendEmailMutation = {
+  __typename?: 'Mutation';
+  email_sendEmail: {
+    __typename?: 'ResponseBaseOfSentEmail';
+    status?: any | null;
+    result?: {
+      __typename?: 'SentEmail';
+      toEmailAddress: string;
+      toName?: string | null;
+      subject: string;
+      plainTextContent: string;
+      htmlContent?: string | null;
+      id: number;
+      isDeleted: boolean;
+      createdDate: any;
+      lastModifiedDate?: any | null;
+      isTestData: boolean;
+    } | null;
+  };
+};
+
 export type NotificationAddedSubscriptionVariables = Exact<{
   userId: Scalars['Int']['input'];
 }>;
@@ -10796,6 +10821,53 @@ export const useMessage_CreateDirectMessageMutation = <
         Message_CreateDirectMessageMutation,
         Message_CreateDirectMessageMutationVariables
       >(Message_CreateDirectMessageDocument, variables)(),
+    options,
+  );
+};
+
+export const Email_SendEmailDocument = `
+    mutation email_sendEmail($emailInput: EmailInput!) {
+  email_sendEmail(emailInput: $emailInput) {
+    result {
+      toEmailAddress
+      toName
+      subject
+      plainTextContent
+      htmlContent
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+      isTestData
+    }
+    status
+  }
+}
+    `;
+
+export const useEmail_SendEmailMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Email_SendEmailMutation,
+    TError,
+    Email_SendEmailMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Email_SendEmailMutation,
+    TError,
+    Email_SendEmailMutationVariables,
+    TContext
+  >(
+    ['email_sendEmail'],
+    (variables?: Email_SendEmailMutationVariables) =>
+      fetcher<Email_SendEmailMutation, Email_SendEmailMutationVariables>(
+        Email_SendEmailDocument,
+        variables,
+      )(),
     options,
   );
 };

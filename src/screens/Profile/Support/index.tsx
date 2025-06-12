@@ -15,19 +15,22 @@ import {
   ModalContainer,
   VStack,
 } from '~/components';
-import {goBack} from '~/navigation/methods';
+import {EmailInput, useEmail_SendEmailMutation} from '~/graphql/generated';
+import {goBack, replace, resetRoot} from '~/navigation/methods';
 import {supportSchema} from '~/schemas';
 import {Colors} from '~/styles';
 import {fontSize, height, scale, width} from '~/utils/style';
+import {showErrorMessage} from '~/utils/utils';
 
 const defaultValues = {
   subject: '',
-  text: '',
+  plainTextContent: '',
 };
 
 const SupportScreen = () => {
   const [isVisible, setIsVisible] = useState(false);
-
+  const {mutate: mutateSendSupport, isLoading: isLoadingSendSupport} =
+    useEmail_SendEmailMutation();
   const {...methods} = useForm({
     resolver: yupResolver(supportSchema),
     defaultValues,
@@ -36,13 +39,31 @@ const SupportScreen = () => {
   const {handleSubmit, formState, setValue, watch} = methods;
 
   const onSubmit = useCallback((formData: typeof defaultValues) => {
-    setIsVisible(true);
+    const emailInput: EmailInput = {
+      subject: formData?.subject,
+      plainTextContent: formData?.plainTextContent,
+      toEmailAddress: 'nasim.a@ifuturesoftware.com',
+    };
+    mutateSendSupport(
+      {emailInput},
+      {
+        onSuccess: response => {
+          if (response?.email_sendEmail?.status?.code === 1) {
+            setIsVisible(true);
+          } else {
+            showErrorMessage(response?.email_sendEmail?.status?.description);
+          }
+        },
+      },
+    );
   }, []);
 
   function onCloseModal() {
     setIsVisible(false);
     setTimeout(() => {
-      goBack();
+      resetRoot('MainTabs', {
+        screen: 'ProfileTab',
+      });
     }, 250);
   }
 
@@ -74,7 +95,7 @@ const SupportScreen = () => {
 
               <FormInput
                 mandatory
-                name="text"
+                name="plainTextContent"
                 placeholder="Message"
                 multiline
                 textArea
@@ -85,8 +106,8 @@ const SupportScreen = () => {
             <AppButton
               mt={24}
               title="Send"
-              // onPress={handleSubmit(onSubmit)}
-              onPress={onSubmit}
+              loading={isLoadingSendSupport}
+              onPress={handleSubmit(onSubmit)}
             />
           </VStack>
         </AppKeyboardAwareScrollView>

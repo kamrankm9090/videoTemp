@@ -240,7 +240,7 @@ const supportSchema = yup.object({
     .required('Subject is required.')
     .min(3, 'Subject must be at least 3 characters.')
     .max(100, 'Subject must not exceed 100 characters.'),
-  text: yup
+  plainTextContent: yup
     .string()
     .required('Message is required.')
     .min(10, 'Message must be at least 10 characters.')
