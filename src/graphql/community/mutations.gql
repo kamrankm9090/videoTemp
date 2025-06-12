@@ -146,3 +146,18 @@ mutation community_deleteMessage($messageId: Int!){
     description
   }
 }
+
+mutation community_createMedia($communityId: Int!, $mediaUrl: String){
+  community_createMedia(communityId: $communityId, mediaUrl: $mediaUrl) {
+    result {
+      communityId
+      mediaUrl
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+      isTestData
+    }
+    status
+  }
+}

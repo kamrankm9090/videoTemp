@@ -26,7 +26,7 @@ const CommunityInfoScreen = () => {
 
   const {data: mediaData} = useInfiniteCommunity_GetCommunityMediaQuery({communityId: item?.id})
 
-  const mediaUrls = mediaData?.pages?.[0]?.community_getCommunityMedia?.result
+  const mediaUrls = mediaData?.pages?.[0]?.community_getCommunityMedia?.result?.items
   
   const deleteCommunity = () => {
     mutate(
