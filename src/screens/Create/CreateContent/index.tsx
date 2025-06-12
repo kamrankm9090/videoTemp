@@ -55,8 +55,9 @@ export default function CreateContentScreen() {
     time: '',
     ...(isLiveContent && {
       price: '',
-      previewUrl:
-        'https://klpmedia.blob.core.windows.net/klpmedia/images/685e7926ff1e7cvideo_1748763306429.mp4',
+      previewUrl: '',
+      // previewUrl:
+      //   'https://klpmedia.blob.core.windows.net/klpmedia/images/d5a13020f67438video_1749654865299.mp4',
     }),
   };
 

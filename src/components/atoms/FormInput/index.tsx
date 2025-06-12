@@ -6,12 +6,16 @@ import {Colors} from '~/styles';
 type FormInputProps = {
   name: string;
   mandatory?: boolean;
+  start?: JSX.Element;
+  editable?: boolean;
 } & AppInputProps;
 
 export default React.forwardRef((props: FormInputProps, ref: any) => {
-  const {name, mandatory, ...rest} = props;
+  const {name, mandatory, editable, start, ...rest} = props;
 
   const {field, fieldState} = useController({name});
+
+  const borderColor = field.value ? Colors.INFO : Colors.GARY_3;
 
   return (
     <VStack space={4}>
@@ -20,11 +24,12 @@ export default React.forwardRef((props: FormInputProps, ref: any) => {
         borderColor={
           fieldState.error
             ? Colors.ERROR
-            : field.value
-            ? Colors.INFO
+            : editable
+            ? borderColor
             : Colors.GARY_3
         }
         ref={ref}
+        start={start}
         mandatory={mandatory}
         value={field.value}
         onBlur={field.onBlur}

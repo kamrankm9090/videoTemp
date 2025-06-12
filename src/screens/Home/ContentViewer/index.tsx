@@ -4,8 +4,7 @@ import {StyleSheet} from 'react-native';
 import {useSnapshot} from 'valtio';
 import {
   ArchiveIcon,
-  DocumentTextIcon,
-  DollarCircleIcon,
+  CalendarIcon,
   FullScreenIcon,
   LockIcon2,
   MinimizeScreenIcon,
@@ -18,21 +17,24 @@ import {
   AppText,
   AppTouchable,
   AppVideoPlayer,
+  Center,
   ContentDescriptionCard,
   ContentViewerHeader,
   HStack,
   LikeButton,
   LiveCommentSection,
+  TipsIcon,
   VStack,
 } from '~/components';
 import {
   useAgora_GetRecordFilesQuery,
   useLive_ViewLiveMutation,
 } from '~/graphql/generated';
-import {contentStore} from '~/stores';
+import {contentStore, homePostStore} from '~/stores';
 import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
 import {height, width} from '~/utils/style';
+import {appFormatDate} from '~/utils/utils';
 
 export default function ContentViewerScreen() {
   const {contentData: liveData} = useSnapshot(contentStore);
@@ -42,6 +44,7 @@ export default function ContentViewerScreen() {
 
   const [fullScreen, setFullScreen] = useState<boolean>(true);
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
+  const {isMuted} = useSnapshot(homePostStore);
   // const userData = userDataStore(state => state?.userData);
 
   // const {data: followData} = useLive_GetLivesQuery({
@@ -75,6 +78,7 @@ export default function ContentViewerScreen() {
       {/* <LockLayer /> */}
       <VStack flex={1} position="relative">
         <AppVideoPlayer
+          muted={isMuted}
           style={styles.videoPlayer}
           fullscreen={false}
           controls={false}
@@ -152,54 +156,30 @@ function TopLeftItems({
   fullScreen?: boolean;
   setFullScreen: (state: boolean) => void;
 }) {
-  const topLeftItems = [
-    {
-      key: 'resume',
-      title: 'Resume',
-
-      icon: <DocumentTextIcon />,
-      onPress: () => {},
-    },
-    {
-      key: 'tip',
-      title: 'Tip',
-      icon: <DollarCircleIcon />,
-      onPress: () => {},
-    },
-  ];
+  const {contentData} = useSnapshot(contentStore);
 
   return (
     <HStack
-      justifyContent="space-between"
       m={16}
       position="absolute"
-      top={60}
+      top={70}
       left={0}
+      space={16}
       zIndex={710}
       right={0}>
-      <VStack style={styles.topLeftContainer}>
-        {topLeftItems.map(item => (
-          <AppTouchable
-            key={item.key}
-            bg={Colors.WHITE_TRANSPARENT_6}
-            p={6}
-            borderRadius={14}
-            gap={6}
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="row"
-            zIndex={2}
-            onPress={item.onPress}>
-            {item.icon}
-            <AppText
-              fontWeight="500"
-              fontSize={13}
-              color={Colors.BLACK_TRANSPARENT_8}>
-              {item.title}
-            </AppText>
-          </AppTouchable>
-        ))}
-      </VStack>
+      <TipsIcon userId={contentData?.live?.user?.id} />
+      <HStack flex={1}>
+        <HStack zIndex={710} p={8} space={8} rounded={8} bg={Colors.BLACK_33}>
+          <CalendarIcon />
+          <AppText>
+            {appFormatDate(contentData?.live?.createdDate, 'YYYY/MM/DD')}
+          </AppText>
+          <Center rounded={4} bg={Colors.Grey} w={6} h={6} />
+          <AppText>
+            {appFormatDate(contentData?.live?.createdDate, 'HH:mm:ss')}
+          </AppText>
+        </HStack>
+      </HStack>
       <AppTouchable
         style={styles.fullScreenButton}
         onPress={() => setFullScreen(!fullScreen)}>

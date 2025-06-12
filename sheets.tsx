@@ -6,10 +6,12 @@ import {
   DropDownActionSheet,
   MoreOptionAction,
   OfferSelectOptionAction,
+  PaymentDetailsAction,
   PostOptionsAction,
   ReportAction,
   ReportReasonAction,
   SharingAction,
+  TipsAction,
 } from '~/components';
 import {CommunityType} from '~/graphql/generated';
 
@@ -23,6 +25,8 @@ registerSheet('offer-select-option-action', OfferSelectOptionAction);
 registerSheet('more-option-action', MoreOptionAction);
 registerSheet('create-community-action', CreateCommunityAction);
 registerSheet('drop-down-action-sheet', DropDownActionSheet);
+registerSheet('tips-action', TipsAction);
+registerSheet('payment-details-action', PaymentDetailsAction);
 
 declare module 'react-native-actions-sheet' {
   interface Sheets {
@@ -49,6 +53,12 @@ declare module 'react-native-actions-sheet' {
     }>;
     'report-action': SheetDefinition<{
       payload?: ReportActionPayLoadType;
+    }>;
+    'tips-action': SheetDefinition<{
+      payload?: TipsActionPayLoadType;
+    }>;
+    'payment-details-action': SheetDefinition<{
+      payload?: PaymentDetailsActionPayLoadType;
     }>;
   }
 }

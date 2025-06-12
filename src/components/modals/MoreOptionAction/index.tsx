@@ -3,10 +3,10 @@ import {SheetProps} from 'react-native-actions-sheet';
 import {ChevronRight, Close2} from '~/assets/svgs';
 import {
   ActionSheetContainer,
-  AppIndicator,
   AppText,
-  AppTouchable,
+  Box,
   HStack,
+  MoreOptionItemRow,
   VStack,
 } from '~/components';
 import {Colors} from '~/styles';
@@ -20,18 +20,24 @@ export default function MoreOptionAction(
   props: SheetProps<'more-option-action'>,
 ) {
   const {
-    title = ' More Option',
+    title = 'More Option',
     data = [],
     onClose = () => {},
+    showTitle = true,
   } = props?.payload ?? {};
 
   return (
     <ActionSheetContainer>
       <HStack pb={scale(10)} justifyContent="space-between" mb={12}>
-        <AppText fontSize={16} fontFamily="bold">
-          {title}
-        </AppText>
+        {showTitle ? (
+          <AppText fontSize={16} fontFamily="bold">
+            {title}
+          </AppText>
+        ) : (
+          <Box flex={1} />
+        )}
         <Close2
+          stroke={Colors.Grey}
           onPress={() => {
             hideSheet('more-option-action');
             onClose?.();
@@ -40,7 +46,7 @@ export default function MoreOptionAction(
       </HStack>
 
       <VStack space={12}>
-        {data.map(item => (
+        {data?.map(item => (
           <Item key={item.id} item={item} />
         ))}
       </VStack>
@@ -49,28 +55,27 @@ export default function MoreOptionAction(
 }
 
 function Item({item}: {item: MoreOptionItemType}) {
-  const {title, onPress, color = Colors.WHITE, keyLoading = ''} = item;
+  const {
+    title,
+    onPress,
+    color = Colors.WHITE,
+    keyLoading = '',
+    startIcon,
+    endIcon = <ChevronRight />,
+    showEndIcon = true,
+    customComponent,
+  } = item;
   const isLoading = useAnyMutating(keyLoadingArray);
   const isExistLoading = keyLoadingArray.includes(keyLoading);
 
+  if (customComponent) {
+    return <>{customComponent}</>;
+  }
+
   return (
-    <AppTouchable onPress={onPress}>
-      <HStack
-        px={16}
-        py={20}
-        rounded={8}
-        bg={Colors.NightRider}
-        alignItems="center"
-        justifyContent="space-between">
-        {isLoading && isExistLoading ? (
-          <AppIndicator />
-        ) : (
-          <AppText fontFamily="medium" color={color}>
-            {title}
-          </AppText>
-        )}
-        <ChevronRight />
-      </HStack>
-    </AppTouchable>
+    <MoreOptionItemRow
+      isLoading={isLoading && isExistLoading}
+      {...{title, startIcon, endIcon, showEndIcon, color, onPress}}
+    />
   );
 }

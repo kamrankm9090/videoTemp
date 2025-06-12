@@ -1,0 +1,11 @@
+mutation tip_createTip($input: TipInput){
+    tip_createTip(input: $input){
+        result{
+            userId
+            forUserId
+            value
+            id
+        }
+        status
+    }
+}
