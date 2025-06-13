@@ -1,15 +1,11 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   ClientRoleType,
-  LocalVideoStreamReason,
-  LocalVideoStreamState,
   RtcConnection,
-  RtcStats,
   RtcSurfaceView,
   UserOfflineReasonType,
   VideoCanvas,
-  VideoSourceType,
   VideoViewSetupMode,
 } from 'react-native-agora';
 import {useSnapshot} from 'valtio';
@@ -22,7 +18,7 @@ import {
   RenderNothing,
   VStack,
 } from '~/components';
-import useInitAudienceEngine from '~/hooks/agora/useInitAudienceEngine';
+import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
 import {goBack, replace} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import * as log from '~/utils/log';
@@ -32,21 +28,52 @@ const setupMode = VideoViewSetupMode.VideoViewSetupReplace;
 
 export default function ContentViewerLiveScreen() {
   const [enableVideo] = useState<boolean>(true);
-  const {joinChannelSuccess, remoteUsers, leaveChannel} = useInitAudienceEngine(
-    {
-      onOfflineUser: (
-        connection: RtcConnection,
-        remoteUid: number,
-        reason: UserOfflineReasonType,
-      ) => onUserOffline(connection, remoteUid, reason),
-    },
-  );
+  const {
+    channelId,
+    token,
+    uid,
+    joinChannelSuccess,
+    remoteUsers,
+    startPreview,
+    engine,
+  } = useInitRtcEngine({
+    enableVideo: true,
+    isBroadcaster: false,
+    onOfflineUser: (
+      connection: RtcConnection,
+      remoteUid: number,
+      reason: UserOfflineReasonType,
+    ) => onUserOffline(connection, remoteUid, reason),
+  });
 
   const {liveData, resetLiveStore} = useSnapshot(liveStore);
+  const live = liveData?.live;
+  console.log('ContentViewerLiveScreen');
+  useEffect(() => {
+    setTimeout(() => {
+      joinChannel();
+    }, 5000);
+  }, []);
 
-  const onCloseChannel = async () => {
+  const joinChannel = () => {
+    if (!channelId) {
+      log.error('channelId is invalid');
+      return;
+    }
+    if (uid < 0) {
+      log.error('uid is invalid');
+      return;
+    }
+    engine.current.joinChannel(token, channelId, uid, {
+      // Make myself as the broadcaster to send stream to remote
+      clientRoleType: ClientRoleType.ClientRoleAudience,
+      // clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+    });
+  };
+
+  const leaveChannel = async () => {
     try {
-      leaveChannel();
+      engine.current.leaveChannel();
       resetLiveStore();
       goBack();
     } catch (err) {
@@ -59,10 +86,10 @@ export default function ContentViewerLiveScreen() {
     remoteUid: number,
     reason: UserOfflineReasonType,
   ) => {
-    if (liveData?.agoraUserId?.toString() === remoteUid?.toString()) {
-      onCloseChannel();
+    if (live?.agoraUserId === remoteUid?.toString()) {
+      engine.current.leaveChannel();
+      resetLiveStore();
       replace('LiveEnded');
-      console.log('yes broadcaster is left', {reason});
     }
   };
 
@@ -70,11 +97,11 @@ export default function ContentViewerLiveScreen() {
     <AppContainer>
       <LiveHeader
         user={{
-          photoUrl: liveData?.user?.photoUrl ?? '',
-          username: liveData?.user?.username ?? '',
+          photoUrl: live?.user?.photoUrl,
+          username: live?.user?.username,
         }}
         isOwner={false}
-        onClose={onCloseChannel}
+        onClose={leaveChannel}
       />
       <BaseComponent
         name={'JoinChannelVideo'}
@@ -83,7 +110,7 @@ export default function ContentViewerLiveScreen() {
           <BaseRenderUsers
             enableVideo={enableVideo}
             renderVideo={renderVideo}
-            startPreview={false}
+            startPreview={startPreview}
             joinChannelSuccess={joinChannelSuccess}
             remoteUsers={remoteUsers}
           />

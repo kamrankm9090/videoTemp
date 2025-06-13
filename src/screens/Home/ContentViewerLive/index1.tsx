@@ -1,64 +1,75 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {AppContainer, LiveHeader} from '~/components';
-import {useSnapshot} from 'valtio';
-import {agoraStore, liveStore} from '~/stores';
-import createAgoraRtcEngine, {
-  ChannelProfileType,
+import React, {ReactElement, useEffect, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {
   ClientRoleType,
-  IRtcEngineEx,
-  VideoStreamType,
-  RtcSurfaceView,
   RtcConnection,
+  RtcSurfaceView,
+  UserOfflineReasonType,
+  VideoCanvas,
+  VideoViewSetupMode,
 } from 'react-native-agora';
-import {goBack} from '~/navigation/methods';
+import {useSnapshot} from 'valtio';
+import {
+  AppContainer,
+  BaseComponent,
+  BaseRenderUsers,
+  LiveCommentSection,
+  LiveHeader,
+  RenderNothing,
+  VStack,
+} from '~/components';
+import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
+import {goBack, replace} from '~/navigation/methods';
+import {liveStore} from '~/stores';
 import * as log from '~/utils/log';
+import {height, width} from '~/utils/style';
 
-const ContentViewerLiveScreen = () => {
-  const {appId} = agoraStore(state => state);
-  const {liveId, token} = useSnapshot(liveStore);
+const setupMode = VideoViewSetupMode.VideoViewSetupReplace;
+
+export default function ContentViewerLiveScreen() {
+  const [enableVideo] = useState<boolean>(true);
+  const {
+    channelId,
+    token,
+    uid,
+    joinChannelSuccess,
+    remoteUsers,
+    startPreview,
+    engine,
+  } = useInitRtcEngine({
+    enableVideo: true,
+    isBroadcaster: false,
+    onOfflineUser: (
+      connection: RtcConnection,
+      remoteUid: number,
+      reason: UserOfflineReasonType,
+    ) => onUserOffline(connection, remoteUid, reason),
+  });
+
   const {liveData, resetLiveStore} = useSnapshot(liveStore);
-  const channelId = String(liveId);
-  const engine = useRef<IRtcEngineEx>(createAgoraRtcEngine() as IRtcEngineEx);
-  const [remoteUid, setRemoteUid] = useState<{
-    uid: number;
-    connection: RtcConnection;
-  } | null>(null);
+  const live = liveData?.live;
 
   useEffect(() => {
-    const init = async () => {
-      engine.current.initialize({
-        appId,
-        logConfig: {filePath: ''},
-        channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
-      });
-      engine.current.enableVideo();
-      engine.current.setChannelProfile(
-        ChannelProfileType.ChannelProfileLiveBroadcasting,
-      ); // LiveBroadcasting
-      engine.current.setClientRole(ClientRoleType.ClientRoleAudience);
-      engine.current.setVideoEncoderConfiguration({
-        dimensions: {width: 1920, height: 1080},
-        frameRate: 30,
-        bitrate: 2080,
-        orientationMode: 0,
-      });
-      engine.current.joinChannel(token, channelId, 0, {
-        defaultVideoStreamType: VideoStreamType.VideoStreamHigh,
-        channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
-        clientRoleType: ClientRoleType.ClientRoleBroadcaster,
-      });
-    };
+    setTimeout(() => {
+      joinChannel();
+    }, 5000);
+  }, []);
 
-    engine.current.addListener('onUserJoined', (connection, uid) => {
-      setRemoteUid({connection, uid});
+  const joinChannel = () => {
+    if (!channelId) {
+      log.error('channelId is invalid');
+      return;
+    }
+    if (uid < 0) {
+      log.error('uid is invalid');
+      return;
+    }
+    engine.current.joinChannel(token, channelId, uid, {
+      // Make myself as the broadcaster to send stream to remote
+      clientRoleType: ClientRoleType.ClientRoleAudience,
+      // clientRoleType: ClientRoleType.ClientRoleBroadcaster,
     });
-
-    init();
-
-    return () => {
-      engine?.current?.leaveChannel();
-    };
-  }, [engine, appId, channelId, token]);
+  };
 
   const leaveChannel = async () => {
     try {
@@ -70,25 +81,197 @@ const ContentViewerLiveScreen = () => {
     }
   };
 
+  const onUserOffline = (
+    connection: RtcConnection,
+    remoteUid: number,
+    reason: UserOfflineReasonType,
+  ) => {
+    if (live?.agoraUserId === remoteUid?.toString()) {
+      engine.current.leaveChannel();
+      resetLiveStore();
+      replace('LiveEnded');
+    }
+  };
+
   return (
     <AppContainer>
       <LiveHeader
         user={{
-          photoUrl: liveData?.user?.photoUrl,
-          username: liveData?.user?.username,
+          photoUrl: live?.user?.photoUrl,
+          username: live?.user?.username,
         }}
         isOwner={false}
         onClose={leaveChannel}
       />
-      {remoteUid !== null && (
-        <RtcSurfaceView
-          style={{flex: 1}}
-          connection={remoteUid?.connection}
-          canvas={{uid: remoteUid.uid}}
-        />
-      )}
+      <BaseComponent
+        name={'JoinChannelVideo'}
+        renderChannel={RenderNothing}
+        renderUsers={() => (
+          <BaseRenderUsers
+            enableVideo={enableVideo}
+            renderVideo={renderVideo}
+            startPreview={startPreview}
+            joinChannelSuccess={joinChannelSuccess}
+            remoteUsers={remoteUsers}
+          />
+        )}
+      />
+
+      <VStack p={10} mb={30}>
+        <LiveCommentSection />
+      </VStack>
     </AppContainer>
   );
-};
 
-export default ContentViewerLiveScreen;
+  function renderVideo(user: VideoCanvas): ReactElement | undefined {
+    if (user.uid === 0 && remoteUsers.length === 0) {
+      return;
+    }
+
+    return (
+      <RtcSurfaceView
+        style={styles.video}
+        zOrderMediaOverlay={user.uid !== 0}
+        canvas={{...user, setupMode}}
+      />
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  video: {
+    flex: 1,
+    height: height,
+    width: width,
+    alignSelf: 'center',
+  },
+});
+
+// function CreateLiveFooter({
+//   startOnPress,
+//   switchOnPress,
+// }: {
+//   startOnPress?: () => void;
+//   switchOnPress?: () => void;
+// }) {
+//   const insets = useSafeAreaInsets();
+
+//   return (
+//     <VStack
+//       zIndex={779}
+//       px={24}
+//       w="100%"
+//       bottom={insets.bottom}
+//       position="absolute">
+//       <HStack space={16}>
+//         <AppButton
+//           onPress={startOnPress}
+//           flex={1}
+//           width="auto"
+//           title="Start live"
+//         />
+//         <AppTouchable
+//           onPress={switchOnPress}
+//           rounded={8}
+//           p={7}
+//           bg={Colors.Silver_transparent_80}>
+//           <Reload />
+//         </AppTouchable>
+//       </HStack>
+//     </VStack>
+//   );
+// }
+
+// function ExperienceCard() {
+//   const {liveData} = useSnapshot(liveStore);
+//   const [expanded, setExpanded] = useState<boolean>(false);
+
+//   return (
+//     <VStack
+//       w="90%"
+//       p={16}
+//       rounded={16}
+//       zIndex={777}
+//       alignSelf="center"
+//       justifyContent="flex-start"
+//       maxH={height * 0.5}
+//       minH={height * 0.3}
+//       position="absolute"
+//       bottom={200}>
+//       <VStack space={12}>
+//         <AppText fontFamily="bold" fontSize={fontSize.large}>
+//           {liveData?.title}
+//         </AppText>
+
+//         {!expanded ? (
+//           <>
+//             <AppText color={Colors.DarkGray} numberOfLines={2}>
+//               {liveData?.description}
+//             </AppText>
+//             <AppText
+//               right={0}
+//               zIndex={800}
+//               bottom={-20}
+//               position="absolute"
+//               color={Colors.PRIMARY}
+//               onPress={() => setExpanded(true)}>
+//               show more...
+//             </AppText>
+//           </>
+//         ) : (
+//           <VStack space={12}>
+//             <AppText color={Colors.VeryLightGrey}>
+//               {liveData?.description}
+//             </AppText>
+
+//             <AppTouchable
+//               py={6}
+//               px={12}
+//               gap={8}
+//               rounded={8}
+//               flexDirection="row"
+//               bg={Colors.Nero_3}
+//               alignSelf="flex-start">
+//               <Note />
+//               <AppText fontWeight="bold">See Resume</AppText>
+//             </AppTouchable>
+
+//             <HStack justifyContent="space-between">
+//               <VStack space={16}>
+//                 <AppText color={Colors.DarkGray}>Category</AppText>
+//                 <AppText fontFamily="bold">{liveData?.category?.title}</AppText>
+//               </VStack>
+//               <VStack space={16}>
+//                 <AppText color={Colors.DarkGray}>Price</AppText>
+//                 <AppText fontFamily="bold">
+//                   {liveData?.isFree ? 'Free' : `$${liveData?.price}`}
+//                 </AppText>
+//               </VStack>
+//             </HStack>
+
+//             <HStack mt={16} alignItems="flex-end">
+//               <VStack flex={1} space={24}>
+//                 <AppText color={Colors.DarkGray}>Publishing schedule: </AppText>
+//                 <AppText fontFamily="bold">
+//                   {liveData?.isSchedule
+//                     ? `${appFormatDate(
+//                         liveData?.publishingScheduleDate,
+//                         'YYYY/m/dd',
+//                       )}, ${appFormatDate(liveData?.publishingScheduleTime)}`
+//                     : '-'}
+//                 </AppText>
+//               </VStack>
+
+//               <AppText
+//                 zIndex={800}
+//                 color={Colors.PRIMARY}
+//                 onPress={() => setExpanded(false)}>
+//                 show Less...
+//               </AppText>
+//             </HStack>
+//           </VStack>
+//         )}
+//       </VStack>
+//     </VStack>
+//   );
+// }

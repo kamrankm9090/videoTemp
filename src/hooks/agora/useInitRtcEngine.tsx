@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import createAgoraRtcEngine, {
   ChannelProfileType,
-  ClientRoleType,
   ErrorCodeType,
   IRtcEngineEx,
   RtcConnection,
@@ -57,7 +56,6 @@ const useInitRtcEngine = ({
       logConfig: {filePath: ''},
       channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
     });
-    engine.current.enableDualStreamMode(false);
 
     if (isBroadcaster) {
     }
@@ -66,19 +64,6 @@ const useInitRtcEngine = ({
     if (enableVideo) {
       await askMediaAccess(['android.permission.CAMERA']);
       engine.current.enableVideo();
-      console.log('ARVIN===>1');
-
-      engine.current.setVideoEncoderConfiguration({
-        dimensions: {width: 1920, height: 1080},
-        frameRate: 30,
-        bitrate: 2080,
-        orientationMode: 0,
-      });
-      console.log('ARVIN===>2');
-      engine.current.setChannelProfile(
-        ChannelProfileType.ChannelProfileLiveBroadcasting,
-      );
-      engine.current.setClientRole(ClientRoleType.ClientRoleBroadcaster);
       engine.current.startPreview();
       setStartPreview(true);
     }

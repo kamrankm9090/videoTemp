@@ -49,6 +49,7 @@ const AppVideoPlayerBase = forwardRef<VideoRef, AppVideoPlayerProps>(
     const [curTime, setCurTime] = useState(0);
     const [isMuted, setIsMuted] = useState(rest?.muted || false);
     const currentTimeRef = useRef(0);
+    console.log('source', source);
 
     const paused = useMemo(
       () => !(isPlaying && isFocused),
