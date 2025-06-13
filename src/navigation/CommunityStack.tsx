@@ -6,9 +6,15 @@ import {appCreateStackNavigator} from './methods';
 export type CommunityStackParamList = {
   Community: undefined;
   Requesters:undefined
-  CommunityInfo:undefined
-  CommunityDetail: undefined
-  CommunitySearch: undefined
+  CommunityInfo:{
+    item: any
+  }
+  CommunityDetail: {
+    item: any
+  }
+  CommunitySearch: {
+    item: any
+  }
   InviteLink: undefined
 };
 

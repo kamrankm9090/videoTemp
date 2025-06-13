@@ -42,4 +42,10 @@ const styles = StyleSheet.create({
     flex: 1,
     color: Colors.WHITE,
   },
+  flexDirection: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
 });

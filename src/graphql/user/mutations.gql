@@ -115,6 +115,10 @@ mutation user_updateUser($userId: Int, $userInput: UserInput) {
       verificationErrors
       socialLinks
       profession
+      professionalSummary
+      languages
+      workExperience
+      education
       yearsOfExperience
       height
       favoriteCategories
@@ -346,5 +350,13 @@ mutation user_refreshToken($input: TokenInput) {
       refreshTokenExpiryTime
     }
     status
+  }
+}
+
+mutation user_changeUserPassowrd($input: ChangePassowrdInput) {
+  user_changeUserPassowrd(input: $input) {
+    code
+    value
+    description
   }
 }

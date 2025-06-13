@@ -1,12 +1,12 @@
+import {BlurView} from '@react-native-community/blur';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
+import {useSnapshot} from 'valtio';
 import {
   ArchiveIcon,
-  DocumentTextIcon,
-  DollarCircleIcon,
+  CalendarIcon,
   FullScreenIcon,
-  LikeFillIcon,
-  LikeIcon,
+  LockIcon2,
   MinimizeScreenIcon,
   Send2Icon,
   VolumeSlashIcon,
@@ -17,129 +17,68 @@ import {
   AppText,
   AppTouchable,
   AppVideoPlayer,
+  Center,
   ContentDescriptionCard,
   ContentViewerHeader,
   HStack,
+  LikeButton,
   LiveCommentSection,
+  TipsIcon,
   VStack,
 } from '~/components';
 import {
   useAgora_GetRecordFilesQuery,
-  useLive_DeleteLiveMutation,
-  useLive_GetLivesQuery,
-  useLive_LikeMutation,
   useLive_ViewLiveMutation,
 } from '~/graphql/generated';
-import {userDataStore} from '~/stores';
+import {contentStore, homePostStore} from '~/stores';
 import {Colors} from '~/styles';
 import {getFullImageUrl} from '~/utils/helper';
 import {height, width} from '~/utils/style';
+import {appFormatDate} from '~/utils/utils';
 
-const ContentViewerScreen = ({route}: NavigationProp) => {
-  const liveId = route?.params?.item?.live?.id;
-  const user = route?.params?.item?.live?.user;
-  const isFollowed = route?.params?.item?.isFollowed;
+export default function ContentViewerScreen() {
+  const {contentData: liveData} = useSnapshot(contentStore);
+  const liveId = liveData?.live?.id;
+  const user = liveData?.live?.user;
+  const isFollowed = liveData?.live?.isFollowed;
 
-  const [fullScreen, setFullScreen] = useState(true);
+  const [fullScreen, setFullScreen] = useState<boolean>(true);
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
-  const userData = userDataStore(state => state?.userData);
+  const {isMuted} = useSnapshot(homePostStore);
+  // const userData = userDataStore(state => state?.userData);
 
-  const {data: followData} = useLive_GetLivesQuery({
-    where: {
-      live: {
-        id: {eq: liveId},
-      },
-    },
-  });
-  const liveData = followData?.live_getLives?.result?.items?.[0];
-  const [likeNumber, setLikeNumber] = useState(liveData?.live?.likeCount || 0);
-  const [isLiked, setIsLiked] = useState(liveData?.isLiked || false);
+  // const {data: followData} = useLive_GetLivesQuery({
+  //   where: {
+  //     live: {
+  //       id: {eq: liveId},
+  //     },
+  //   },
+  // });
+  // const liveData = followData?.live_getLives?.result?.items?.[0];
 
-  const {mutate: likeMutate} = useLive_LikeMutation();
-  const {mutate: deleteLikeMutate} = useLive_DeleteLiveMutation();
   const {mutate: viewLiveMutate} = useLive_ViewLiveMutation();
 
   useEffect(() => {
-    viewLiveMutate(
-      {liveId},
-      {
-        onSuccess(data, variables, context) {},
-      },
-    );
-  }, []);
-
-  const likeHandler = () => {
-    if (isLiked) {
-      deleteLikeMutate(
+    if (liveId) {
+      viewLiveMutate(
         {liveId},
         {
-          onSuccess(data, variables, context) {
-            setIsLiked(false);
-            setLikeNumber(likeNumber - 1);
-          },
-        },
-      );
-    } else {
-      likeMutate(
-        {liveId},
-        {
-          onSuccess(data, variables, context) {
-            setIsLiked(true);
-            setLikeNumber(likeNumber + 1);
-          },
+          onSuccess() {},
         },
       );
     }
-  };
+  }, [liveId]);
 
   const {data} = useAgora_GetRecordFilesQuery({
     liveId,
   });
 
-  const topLeftItems = [
-    {
-      key: 'resume',
-      title: 'Resume',
-
-      icon: <DocumentTextIcon />,
-      onPress: () => {},
-    },
-    {
-      key: 'tip',
-      title: 'Tip',
-      icon: <DollarCircleIcon />,
-      onPress: () => {},
-    },
-  ];
-
-  const bottomRightItems = [
-    {
-      key: 'like',
-      icon: isLiked ? <LikeFillIcon /> : <LikeIcon />,
-      number: likeNumber,
-      onPress: () => likeHandler(),
-    },
-    {
-      key: 'send',
-      icon: <Send2Icon />,
-      onPress: () => {},
-    },
-    {
-      key: 'archive',
-      icon: <ArchiveIcon />,
-      onPress: () => {},
-    },
-    {
-      key: 'mute',
-      icon: <VolumeSlashIcon />,
-      onPress: () => {},
-    },
-  ];
-
   return (
     <AppContainer backgroundColor={Colors.BLACK_TRANSPARENT_8}>
+      {/* <LockLayer /> */}
       <VStack flex={1} position="relative">
         <AppVideoPlayer
+          muted={isMuted}
           style={styles.videoPlayer}
           fullscreen={false}
           controls={false}
@@ -172,83 +111,20 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
           </VStack>
         )}
 
-        <HStack
-          justifyContent="space-between"
-          position="absolute"
-          top={10}
-          left={0}
-          right={0}>
-          <ContentViewerHeader
-            user={user}
-            isFollowed={isFollowed || liveData?.isFollowed}
-            viewCount={liveData?.live?.viewCount || 0}
-          />
-        </HStack>
+        <ContentViewerHeader
+          user={user}
+          isFollowed={isFollowed || liveData?.isFollowed}
+          viewCount={liveData?.live?.viewCount || 0}
+        />
 
-        <HStack
-          justifyContent="space-between"
-          m={16}
-          position="absolute"
-          top={60}
-          left={0}
-          right={0}>
-          <VStack style={styles.topLeftContainer}>
-            {topLeftItems.map(item => (
-              <AppTouchable
-                key={item.key}
-                bg={Colors.WHITE_TRANSPARENT_6}
-                p={6}
-                borderRadius={14}
-                gap={6}
-                justifyContent="center"
-                alignItems="center"
-                flexDirection="row"
-                zIndex={2}
-                onPress={item.onPress}>
-                {item.icon}
-                <AppText
-                  fontWeight="500"
-                  fontSize={13}
-                  color={Colors.BLACK_TRANSPARENT_8}>
-                  {item.title}
-                </AppText>
-              </AppTouchable>
-            ))}
-          </VStack>
-          <AppTouchable
-            style={styles.fullScreenButton}
-            onPress={() => setFullScreen(!fullScreen)}>
-            {fullScreen ? <MinimizeScreenIcon /> : <FullScreenIcon />}
-          </AppTouchable>
-        </HStack>
+        <TopLeftItems fullScreen={fullScreen} setFullScreen={setFullScreen} />
 
         {!fullScreen && (
-          <VStack style={styles.bottomRightContainer}>
-            {bottomRightItems.map(item => (
-              <VStack key={item?.key}>
-                <AppTouchable
-                  key={item.key}
-                  bg={Colors.WHITE_TRANSPARENT_2}
-                  p={6}
-                  borderRadius={100}
-                  justifyContent="center"
-                  alignItems="center"
-                  zIndex={2}
-                  onPress={item.onPress}>
-                  {item.icon}
-                </AppTouchable>
-                {item?.number && (
-                  <AppText
-                    fontSize={12}
-                    fontWeight={'400'}
-                    marginTop={4}
-                    alignSelf="center">
-                    {item?.number}
-                  </AppText>
-                )}
-              </VStack>
-            ))}
-          </VStack>
+          <RightItems
+            liveId={liveId}
+            isLiked={liveData?.isLiked}
+            likeCount={liveData?.live?.likeCount}
+          />
         )}
 
         {!fullScreen ? (
@@ -271,9 +147,147 @@ const ContentViewerScreen = ({route}: NavigationProp) => {
       </VStack>
     </AppContainer>
   );
-};
+}
 
-export default ContentViewerScreen;
+function TopLeftItems({
+  fullScreen = false,
+  setFullScreen,
+}: {
+  fullScreen?: boolean;
+  setFullScreen: (state: boolean) => void;
+}) {
+  const {contentData} = useSnapshot(contentStore);
+
+  return (
+    <HStack
+      m={16}
+      position="absolute"
+      top={70}
+      left={0}
+      space={16}
+      zIndex={710}
+      right={0}>
+      <TipsIcon userId={contentData?.live?.user?.id} />
+      <HStack flex={1}>
+        <HStack zIndex={710} p={8} space={8} rounded={8} bg={Colors.BLACK_33}>
+          <CalendarIcon />
+          <AppText>
+            {appFormatDate(contentData?.live?.createdDate, 'YYYY/MM/DD')}
+          </AppText>
+          <Center rounded={4} bg={Colors.Grey} w={6} h={6} />
+          <AppText>
+            {appFormatDate(contentData?.live?.createdDate, 'HH:mm:ss')}
+          </AppText>
+        </HStack>
+      </HStack>
+      <AppTouchable
+        style={styles.fullScreenButton}
+        onPress={() => setFullScreen(!fullScreen)}>
+        {fullScreen ? <MinimizeScreenIcon /> : <FullScreenIcon />}
+      </AppTouchable>
+    </HStack>
+  );
+}
+
+function RightItems({
+  liveId,
+  likeCount = 0,
+  isLiked = false,
+}: {
+  liveId: number;
+  likeCount?: number;
+  isLiked?: boolean;
+}) {
+  const bottomRightItems = [
+    {
+      key: 'send',
+      icon: <Send2Icon />,
+      onPress: () => {},
+    },
+    {
+      key: 'archive',
+      icon: <ArchiveIcon />,
+      onPress: () => {},
+    },
+    {
+      key: 'mute',
+      icon: <VolumeSlashIcon />,
+      onPress: () => {},
+    },
+  ];
+
+  return (
+    <VStack
+      zIndex={710}
+      position="absolute"
+      right={24}
+      bottom={height / 2}
+      space={16}>
+      <LikeButton
+        orientation="vertical"
+        isLiked={isLiked}
+        liveId={liveId}
+        likeCount={likeCount}
+        p={6}
+        rounded={100}
+        alignItems="center"
+        bg={Colors.WHITE_TRANSPARENT_2}
+      />
+      {bottomRightItems.map(item => (
+        <VStack key={item?.key}>
+          <AppTouchable
+            key={item.key}
+            bg={Colors.WHITE_TRANSPARENT_2}
+            p={6}
+            borderRadius={100}
+            justifyContent="center"
+            alignItems="center"
+            zIndex={2}
+            onPress={item.onPress}>
+            {item.icon}
+          </AppTouchable>
+          {item?.number && (
+            <AppText
+              fontSize={12}
+              fontWeight={'400'}
+              marginTop={4}
+              alignSelf="center">
+              {item?.number}
+            </AppText>
+          )}
+        </VStack>
+      ))}
+    </VStack>
+  );
+}
+
+function LockLayer() {
+  return (
+    <>
+      <BlurView
+        style={styles.absolute}
+        blurType="light"
+        blurAmount={18}
+        reducedTransparencyFallbackColor={Colors.BLACK}
+      />
+      <VStack
+        alignSelf="center"
+        position="absolute"
+        justifyContent="center"
+        alignItems="center"
+        top={0}
+        bottom={0}
+        flex={1}
+        zIndex={701}
+        space={12}>
+        <LockIcon2 />
+        <AppText color={Colors.GAINSBORO} lineHeight={28} textAlign="center">
+          {'Access to this content\nrequires a payment'}
+        </AppText>
+      </VStack>
+    </>
+  );
+}
 
 const styles = StyleSheet.create({
   videoPlayer: {
@@ -304,5 +318,13 @@ const styles = StyleSheet.create({
     right: 0,
     height: 600,
     zIndex: 1,
+  },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 700,
   },
 });

@@ -1,9 +1,27 @@
-mutation message_createDirectMessage($input: MessageInput, $receiverId: Int!){
-    message_createDirectMessage(input: $input, receiverId: $receiverId){
-        result{
-            createdAt
-            id
-        }
-        status
+mutation message_createDirectMessage($input: MessageInput, $receiverId: Int!) {
+  message_createDirectMessage(input: $input, receiverId: $receiverId) {
+    result {
+      createdAt
+      id
     }
+    status
+  }
+}
+
+mutation email_sendEmail($emailInput: EmailInput!) {
+  email_sendEmail(emailInput: $emailInput) {
+    result {
+      toEmailAddress
+      toName
+      subject
+      plainTextContent
+      htmlContent
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+      isTestData
+    }
+    status
+  }
 }

@@ -2,6 +2,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
+import {SheetProps} from 'react-native-actions-sheet';
 import * as yup from 'yup';
 import {
   ActionSheetContainer,
@@ -12,8 +13,13 @@ import {
   ModalHeader,
   VStack,
 } from '~/components';
+import {queryClient} from '~/components/atoms/QueryClientProvider';
 import UploadBox from '~/components/molecules/UploadBox';
-import {useCommunity_CreateCommunityMutation} from '~/graphql/generated';
+import {
+  useCommunity_CreateCommunityMutation,
+  useCommunity_UpdateCommunityMutation,
+} from '~/graphql/generated';
+import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 import {hideSheet} from '~/utils/utils';
 
@@ -27,12 +33,15 @@ const createCommunitySchema = yup.object().shape({
     .required('Type is required'),
   description: yup.string().max(300),
 });
-export default function CreateCommunityAction() {
+export default function CreateCommunityAction(
+  props: SheetProps<'create-community-action'>,
+) {
+  const item: any = props?.payload;
   const defaultValues = {
-    title: '',
+    title: item?.title || '',
     communityType: {title: 'Private', value: 'PRIVATE'},
-    description: '',
-    photoUrl: '',
+    description: item?.description || '',
+    photoUrl: item?.photoUrl || '',
   };
 
   const methods = useForm({
@@ -42,11 +51,14 @@ export default function CreateCommunityAction() {
 
   const {handleSubmit, watch, formState} = methods;
 
-  const {mutate, isLoading} = useCommunity_CreateCommunityMutation();
+  const {mutate, isLoading} = item
+    ? useCommunity_UpdateCommunityMutation()
+    : useCommunity_CreateCommunityMutation();
+
   const onSubmit = (data: any) => {
-    console.log('Create Community:', data);
     const input = {
       ...data,
+      id: item?.id,
 
       communityType: data?.communityType?.value,
     };
@@ -54,7 +66,9 @@ export default function CreateCommunityAction() {
       {input},
       {
         onSettled(data, error, variables, context) {
-          hideSheet("create-community-action")
+          queryClient.refetchQueries(['community_getCommunities.infinite']);
+          hideSheet('create-community-action');
+          navigate('Community');
         },
       },
     );
@@ -64,7 +78,7 @@ export default function CreateCommunityAction() {
       contentContainerStyle={styles.contentContainerStyle}
       backgroundColor={Colors.Nero_3}>
       <ModalHeader
-        title={'Create Community'}
+        title={item ? 'Edit Community' : 'Create Community'}
         onClose={() => hideSheet('create-community-action')}
       />
       <AppFormProvider methods={methods}>
@@ -85,7 +99,7 @@ export default function CreateCommunityAction() {
               {title: 'Private', value: 'PRIVATE'},
               {title: 'Public', value: 'PUBLIC'},
             ]}
-            mandetory={true}
+            // mandetory={true}
             {...{formState}}
           />
           <UploadBox name="photoUrl" label="Add photo" />
@@ -99,7 +113,7 @@ export default function CreateCommunityAction() {
           />
           <AppButton
             loading={isLoading}
-            title="Create"
+            title={item ? 'Edit' : 'Create'}
             disabled={!formState.isValid}
             onPress={handleSubmit(onSubmit)}
           />

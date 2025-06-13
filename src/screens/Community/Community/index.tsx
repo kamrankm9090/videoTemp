@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {ChevronBack, Plus1Icon} from '~/assets/svgs';
+import {ChevronBack, NoCommunityIcon, Plus1Icon} from '~/assets/svgs';
 import {
   AppContainer,
   AppFlatList,
@@ -10,32 +10,99 @@ import {
   HStack,
   ScreensHeader,
   SearchBar,
+  VStack,
 } from '~/components';
-import { useCommunity_GetCommunitiesQuery } from '~/graphql/generated';
+import CommunityPlaceholder from '~/components/placeholders/CommunityPlaceholder';
+import {
+  SortEnumType,
+  useInfiniteCommunity_GetOtherCommunitiesQuery,
+  useInfiniteCommunity_GetYourCommunitiesQuery,
+} from '~/graphql/generated';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {showSheet} from '~/utils/utils';
 
 export default function CommunityScreen() {
+  const userData = userDataStore(state => state?.userData);
   const [tab, setTab] = useState('Your communities');
+  const [search, setSearch] = useState('');
 
-  const {data} = useCommunity_GetCommunitiesQuery()
-  console.log(data);
-  const commData = data?.community_getCommunities?.result?.items
-  
-  const renderItem = ({item}:any) => {
-    return <CommunityItem item={item}/>;
+  const {data, hasNextPage, fetchNextPage, refetch, isRefetching, isLoading} =
+    tab === 'Your communities'
+      ? useInfiniteCommunity_GetYourCommunitiesQuery({
+          where: {
+            title: {
+              startsWith: search,
+            },
+            users: {
+              some: {
+                userId: {
+                  eq: userData?.id,
+                },
+              },
+            },
+          },
+          order: {
+            createdDate: SortEnumType.Desc,
+          },
+        })
+      : useInfiniteCommunity_GetOtherCommunitiesQuery({
+          where: {
+            title: {
+              startsWith: search,
+            },
+            users: {
+              some: {
+                userId: {
+                  neq: userData?.id,
+                },
+              },
+            },
+          },
+          order: {
+            createdDate: SortEnumType.Desc,
+          },
+        });
+
+  const commData =
+    tab === 'Your communities'
+      ? data?.pages?.[0]?.community_getYourCommunities?.result?.items
+      : data?.pages?.[0]?.community_getOtherCommunities?.result?.items;
+
+  const renderItem = ({item}: any) => {
+    return <CommunityItem item={item} isMyComm={tab === 'Your communities'} />;
   };
 
   const ListFooterComponent = () => {
     return (
-      <AppTouchable m={8} alignSelf="center">
-        <HStack gap={8}>
-          <AppText fontSize={14} fontWeight={'500'} textAlign="center">
-            See more
-          </AppText>
-          <ChevronBack style={styles.chvron} />
-        </HStack>
-      </AppTouchable>
+      commData &&
+      commData.length > 2 && (
+        <AppTouchable m={8} alignSelf="center">
+          <HStack gap={8}>
+            <AppText fontSize={14} fontWeight={'500'} textAlign="center">
+              See more
+            </AppText>
+            <ChevronBack style={styles.chvron} />
+          </HStack>
+        </AppTouchable>
+      )
+    );
+  };
+
+  const ListEmptyComponent = () => {
+    return isLoading ? (
+      <CommunityPlaceholder />
+    ) : (
+      <VStack flexGrow={1} justifyContent="center" alignItems="center">
+        <NoCommunityIcon />
+        <AppText
+          fontSize={18}
+          fontWeight={'500'}
+          color={Colors.GARY_4}
+          paddingTop={16}>
+          You have no communities yet!
+        </AppText>
+      </VStack>
     );
   };
   return (
@@ -66,11 +133,19 @@ export default function CommunityScreen() {
           );
         })}
       </HStack>
-      <SearchBar onSearch={t => {}} />
+      <SearchBar onSearch={setSearch} />
       <AppFlatList
         data={commData || []}
         renderItem={renderItem}
+        refreshing={isRefetching}
+        onRefresh={refetch}
         ListFooterComponent={ListFooterComponent}
+        ListEmptyComponent={ListEmptyComponent}
+        onEndReached={() => {
+          if (hasNextPage) {
+            fetchNextPage();
+          }
+        }}
       />
     </AppContainer>
   );

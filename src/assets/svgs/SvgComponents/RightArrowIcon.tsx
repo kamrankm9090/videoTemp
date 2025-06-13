@@ -11,6 +11,7 @@ export default function RightArrowIcon(props: SvgProps) {
       width={width}
       viewBox="0 0 17 16"
       fill="none"
+      xmlns="http://www.w3.org/2000/svg"
       {...props}>
       <Path
         d="M6.47 11.94l3.98-3.98-3.98-3.98"

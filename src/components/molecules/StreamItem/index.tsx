@@ -13,7 +13,7 @@ import {
 } from '~/components';
 import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
-import {liveStore} from '~/stores';
+import {contentStore, liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import {getFullImageUrl, getRandomColorFromName} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
@@ -27,13 +27,16 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
   const [isLoadingVideo, setIsLoadingVideo] = useState(true);
 
   const {mutate: mutateCreateAgoraToken} = useAgora_CreateTokenMutation();
-  const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
+  const {setLiveId, setToken, setTokenCreateDate, setLiveData, liveData} =
     useSnapshot(liveStore);
 
-  const bgColor = getRandomColorFromName(item?.live?.user?.fullName || item?.live?.user?.username || '');
-    
+  const bgColor = getRandomColorFromName(
+    item?.live?.user?.fullName || item?.live?.user?.username || '',
+  );
+
   function onPressHandler() {
     if (item?.recordEnded) {
+      contentStore.contentData = item;
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
     } else {
       const liveId = item?.live?.id?.toString();
@@ -42,7 +45,7 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
         {
           onSuccess: res => {
             if (res?.agora_createToken?.status?.code === 1) {
-              setLiveData(item);
+              setLiveData({...liveData, live: {...item}});
               setLiveId(liveId);
               setToken(res?.agora_createToken?.result || '');
               setTokenCreateDate(Date.now());
@@ -105,7 +108,11 @@ const StreamItem: React.FC<StreamItemProps> = ({item}) => {
           <AppText fontWeight="500" fontSize={fontSize.medium}>
             {item?.live?.title}
           </AppText>
-          <AppText numberOfLines={1} maxWidth={200} fontWeight="400" fontSize={fontSize.small}>
+          <AppText
+            numberOfLines={1}
+            maxWidth={200}
+            fontWeight="400"
+            fontSize={fontSize.small}>
             {item?.live?.description}
           </AppText>
           <HStack space={8}>

@@ -32,6 +32,7 @@ type Props = TextInputProps & {
   editable?: boolean;
   disableColor?: string;
   mandatory?: boolean;
+  start?: JSX.Element;
 };
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
@@ -58,6 +59,7 @@ const AnimatedInput = React.forwardRef<TextInput, Props>(
       backgroundColor = Colors.TRANSPARENT,
       disableColor = Colors.Nero_2,
       mandatory,
+      start,
       ...rest
     },
     ref,
@@ -98,7 +100,7 @@ const AnimatedInput = React.forwardRef<TextInput, Props>(
         top: interpolate(labelAnim.value, [0, 1], [14, -8]),
         fontSize: interpolate(labelAnim.value, [0, 1], [fs.xNormal, 12]),
         color: !editable
-          ? Colors.Dim_Gray
+          ? Colors.GARY_4
           : isFocused
           ? labelColor
           : Colors.GARY_4,
@@ -126,27 +128,31 @@ const AnimatedInput = React.forwardRef<TextInput, Props>(
             </AppText>
           )}
         </AnimatedText>
-        <AppInput
-          {...rest}
-          ref={ref}
-          editable={editable}
-          value={value}
-          style={[
-            styles.input,
-            {
-              fontSize,
-              fontFamily: app_font[fontFamily],
-            },
-            style,
-          ]}
-          multiline={textArea}
-          textAlignVertical={textArea ? 'top' : 'center'}
-          onFocus={handleFocus}
-          selectionColor={selectionColor}
-          onBlur={handleBlur}
-          keyboardType={keyboardType}
-          secureTextEntry={isPasswordType ? secureText : false}
-        />
+        <View style={styles.flexDirection}>
+          {(isFocused || value) && start}
+          <AppInput
+            {...rest}
+            ref={ref}
+            editable={editable}
+            value={value}
+            style={[
+              styles.input,
+              {
+                fontSize,
+                fontFamily: app_font[fontFamily],
+              },
+              style,
+            ]}
+            multiline={textArea}
+            textAlignVertical={textArea ? 'top' : 'center'}
+            onFocus={handleFocus}
+            selectionColor={selectionColor}
+            onBlur={handleBlur}
+            keyboardType={keyboardType}
+            secureTextEntry={isPasswordType ? secureText : false}
+          />
+        </View>
+
         {isPasswordType && (
           <AppTouchable onPress={handleSecurePassword}>
             {secureText ? (
@@ -178,6 +184,12 @@ const styles = StyleSheet.create({
     flex: 1,
     color: Colors.WHITE,
     textAlignVertical: 'top',
+    height: '100%',
+  },
+  flexDirection: {
+    flexDirection: 'row',
+    gap: 2,
+    alignItems: 'center',
     height: '100%',
   },
 });

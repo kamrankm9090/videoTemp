@@ -1,54 +1,52 @@
 import React from 'react';
+import {SheetProps} from 'react-native-actions-sheet';
 import {ChevronRight, Close2} from '~/assets/svgs';
 import {
   ActionSheetContainer,
   AppText,
-  AppTouchable,
+  Box,
   HStack,
+  MoreOptionItemRow,
   VStack,
 } from '~/components';
-import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
+import {useAnyMutating} from '~/utils/helper';
+import {scale} from '~/utils/style';
 import {hideSheet} from '~/utils/utils';
 
-export default function MoreOptionAction() {
-  const data: MoreOptionItemType[] = [
-    {
-      id: 0,
-      title: 'Edit',
-      onPress: () => {
-        hideSheet('more-option-action');
-      },
-    },
-    {
-      id: 1,
-      title: 'Invite link',
-      onPress: () => {
-        navigate('InviteLink');
-        hideSheet('more-option-action');
-      },
-    },
-    {
-      id: 2,
-      title: 'Delete community',
-      color: Colors.ERROR,
-      onPress: () => {
-        hideSheet('more-option-action');
-      },
-    },
-  ];
+const keyLoadingArray = ['community_deleteCommunity'];
+
+export default function MoreOptionAction(
+  props: SheetProps<'more-option-action'>,
+) {
+  const {
+    title = 'More Option',
+    data = [],
+    onClose = () => {},
+    showTitle = true,
+  } = props?.payload ?? {};
 
   return (
     <ActionSheetContainer>
-      <HStack justifyContent='space-between' mb={12}>
-        <AppText fontSize={16} fontFamily="bold" >
-          More Option
-        </AppText>
-        <Close2 onPress={() => hideSheet("more-option-action")}/>
+      <HStack pb={scale(10)} justifyContent="space-between" mb={12}>
+        {showTitle ? (
+          <AppText fontSize={16} fontFamily="bold">
+            {title}
+          </AppText>
+        ) : (
+          <Box flex={1} />
+        )}
+        <Close2
+          stroke={Colors.Grey}
+          onPress={() => {
+            hideSheet('more-option-action');
+            onClose?.();
+          }}
+        />
       </HStack>
 
       <VStack space={12}>
-        {data.map(item => (
+        {data?.map(item => (
           <Item key={item.id} item={item} />
         ))}
       </VStack>
@@ -56,30 +54,28 @@ export default function MoreOptionAction() {
   );
 }
 
-type MoreOptionItemType = {
-  id: number;
-  title: string;
-  onPress: () => void;
-  color?: string;
-};
-
 function Item({item}: {item: MoreOptionItemType}) {
-  const {title, onPress, color = Colors.WHITE} = item;
+  const {
+    title,
+    onPress,
+    color = Colors.WHITE,
+    keyLoading = '',
+    startIcon,
+    endIcon = <ChevronRight />,
+    showEndIcon = true,
+    customComponent,
+  } = item;
+  const isLoading = useAnyMutating(keyLoadingArray);
+  const isExistLoading = keyLoadingArray.includes(keyLoading);
+
+  if (customComponent) {
+    return <>{customComponent}</>;
+  }
 
   return (
-    <AppTouchable onPress={onPress}>
-      <HStack
-        px={16}
-        py={20}
-        rounded={8}
-        bg={Colors.NightRider}
-        alignItems="center"
-        justifyContent="space-between">
-        <AppText fontFamily="medium" color={color}>
-          {title}
-        </AppText>
-        <ChevronRight />
-      </HStack>
-    </AppTouchable>
+    <MoreOptionItemRow
+      isLoading={isLoading && isExistLoading}
+      {...{title, startIcon, endIcon, showEndIcon, color, onPress}}
+    />
   );
 }

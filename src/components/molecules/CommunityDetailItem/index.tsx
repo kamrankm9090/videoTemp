@@ -1,19 +1,32 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {AppImage, AppText, HStack, VStack} from '~/components';
+import {userDataStore} from '~/stores';
 import {Colors} from '~/styles';
 import {formatTimeAgo} from '~/utils/helper';
 
-const CommunityDetailItem = ({item}: any) => {
-  const isMe = false;
+const CommunityDetailItem = ({item, isCurrent}: any) => {
+  const userDate = userDataStore(state => state?.userData);
+  const isMe = userDate?.id === item?.user?.id;
   return (
     <HStack
       justifyContent={isMe ? 'flex-end' : 'flex-start'}
-      style={{marginBottom: 12, gap: 8, alignItems: 'flex-end'}}>
+      style={{
+        marginBottom: 12,
+        gap: 8,
+        alignItems: 'flex-end',
+        backgroundColor: isCurrent ? Colors.NERO : null,
+      }}>
       {!isMe && (
         <AppImage
-          imageSource={{uri: ''}}
-          style={{width: 24, height: 24, alignSelf: 'flex-end'}}
+          imageSource={item?.user?.photoUrl}
+          resizeMode="cover"
+          style={{
+            width: 24,
+            height: 24,
+            alignSelf: 'flex-end',
+            borderRadius: 100,
+          }}
         />
       )}
       <VStack
@@ -21,21 +34,30 @@ const CommunityDetailItem = ({item}: any) => {
         p={12}
         borderRadius={12}
         maxW={'80%'}>
+        {item?.mediaUrl && (
+          <AppImage
+            imageSource={item?.mediaUrl}
+            style={{
+              width: 200,
+              height: 200,
+              borderLeftWidth: 4,
+              borderColor: Colors.PRIMARY,
+            }}
+          />
+        )}
         <AppText
           color={Colors.WHITE}
           lineHeight={24}
           fontSize={14}
           fontWeight="400">
-          {item?.text} I want to make a film in the field of cosmetics and
-          skincare products, and I am currently looking for these skills for
-          this project.
+          {item?.message}
         </AppText>
         <AppText
           fontSize={13}
           color={Colors.VeryLightGrey}
           alignSelf="flex-end"
           style={{marginTop: 4}}>
-          {formatTimeAgo(item?.timestamp || new Date())}
+          {formatTimeAgo(item?.createdDate || new Date())}
         </AppText>
       </VStack>
     </HStack>

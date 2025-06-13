@@ -97,7 +97,6 @@ const FollowerFollowingItem = ({
               {
                 onSuccess: response => {
                   if (response?.social_unfollow?.status?.code === 1) {
-                    console.log('alireza');
                     queryClient.invalidateQueries(
                       [queryKeys.getFollowerFollowings, true],
                       {
@@ -133,7 +132,6 @@ const FollowerFollowingItem = ({
             setFollowedByCurrentUser(false);
           }
           if (response?.social_followUser?.status?.code === 1) {
-            console.log('alireza222222');
             queryClient.invalidateQueries([
               'social_getUser',
               {

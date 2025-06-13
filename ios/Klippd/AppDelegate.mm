@@ -2,7 +2,6 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <AVFoundation/AVFoundation.h>
-#import <AVFoundation/AVFoundation.h>
 
 @implementation AppDelegate
 

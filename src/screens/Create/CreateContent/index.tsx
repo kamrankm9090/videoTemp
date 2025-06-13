@@ -31,8 +31,14 @@ import {Colors} from '~/styles';
 import {showErrorMessage} from '~/utils/utils';
 
 export default function CreateContentScreen() {
-  const {liveType, setLiveId, setToken, setTokenCreateDate, setLiveData} =
-    useSnapshot(liveStore);
+  const {
+    liveType,
+    setLiveId,
+    setToken,
+    setTokenCreateDate,
+    liveData,
+    setLiveData,
+  } = useSnapshot(liveStore);
 
   const isLiveContent = useMemo(() => {
     return liveType === 'LIVE_CONTENT';
@@ -49,8 +55,9 @@ export default function CreateContentScreen() {
     time: '',
     ...(isLiveContent && {
       price: '',
-      previewUrl:
-        'https://klpmedia.blob.core.windows.net/klpmedia/images/685e7926ff1e7cvideo_1748763306429.mp4',
+      previewUrl: '',
+      // previewUrl:
+      //   'https://klpmedia.blob.core.windows.net/klpmedia/images/d5a13020f67438video_1749654865299.mp4',
     }),
   };
 
@@ -75,8 +82,6 @@ export default function CreateContentScreen() {
       const seconds = date.getUTCSeconds();
 
       const publishingScheduleTime = `PT${hours}H${minutes}M${seconds}S`;
-
-      console.log('previURL-->', formData?.previewUrl);
 
       const input: LiveInput = {
         liveType: liveType || LiveType.LiveContent,
@@ -111,8 +116,11 @@ export default function CreateContentScreen() {
                   onSuccess: res => {
                     if (res?.agora_createToken?.status?.code === 1) {
                       setLiveData({
-                        ...input,
-                        category: formData?.category,
+                        ...liveData,
+                        live: {
+                          ...input,
+                          category: formData?.category,
+                        },
                       });
                       setLiveId(liveId);
                       setToken(res?.agora_createToken?.result);
@@ -138,6 +146,7 @@ export default function CreateContentScreen() {
       setLiveData,
       isLiveContent,
       liveType,
+      liveData,
     ],
   );
 

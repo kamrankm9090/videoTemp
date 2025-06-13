@@ -9,7 +9,9 @@ mutation community_createCommunity($input: CommunityInput) {
       communityType
       userCount
       requestCount
-      media
+      media{
+        mediaUrl
+      }
  
       id
       isDeleted
@@ -20,3 +22,142 @@ mutation community_createCommunity($input: CommunityInput) {
   }
 }
 
+
+mutation community_createRequest($communityId: Int!){
+  community_createRequest(communityId: $communityId) {
+    result {
+      userId
+      communityId
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+
+mutation community_acceptRequest($requestId:Int!){
+  community_acceptRequest(requestId: $requestId) {
+    code
+    value
+    description
+  }
+}
+
+mutation community_rejectRequest($requestId:Int!){
+  community_rejectRequest(requestId: $requestId) {
+    code
+    value
+    description
+  }
+}
+
+
+
+
+mutation community_joinCommunity($communityId: Int!){
+  community_joinCommunity(communityId: $communityId) {
+    result {
+      userId
+      communityId
+      mute
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+
+mutation community_leaveCommunity($communityId: Int!){
+  community_leaveCommunity(communityId: $communityId) {
+    result {
+      userId
+      communityId
+      mute
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+
+}
+
+
+mutation community_updateCommunity($input: CommunityInput) {
+  community_updateCommunity(input: $input) {
+    result {
+      creatorId
+      title
+      description
+      photoUrl
+      communityType
+      userCount
+      requestCount
+      media{
+        mediaUrl
+      }
+ 
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+
+
+
+mutation community_deleteCommunity($communityId: Int!){
+  community_deleteCommunity(communityId: $communityId) {
+    code
+    value
+    description
+  }
+}
+
+
+mutation community_createMessage($input: CommunityMessageInput){
+  community_createMessage(input: $input) {
+    result {
+      userId
+      communityId
+      message
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+    }
+    status
+  }
+}
+
+
+
+mutation community_deleteMessage($messageId: Int!){
+  community_deleteMessage(messageId: $messageId) {
+    code
+    value
+    description
+  }
+}
+
+mutation community_createMedia($communityId: Int!, $mediaUrl: String){
+  community_createMedia(communityId: $communityId, mediaUrl: $mediaUrl) {
+    result {
+      communityId
+      mediaUrl
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+      isTestData
+    }
+    status
+  }
+}

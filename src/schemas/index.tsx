@@ -1,6 +1,33 @@
 import * as yup from 'yup';
 import {LiveType} from '~/graphql/generated';
 
+const validTag = yup
+  .string()
+  .matches(/^[\p{L} ]+$/u, 'Only letters and spaces are allowed')
+  .min(1, 'Tag cannot be empty')
+  .max(50, 'Tag cannot exceed 50 characters.');
+
+const validJsonTagArray = yup
+  .string()
+  .test('is-valid-json-tag-array', 'Invalid tag list', value => {
+    if (!value) return true; // allow optional
+    try {
+      const parsed = JSON.parse(value);
+      if (!Array.isArray(parsed)) return false;
+      const uniqueTags = new Set();
+      return parsed.every(tag => {
+        if (typeof tag !== 'string') return false;
+        if (!/^[\p{L} ]+$/u.test(tag)) return false;
+        if (tag.trim().length === 0 || tag.length > 50) return false;
+        if (uniqueTags.has(tag)) return false;
+        uniqueTags.add(tag);
+        return true;
+      });
+    } catch {
+      return false;
+    }
+  });
+
 const loginSchema = yup.object().shape({
   email: yup.string().required('Required').trim(),
   password: yup.string().required('Required').trim(),
@@ -57,6 +84,36 @@ const forgotPasswordSchema = yup.object().shape({
 
 const reportReasonSchema = yup.object().shape({
   reason: yup.string().required('Required').trim(),
+});
+
+const tipSchema = yup.object().shape({
+  tip: yup
+    .string()
+    .trim()
+    .required('required')
+    .test('greater-than-zero', 'Tip must be greater than 0', value => {
+      const number = parseFloat(value ?? '');
+      return !isNaN(number) && number > 0;
+    }),
+});
+
+const paymentDetailsSchema = yup.object().shape({
+  tip: yup
+    .string()
+    .trim()
+    .required('required')
+    .test('greater-than-zero', 'Tip must be greater than 0', value => {
+      const number = parseFloat(value ?? '');
+      return !isNaN(number) && number > 0;
+    }),
+  requiredBalance: yup
+    .string()
+    .trim()
+    .required('required')
+    .test('greater-than-zero', 'Tip must be greater than 0', value => {
+      const number = parseFloat(value ?? '');
+      return !isNaN(number) && number > 0;
+    }),
 });
 
 const selectCategorySchema = yup.object().shape({
@@ -177,6 +234,66 @@ const createContentSchema = yup.object({
     }),
 });
 
+const supportSchema = yup.object({
+  subject: yup
+    .string()
+    .required('Subject is required.')
+    .min(3, 'Subject must be at least 3 characters.')
+    .max(100, 'Subject must not exceed 100 characters.'),
+  plainTextContent: yup
+    .string()
+    .required('Message is required.')
+    .min(10, 'Message must be at least 10 characters.')
+    .max(300, 'Message must not exceed 300 characters.'),
+});
+
+const resumeSchema = yup.object({
+  profession: yup
+    .string()
+    .required('Profession is required.')
+    .min(3, 'Profession must be at least 3 characters.')
+    .max(100, 'Profession must not exceed 100 characters.'),
+
+  professionalSummary: yup
+    .string()
+    .required('Professional summary is required.')
+    .min(10, 'Professional summary must be at least 10 characters.')
+    .max(300, 'Professional summary must not exceed 300 characters.'),
+
+  education: validJsonTagArray.optional(),
+  workExperience: validJsonTagArray.optional(),
+  skills: validJsonTagArray.optional(),
+  languages: validJsonTagArray.optional(),
+});
+
+const passwordChangeSchema = yup.object().shape({
+  currentPassword: yup
+    .string()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/,
+      'Passwords must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+    )
+    .max(36, 'Must be 36 characters or less')
+    .required('Required')
+    .trim(),
+
+  newPassword: yup
+    .string()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/,
+      'Passwords must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+    )
+    .max(36, 'Must be 36 characters or less')
+    .required('New password is required')
+    .trim(),
+
+  repeatNewPassword: yup
+    .string()
+    .oneOf([yup.ref('newPassword'), null], 'Passwords must match')
+    .required('Please confirm your new password')
+    .trim(),
+});
+
 export {
   loginSchema,
   registerSchema,
@@ -187,4 +304,9 @@ export {
   resetPasswordSchema,
   reportReasonSchema,
   createContentSchema,
+  supportSchema,
+  resumeSchema,
+  passwordChangeSchema,
+  tipSchema,
+  paymentDetailsSchema,
 };

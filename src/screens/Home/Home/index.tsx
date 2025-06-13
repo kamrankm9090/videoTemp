@@ -1,22 +1,19 @@
-import dayjs from 'dayjs';
-import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {StyleSheet, ViewToken} from 'react-native';
+import React, {createRef, useCallback, useMemo, useRef, useState} from 'react';
+import {FlatList, StyleSheet, ViewToken} from 'react-native';
 import {
   AppContainer,
   AppFlatList,
   HomeHeader,
   HomePostItem,
 } from '~/components';
-import {LiveType, SortEnumType} from '~/graphql/generated';
-import {useGetLives} from '~/hooks/live';
+import {SortEnumType} from '~/graphql/generated';
+import {useGetLivesForHome} from '~/hooks/live';
+
+export const homeFlatListRef = createRef<FlatList>();
 
 export default function HomeScreen() {
   const [visibleIndex, setVisibleIndex] = useState<number | null>(null);
   const viewConfigRef = useRef({viewAreaCoveragePercentThreshold: 70});
-
-  const today = useMemo(() => {
-    return dayjs(new Date().toUTCString());
-  }, []);
 
   const {
     data: getLives,
@@ -25,16 +22,7 @@ export default function HomeScreen() {
     fetchNextPage: fetchNextPageLives,
     refetch: refetchGetLives,
     isRefetching: isRefetchingGetLives,
-  } = useGetLives({
-    where: {
-      and: [
-        {recordStarted: {eq: true}},
-        {live: {liveType: {eq: LiveType.LiveContent}}},
-        {
-          or: [{live: {setSchedule: {eq: false}}}],
-        },
-      ],
-    },
+  } = useGetLivesForHome({
     order: {live: {createdDate: SortEnumType.Desc}},
   });
 
@@ -67,6 +55,7 @@ export default function HomeScreen() {
     <AppContainer isLoading={isLoadingGetLives}>
       <HomeHeader />
       <AppFlatList
+        ref={homeFlatListRef}
         data={lives}
         renderItem={renderItem}
         keyExtractor={(_, i) => String(i)}

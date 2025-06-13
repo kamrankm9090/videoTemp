@@ -6,14 +6,25 @@ import {
   AppText,
   AppTouchable,
   HStack,
+  queryClient,
   VStack,
 } from '~/components';
+import {queryKeys} from '~/constants/queryKeys';
 import {useLive_CreateNotInterestedMutation} from '~/graphql/generated';
+import {homeFlatListRef} from '~/screens/Home/Home';
 import {Colors} from '~/styles';
-import {hideSheet, showErrorMessage, switchActions} from '~/utils/utils';
+import {
+  hideSheet,
+  showErrorMessage,
+  showInfoMessage,
+  switchActions,
+} from '~/utils/utils';
 
-export default function PostOptionsAction(props: SheetProps) {
+export default function PostOptionsAction(
+  props: SheetProps<'post-options-action'>,
+) {
   const {payload} = props;
+  const liveId = payload?.item?.live?.id;
 
   const {mutate: mutateNotInterested, isLoading: isLoadingNotInterested} =
     useLive_CreateNotInterestedMutation();
@@ -24,11 +35,21 @@ export default function PostOptionsAction(props: SheetProps) {
       title: 'Not interested',
       onPress: async () => {
         mutateNotInterested(
-          {liveId: payload?.data?.live?.id},
+          {liveId},
           {
             onSuccess: response => {
               if (response?.live_createNotInterested?.code === 1) {
+                showInfoMessage('Content has been Hidden');
                 hideSheet('post-options-action');
+                setTimeout(() => {
+                  homeFlatListRef?.current?.scrollToIndex?.({
+                    index: 0,
+                    animated: true,
+                  });
+                }, 100);
+                queryClient.invalidateQueries([queryKeys.getLivesForHome], {
+                  exact: false,
+                });
               } else {
                 showErrorMessage(
                   response?.live_createNotInterested?.description,
@@ -43,13 +64,17 @@ export default function PostOptionsAction(props: SheetProps) {
     {
       id: 1,
       title: 'Share',
-      onPress: () => switchActions('sharing-action'),
+      onPress: () =>
+        switchActions('sharing-action', 'post-options-action', {payload}),
       icon: <Share />,
     },
     {
       id: 2,
       title: 'Report',
-      onPress: () => switchActions('report-action'),
+      onPress: () =>
+        switchActions('report-action', 'post-options-action', {
+          payload: {liveId},
+        }),
       icon: <InformationCircle />,
       color: Colors.ERROR,
     },

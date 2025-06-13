@@ -1,4 +1,3 @@
-import {ViewStyle} from 'react-native';
 import {registerSheet, SheetDefinition} from 'react-native-actions-sheet';
 import {
   ConfirmationAction,
@@ -7,11 +6,14 @@ import {
   DropDownActionSheet,
   MoreOptionAction,
   OfferSelectOptionAction,
+  PaymentDetailsAction,
   PostOptionsAction,
   ReportAction,
   ReportReasonAction,
   SharingAction,
+  TipsAction,
 } from '~/components';
+import {CommunityType} from '~/graphql/generated';
 
 registerSheet('post-options-action', PostOptionsAction);
 registerSheet('sharing-action', SharingAction);
@@ -23,33 +25,40 @@ registerSheet('offer-select-option-action', OfferSelectOptionAction);
 registerSheet('more-option-action', MoreOptionAction);
 registerSheet('create-community-action', CreateCommunityAction);
 registerSheet('drop-down-action-sheet', DropDownActionSheet);
+registerSheet('tips-action', TipsAction);
+registerSheet('payment-details-action', PaymentDetailsAction);
 
 declare module 'react-native-actions-sheet' {
   interface Sheets {
     'confirmation-action': SheetDefinition<{
       payload?: ConfirmationActionPayloadType;
     }>;
+    'more-option-action': SheetDefinition<{
+      payload?: MoreOptionActionPayloadType;
+    }>;
+    'create-community-action': SheetDefinition<{
+      payload?: CommunityType;
+    }>;
     'drop-down-action-sheet': SheetDefinition<{
-      payload?: {
-        name: string;
-        control: any;
-        data: any;
-        label?: string;
-        placeholder?: string;
-        loading?: boolean;
-        titleKey?: string;
-        nestedTitleKey?: string;
-        valueKey?: string;
-        onSubmitSearch?: (val: string) => void;
-        onChange?: (val: any) => void;
-        disabled?: boolean;
-        isObject?: boolean;
-        optional?: boolean;
-        searchable?: boolean;
-        onLoadMore?: () => void;
-        mb?: ViewStyle['marginBottom'];
-        backgroundColor?: ViewStyle['backgroundColor'];
-      };
+      payload?: DropDownActionPayLoadType;
+    }>;
+    'report-reason-action': SheetDefinition<{
+      payload?: ReportActionPayLoadType;
+    }>;
+    'post-options-action': SheetDefinition<{
+      payload?: postOptionActionPayLoadType;
+    }>;
+    'sharing-action': SheetDefinition<{
+      payload?: postOptionActionPayLoadType;
+    }>;
+    'report-action': SheetDefinition<{
+      payload?: ReportActionPayLoadType;
+    }>;
+    'tips-action': SheetDefinition<{
+      payload?: TipsActionPayLoadType;
+    }>;
+    'payment-details-action': SheetDefinition<{
+      payload?: PaymentDetailsActionPayLoadType;
     }>;
   }
 }

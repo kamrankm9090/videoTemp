@@ -6,7 +6,7 @@ import {HotSpot} from '~/assets/svgs';
 import {AppText, AppTouchable, HStack, VStack} from '~/components';
 import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
-import {liveStore} from '~/stores';
+import {contentStore, liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import {getRandomColorFromName} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
@@ -17,14 +17,17 @@ interface LiveStreamItemProps {
 
 const LiveStreamItem: React.FC<LiveStreamItemProps> = ({item}) => {
   const {mutate: mutateCreateAgoraToken} = useAgora_CreateTokenMutation();
-  const {setLiveId, setToken, setTokenCreateDate, setLiveData} =
+  const {setLiveId, setToken, setTokenCreateDate, setLiveData, liveData} =
     useSnapshot(liveStore);
 
   const getInitial = (name: string) => name?.charAt(0)?.toUpperCase() || '';
-  const bgColor = getRandomColorFromName(item?.live?.user?.fullName || item?.live?.user?.username || '');
+  const bgColor = getRandomColorFromName(
+    item?.live?.user?.fullName || item?.live?.user?.username || '',
+  );
 
   const onPressHandler = () => {
     if (item?.recordEnded) {
+      contentStore.contentData = item;
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
     } else {
       const liveId = item?.live?.id?.toString();
@@ -33,7 +36,7 @@ const LiveStreamItem: React.FC<LiveStreamItemProps> = ({item}) => {
         {
           onSuccess: res => {
             if (res?.agora_createToken?.status?.code === 1) {
-              setLiveData(item);
+              setLiveData({...liveData, live: {...item}});
               setLiveId(liveId);
               setToken(res?.agora_createToken?.result || '');
               setTokenCreateDate(Date.now());
@@ -68,7 +71,9 @@ const LiveStreamItem: React.FC<LiveStreamItemProps> = ({item}) => {
               fontSize={fontSize.large}
               color={Colors.WHITE}
               fontWeight="600">
-              {getInitial(item?.live?.user?.fullName || item?.live?.user?.username )}
+              {getInitial(
+                item?.live?.user?.fullName || item?.live?.user?.username,
+              )}
             </AppText>
           </VStack>
         ) : (

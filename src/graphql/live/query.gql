@@ -8,6 +8,7 @@ query live_getLives($skip: Int, $take: Int, $where: LiveDtoFilterInput, $order: 
             items{
                 live{
                     id
+                    createdDate
                     likeCount
                     userId
                     introUrl
@@ -283,6 +284,49 @@ query live_getLivesForHomePage($skip: Int, $take: Int, $where: LiveDtoFilterInpu
                 isLiked
                 recordStarted
                 recordEnded
+                live {
+          id
+          likeCount
+          userId
+          introUrl
+          liveType
+          photoUrl
+          title
+          description
+          proposalTitle
+          proposalCategory
+          proposalSummary
+          isDraft
+          category
+          price
+          recordUrl
+          isFree
+          previewUrl
+          value
+          funding
+          setSchedule
+          publishingScheduleDate
+          publishingScheduleTime
+          viewCount
+          purchaseCount
+          agoraUserId
+          user {
+            username
+            phoneNumber
+            photoUrl
+            fullName
+            about
+            gender
+            lastSeen
+            isVerified
+            isDeleted
+            createdDate
+            id
+            email
+            emailConfirmed
+            phoneNumberConfirmed
+          }
+        }
             }
             totalCount
         }

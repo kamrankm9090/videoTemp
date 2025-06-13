@@ -7,7 +7,7 @@ import {
   ViewProps,
   ViewStyle,
 } from 'react-native';
-import {User as UserType} from '~/graphql/generated';
+import {Live, User as UserType} from '~/graphql/generated';
 
 declare global {
   type ReactChildren = ReactNode;
@@ -24,6 +24,13 @@ declare global {
     | 'FCM_TOKEN';
 
   type User = UserType;
+
+  type followingItem = {
+    isFollower: boolean;
+    followedByCurrentUser: boolean;
+    followerOfCurrentUser: boolean;
+    user?: User | null;
+  } | null;
 
   type AuthDataType = {
     token?: string | null;
@@ -276,13 +283,25 @@ declare global {
     token: string;
     liveType: LiveTypeG;
     tokenCreateDate?: number;
-    liveData?: LiveG;
+    liveData?: LiveDto;
     setLiveId: (liveId: string) => void;
     setToken: (token: string) => void;
     setLiveType: (liveType: LiveTypeG) => void;
     setTokenCreateDate: (tokenCreateDate: number) => void;
-    setLiveData: (liveData: LiveG) => void;
+    setLiveData: (liveData: LiveDto) => void;
     resetLiveStore: () => void;
+  };
+
+  type contentStoreType = {
+    contentData?: LiveDto;
+    setContentData: (content: LiveDto) => void;
+    resetLiveStore: () => void;
+  };
+
+  type homePostStoreType = {
+    isMuted?: boolean;
+    setIsMuted: (isMute: boolean) => void;
+    resetHomePostStore: () => void;
   };
 
   type OfferOptionItemType = {
@@ -320,7 +339,9 @@ declare global {
     | 'more-option-action'
     | 'offer-select-option-action'
     | 'create-community-action'
-    | 'drop-down-action-sheet';
+    | 'drop-down-action-sheet'
+    | 'tips-action'
+    | 'payment-details-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 
@@ -408,11 +429,15 @@ declare global {
   } | null;
 
   type LiveDto = {
-    isViewed: boolean;
-    isBookmark: boolean;
-    recordStarted: boolean;
-    recordEnded: boolean;
-    live?: LiveG;
+    __typename?: 'LiveDto';
+    isBookmark: Scalars['Boolean']['output'];
+    isFollowed: Scalars['Boolean']['output'];
+    isLiked: Scalars['Boolean']['output'];
+    isPurchased: Scalars['Boolean']['output'];
+    isViewed: Scalars['Boolean']['output'];
+    live?: Maybe<Live>;
+    recordEnded: Scalars['Boolean']['output'];
+    recordStarted: Scalars['Boolean']['output'];
   };
 
   type ConfirmationActionPayloadType = {
@@ -432,5 +457,62 @@ declare global {
     negativeOutline?: boolean;
     negativeBackgroundColor?: ViewStyle['backgroundColor'];
     positiveBackgroundColor?: ViewStyle['backgroundColor'];
+  };
+
+  type MoreOptionItemType = {
+    id: number;
+    title?: string;
+    onPress?: () => void;
+    color?: string;
+    keyLoading?: string;
+    startIcon?: JSX.Element;
+    endIcon?: JSX.Element;
+    showEndIcon?: boolean;
+    customComponent?: JSX.Element;
+  };
+
+  type MoreOptionActionPayloadType = {
+    title?: string;
+    data: MoreOptionItemType[];
+    onClose?: () => void;
+    showTitle?: boolean;
+  };
+
+  type ReportActionPayLoadType = {
+    liveId: number;
+    showToastInActionSheet?: boolean;
+  };
+
+  type postOptionActionPayLoadType = {
+    item: LiveDto;
+  };
+
+  type TipsActionPayLoadType = {
+    userId: number;
+  };
+
+  type PaymentDetailsActionPayLoadType = {
+    tipId: number;
+  };
+
+  type DropDownActionPayLoadType = {
+    name: string;
+    control: any;
+    data: any;
+    label?: string;
+    placeholder?: string;
+    loading?: boolean;
+    titleKey?: string;
+    nestedTitleKey?: string;
+    valueKey?: string;
+    onSubmitSearch?: (val: string) => void;
+    onChange?: (val: any) => void;
+    disabled?: boolean;
+    isObject?: boolean;
+    optional?: boolean;
+    searchable?: boolean;
+    onLoadMore?: () => void;
+    mb?: ViewStyle['marginBottom'];
+    backgroundColor?: ViewStyle['backgroundColor'];
   };
 }
