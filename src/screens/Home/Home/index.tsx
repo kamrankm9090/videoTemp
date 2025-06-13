@@ -39,6 +39,8 @@ export default function HomeScreen() {
   });
 
   const lives = useMemo(() => {
+    console.log("getLives?.pages", getLives?.pages);
+    
     return getLives?.pages || [];
   }, [getLives]);
 
