@@ -1,37 +1,32 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
+import {agoraStore, liveStore} from '~/stores';
+import {useSnapshot} from 'valtio';
 import createAgoraRtcEngine, {
   ChannelProfileType,
   ClientRoleType,
   ErrorCodeType,
   IRtcEngineEx,
   RtcConnection,
-  UserOfflineReasonType,
   VideoStreamType,
 } from 'react-native-agora';
-import {agoraStore, liveStore} from '~/stores';
-import {useSnapshot} from 'valtio';
 import * as log from '~/utils/log';
+import {askMediaAccess} from '~/utils/permissions';
 import {
   useAgora_StopRecordMutation,
   useLive_UpdateLiveMutation,
 } from '~/graphql/generated';
 
-const useInitAudienceEngine = ({
+const useInitBroadcastEngine = ({
   listenUserJoinOrLeave = true,
-  onOfflineUser,
 }: {
   listenUserJoinOrLeave?: boolean;
-  onOfflineUser?: (
-    connection: RtcConnection,
-    remoteUid: number,
-    reason: UserOfflineReasonType,
-  ) => void;
 }) => {
   const {appId} = agoraStore(state => state);
   const {liveId, token} = useSnapshot(liveStore);
   const [joinChannelSuccess, setJoinChannelSuccess] = useState(false);
   const [uid, setUid] = useState(0);
   const [remoteUsers, setRemoteUsers] = useState<number[]>([]);
+  const [startPreview, setStartPreview] = useState(false);
   const channelId = String(liveId);
   const engine = useRef<IRtcEngineEx>(createAgoraRtcEngine() as IRtcEngineEx);
 
@@ -45,28 +40,35 @@ const useInitAudienceEngine = ({
         logConfig: {filePath: ''},
         channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
       });
+      await askMediaAccess(['android.permission.CAMERA']);
       engine.current.enableVideo();
       engine.current.setChannelProfile(
         ChannelProfileType.ChannelProfileLiveBroadcasting,
       ); // LiveBroadcasting
-      engine.current.setClientRole(ClientRoleType.ClientRoleAudience);
+      engine.current.setClientRole(ClientRoleType.ClientRoleBroadcaster);
       engine.current.setVideoEncoderConfiguration({
         dimensions: {width: 1920, height: 1080},
         frameRate: 30,
         bitrate: 2080,
         orientationMode: 0,
       });
+      engine.current.startPreview();
       engine.current.joinChannel(token, channelId, 0, {
         defaultVideoStreamType: VideoStreamType.VideoStreamHigh,
         channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
-        clientRoleType: ClientRoleType.ClientRoleAudience,
+        clientRoleType: ClientRoleType.ClientRoleBroadcaster,
       });
+      setStartPreview(true);
     } else {
       !appId && log.error('appId is invalid');
       !channelId && log.error('channelId is invalid');
       !token && log.error('token is invalid');
     }
   }, [engine, appId, channelId, token]);
+
+  const switchCamera = () => {
+    engine.current.switchCamera();
+  };
 
   function leaveChannel() {
     engine.current.leaveChannel();
@@ -136,12 +138,7 @@ const useInitAudienceEngine = ({
   );
 
   const onUserOffline = useCallback(
-    (
-      connection: RtcConnection,
-      remoteUid: number,
-      reason: UserOfflineReasonType,
-    ) => {
-      onOfflineUser?.(connection, remoteUid, reason);
+    (connection: RtcConnection, remoteUid: number) => {
       if (
         connection.channelId === channelId &&
         (connection.localUid === uid || uid === 0)
@@ -152,7 +149,7 @@ const useInitAudienceEngine = ({
         });
       }
     },
-    [channelId, uid, onOfflineUser],
+    [channelId, uid],
   );
 
   useEffect(() => {
@@ -165,6 +162,7 @@ const useInitAudienceEngine = ({
       engineCopy.release();
     };
   }, [engine, initEngine]);
+
   useEffect(() => {
     engine.current.addListener('onError', onError);
     engine.current.addListener('onJoinChannelSuccess', onJoinChannelSuccess);
@@ -190,10 +188,15 @@ const useInitAudienceEngine = ({
   ]);
 
   return {
-    joinChannelSuccess,
-    leaveChannel,
+    uid,
     remoteUsers,
+    startPreview,
+    joinChannelSuccess,
+    setJoinChannelSuccess,
+    onJoinChannelSuccess,
+    switchCamera,
+    leaveChannel,
   };
 };
 
-export default useInitAudienceEngine;
+export default useInitBroadcastEngine;
