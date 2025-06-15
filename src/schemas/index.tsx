@@ -86,6 +86,36 @@ const reportReasonSchema = yup.object().shape({
   reason: yup.string().required('Required').trim(),
 });
 
+const tipSchema = yup.object().shape({
+  tip: yup
+    .string()
+    .trim()
+    .required('required')
+    .test('greater-than-zero', 'Tip must be greater than 0', value => {
+      const number = parseFloat(value ?? '');
+      return !isNaN(number) && number > 0;
+    }),
+});
+
+const paymentDetailsSchema = yup.object().shape({
+  tip: yup
+    .string()
+    .trim()
+    .required('required')
+    .test('greater-than-zero', 'Tip must be greater than 0', value => {
+      const number = parseFloat(value ?? '');
+      return !isNaN(number) && number > 0;
+    }),
+  requiredBalance: yup
+    .string()
+    .trim()
+    .required('required')
+    .test('greater-than-zero', 'Tip must be greater than 0', value => {
+      const number = parseFloat(value ?? '');
+      return !isNaN(number) && number > 0;
+    }),
+});
+
 const selectCategorySchema = yup.object().shape({
   categories: yup.array().required('Required').nullable(),
 });
@@ -277,4 +307,6 @@ export {
   supportSchema,
   resumeSchema,
   passwordChangeSchema,
+  tipSchema,
+  paymentDetailsSchema,
 };

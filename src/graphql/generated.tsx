@@ -6860,6 +6860,29 @@ export type Community_DeleteMessageMutation = {
   } | null;
 };
 
+export type Community_CreateMediaMutationVariables = Exact<{
+  communityId: Scalars['Int']['input'];
+  mediaUrl?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+export type Community_CreateMediaMutation = {
+  __typename?: 'Mutation';
+  community_createMedia?: {
+    __typename?: 'ResponseBaseOfCommunityMedia';
+    status?: any | null;
+    result?: {
+      __typename?: 'CommunityMedia';
+      communityId: number;
+      mediaUrl?: string | null;
+      id: number;
+      isDeleted: boolean;
+      createdDate: any;
+      lastModifiedDate?: any | null;
+      isTestData: boolean;
+    } | null;
+  } | null;
+};
+
 export type Community_GetCommunitiesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -7355,6 +7378,7 @@ export type Live_GetLivesQuery = {
         live?: {
           __typename?: 'Live';
           id: number;
+          createdDate: any;
           likeCount: number;
           userId: number;
           introUrl?: string | null;
@@ -7859,6 +7883,25 @@ export type Social_GetUserFollowerFolloweesQuery = {
           email?: string | null;
         } | null;
       } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type Tip_CreateTipMutationVariables = Exact<{
+  input?: InputMaybe<TipInput>;
+}>;
+
+export type Tip_CreateTipMutation = {
+  __typename?: 'Mutation';
+  tip_createTip?: {
+    __typename?: 'ResponseBaseOfTip';
+    status?: any | null;
+    result?: {
+      __typename?: 'Tip';
+      userId: number;
+      forUserId: number;
+      value: any;
+      id: number;
     } | null;
   } | null;
 };
@@ -9230,6 +9273,50 @@ export const useCommunity_DeleteMessageMutation = <
   );
 };
 
+export const Community_CreateMediaDocument = `
+    mutation community_createMedia($communityId: Int!, $mediaUrl: String) {
+  community_createMedia(communityId: $communityId, mediaUrl: $mediaUrl) {
+    result {
+      communityId
+      mediaUrl
+      id
+      isDeleted
+      createdDate
+      lastModifiedDate
+      isTestData
+    }
+    status
+  }
+}
+    `;
+
+export const useCommunity_CreateMediaMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    Community_CreateMediaMutation,
+    TError,
+    Community_CreateMediaMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Community_CreateMediaMutation,
+    TError,
+    Community_CreateMediaMutationVariables,
+    TContext
+  >(
+    ['community_createMedia'],
+    (variables?: Community_CreateMediaMutationVariables) =>
+      fetcher<
+        Community_CreateMediaMutation,
+        Community_CreateMediaMutationVariables
+      >(Community_CreateMediaDocument, variables)(),
+    options,
+  );
+};
+
 export const Community_GetCommunitiesDocument = `
     query community_getCommunities($skip: Int, $take: Int, $where: CommunityFilterInput, $order: [CommunitySortInput!]) {
   community_getCommunities {
@@ -10105,6 +10192,7 @@ export const Live_GetLivesDocument = `
       items {
         live {
           id
+          createdDate
           likeCount
           userId
           introUrl
@@ -10949,6 +11037,44 @@ export const useInfiniteSocial_GetUserFollowerFolloweesQuery = <
         ...variables,
         ...(metaData.pageParam ?? {}),
       })(),
+    options,
+  );
+};
+
+export const Tip_CreateTipDocument = `
+    mutation tip_createTip($input: TipInput) {
+  tip_createTip(input: $input) {
+    result {
+      userId
+      forUserId
+      value
+      id
+    }
+    status
+  }
+}
+    `;
+
+export const useTip_CreateTipMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    Tip_CreateTipMutation,
+    TError,
+    Tip_CreateTipMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    Tip_CreateTipMutation,
+    TError,
+    Tip_CreateTipMutationVariables,
+    TContext
+  >(
+    ['tip_createTip'],
+    (variables?: Tip_CreateTipMutationVariables) =>
+      fetcher<Tip_CreateTipMutation, Tip_CreateTipMutationVariables>(
+        Tip_CreateTipDocument,
+        variables,
+      )(),
     options,
   );
 };

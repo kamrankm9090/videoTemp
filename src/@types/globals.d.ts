@@ -339,7 +339,9 @@ declare global {
     | 'more-option-action'
     | 'offer-select-option-action'
     | 'create-community-action'
-    | 'drop-down-action-sheet';
+    | 'drop-down-action-sheet'
+    | 'tips-action'
+    | 'payment-details-action';
 
   type LiveType = 'COLLABORATION' | 'INVESTMENT' | 'LIVE_CONTENT' | 'PROMOTION';
 
@@ -459,16 +461,21 @@ declare global {
 
   type MoreOptionItemType = {
     id: number;
-    title: string;
-    onPress: () => void;
+    title?: string;
+    onPress?: () => void;
     color?: string;
     keyLoading?: string;
+    startIcon?: JSX.Element;
+    endIcon?: JSX.Element;
+    showEndIcon?: boolean;
+    customComponent?: JSX.Element;
   };
 
   type MoreOptionActionPayloadType = {
-    title: string;
-    data: MoreOptionItemType;
+    title?: string;
+    data: MoreOptionItemType[];
     onClose?: () => void;
+    showTitle?: boolean;
   };
 
   type ReportActionPayLoadType = {
@@ -478,6 +485,14 @@ declare global {
 
   type postOptionActionPayLoadType = {
     item: LiveDto;
+  };
+
+  type TipsActionPayLoadType = {
+    userId: number;
+  };
+
+  type PaymentDetailsActionPayLoadType = {
+    tipId: number;
   };
 
   type DropDownActionPayLoadType = {

@@ -12,7 +12,7 @@ import {
 } from '~/components';
 import {useAgora_CreateTokenMutation} from '~/graphql/generated';
 import {navigate} from '~/navigation/methods';
-import {liveStore} from '~/stores';
+import {contentStore, liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import {getFullImageUrl, getRandomColorFromName} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
@@ -34,6 +34,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({item}) => {
 
   function onPressHandler() {
     if (item?.recordEnded) {
+      contentStore.contentData = item;
       navigate('HomeStack', {screen: 'ContentViewer', params: {item}});
     } else {
       const liveId = item?.live?.id?.toString();
