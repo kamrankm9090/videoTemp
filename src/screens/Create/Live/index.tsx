@@ -1,13 +1,8 @@
-import React, {ReactElement, useCallback, useEffect, useState} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
-  ClientRoleType,
-  LocalVideoStreamReason,
-  LocalVideoStreamState,
-  RtcConnection,
   RtcSurfaceView,
   VideoCanvas,
-  VideoSourceType,
   VideoViewSetupMode,
 } from 'react-native-agora';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -28,17 +23,12 @@ import {
   RenderNothing,
   VStack,
 } from '~/components';
-import {
-  LiveType,
-  useAgora_StopRecordMutation,
-  useLive_UpdateLiveMutation,
-} from '~/graphql/generated';
-import useInitRtcEngine from '~/hooks/agora/useInitRtcEngine';
+import {LiveType} from '~/graphql/generated';
+import useInitBroadcastEngine from '~/hooks/agora/useInitBroadcastEngine';
 import {resetRoot} from '~/navigation/methods';
 import {liveStore} from '~/stores';
 import {Colors} from '~/styles';
 import {parseISODuration} from '~/utils/helper';
-import * as log from '~/utils/log';
 import {fontSize, height} from '~/utils/style';
 import {
   appFormatDate,
@@ -47,66 +37,37 @@ import {
   showSheet,
 } from '~/utils/utils';
 
-export default function LiveScreen() {
+const LiveScreen = () => {
   const [enableVideo] = useState<boolean>(true);
   const [liveStarted, setLiveStarted] = useState<boolean>(false);
 
+  // const {
+  //   joinChannelSuccess,
+  //   remoteUsers,
+  //   startPreview,
+  //   engine,
+  //   uid,
+  //   channelId,
+  //   token,
+  // } = useInitRtcEngine({
+  //   enableVideo: true,
+  //   isBroadcaster: true,
+  //   onJoinSuccess: (connection: RtcConnection, elapsed: number) =>
+  //     onJoinChannelSuccess(connection, elapsed),
+  // });
+
   const {
     joinChannelSuccess,
-    remoteUsers,
-    startPreview,
-    engine,
     uid,
-    channelId,
-    token,
-  } = useInitRtcEngine({
-    enableVideo: true,
-    isBroadcaster: true,
-    onJoinSuccess: (connection: RtcConnection, elapsed: number) =>
-      onJoinChannelSuccess(connection, elapsed),
-  });
+    switchCamera,
+    startPreview,
+    remoteUsers,
+    leaveChannel,
+  } = useInitBroadcastEngine({});
   const {resetLiveStore} = useSnapshot(liveStore);
-  console.log('LiveScreen');
 
-  const {mutate: mutateStopRecord} = useAgora_StopRecordMutation();
-  const {mutate: mutateUpdateLive} = useLive_UpdateLiveMutation();
-
-  const [_, setSwitchCamera] = useState(false);
   const [counterModalVisible, setCounterModalVisible] =
     useState<boolean>(false);
-
-  function switchCamera() {
-    engine.current.switchCamera();
-    setSwitchCamera(prev => !prev);
-  }
-
-  const onJoinChannelSuccess = useCallback(
-    (connection: RtcConnection, elapsed: number) => {
-      mutateUpdateLive(
-        {
-          input: {
-            agoraUserId: connection.localUid?.toString(),
-            id: Number(channelId),
-          },
-        },
-        {
-          onSuccess: response => {
-            if (response?.live_updateLive?.status?.code === 1) {
-              console.log('yes success');
-            }
-            console.log('response-->', response);
-          },
-        },
-      );
-      if (
-        connection.channelId === channelId &&
-        (connection.localUid === uid || uid === 0)
-      ) {
-        console.log('uuuy');
-      }
-    },
-    [channelId, uid, mutateUpdateLive],
-  );
 
   function joinChannelHandler() {
     if (liveStarted) {
@@ -115,47 +76,6 @@ export default function LiveScreen() {
       setCounterModalVisible(true);
     }
   }
-
-  function leaveChannel() {
-    engine.current.leaveChannel();
-    engine.current.stopChannelMediaRelay();
-    engine.current.removeAllListeners();
-    engine.current.release();
-    mutateStopRecord(
-      {channelName: channelId},
-      {
-        onSuccess() {},
-      },
-    );
-  }
-
-  // useEffect(() => {
-  //   engine.current.addListener(
-  //     'onVideoDeviceStateChanged',
-  //     (deviceId: string, deviceType: number, deviceState: number) => {},
-  //   );
-
-  //   engine.current.addListener(
-  //     'onLocalVideoStateChanged',
-  //     (
-  //       source: VideoSourceType,
-  //       state: LocalVideoStreamState,
-  //       error: LocalVideoStreamReason,
-  //     ) => {},
-  //   );
-
-  //   engine.current.addListener(
-  //     'onUserJoined',
-  //     (connection: RtcConnection, remoteUid: number, elapsed: number) => {
-  //       console.log('remoteUID===>', remoteUid);
-  //     },
-  //   );
-
-  //   const engineCopy = engine.current;
-  //   return () => {
-  //     engineCopy.removeAllListeners();
-  //   };
-  // }, [engine]);
 
   function closeHandler() {
     showSheet('confirmation-action', {
@@ -180,27 +100,6 @@ export default function LiveScreen() {
   function closeCounterModal() {
     setCounterModalVisible(false);
     setLiveStarted(true);
-    if (!channelId) {
-      log.error('channelId is invalid');
-      return;
-    }
-    if (uid < 0) {
-      log.error('uid is invalid');
-      return;
-    }
-
-    // start joining channel
-    // 1. Users can only see each other after they join the
-    // same channel successfully using the same app id.
-    // 2. If app certificate is turned on at dashboard, token is needed
-    // when joining channel. The channel name and uid used to calculate
-    // the token has to match the ones used for channel join
-    engine.current.enableAudio();
-    engine.current.joinChannel(token, channelId, uid, {
-      // Make myself as the broadcaster to send stream to remote
-      clientRoleType: ClientRoleType.ClientRoleBroadcaster,
-    });
-    console.log('uid-->', uid);
   }
 
   function renderVideo(user: VideoCanvas): ReactElement | undefined {
@@ -253,7 +152,9 @@ export default function LiveScreen() {
       )}
     </AppContainer>
   );
-}
+};
+
+export default LiveScreen;
 
 function CreateLiveFooter({
   liveHandler,
@@ -295,7 +196,6 @@ function CreateLiveFooter({
 
 function ExperienceCard() {
   const {liveData, liveType} = useSnapshot(liveStore);
-  const live = liveData?.live;
   const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
@@ -313,13 +213,13 @@ function ExperienceCard() {
       <AppScrollView contentContainerStyle={styles.scrollView}>
         <VStack space={12}>
           <AppText fontFamily="bold" fontSize={fontSize.large}>
-            {live?.title}
+            {liveData?.title}
           </AppText>
 
           {!expanded ? (
             <>
               <AppText color={Colors.DarkGray} numberOfLines={2}>
-                {live?.description}
+                {liveData?.description}
               </AppText>
               <AppText
                 right={0}
@@ -334,7 +234,7 @@ function ExperienceCard() {
           ) : (
             <VStack space={12}>
               <AppText color={Colors.VeryLightGrey}>
-                {live?.description}
+                {liveData?.description}
               </AppText>
 
               <AppTouchable
@@ -352,13 +252,15 @@ function ExperienceCard() {
               <HStack justifyContent="space-between">
                 <VStack space={16}>
                   <AppText color={Colors.DarkGray}>Category</AppText>
-                  <AppText fontFamily="bold">{live?.category?.title}</AppText>
+                  <AppText fontFamily="bold">
+                    {liveData?.category?.title}
+                  </AppText>
                 </VStack>
                 {liveType === LiveType.LiveContent && (
                   <VStack space={16}>
                     <AppText color={Colors.DarkGray}>Price</AppText>
                     <AppText fontFamily="bold">
-                      {live?.isFree ? 'Free' : `$${live?.price}`}
+                      {liveData?.isFree ? 'Free' : `$${liveData?.price}`}
                     </AppText>
                   </VStack>
                 )}
@@ -370,11 +272,13 @@ function ExperienceCard() {
                     Publishing schedule:{' '}
                   </AppText>
                   <AppText fontFamily="bold">
-                    {live?.setSchedule
+                    {liveData?.setSchedule
                       ? `${appFormatDate(
-                          live?.publishingScheduleDate,
+                          liveData?.publishingScheduleDate,
                           'YYYY/m/dd',
-                        )}, ${parseISODuration(live?.publishingScheduleTime)}`
+                        )}, ${parseISODuration(
+                          liveData?.publishingScheduleTime,
+                        )}`
                       : '-'}
                   </AppText>
                 </VStack>
