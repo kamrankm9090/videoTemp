@@ -13,7 +13,11 @@ import {
 import Empty from '~/components/atoms/Empty';
 import {TabRoute} from '~/components/molecules/CollapsibleTabView';
 import TabsFlatlist from '~/components/molecules/CollapsibleTabView/TabsFlatList';
-import {LiveType, SortEnumType} from '~/graphql/generated';
+import {
+  LiveType,
+  SortEnumType,
+  useSocial_GetUserQuery,
+} from '~/graphql/generated';
 import {useGetLives} from '~/hooks/live';
 import {userDataStore} from '~/stores';
 import {scale, width} from '~/utils/style';
@@ -43,8 +47,15 @@ const commonOptionsList = {
   ListEmptyComponent: () => <Empty h={null} text={'You have no\nPosts yet!'} />,
 };
 
-export default function ProfileScreen() {
-  const userData = userDataStore(state => state?.userData);
+export default function ProfileScreen({route}: {route: any}) {
+  const userId = route?.params?.userId;
+  const currentUserId = userDataStore(state => state?.userData)?.id;
+  const isViewer = userId >= 0 && userId !== currentUserId;
+
+  const {data: userDataTemp} = useSocial_GetUserQuery({
+    otherId: isViewer ? userId : currentUserId,
+  });
+  const userData = userDataTemp?.social_getUser?.result?.user;
 
   const {
     data: getLivesContent,
@@ -129,8 +140,13 @@ export default function ProfileScreen() {
   }, []);
 
   const renderHeader = useCallback(() => {
-    return <HeaderProfile />;
-  }, []);
+    return (
+      <HeaderProfile
+        isViewer={isViewer}
+        userData={userDataTemp?.social_getUser?.result}
+      />
+    );
+  }, [userData, isViewer]);
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 

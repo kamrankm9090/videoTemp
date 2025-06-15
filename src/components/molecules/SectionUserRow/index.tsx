@@ -3,11 +3,13 @@ import {StyleSheet} from 'react-native';
 import {
   AppImage,
   AppText,
+  AppTouchable,
   HomePostOptions,
   HStack,
   LikeButton,
   VStack,
 } from '~/components';
+import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 import {formatNumber} from '~/utils/helper';
 import {fontSize} from '~/utils/style';
@@ -18,11 +20,19 @@ export default function SectionUserRow({data}: {data: LiveDto}) {
 
   return (
     <HStack px={16} mt={8} alignItems="flex-start" space={12}>
-      <AppImage
-        resizeMode="stretch"
-        imageSource={user?.photoUrl}
-        style={styles.avatar}
-      />
+      <AppTouchable
+        onPress={() =>
+          navigate('ProfileStack', {
+            screen: 'Profile',
+            params: {userId: user?.id},
+          })
+        }>
+        <AppImage
+          resizeMode="stretch"
+          imageSource={user?.photoUrl}
+          style={styles.avatar}
+        />
+      </AppTouchable>
       <VStack space={8} flex={1}>
         <HStack space={12} alignItems="flex-start">
           <AppText

@@ -3,12 +3,17 @@ import {PAGE_SIZE} from '~/constants/constants';
 import {queryKeys} from '~/constants/queryKeys';
 import {fetcher} from '~/graphql/fetcher';
 import {
+  BlockUser_GetBlockedUsersDocument,
+  BlockUser_GetBlockedUsersQuery,
+  BlockUser_GetBlockedUsersQueryVariables,
   FollowerFolloweeDtoFilterInput,
   FollowerFolloweeDtoSortInput,
   Scalars,
   Social_GetUserFollowerFolloweesDocument,
   Social_GetUserFollowerFolloweesQuery,
   Social_GetUserFollowerFolloweesQueryVariables,
+  UserFilterInput,
+  UserSortInput,
 } from '~/graphql/generated';
 
 export const useGetFollowerFollowings = ({
@@ -60,6 +65,58 @@ export const useGetFollowerFollowings = ({
           ...data,
           pages: data?.pages
             ?.map(a => a?.social_getUserFollowerFollowees?.result?.items)
+            .flat(),
+        };
+      },
+
+      ...options,
+    },
+  );
+};
+
+export const useGetBlockedUsers = ({
+  where,
+  take = PAGE_SIZE,
+  order,
+  options = {},
+}: {
+  where?: UserFilterInput;
+  order?: Array<UserSortInput> | UserSortInput;
+  options?: UseInfiniteQueryOptions<BlockUser_GetBlockedUsersQuery>;
+  take?: number;
+}) => {
+  return useInfiniteQuery<
+    BlockUser_GetBlockedUsersQuery,
+    any,
+    BlockUser_GetBlockedUsersQueryVariables,
+    any
+  >(
+    [queryKeys.getFollowerFollowings, where],
+    async ({pageParam = 0}) => {
+      return fetcher(BlockUser_GetBlockedUsersDocument, {
+        skip: pageParam * PAGE_SIZE,
+        take,
+        where,
+        order,
+      })();
+    },
+    {
+      getNextPageParam: (
+        lastPage: BlockUser_GetBlockedUsersQuery,
+        allPages: BlockUser_GetBlockedUsersQuery[],
+      ) => {
+        if (
+          lastPage?.blockUser_getBlockedUsers?.result?.pageInfo?.hasNextPage
+        ) {
+          return allPages.length;
+        }
+        return undefined;
+      },
+      select: data => {
+        return {
+          ...data,
+          pages: data?.pages
+            ?.map(a => a?.blockUser_getBlockedUsers?.result?.items)
             .flat(),
         };
       },

@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   AnalyticsScreen,
+  BlockedUsersScreen,
   DeleteAccountScreen,
   EditProfileScreen,
   FollowerFollowingScreen,
@@ -18,7 +19,9 @@ import {publicScreenOption} from '~/utils/utils';
 import {appCreateStackNavigator} from './methods';
 
 export type ProfileStackParamList = {
-  Profile: undefined;
+  Profile: {
+    userId?: number;
+  };
   FollowerFollowing: {type: 'follower' | 'following'};
   EditProfile: undefined;
   SettingsActivity: undefined;
@@ -31,6 +34,7 @@ export type ProfileStackParamList = {
   Wallet: undefined;
   ForgotPassword: {hasGoBack?: boolean};
   TotalIncome: undefined;
+  BlockedUsers: undefined;
 };
 
 const Stack = appCreateStackNavigator<ProfileStackParamList>();
@@ -87,6 +91,10 @@ const screens = [
   {
     name: 'TotalIncome',
     component: TotalIncomeScreen,
+  },
+  {
+    name: 'BlockedUsers',
+    component: BlockedUsersScreen,
   },
 ];
 

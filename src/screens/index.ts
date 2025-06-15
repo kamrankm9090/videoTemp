@@ -40,6 +40,7 @@ export {default as PasswordSettingScreen} from './Profile/PasswordSetting';
 export {default as DeleteAccountScreen} from './Profile/DeleteAccount';
 export {default as WalletScreen} from './Profile/Wallet';
 export {default as TotalIncomeScreen} from './Profile/TotalIncome';
+export {default as BlockedUsersScreen} from './Profile/BlockedUsers';
 
 //CREATE
 export {default as CreateContentScreen} from './Create/CreateContent';

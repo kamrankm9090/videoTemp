@@ -1,7 +1,6 @@
 import React, {memo, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {AppFlatList, SettingActivityItem} from '~/components';
-import {MoreOptionItemType} from '~/components/modals/MoreOptionAction';
 import {navigate} from '~/navigation/methods';
 import {Colors} from '~/styles';
 import {scale} from '~/utils/style';
@@ -16,6 +15,16 @@ type Item = {
 const accountSettingOptions: MoreOptionItemType[] = [
   {
     id: 0,
+    title: 'Manage Blocked Users',
+    onPress: () => {
+      hideSheet('more-option-action');
+      navigate('ProfileStack', {
+        screen: 'BlockedUsers',
+      });
+    },
+  },
+  {
+    id: 1,
     title: 'Password setting',
     onPress: () => {
       hideSheet('more-option-action');
@@ -25,7 +34,7 @@ const accountSettingOptions: MoreOptionItemType[] = [
     },
   },
   {
-    id: 1,
+    id: 2,
     title: 'Delete Account',
     color: Colors.ERROR,
     onPress: () => {

@@ -2,14 +2,37 @@ query social_getUser($otherId: Int!) {
   social_getUser(otherId: $otherId) {
     result {
       user {
-        skills
         username
+        phoneNumber
         photoUrl
         fullName
         about
+        location
+        age
+        dateOfBirth
+        gender
+        lastSeen
         userType
-        professionalSummary
-        education
+        userRole
+        isPrivateAccount
+        stripeConnectAccountId
+        stripeConnectCompleted
+        isVerified
+        verificationPhotos
+        verificationErrors
+        socialLinks
+        profession
+        yearsOfExperience
+        height
+        favoriteCategories
+        isDeleted
+        createdDate
+        id
+        email
+        emailConfirmed
+        phoneNumberConfirmed
+        twoFactorEnabled
+        skills
       }
       followersCount
       followedCount
@@ -145,6 +168,33 @@ query user_getCastersToFollow(
       }
       totalCount
     }
+    status
+  }
+}
+
+query blockUser_getBlockedUsers(
+  $skip: Int
+  $take: Int
+  $where: UserFilterInput
+  $order: [UserSortInput!]
+) {
+  blockUser_getBlockedUsers {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        username
+        photoUrl
+        fullName
+        isPrivateAccount
+        isVerified
+        id
+      }
+      totalCount
+    }
+
     status
   }
 }

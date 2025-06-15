@@ -8347,6 +8347,32 @@ export type User_ChangeUserPassowrdMutation = {
   } | null;
 };
 
+export type BlockUser_BlockMutationVariables = Exact<{
+  input?: InputMaybe<BlockUserInput>;
+}>;
+
+export type BlockUser_BlockMutation = {
+  __typename?: 'Mutation';
+  blockUser_block?: {
+    __typename?: 'ResponseBaseOfBlockUser';
+    status?: any | null;
+  } | null;
+};
+
+export type BlockUser_UnblockMutationVariables = Exact<{
+  input?: InputMaybe<BlockUserInput>;
+}>;
+
+export type BlockUser_UnblockMutation = {
+  __typename?: 'Mutation';
+  blockUser_unblock?: {
+    __typename?: 'ResponseStatus';
+    code: number;
+    value?: string | null;
+    description?: string | null;
+  } | null;
+};
+
 export type Social_GetUserQueryVariables = Exact<{
   otherId: Scalars['Int']['input'];
 }>;
@@ -8366,14 +8392,37 @@ export type Social_GetUserQuery = {
       requestReceived: boolean;
       user?: {
         __typename?: 'User';
-        skills?: string | null;
         username?: string | null;
+        phoneNumber?: string | null;
         photoUrl?: string | null;
         fullName?: string | null;
         about?: string | null;
+        location?: string | null;
+        age?: number | null;
+        dateOfBirth?: any | null;
+        gender?: Gender | null;
+        lastSeen?: any | null;
         userType?: UserType | null;
-        professionalSummary?: string | null;
-        education?: string | null;
+        userRole?: string | null;
+        isPrivateAccount: boolean;
+        stripeConnectAccountId?: string | null;
+        stripeConnectCompleted: boolean;
+        isVerified: boolean;
+        verificationPhotos?: string | null;
+        verificationErrors?: string | null;
+        socialLinks?: string | null;
+        profession?: string | null;
+        yearsOfExperience?: number | null;
+        height?: number | null;
+        favoriteCategories?: string | null;
+        isDeleted: boolean;
+        createdDate?: any | null;
+        id: number;
+        email?: string | null;
+        emailConfirmed: boolean;
+        phoneNumberConfirmed: boolean;
+        twoFactorEnabled: boolean;
+        skills?: string | null;
       } | null;
     } | null;
   } | null;
@@ -8520,6 +8569,39 @@ export type User_GetCastersToFollowQuery = {
         createdDate?: any | null;
         id: number;
         email?: string | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type BlockUser_GetBlockedUsersQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<UserFilterInput>;
+  order?: InputMaybe<Array<UserSortInput> | UserSortInput>;
+}>;
+
+export type BlockUser_GetBlockedUsersQuery = {
+  __typename?: 'Query';
+  blockUser_getBlockedUsers?: {
+    __typename?: 'ListResponseBaseOfUser';
+    status?: any | null;
+    result?: {
+      __typename?: 'UserCollectionSegment';
+      totalCount: number;
+      pageInfo: {
+        __typename?: 'CollectionSegmentInfo';
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
+      items?: Array<{
+        __typename?: 'User';
+        username?: string | null;
+        photoUrl?: string | null;
+        fullName?: string | null;
+        isPrivateAccount: boolean;
+        isVerified: boolean;
+        id: number;
       } | null> | null;
     } | null;
   } | null;
@@ -11801,19 +11883,114 @@ export const useUser_ChangeUserPassowrdMutation = <
   );
 };
 
+export const BlockUser_BlockDocument = `
+    mutation blockUser_block($input: BlockUserInput) {
+  blockUser_block(input: $input) {
+    status
+  }
+}
+    `;
+
+export const useBlockUser_BlockMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    BlockUser_BlockMutation,
+    TError,
+    BlockUser_BlockMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    BlockUser_BlockMutation,
+    TError,
+    BlockUser_BlockMutationVariables,
+    TContext
+  >(
+    ['blockUser_block'],
+    (variables?: BlockUser_BlockMutationVariables) =>
+      fetcher<BlockUser_BlockMutation, BlockUser_BlockMutationVariables>(
+        BlockUser_BlockDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
+export const BlockUser_UnblockDocument = `
+    mutation blockUser_unblock($input: BlockUserInput) {
+  blockUser_unblock(input: $input) {
+    code
+    value
+    description
+  }
+}
+    `;
+
+export const useBlockUser_UnblockMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    BlockUser_UnblockMutation,
+    TError,
+    BlockUser_UnblockMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    BlockUser_UnblockMutation,
+    TError,
+    BlockUser_UnblockMutationVariables,
+    TContext
+  >(
+    ['blockUser_unblock'],
+    (variables?: BlockUser_UnblockMutationVariables) =>
+      fetcher<BlockUser_UnblockMutation, BlockUser_UnblockMutationVariables>(
+        BlockUser_UnblockDocument,
+        variables,
+      )(),
+    options,
+  );
+};
+
 export const Social_GetUserDocument = `
     query social_getUser($otherId: Int!) {
   social_getUser(otherId: $otherId) {
     result {
       user {
-        skills
         username
+        phoneNumber
         photoUrl
         fullName
         about
+        location
+        age
+        dateOfBirth
+        gender
+        lastSeen
         userType
-        professionalSummary
-        education
+        userRole
+        isPrivateAccount
+        stripeConnectAccountId
+        stripeConnectCompleted
+        isVerified
+        verificationPhotos
+        verificationErrors
+        socialLinks
+        profession
+        yearsOfExperience
+        height
+        favoriteCategories
+        isDeleted
+        createdDate
+        id
+        email
+        emailConfirmed
+        phoneNumberConfirmed
+        twoFactorEnabled
+        skills
       }
       followersCount
       followedCount
@@ -12100,6 +12277,75 @@ export const useInfiniteUser_GetCastersToFollowQuery = <
         User_GetCastersToFollowQuery,
         User_GetCastersToFollowQueryVariables
       >(User_GetCastersToFollowDocument, {
+        ...variables,
+        ...(metaData.pageParam ?? {}),
+      })(),
+    options,
+  );
+};
+
+export const BlockUser_GetBlockedUsersDocument = `
+    query blockUser_getBlockedUsers($skip: Int, $take: Int, $where: UserFilterInput, $order: [UserSortInput!]) {
+  blockUser_getBlockedUsers {
+    result(skip: $skip, take: $take, where: $where, order: $order) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      items {
+        username
+        photoUrl
+        fullName
+        isPrivateAccount
+        isVerified
+        id
+      }
+      totalCount
+    }
+    status
+  }
+}
+    `;
+
+export const useBlockUser_GetBlockedUsersQuery = <
+  TData = BlockUser_GetBlockedUsersQuery,
+  TError = unknown,
+>(
+  variables?: BlockUser_GetBlockedUsersQueryVariables,
+  options?: UseQueryOptions<BlockUser_GetBlockedUsersQuery, TError, TData>,
+) => {
+  return useQuery<BlockUser_GetBlockedUsersQuery, TError, TData>(
+    variables === undefined
+      ? ['blockUser_getBlockedUsers']
+      : ['blockUser_getBlockedUsers', variables],
+    fetcher<
+      BlockUser_GetBlockedUsersQuery,
+      BlockUser_GetBlockedUsersQueryVariables
+    >(BlockUser_GetBlockedUsersDocument, variables),
+    options,
+  );
+};
+
+export const useInfiniteBlockUser_GetBlockedUsersQuery = <
+  TData = BlockUser_GetBlockedUsersQuery,
+  TError = unknown,
+>(
+  variables?: BlockUser_GetBlockedUsersQueryVariables,
+  options?: UseInfiniteQueryOptions<
+    BlockUser_GetBlockedUsersQuery,
+    TError,
+    TData
+  >,
+) => {
+  return useInfiniteQuery<BlockUser_GetBlockedUsersQuery, TError, TData>(
+    variables === undefined
+      ? ['blockUser_getBlockedUsers.infinite']
+      : ['blockUser_getBlockedUsers.infinite', variables],
+    metaData =>
+      fetcher<
+        BlockUser_GetBlockedUsersQuery,
+        BlockUser_GetBlockedUsersQueryVariables
+      >(BlockUser_GetBlockedUsersDocument, {
         ...variables,
         ...(metaData.pageParam ?? {}),
       })(),

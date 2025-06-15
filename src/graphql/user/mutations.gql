@@ -360,3 +360,17 @@ mutation user_changeUserPassowrd($input: ChangePassowrdInput) {
     description
   }
 }
+
+mutation blockUser_block($input: BlockUserInput) {
+  blockUser_block(input: $input) {
+    status
+  }
+}
+
+mutation blockUser_unblock($input: BlockUserInput) {
+  blockUser_unblock(input: $input) {
+    code
+    value
+    description
+  }
+}

@@ -71,6 +71,7 @@ export {default as IncomeChart} from './atoms/IncomeChart';
 export {default as PurchaseItem} from './atoms/PurchaseItem';
 export {default as HeaderWallet} from './atoms/HeaderWallet';
 export {default as WalletTipCard} from './atoms/WalletTipCard';
+export {default as UserItem} from './atoms/UserItem';
 
 //#endregion ---------Atoms
 
